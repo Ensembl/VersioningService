@@ -12,6 +12,11 @@ has 'sequence' => (
     is => 'rw',
 );
 
+has 'sequence_length' => (
+    isa => 'Int',
+    is => 'rw',
+);
+
 has 'region' => (
     isa => 'Str',
     is => 'rw',

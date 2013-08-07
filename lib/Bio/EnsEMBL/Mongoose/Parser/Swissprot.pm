@@ -54,18 +54,23 @@ sub read_record {
     my $reader = $self->xml_reader;
     
     my $record = $self->record;
-    
+    my $read_state;
     # fast-forward to next <entry> and extract attributes
-    unless ($reader->name && $reader->name eq "entry") {
-        $reader->nextElement("entry");
-    }
-    $record->version($reader->getAttribute("version"));
     
-
+    unless ($reader->name && $reader->name eq "entry") {
+        $read_state = $reader->nextElement("entry");
+        if ($read_state == 0) {return 0}
+    }
+    my $entry_version =$reader->getAttribute("version"); 
+    if ($entry_version) {$record->version($entry_version);}
+    
     my $node = $reader->copyCurrentNode(1); # 1 = deep copy
+    # copyCurrentNode(1) spools the cursor to the end-tag, thus we are ready to go again.
+    
     $self->node_sieve($node);
     
-    
+    $reader->next;
+    return $read_state;
 }
 
 sub node_sieve {
@@ -82,15 +87,24 @@ sub accession {
     my $node = shift;
     my $node_list = $self->xpath_context->findnodes('//uni:accession',$node);
     
-    print $node_list->size."\n";
-    $node_list->foreach(sub {print $_->localname." ".$_->toString."\n"});
+    #$node_list->foreach(sub {print $_->localname." ".$_->toString."\n"});
     # First node is "primary accession"
     my ($accession,@others) = $node_list->map(sub {$_->textContent});
     $self->record->primary_accession($accession);
     $self->record->accessions(\@others);
 }
 
+sub gene_name {
+    
+}
 
+sub xpath_to_value {
+    my $self = shift;
+    my $node = shift;
+    my $xpath = shift;
+    
+    my $node_list = $self->xpath_context->findnodes($xpath, $node);
+}
 
 
 sub persist_record {

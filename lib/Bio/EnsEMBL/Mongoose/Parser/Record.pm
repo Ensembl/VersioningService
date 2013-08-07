@@ -3,8 +3,8 @@ use Moose;
 
 has 'id' => (
     isa => 'Str',
-    is => 'ro',
-    required => 1,
+    is => 'rw',
+    required => 0,
 );
 
 has 'sequence' => (
@@ -22,8 +22,13 @@ has 'region' => (
     is => 'rw',
 );
 
-has 'accession' => (
+has 'primary_accession' => (
     isa => 'Str',
+    is => 'rw',
+);
+
+has 'accessions' => (
+    isa => 'ArrayRef[String]',
     is => 'rw',
 );
 

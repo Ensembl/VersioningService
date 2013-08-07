@@ -8,5 +8,6 @@ use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
 
 my $parser = Bio::EnsEMBL::Mongoose::Parser::Swissprot->new( source_file => "/Users/ktaylor/projects/data/uniprot_sprot.xml" );
 while ($parser->read_record) {
-    print "Main accession: ".$parser->record->primary_accession."\n";    
+    print "Main accession: ".$parser->record->primary_accession."\n";
+    $parser->record->clear_record;
 };

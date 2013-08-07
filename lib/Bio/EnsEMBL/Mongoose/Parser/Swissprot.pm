@@ -16,7 +16,8 @@ has 'record' => (
     lazy => 1,
     default => sub {
         return Bio::EnsEMBL::Mongoose::Parser::Record->new;
-    }
+    },
+    clearer => 'clear_record',
 );
 
 subtype 'XML::LibXML::Reader' => as 'Object';

@@ -28,7 +28,7 @@ has 'primary_accession' => (
 );
 
 has 'accessions' => (
-    isa => 'ArrayRef[String]',
+    isa => 'ArrayRef[Str]',
     is => 'rw',
 );
 

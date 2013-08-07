@@ -27,6 +27,11 @@ has 'primary_accession' => (
     is => 'rw',
 );
 
+has 'gene_name' => (
+    isa => 'Str',
+    is => 'rw',
+);
+
 has 'accessions' => (
     isa => 'ArrayRef[Str]',
     is => 'rw',

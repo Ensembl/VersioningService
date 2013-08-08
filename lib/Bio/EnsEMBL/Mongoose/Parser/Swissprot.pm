@@ -10,7 +10,7 @@ use Bio::EnsEMBL::Mongoose::Parser::Record;
 # Consumes Swissprot file and emits Mongoose::Parser::Records
 extends 'Bio::EnsEMBL::Mongoose::Parser::Parser';
 
-has 'record' => (
+has record => (
     is => 'rw',
     isa => 'Bio::EnsEMBL::Mongoose::Parser::Record',
     lazy => 1,
@@ -26,7 +26,7 @@ coerce 'XML::LibXML::Reader' => from 'Str' => via {
     XML::LibXML::Reader->new( location => $_);
 };
 
-has 'xml_reader' => (
+has xml_reader => (
     is => 'ro',
     isa => 'XML::LibXML::Reader',
     coerce => 1,
@@ -37,7 +37,7 @@ has 'xml_reader' => (
     }
 );
 
-has 'xpath_context' => (
+has xpath_context => (
     is => 'ro',
     isa => 'XML::LibXML::XPathContext',
     lazy => 1,

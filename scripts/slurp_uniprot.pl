@@ -8,6 +8,7 @@ use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
 
 my $parser = Bio::EnsEMBL::Mongoose::Parser::Swissprot->new( source_file => "/Users/ktaylor/projects/data/uniprot_sprot.xml" );
 while ($parser->read_record) {
-    print "Main accession: ".$parser->record->primary_accession."\n";
-    $parser->record->clear_record;
+    my $record = $parser->record;
+    printf "Main accession: %s, Gene name: %s, Taxon: %s, Sequence length: %s\n",
+    $record->primary_accession,$record->gene_name, $record->taxon_id, length($record->sequence);
 };

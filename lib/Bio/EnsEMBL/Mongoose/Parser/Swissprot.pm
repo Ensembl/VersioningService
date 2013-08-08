@@ -55,6 +55,7 @@ sub read_record {
     my $reader = $self->xml_reader;
     
     my $record = $self->record;
+    $self->clear_record;
     my $read_state;
     # fast-forward to next <entry> and extract attributes
     
@@ -66,10 +67,10 @@ sub read_record {
     if ($entry_version) {$record->version($entry_version);}
     
     my $node = $reader->copyCurrentNode(1); # 1 = deep copy
-    # copyCurrentNode(1) spools the cursor to the end-tag, thus we are ready to go again.
+    # copyCurrentNode(1) does not spool the cursor to the end-tag!
     
     $self->node_sieve($node);
-    
+    # move off <entry> node so unless(){} above can work next time.
     $reader->next;
     return $read_state;
 }
@@ -78,7 +79,9 @@ sub node_sieve {
     my $self = shift;
     my $node = shift;
     $self->accession($node);
-    
+    $self->gene_name($node);
+    $self->sequence($node);
+    $self->taxon($node);
     # note: can always fetch child nodes with $node->getElementsByTagName
     return 1;
 }
@@ -96,7 +99,23 @@ sub accession {
 }
 
 sub gene_name {
-    
+    my $self = shift;
+    my $node = shift;
+    $self->record->gene_name($self->xpath_to_value($node,'//uni:name[@type="primary"]'));
+}
+
+sub sequence {
+    my $self = shift;
+    my $node = shift;
+    my $sequence = $self->xpath_to_value($node,'//uni:sequence');
+    $sequence =~ s/\s//g;
+    $self->record->sequence($sequence);
+}
+
+sub taxon {
+    my $self = shift;
+    my $node = shift;
+    $self->record->taxon_id($self->xpath_to_value($node,'//uni:dbReference[@type="NCBI Taxonomy"]/@id'));
 }
 
 sub xpath_to_value {
@@ -105,6 +124,12 @@ sub xpath_to_value {
     my $xpath = shift;
     
     my $node_list = $self->xpath_context->findnodes($xpath, $node);
+    if ($node_list->size > 0) {
+        return $node_list->shift->textContent;
+    } else {
+        print "Xpath returned nowt.\n";
+        return;
+    }
 }
 
 

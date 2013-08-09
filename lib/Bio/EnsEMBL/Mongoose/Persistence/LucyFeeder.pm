@@ -64,7 +64,10 @@ sub load_record {
     });
 }
 
-
+sub commit {
+    my $self = shift;
+    $self->indexer->commit;
+}
 
 __PACKAGE__->meta->make_immutable;
 

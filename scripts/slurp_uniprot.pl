@@ -13,3 +13,5 @@ while ($parser->read_record) {
     $record->primary_accession,$record->gene_name, $record->taxon_id, length($record->sequence);
     $dumper->load_record($record);
 };
+
+$dumper->commit;

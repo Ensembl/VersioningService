@@ -110,6 +110,7 @@ sub sequence {
     my $sequence = $self->xpath_to_value($node,'//uni:sequence');
     $sequence =~ s/\s+//g;
     $self->record->sequence($sequence);
+    $self->record->sequence_length(length($sequence));
 }
 
 sub taxon {

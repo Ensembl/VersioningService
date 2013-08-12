@@ -132,10 +132,4 @@ sub xpath_to_value {
     }
 }
 
-
-sub persist_record {
-    my $self = shift;
-    return 1;
-}
-
 1;

@@ -3,6 +3,8 @@ package Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 use Moose;
 use Moose::Util::TypeConstraints;
 
+extends 'Bio::EnsEMBL::Mongoose::Persistence::Persistence';
+
 use Lucy::Index::Indexer;
 use Lucy::Plan::Schema;
 use Lucy::Plan::StringType;
@@ -53,7 +55,7 @@ has indexer => (
     }
 );
 
-sub load_record {
+sub store_record {
     my $self = shift;
     my $record = shift;
     $self->indexer->add_doc({

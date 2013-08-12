@@ -19,5 +19,6 @@ my $hits = $lucy->hits(
 print "Found: ".$hits->total_hits()."\n";
 while (my $hit = $hits->next) {
     print dump($hit)."\n";
-    printf "%s %0.3f %s\n",$hit->{gene_name},$hit->get_score,$hit->{sequence}; 
+    #printf "%s %0.3f %s\n",$hit->{gene_name},$hit->get_score,$hit->{sequence};
+    foreach (keys(%$hit)) { print $_." : ". $hit->{$_}."\n"} 
 }

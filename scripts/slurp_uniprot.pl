@@ -9,8 +9,8 @@ my $dumper = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new();
 
 while ($parser->read_record) {
     my $record = $parser->record;
-    printf "Main accession: %s, Gene name: %s, Taxon: %s, Sequence length: %s\n",
-    $record->primary_accession,$record->gene_name, $record->taxon_id, length($record->sequence);
+    printf "Main accession: %s, Gene name: %s, Taxon: %s\n",
+    $record->primary_accession,$record->gene_name, $record->taxon_id;
     $dumper->load_record($record);
 };
 

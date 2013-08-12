@@ -108,7 +108,7 @@ sub sequence {
     my $self = shift;
     my $node = shift;
     my $sequence = $self->xpath_to_value($node,'//uni:sequence');
-    $sequence =~ s/\s//g;
+    $sequence =~ s/\s+//g;
     $self->record->sequence($sequence);
 }
 

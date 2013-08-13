@@ -22,3 +22,6 @@ ok($record->sequence_length == 766, 'sequence_length check');
 is($record->sequence,$seq, 'Make sure sequence regex-trimming does no harm, but removes white space');
 
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
+
+
+done_testing;

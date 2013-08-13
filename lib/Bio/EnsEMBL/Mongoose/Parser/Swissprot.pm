@@ -9,6 +9,7 @@ use Bio::EnsEMBL::Mongoose::Parser::Record;
 
 # Consumes Swissprot file and emits Mongoose::Parser::Records
 extends 'Bio::EnsEMBL::Mongoose::Parser::Parser';
+with 'MooseX::Log::Log4perl';
 
 has record => (
     is => 'rw',
@@ -56,6 +57,7 @@ sub read_record {
     
     my $record = $self->record;
     $self->clear_record;
+    $self->log->debug('Record blanked');
     my $read_state;
     # fast-forward to next <entry> and extract attributes
     
@@ -78,6 +80,7 @@ sub read_record {
 sub node_sieve {
     my $self = shift;
     my $node = shift;
+    $self->log->debug('Parsing XML subtree.');
     $self->accession($node);
     $self->gene_name($node);
     $self->sequence($node);
@@ -91,23 +94,23 @@ sub accession {
     my $node = shift;
     my $node_list = $self->xpath_context->findnodes('//uni:accession',$node);
     
-    #$node_list->foreach(sub {print $_->localname." ".$_->toString."\n"});
     # First node is "primary accession"
     my ($accession,@others) = $node_list->map(sub {$_->textContent});
     $self->record->primary_accession($accession);
     $self->record->accessions(\@others);
+    $self->log->debug('Primary Accesion: '.$accession. ' and '.scalar(@others).' other accessions');
 }
 
 sub gene_name {
     my $self = shift;
     my $node = shift;
-    $self->record->gene_name($self->xpath_to_value($node,'//uni:name[@type="primary"]'));
+    $self->record->gene_name($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:gene/uni:name[@type="primary"]'));
 }
 
 sub sequence {
     my $self = shift;
     my $node = shift;
-    my $sequence = $self->xpath_to_value($node,'//uni:sequence');
+    my $sequence = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:sequence');
     $sequence =~ s/\s+//g;
     $self->record->sequence($sequence);
     $self->record->sequence_length(length($sequence));
@@ -116,7 +119,7 @@ sub sequence {
 sub taxon {
     my $self = shift;
     my $node = shift;
-    $self->record->taxon_id($self->xpath_to_value($node,'//uni:dbReference[@type="NCBI Taxonomy"]/@id'));
+    $self->record->taxon_id($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:organism/uni:dbReference[@type="NCBI Taxonomy"]/@id'));
 }
 
 sub xpath_to_value {

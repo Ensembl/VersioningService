@@ -1,6 +1,12 @@
 use strict;
 use warnings;
 
+use FindBin qw/$Bin/;
+use Log::Log4perl;
+
+
+Log::Log4perl::init('$Bin/../conf/logger.conf');
+
 use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 

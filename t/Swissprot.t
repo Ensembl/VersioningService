@@ -1,6 +1,10 @@
 use Test::More;
 use Test::Differences;
 
+use FindBin qw/$Bin/;
+use Log::Log4perl;
+Log::Log4perl::init("$Bin/../conf/logger.conf");
+
 use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
 
 # Uses uniprot BRAF record (P15056) to validate the Swissprot parser.

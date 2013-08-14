@@ -1,5 +1,5 @@
 package Bio::EnsEMBL::Mongoose::Parser::Parser;
-use Moose;
+use Moose::Role;
 
 has 'source_file' => (
     isa => 'Str',
@@ -9,7 +9,7 @@ has 'source_file' => (
 
 
 sub read_record {
-    warn "Read not implemented.";
+    
 }
 
 __PACKAGE__->meta->make_immutable;

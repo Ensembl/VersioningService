@@ -8,7 +8,6 @@ use Bio::EnsEMBL::Mongoose::Parser::Record;
 
 
 # Consumes Swissprot file and emits Mongoose::Parser::Records
-extends 'Bio::EnsEMBL::Mongoose::Parser::Parser';
 with 'MooseX::Log::Log4perl';
 
 has record => (
@@ -50,6 +49,7 @@ has xpath_context => (
     }
 );
 
+with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
 
 sub read_record {
     my $self = shift;

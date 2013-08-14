@@ -136,4 +136,6 @@ sub xpath_to_value {
     }
 }
 
+__PACKAGE__->meta->make_immutable;
+
 1;

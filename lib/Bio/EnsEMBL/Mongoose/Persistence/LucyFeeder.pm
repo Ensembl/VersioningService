@@ -3,7 +3,6 @@ package Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 use Moose;
 use Moose::Util::TypeConstraints;
 
-extends 'Bio::EnsEMBL::Mongoose::Persistence::Persistence';
 
 use Lucy::Index::Indexer;
 use Lucy::Plan::Schema;
@@ -70,6 +69,8 @@ sub commit {
     my $self = shift;
     $self->indexer->commit;
 }
+
+with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
 
 __PACKAGE__->meta->make_immutable;
 

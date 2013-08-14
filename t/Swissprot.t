@@ -21,8 +21,8 @@ my $record = $xml_reader->record;
 
 is($record->gene_name,"BRAF", 'gene_name attribute check');
 is($record->primary_accession, "P15056", 'primary_accession check');
-ok($record->taxon_id == 9606, 'taxon_id check');
-ok($record->sequence_length == 766, 'sequence_length check');
+cmp_ok($record->taxon_id, '==', 9606, 'taxon_id check');
+cmp_ok($record->sequence_length, '==', 766, 'sequence_length check');
 is($record->sequence,$seq, 'Make sure sequence regex-trimming does no harm, but removes white space');
 
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');

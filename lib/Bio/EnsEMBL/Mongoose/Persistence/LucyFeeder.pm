@@ -53,6 +53,7 @@ has indexer => (
         );
     }
 );
+with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
 
 sub store_record {
     my $self = shift;
@@ -70,7 +71,6 @@ sub commit {
     $self->indexer->commit;
 }
 
-with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
 
 __PACKAGE__->meta->make_immutable;
 

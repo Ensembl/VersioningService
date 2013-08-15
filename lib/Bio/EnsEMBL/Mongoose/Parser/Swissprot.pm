@@ -85,6 +85,8 @@ sub node_sieve {
     $self->gene_name($node);
     $self->sequence($node);
     $self->taxon($node);
+    $self->evidence_level($node);
+    if ($self->suspicious($node)) {$self->log->debug("Found an untrustworthy Xref")}
     # note: can always fetch child nodes with $node->getElementsByTagName
     return 1;
 }
@@ -122,6 +124,43 @@ sub taxon {
     $self->record->taxon_id($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:organism/uni:dbReference[@type="NCBI Taxonomy"]/@id'));
 }
 
+# /uni:uniprot/uni:entry/uni:dbReference
+sub xrefs {
+    my $self = shift;
+    my $node = shift;
+    
+}
+
+# /uni:uniprot/uni:entry/uni:proteinExistence/@type
+sub evidence_level {
+    my $self = shift;
+    my $node = shift;
+    my $level = 0;
+    my $evidence = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:proteinExistence/@type');
+    $self->log->debug("Evidence code: $evidence");
+    
+    $level = 1 if $evidence =~ /evidence at protein level/;
+    $level = 2 if $evidence =~ /evidence at transcript level/;
+    $level = 3 if $evidence =~ /inferred from homology/;
+    $level = 4 if $evidence =~ /predicted/;
+    $level = 5 if $evidence =~ /uncertain/;
+    
+    $self->log->debug("Coded to level $level");
+    $self->record->evidence_level($level);
+}
+# Used for finding comments that indicate a reference is unreliable
+sub suspicious {
+    my $self = shift;
+    my $node = shift;
+    
+    my $worry = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="caution"]/text');
+    if ($worry && $worry =~ /Ensembl automatic/) {
+        $self->record->suspicion("Ensembl");
+        return 1;
+    }
+    
+}
+
 sub xpath_to_value {
     my $self = shift;
     my $node = shift;
@@ -131,7 +170,7 @@ sub xpath_to_value {
     if ($node_list->size > 0) {
         return $node_list->shift->textContent;
     } else {
-        print "Xpath returned nowt.\n";
+        $self->log->debug("Xpath returned nowt, ".$xpath);
         return;
     }
 }

@@ -71,6 +71,16 @@ has schema_version => (
     is => 'rw',
 );
 
+has evidence_level => (
+    isa => 'Int',
+    is => 'rw',
+    default => 5,
+);
+
+has suspicion => (
+    isa => 'Str',
+    is => 'rw',
+);
 
 __PACKAGE__->meta->make_immutable;
 

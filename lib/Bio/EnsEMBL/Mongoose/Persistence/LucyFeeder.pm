@@ -3,6 +3,7 @@ package Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 use Moose;
 use Moose::Util::TypeConstraints;
 
+use Bio::EnsEMBL::Mongoose::Persistence::Record;
 
 use Lucy::Index::Indexer;
 use Lucy::Plan::Schema;
@@ -24,12 +25,18 @@ has schema => (
         my $lucy_blob = Lucy::Plan::BlobType->new(
             stored => 1,
         );
-    
-        $schema->spec_field( name => 'primary_accession', type => $lucy_str );
-        $schema->spec_field( name => 'accession', type => $lucy_str );
-        $schema->spec_field( name => 'taxon_id', type => $lucy_str );
-        $schema->spec_field( name => 'gene_name', type => $lucy_str );
-        $schema->spec_field( name => 'sequence', type => $lucy_blob );
+        
+        # Use Moose MOP to get all attributes of the Record to create a schema for Lucy
+        # Treat sequence as a special case so it does not get indexed.
+        my $record_meta = Bio::EnsEMBL::Mongoose::Persistence::Record->meta();
+        for my $attribute ($record_meta->get_all_attributes) {
+            if ($attribute->name eq 'sequence') {
+                $schema->spec_field( name => 'sequence', type => $lucy_blob );
+            } else {
+                $schema->spec_field( name => $attribute->name, type => $lucy_str);
+            }
+        }
+        
         return $schema;
     },
 );
@@ -58,12 +65,17 @@ with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
 sub store_record {
     my $self = shift;
     my $record = shift;
-    $self->indexer->add_doc({
-        primary_accession => $record->primary_accession,
-        taxon_id => $record->taxon_id,
-        gene_name => $record->gene_name,
-        sequence => $record->sequence,
-    });
+    
+    
+    
+    $self->indexer->add_doc(
+#        primary_accession => $record->primary_accession,
+#        taxon_id => $record->taxon_id,
+#        gene_name => $record->gene_name,
+#        sequence => $record->sequence,
+#        evidence_level => $record->evidence_level,
+        $record
+    );
 }
 
 sub commit {

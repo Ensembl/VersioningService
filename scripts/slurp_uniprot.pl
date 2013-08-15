@@ -16,7 +16,7 @@ my $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new();
 while ($parser->read_record) {
     my $record = $parser->record;
     printf "Main accession: %s, Gene name: %s, Taxon: %s\n",
-    $record->primary_accession,$record->gene_name, $record->taxon_id;
+    $record->primary_accession,$record->gene_name ? $record->gene_name : '', $record->taxon_id;
     $doc_store->store_record($record);
 };
 

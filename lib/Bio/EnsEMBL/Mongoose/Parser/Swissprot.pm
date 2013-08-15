@@ -4,18 +4,18 @@ use Moose::Util::TypeConstraints;
 
 use XML::LibXML::Reader;
 use XML::LibXML::XPathContext;
-use Bio::EnsEMBL::Mongoose::Parser::Record;
+use Bio::EnsEMBL::Mongoose::Persistence::Record;
 
 
-# Consumes Swissprot file and emits Mongoose::Parser::Records
+# Consumes Swissprot file and emits Mongoose::Persistence::Records
 with 'MooseX::Log::Log4perl';
 
 has record => (
     is => 'rw',
-    isa => 'Bio::EnsEMBL::Mongoose::Parser::Record',
+    isa => 'Bio::EnsEMBL::Mongoose::Persistence::Record',
     lazy => 1,
     default => sub {
-        return Bio::EnsEMBL::Mongoose::Parser::Record->new;
+        return Bio::EnsEMBL::Mongoose::Persistence::Record->new;
     },
     clearer => 'clear_record',
 );

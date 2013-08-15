@@ -1,4 +1,4 @@
-package Bio::EnsEMBL::Mongoose::Parser::Record;
+package Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Moose;
 use MooseX::Storage;
 

@@ -60,7 +60,7 @@ has cursor => (
 has buffer_size => (
     isa => 'Int',
     is => 'rw',
-    default => 100,
+    default => 1000,
 );
 
 with 'Bio::EnsEMBL::Mongoose::Persistence::Query';

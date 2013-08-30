@@ -52,12 +52,21 @@ has synonyms => (
     isa => 'ArrayRef[Str]',
     is => 'rw',
     traits => ['Array'],
+    handles => {
+        add_synonym => 'push'
+    }
 );
 
 has xref => (
     isa => 'ArrayRef[Bio::EnsEMBL::Mongoose::Persistence::RecordXref]',
     is => 'rw',
     traits => ['Array'],
+    handles => {
+        add_xref => 'push',
+        remove_xref => 'pop',
+        grep_xrefs => 'grep',
+        map_xrefs => 'map',
+    }
 );
 
 has display_label => (
@@ -100,6 +109,10 @@ has suspicion => (
     isa => 'Str',
     is => 'rw',
 );
+
+sub TO_JSON {
+    return {%{shift()}};
+}
 
 __PACKAGE__->meta->make_immutable;
 

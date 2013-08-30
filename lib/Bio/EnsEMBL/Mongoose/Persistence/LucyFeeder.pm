@@ -10,7 +10,9 @@ use Lucy::Plan::Schema;
 use Lucy::Plan::StringType;
 use Lucy::Plan::BlobType;
 
-subtype 'Lucy::Plan::Schema' => as 'Object';
+use JSON::XS;
+
+#subtype 'Lucy::Plan::Schema' => as 'Object';
 
 has schema => (
     is => 'ro',
@@ -30,12 +32,16 @@ has schema => (
         # Treat sequence as a special case so it does not get indexed.
         my $record_meta = Bio::EnsEMBL::Mongoose::Persistence::Record->meta();
         for my $attribute ($record_meta->get_all_attributes) {
-            if ($attribute->name eq 'sequence') {
+            if ($attribute->name eq 'sequence' ) {
                 $schema->spec_field( name => 'sequence', type => $lucy_blob );
             } else {
                 $schema->spec_field( name => $attribute->name, type => $lucy_str);
             }
         }
+        
+        # Add on bonus blob field
+        
+        $schema->spec_field( name => 'blob', type => $lucy_blob);
         
         return $schema;
     },
@@ -61,20 +67,31 @@ has indexer => (
     }
 );
 with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
+with 'MooseX::Log::Log4perl';
 
 sub store_record {
     my $self = shift;
     my $record = shift;
     
-    
+    # record must be processed into separate fields, because Lucy does not understand arrays.
+    my %flattened_record;
+    %flattened_record = %{$record};
+    my @accessions = @{$flattened_record{accessions}};
+    $flattened_record{accessions} = join ' ',@accessions;
+    # could also define a ->reduce handler in Record
+    if (exists $flattened_record{synonyms}) {
+        my @synonyms = @{$flattened_record{synonyms}};
+        $flattened_record{synonyms} = join ' ',@synonyms;
+    }
+    # blob the record into the docstore for restoration on query
+    my $json = JSON::XS->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $self->log->debug($json->encode($record));
+    $flattened_record{blob} = $json->encode($record);
     
     $self->indexer->add_doc(
-#        primary_accession => $record->primary_accession,
-#        taxon_id => $record->taxon_id,
-#        gene_name => $record->gene_name,
-#        sequence => $record->sequence,
-#        evidence_level => $record->evidence_level,
-        $record
+        \%flattened_record
     );
 }
 

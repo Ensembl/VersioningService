@@ -118,7 +118,9 @@ sub synonyms {
     my $xpath = '/uni:uniprot/uni:entry/uni:gene/uni:name[@type="synonym"]';
     my $node_list = $self->xpath_context->findnodes($xpath, $node);
     $node_list->foreach( sub {
-        $self->record->synonyms->push($_->value);
+        # This is a list of LibXML::Elements, a subclass of Node. Data is found in textContent, not in Value!
+        #print $_->toString."\n";
+        $self->record->add_synonym($_->textContent);
     });
 }
 
@@ -147,14 +149,15 @@ sub xrefs {
     
     $node_list->foreach( sub {
         my $node = shift;
-        my $attributes = $node->attributes();
+        my @attributes = $node->attributes();
         my ($source,$id);
-        foreach my $attr (@$attributes) {
+        foreach my $attr (@attributes) {
             if ($attr->nodeName eq 'type') {$source = $attr->value}
             elsif ($attr->nodeName eq 'id') {$id = $attr->value}
         }
         my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);
-        $self->record->xref->push($xref);
+        
+        $self->record->add_xref($xref);
     });
 }
 
@@ -191,7 +194,7 @@ sub suspicious {
 sub description {
     my $self = shift;
     my $node = shift;
-    $self->record->gene_name($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="function"]/uni:text'));
+    $self->record->description($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="function"]/uni:text'));
 }
 
 sub xpath_to_value {

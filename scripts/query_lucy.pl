@@ -16,7 +16,7 @@ my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new();
 $lucy->query($query);
 my $total = 0;
 print "###########\n";
-my $limit = 12000000000;
+my $limit = 120;
 
 
 while ((my $hit = $lucy->next_result) && $limit > 0) {

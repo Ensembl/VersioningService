@@ -2,6 +2,8 @@ package Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Moose;
 use MooseX::Storage;
 
+use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
+
 with Storage('format' => 'JSON', 'io' => 'File');
 
 has id => (
@@ -35,8 +37,25 @@ has gene_name => (
     is => 'rw',
 );
 
+has full_name => (
+    isa => 'Str',
+    is => 'rw',
+);
+
 has accessions => (
     isa => 'ArrayRef[Str]',
+    is => 'rw',
+    traits => ['Array'],
+);
+
+has synonyms => (
+    isa => 'ArrayRef[Str]',
+    is => 'rw',
+    traits => ['Array'],
+);
+
+has xref => (
+    isa => 'ArrayRef[Bio::EnsEMBL::Mongoose::Persistence::RecordXref]',
     is => 'rw',
     traits => ['Array'],
 );

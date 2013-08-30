@@ -5,7 +5,7 @@ use Moose::Util::TypeConstraints;
 use XML::LibXML::Reader;
 use XML::LibXML::XPathContext;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
-
+use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
 with 'MooseX::Log::Log4perl';
@@ -82,7 +82,10 @@ sub node_sieve {
     my $node = shift;
     $self->log->debug('Parsing XML subtree.');
     $self->accession($node);
+    $self->synonyms($node);
     $self->gene_name($node);
+    $self->xrefs($node);
+    $self->description($node);
     $self->sequence($node);
     $self->taxon($node);
     $self->evidence_level($node);
@@ -109,6 +112,16 @@ sub gene_name {
     $self->record->gene_name($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:gene/uni:name[@type="primary"]'));
 }
 
+sub synonyms {
+    my $self = shift;
+    my $node = shift;
+    my $xpath = '/uni:uniprot/uni:entry/uni:gene/uni:name[@type="synonym"]';
+    my $node_list = $self->xpath_context->findnodes($xpath, $node);
+    $node_list->foreach( sub {
+        $self->record->synonyms->push($_->value);
+    });
+}
+
 sub sequence {
     my $self = shift;
     my $node = shift;
@@ -129,6 +142,20 @@ sub xrefs {
     my $self = shift;
     my $node = shift;
     
+    my $xpath = '/uni:uniprot/uni:entry/uni:dbReference';
+    my $node_list = $self->xpath_context->findnodes($xpath, $node);
+    
+    $node_list->foreach( sub {
+        my $node = shift;
+        my $attributes = $node->attributes();
+        my ($source,$id);
+        foreach my $attr (@$attributes) {
+            if ($attr->nodeName eq 'type') {$source = $attr->value}
+            elsif ($attr->nodeName eq 'id') {$id = $attr->value}
+        }
+        my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);
+        $self->record->xref->push($xref);
+    });
 }
 
 # /uni:uniprot/uni:entry/uni:proteinExistence/@type
@@ -153,12 +180,18 @@ sub suspicious {
     my $self = shift;
     my $node = shift;
     
-    my $worry = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="caution"]/text');
+    my $worry = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="caution"]/uni:text');
     if ($worry && $worry =~ /Ensembl automatic/) {
         $self->record->suspicion("Ensembl");
         return 1;
     }
-    
+    return;
+}
+
+sub description {
+    my $self = shift;
+    my $node = shift;
+    $self->record->gene_name($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="function"]/uni:text'));
 }
 
 sub xpath_to_value {

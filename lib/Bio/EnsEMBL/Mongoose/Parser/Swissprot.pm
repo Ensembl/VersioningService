@@ -23,7 +23,7 @@ has record => (
 subtype 'XML::LibXML::Reader' => as 'Object';
 
 coerce 'XML::LibXML::Reader' => from 'Str' => via {
-    XML::LibXML::Reader->new( location => $_);
+    XML::LibXML::Reader->new( IO => $_);
 };
 
 has xml_reader => (
@@ -33,7 +33,7 @@ has xml_reader => (
     lazy => 1,
     default => sub {
         my $self = shift;
-        return $self->source_file;
+        return $self->source_handle;
     }
 );
 

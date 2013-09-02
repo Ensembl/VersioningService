@@ -1,0 +1,4 @@
+[Indexer setup]
+
+index_location = "$ENV{HOME}/mongoose.index"
+data_source = "$ENV{HOME}/uniprot_sprot.xml"

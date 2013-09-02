@@ -5,12 +5,17 @@ use FindBin qw/$Bin/;
 use Log::Log4perl;
 use Data::Dump::Color qw/dump/;
 
+use Config::General;
+
+my $conf = Config::General->new("$Bin/../conf/swissprot.conf");
+my %opts = $conf->getall();
+
 Log::Log4perl::init("$Bin/../conf/logger.conf");
 
 use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 
-my $parser = Bio::EnsEMBL::Mongoose::Parser::Swissprot->new( source_file => "/Users/ktaylor/projects/data/uniprot_sprot.xml" );
+my $parser = Bio::EnsEMBL::Mongoose::Parser::Swissprot->new( source_file => $opts{data_source} );
 my $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new();
 
 while ($parser->read_record) {

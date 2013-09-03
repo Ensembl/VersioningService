@@ -91,6 +91,16 @@ sub next_result {
     return $self->result_set->next;
 };
 
+sub convert_result_to_records {
+    my $self = shift;
+    my @records;
+    while (my $result = $self->next_result) {
+        my $blob = $result->{blob};
+        push @records,Bio::EnsEMBL::Mongoose::Persistence::Record->new($blob);
+    }
+    return \@records;
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;

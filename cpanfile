@@ -6,6 +6,8 @@ requires 'PerlIO::gzip';
 requires 'JSON::XS';
 requires 'JSON::Any';
 requires 'XML::LibXML';
+requires 'Log::Log4perl';
+
 
 # Moose dependencies
 

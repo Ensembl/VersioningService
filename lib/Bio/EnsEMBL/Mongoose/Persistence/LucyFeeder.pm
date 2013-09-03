@@ -50,7 +50,7 @@ has schema => (
 has index => (
     is => 'rw',
     isa => 'Str',
-    default => '/Users/ktaylor/projects/data/mongoose.index',
+    default => '$ENV{HOME}/mongoose.index',
 );
 
 has indexer => (

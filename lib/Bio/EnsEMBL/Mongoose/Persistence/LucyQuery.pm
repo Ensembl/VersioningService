@@ -7,6 +7,8 @@ use Search::Query;
 use Search::Query::Parser;
 use Search::Query::Dialect::Lucy;
 
+use Bio::EnsEMBL::Mongoose::Persistence::Record;
+
 has search_engine => (
     isa => 'Lucy::Search::IndexSearcher',
     is => 'ro',
@@ -91,12 +93,17 @@ sub next_result {
     return $self->result_set->next;
 };
 
-sub convert_result_to_records {
+sub convert_result_to_record {
+    my $self = shift;
+    my $result = shift;
+    return Bio::EnsEMBL::Mongoose::Persistence::Record->new($result->{blob});    
+}
+
+sub get_all_records {
     my $self = shift;
     my @records;
     while (my $result = $self->next_result) {
-        my $blob = $result->{blob};
-        push @records,Bio::EnsEMBL::Mongoose::Persistence::Record->new($blob);
+        push @records,$self->convert_result_to_record($result);
     }
     return \@records;
 }

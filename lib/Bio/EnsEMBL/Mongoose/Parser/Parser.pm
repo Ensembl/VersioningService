@@ -11,7 +11,7 @@ has 'source_file' => (
 );
 
 has 'source_handle' => (
-    isa => 'Object',
+    isa => 'GlobRef',
     is => 'rw',
     lazy => 1,
     default => sub {

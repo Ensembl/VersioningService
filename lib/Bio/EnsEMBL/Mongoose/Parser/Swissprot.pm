@@ -22,7 +22,7 @@ has record => (
 
 subtype 'XML::LibXML::Reader' => as 'Object';
 
-coerce 'XML::LibXML::Reader' => from 'Str' => via {
+coerce 'XML::LibXML::Reader' => from 'GlobRef' => via {
     XML::LibXML::Reader->new( IO => $_);
 };
 

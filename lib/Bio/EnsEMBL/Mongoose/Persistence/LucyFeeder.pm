@@ -66,6 +66,18 @@ has indexer => (
         );
     }
 );
+
+has json_encoder => (
+    is => 'ro',
+    isa => 'Object',
+    default => sub {
+        my $json = JSON::XS->new;
+        $json->allow_blessed(1);
+        $json->convert_blessed(1);
+        return $json;
+    }
+);
+
 with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
 with 'MooseX::Log::Log4perl';
 
@@ -83,12 +95,13 @@ sub store_record {
         my @synonyms = @{$flattened_record{synonyms}};
         $flattened_record{synonyms} = join ' ',@synonyms;
     }
+    # Throw out pointless duplicates
+    if (exists $flattened_record{'sequence'}) {delete $flattened_record{'sequence'}};
+    if (exists $flattened_record{'xref'}) {delete $flattened_record{'xref'}};
     # blob the record into the docstore for restoration on query
-    my $json = JSON::XS->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $self->log->debug($json->encode($record));
-    $flattened_record{blob} = $json->encode($record);
+    
+    #$self->log->debug($json->encode($record));
+    $flattened_record{blob} = $self->json_encoder->encode($record);
     
     $self->indexer->add_doc(
         \%flattened_record

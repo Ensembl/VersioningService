@@ -37,5 +37,31 @@ sub commit {
     
 }
 
+use JSON::XS qw/encode_json decode_json/;
+use PerlIO::gzip;
+use MIME::Base64 qw/encode_base64 decode_base64/;
+
+sub compress_json {
+  my ($self, $ref) = @_;
+  my $json = JSON::XS->new->allow_blessed->encode($ref);
+  my $compressed;
+  open my $fh, ">:gzip", \$compressed or confess "Cannot compress: $!";
+  print $fh $json;
+  close $fh;
+  my $encoded = encode_base64($compressed);
+  $encoded =~ s/\n//g;
+  return $encoded;
+}
+
+sub decompress_json {
+  my ($self, $base64_gz_contents) = @_;
+  my $gz_contents = decode_base64($base64_gz_contents);
+  local $/ = undef;
+  open my $fh, "<:gzip", \$gz_contents or die $!;
+  my $uncompressed = <$fh>;
+  close $fh;
+  my $perl_hash = decode_json($uncompressed);
+  return $perl_hash;
+}
 
 1;

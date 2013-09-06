@@ -2,8 +2,6 @@ package Bio::EnsEMBL::Mongoose::Parser::Swissprot;
 use Moose;
 use Moose::Util::TypeConstraints;
 
-use XML::LibXML::Reader;
-use XML::LibXML::XPathContext;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
@@ -166,20 +164,6 @@ sub description {
     my $self = shift;
     my $node = shift;
     $self->record->description($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="function"]/uni:text'));
-}
-
-sub xpath_to_value {
-    my $self = shift;
-    my $node = shift;
-    my $xpath = shift;
-    
-    my $node_list = $self->xpath_context->findnodes($xpath, $node);
-    if ($node_list->size > 0) {
-        return $node_list->shift->textContent;
-    } else {
-        $self->log->debug("Xpath returned nowt, ".$xpath);
-        return;
-    }
 }
 
 __PACKAGE__->meta->make_immutable;

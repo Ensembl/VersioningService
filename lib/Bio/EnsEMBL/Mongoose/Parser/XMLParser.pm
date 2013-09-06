@@ -63,5 +63,20 @@ has short_namespace => (
 
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
 
+# General method for getting exactly one text node back.
+
+sub xpath_to_value {
+    my $self = shift;
+    my $node = shift;
+    my $xpath = shift;
+    
+    my $node_list = $self->xpath_context->findnodes($xpath, $node);
+    if ($node_list->size > 0) {
+        return $node_list->shift->textContent;
+    } else {
+        $self->log->debug("Xpath returned nowt, ".$xpath);
+        return;
+    }
+}
 
 1;

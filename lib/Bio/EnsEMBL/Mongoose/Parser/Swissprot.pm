@@ -10,46 +10,17 @@ use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
 with 'MooseX::Log::Log4perl';
 
-has record => (
-    is => 'rw',
-    isa => 'Bio::EnsEMBL::Mongoose::Persistence::Record',
-    lazy => 1,
-    default => sub {
-        return Bio::EnsEMBL::Mongoose::Persistence::Record->new;
-    },
-    clearer => 'clear_record',
-);
+# 'uni','http://uniprot.org/uniprot'
+with 'Bio::EnsEMBL::Mongoose::Parser::XMLParser';
 
-subtype 'XML::LibXML::Reader' => as 'Object';
-
-coerce 'XML::LibXML::Reader' => from 'GlobRef' => via {
-    XML::LibXML::Reader->new( IO => $_);
+around BUILDARGS => sub {
+    my ($orig, $class, %args) = @_;
+    # Add some default parameters to the parser
+    $args{short_namespace} = 'uni';
+    $args{namespace} = 'http://uniprot.org/uniprot';
+    $class->$orig(%args);
+    
 };
-
-has xml_reader => (
-    is => 'ro',
-    isa => 'XML::LibXML::Reader',
-    coerce => 1,
-    lazy => 1,
-    default => sub {
-        my $self = shift;
-        return $self->source_handle;
-    }
-);
-
-has xpath_context => (
-    is => 'ro',
-    isa => 'XML::LibXML::XPathContext',
-    lazy => 1,
-    default => sub {
-        my $self = shift;
-        my $xpc = XML::LibXML::XPathContext->new();
-        $xpc->registerNs('uni','http://uniprot.org/uniprot');
-        return $xpc;
-    }
-);
-
-with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
 
 sub read_record {
     my $self = shift;

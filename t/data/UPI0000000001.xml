@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uniparc xmlns="http://uniprot.org/uniparc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://uniprot.org/uniprot http://www.pir.uniprot.org/support/docs/uniparc.xsd" checkpoint="12741">
+<entry dataset="uniparc">
+<accession>UPI0000000001</accession>
+    <dbReference type="EMBL" id="ADZ29210" version="1" version_i="1" active="Y" created="2011-08-10" last="2013-03-05">
+      <property type="NCBI_GI" value="325557828"/>
+      <property type="NCBI_taxonomy_id" value="10243"/>
+    </dbReference>
+    <dbReference type="EMBL" id="ABH08195" version="1" version_i="1" active="Y" created="2006-09-02" last="2013-03-05">
+      <property type="NCBI_GI" value="111184275"/>
+      <property type="NCBI_taxonomy_id" value="397342"/>
+    </dbReference>
+    <dbReference type="EMBL" id="CAD90637" version="1" version_i="1" active="Y" created="2003-06-16" last="2013-03-05">
+      <property type="NCBI_GI" value="30519462"/>
+      <property type="NCBI_taxonomy_id" value="10243"/>
+    </dbReference>
+    <dbReference type="EMBL" id="AAO89367" version="1" version_i="1" active="Y" created="2003-06-16" last="2013-03-05">
+      <property type="NCBI_GI" value="29692194"/>
+      <property type="NCBI_taxonomy_id" value="10254"/>
+    </dbReference>
+    <dbReference type="EMBL" id="AAF63732" version="1" version_i="1" active="Y" created="2003-03-12" last="2013-03-05">
+      <property type="NCBI_GI" value="7546898"/>
+      <property type="NCBI_taxonomy_id" value="10245"/>
+    </dbReference>
+    <dbReference type="EMBL" id="AGJ92346" version="1" version_i="1" active="Y" created="2013-04-24" last="2013-05-30">
+      <property type="NCBI_GI" value="480543595"/>
+      <property type="NCBI_taxonomy_id" value="10245"/>
+    </dbReference>
+    <dbReference type="EMBL" id="AGJ91256" version="1" version_i="1" active="Y" created="2013-04-24" last="2013-05-30">
+      <property type="NCBI_GI" value="480542501"/>
+      <property type="NCBI_taxonomy_id" value="10245"/>
+    </dbReference>
+    <dbReference type="EMBL" id="AAS49790" version="1" version_i="1" active="Y" created="2004-03-31" last="2013-03-05">
+      <property type="NCBI_GI" value="44971440"/>
+      <property type="NCBI_taxonomy_id" value="32606"/>
+    </dbReference>
+    <dbReference type="EMBL" id="CAA26010" version="1" version_i="1" active="Y" created="2003-03-12" last="2013-03-05">
+      <property type="NCBI_GI" value="61389"/>
+      <property type="NCBI_taxonomy_id" value="10245"/>
+    </dbReference>
+    <dbReference type="EMBL" id="CBX47311" version="1" version_i="1" active="Y" created="2010-10-29" last="2013-03-05">
+      <property type="NCBI_GI" value="311426279"/>
+      <property type="NCBI_taxonomy_id" value="32630"/>
+    </dbReference>
+    <dbReference type="UniProtKB/Swiss-Prot" id="P07612" version="1" version_i="1" active="N" created="1988-11-01" last="2004-11-23">
+      <property type="NCBI_taxonomy_id" value="10254"/>
+    </dbReference>
+    <dbReference type="UniProtKB/Swiss-Prot" id="P07612" version="3" version_i="3" active="Y" created="2007-01-23" last="2013-07-24">
+      <property type="NCBI_GI" value="138624"/>
+      <property type="NCBI_taxonomy_id" value="10254"/>
+    </dbReference>
+    <dbReference type="UniProtKB/TrEMBL" id="Q6RZL4" version="1" version_i="1" active="Y" created="2004-07-05" last="2013-07-24">
+      <property type="NCBI_taxonomy_id" value="32606"/>
+    </dbReference>
+    <dbReference type="UniProtKB/TrEMBL" id="Q76ZT7" version="1" version_i="1" active="N" created="2004-07-05" last="2011-06-28"/>
+    <dbReference type="UniProtKB/TrEMBL" id="Q76QK2" version="1" version_i="1" active="Y" created="2004-07-05" last="2013-07-24">
+      <property type="NCBI_taxonomy_id" value="10243"/>
+    </dbReference>
+    <dbReference type="UniProtKB/TrEMBL" id="Q0GNZ6" version="1" version_i="1" active="Y" created="2006-10-03" last="2013-07-24">
+      <property type="NCBI_taxonomy_id" value="397342"/>
+    </dbReference>
+    <dbReference type="UniProtKB/TrEMBL" id="Q71TT2" version="1" version_i="1" active="Y" created="2006-04-18" last="2013-07-24">
+      <property type="NCBI_taxonomy_id" value="10245"/>
+    </dbReference>
+    <dbReference type="TREMBLNEW" id="CAD90637" version_i="1" active="N" created="2003-05-10" last="2004-06-11"/>
+    <dbReference type="TREMBLNEW" id="AAS49790" version_i="1" active="N" created="2004-04-02" last="2004-06-11"/>
+    <dbReference type="TREMBLNEW" id="AAO89367" version_i="1" active="N" created="2003-04-18" last="2004-06-11"/>
+    <dbReference type="TREMBLNEW" id="AAF63732" version_i="1" active="N" created="2003-03-29" last="2004-06-11"/>
+    <dbReference type="EPO" id="HI554959" version="1" version_i="1" active="Y" created="2010-12-13" last="2013-04-13">
+      <property type="NCBI_taxonomy_id" value="32630"/>
+    </dbReference>
+    <dbReference type="USPTO" id="ACW20787" version="1" version_i="1" active="Y" created="2009-10-22" last="2013-01-07">
+      <property type="NCBI_GI" value="259248900"/>
+    </dbReference>
+    <dbReference type="USPTO" id="AFD38096" version="1" version_i="1" active="Y" created="2012-06-13" last="2013-01-07">
+      <property type="NCBI_GI" value="380267682"/>
+    </dbReference>
+    <dbReference type="USPTO" id="ADS58161" version="1" version_i="1" active="Y" created="2011-03-07" last="2013-01-07">
+      <property type="NCBI_GI" value="314533342"/>
+    </dbReference>
+    <dbReference type="REFSEQ" id="YP_006721" version="1" version_i="1" active="N" created="2004-07-08" last="2005-07-09"/>
+    <dbReference type="REFSEQ" id="YP_232970" version="1" version_i="1" active="Y" created="2005-10-06" last="2013-04-29">
+      <property type="NCBI_GI" value="66275885"/>
+      <property type="NCBI_taxonomy_id" value="10245"/>
+    </dbReference>
+    <dbReference type="PRF" id="3121328CL" version_i="1" active="Y" created="2006-02-13" last="2009-09-01">
+      <property type="NCBI_taxonomy_id" value="32606"/>
+    </dbReference>
+    <dbReference type="PRF" id="1103327F" version_i="1" active="Y" created="2005-11-28" last="2009-09-01">
+      <property type="NCBI_taxonomy_id" value="10245"/>
+    </dbReference>
+    <dbReference type="PRF" id="3217312DW" version_i="1" active="Y" created="2007-01-01" last="2009-09-01">
+      <property type="NCBI_taxonomy_id" value="397342"/>
+    </dbReference>
+<sequence length="250" checksum="28FE89850863372D">
+MGAAASIQTTVNTLSERISSKLEQEANASAQTKCDIEIGNFYIRQNHGCNLTVKNMCSAD
+ADAQLDAVLSAATETYSGLTPEQKAYVPAMFTAALNIQTSVNTVVRDFENYVKQTCNSSA
+VVDNKLKIQNVIIDECYGAPGSPTNLEFINTGSSKGNCAIKALMQLTTKATTQIAPKQVA
+GTGVQFYMIVIGVIILAALFMYYAKRMLFTSTNDKIKLILANKENVHWTTYMDTFFRTSP
+MVIATTDMQN
+</sequence>
+</entry>
+</uniparc>

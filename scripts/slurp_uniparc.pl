@@ -13,10 +13,10 @@ my %opts = $conf->getall();
 
 Log::Log4perl::init("$Bin/../conf/logger.conf");
 
-use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
+use Bio::EnsEMBL::Mongoose::Parser::Uniparc;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 
-my $parser = Bio::EnsEMBL::Mongoose::Parser::Swissprot->new( source_file => $opts{data_location} );
+my $parser = Bio::EnsEMBL::Mongoose::Parser::Uniparc->new( source_file => $opts{data_location} );
 my $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new( index => $opts{index_location});
 
 my $buffer = 0;

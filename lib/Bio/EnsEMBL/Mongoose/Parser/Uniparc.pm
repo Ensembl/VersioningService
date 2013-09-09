@@ -1,4 +1,4 @@
-package Bio::EnsEMBL::Mongoose::Parser::Swissprot;
+package Bio::EnsEMBL::Mongoose::Parser::Uniparc;
 use Moose;
 use Moose::Util::TypeConstraints;
 
@@ -90,8 +90,8 @@ sub sequence {
     my $self = shift;
     my $node = shift;
     my $node_list = $self->xpath_context->findnodes('/uni:uniparc/uni:entry/uni:sequence',$node);
-    my $seq_node = $node_list->next;
-    $self->record->sequence = $seq_node->textValue;
+    my $seq_node = $node_list->shift;
+    $self->record->sequence($seq_node->textContent);
     # Want checksum in the attribute
     my @attributes = $seq_node->attributes();
     
@@ -101,3 +101,5 @@ sub sequence {
     }
     
 }
+
+1;

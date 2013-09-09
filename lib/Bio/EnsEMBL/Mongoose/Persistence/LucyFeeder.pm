@@ -10,8 +10,6 @@ use Lucy::Plan::Schema;
 use Lucy::Plan::StringType;
 use Lucy::Plan::BlobType;
 
-use JSON::XS;
-
 #subtype 'Lucy::Plan::Schema' => as 'Object';
 
 has schema => (
@@ -67,17 +65,6 @@ has indexer => (
     }
 );
 
-has json_encoder => (
-    is => 'ro',
-    isa => 'Object',
-    default => sub {
-        my $json = JSON::XS->new;
-        $json->allow_blessed(1);
-        $json->convert_blessed(1);
-        return $json;
-    }
-);
-
 with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
 with 'MooseX::Log::Log4perl';
 
@@ -100,8 +87,7 @@ sub store_record {
     if (exists $flattened_record{'xref'}) {delete $flattened_record{'xref'}};
     # blob the record into the docstore for restoration on query
     
-    #$self->log->debug($json->encode($record));
-    $flattened_record{blob} = $self->json_encoder->encode($record);
+    $flattened_record{blob} = $self->compress_json($record);
     
     $self->indexer->add_doc(
         \%flattened_record

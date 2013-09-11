@@ -91,9 +91,9 @@ sub sequence {
     my $node = shift;
     my $node_list = $self->xpath_context->findnodes('/uni:uniparc/uni:entry/uni:sequence',$node);
     my $seq_node = $node_list->shift;
-    my $sequence = $seq_node->textContent;
-    $sequence =~ s/\s+//g;
-    $self->record->sequence($sequence);
+#    my $sequence = $seq_node->textContent;
+#    $sequence =~ s/\s+//g;
+#    $self->record->sequence($sequence);
     # Want checksum in the attribute
     my @attributes = $seq_node->attributes();
     

@@ -1,6 +1,7 @@
 package Bio::EnsEMBL::Mongoose::Persistence::Query;
 use Moose::Role;
 
+
 use Config::General;
 
 use FindBin qw/$Bin/;

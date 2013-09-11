@@ -8,6 +8,10 @@ use Search::Query::Parser;
 use Search::Query::Dialect::Lucy;
 
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
+use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
+
+use Data::Dump::Color qw/dump/;
+use Sereal::Decoder qw/decode_sereal/;
 
 has search_engine => (
     isa => 'Lucy::Search::IndexSearcher',
@@ -96,7 +100,10 @@ sub next_result {
 sub convert_result_to_record {
     my $self = shift;
     my $result = shift;
-    return Bio::EnsEMBL::Mongoose::Persistence::Record->new($result->{blob});    
+    my $blob = $result->{'blob'};
+    #print $result->{'blob'}."\n";
+    my $record = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder::decompress_sereal($self,$blob);
+    return $record;
 }
 
 sub get_all_records {

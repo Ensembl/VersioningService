@@ -9,6 +9,7 @@ use Lucy::Index::Indexer;
 use Lucy::Plan::Schema;
 use Lucy::Plan::StringType;
 use Lucy::Plan::BlobType;
+use Sereal qw/encode_sereal/;
 
 #subtype 'Lucy::Plan::Schema' => as 'Object';
 
@@ -86,8 +87,7 @@ sub store_record {
     if (exists $flattened_record{'sequence'}) {delete $flattened_record{'sequence'}};
     if (exists $flattened_record{'xref'}) {delete $flattened_record{'xref'}};
     # blob the record into the docstore for restoration on query
-    
-    $flattened_record{blob} = $self->compress_json($record);
+    $flattened_record{blob} = $self->compress_sereal($record);
     
     $self->indexer->add_doc(
         \%flattened_record

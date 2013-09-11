@@ -22,10 +22,13 @@ my $limit = 120;
 while ((my $hit = $lucy->next_result) && $limit > 0) {
     $limit--;
     $total++;
-    print dump($hit)."\n";
     
-   #printf "Name: %s Score: %0.3f Sequence: %s\n",$hit->{gene_name},$hit->get_score,$hit->{sequence};
-    foreach (keys(%$hit)) { print $_." : ". $hit->{$_}."\n"};
+    #printf "Name: %s Score: %0.3f Sequence: %s\n",$hit->{gene_name},$hit->get_score,$hit->{sequence};
+   
+    my $record = $lucy->convert_result_to_record($hit);
+    print $record->primary_accession."\n";
+    #print dump($record)."\n";
+    
     print "\n"; 
 }
 print "###########\nFound: $total\n###########\n";

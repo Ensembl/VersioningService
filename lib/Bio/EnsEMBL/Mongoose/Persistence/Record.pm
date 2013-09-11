@@ -1,10 +1,7 @@
 package Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Moose;
-use MooseX::Storage;
 
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
-
-with Storage('format' => 'JSON', 'io' => 'File');
 
 has id => (
     isa => 'Str',

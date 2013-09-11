@@ -15,10 +15,16 @@ has header_function => (
     usa => 'CodeRef',
     is => 'rw',
     required => 1,
+    lazy => 1,
     default => \sub {
         my $self = shift;
         my $record = shift;
-        
+        my $accession = $record->primary_accession;
+        unless ($accession) {
+            $accession = $record->accessions->shift;
+        }
+        my $handle = $self->handle;
+        printf $handle,"> %s %s %s %s", $accession, $record->taxon_id, $record->evidence_level, undef; 
     }
 );
 

@@ -12,19 +12,20 @@ has linewidth => (
 # No chunk size, only writing smaller things
 
 has header_function => (
-    usa => 'CodeRef',
+    isa => 'CodeRef',
     is => 'rw',
-    required => 1,
     lazy => 1,
-    default => \sub {
-        my $self = shift;
-        my $record = shift;
-        my $accession = $record->primary_accession;
-        unless ($accession) {
-            $accession = $record->accessions->shift;
+    default => sub {
+        return sub {
+            my $self = shift;
+            my $record = shift;
+            my $accession = $record->primary_accession;
+            unless ($accession) {
+                $accession = $record->accessions->shift;
+            }
+            my $handle = $self->handle;
+            printf $handle "> %s %s %s %s\n", $accession, $record->taxon_id, $record->evidence_level, ""; 
         }
-        my $handle = $self->handle;
-        printf $handle,"> %s %s %s %s", $accession, $record->taxon_id, $record->evidence_level, undef; 
     }
 );
 
@@ -34,11 +35,16 @@ has handle => (
     default => sub {
         # no file handle, let the handle point to a copy of STDOUT instead
         my $handle;
+        warn "Making handle";
         open $handle, ">&STDOUT";
         return $handle;
-    },
-    
+    } 
 );
+
+sub DEMOLISH {
+    my $self = shift;
+    close $self->handle;
+}
 
 sub print_record {
     my $self = shift;
@@ -46,7 +52,7 @@ sub print_record {
     my $handle = $self->handle;
     
     my $function = $self->header_function;
-    &$function($record);
+    &$function($self,$record);
     
     my $seq = $record->sequence;
     my $width = $self->linewidth;

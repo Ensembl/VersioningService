@@ -7,7 +7,8 @@ requires 'JSON::XS';
 requires 'JSON::Any';
 requires 'XML::LibXML';
 requires 'Log::Log4perl';
-
+requires 'Compress::Snappy';
+requires 'Sereal';
 
 # Moose dependencies
 

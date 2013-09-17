@@ -5,6 +5,7 @@ use Moose::Util::TypeConstraints;
 
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use LWP::UserAgent;
+use MIME::Base64 qw/encode_base64 decode_base64/;
 
 with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
 with 'MooseX::Log::Log4perl';
@@ -79,7 +80,7 @@ sub _send_to_solr {
     warn $response->status_line;
     warn $response->content;
     # warn $$ref;
-    die;
+    Bio::EnsEMBL::Mongoose::IOException->throw("All is not well");
   }
   return;
 }

@@ -80,6 +80,10 @@ sub xpath_to_value {
     }
 }
 
+# This method exists to provoke memory release in LibXML. It's efficacy is uncertain,
+# but memory consumption has been reduced by calling it.
+# An XML DOM fragment is created by xpaths, which then can be detached and disposed of
+# when $foster_home below goes out of scope.
 sub detach {
     my $self = shift;
     my $node = shift;

@@ -30,12 +30,12 @@ while ($parser->read_record) {
     #$record->primary_accession,$record->gene_name ? $record->gene_name : '', $record->taxon_id;
     $doc_store->store_record($record);
     $buffer++;
-    if ($buffer % 10000 == 0) {
-        $logger->info("Committing 10000 records");
-        $logger->info("MEM: ".`ps -p $$ -h -o rss=`);
+    if ($buffer % 100000 == 0) {
+        $logger->info("Committing 100000 records");
+        $logger->info("MEM: ".`ps -p $$ --no-headers -o rss=`);
         
-#        $doc_store->commit;
-#        $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new( index => $opts{index_location});
+        $doc_store->commit;
+        $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new( index => $opts{index_location});
 #        $logger->info("MEM2: ".`ps -p $$ -h -o rss=`);
     }
 };

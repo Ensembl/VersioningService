@@ -38,6 +38,7 @@ sub read_record {
     # copyCurrentNode(1) does not spool the cursor to the end-tag!
     
     $self->node_sieve($node);
+    $self->detach($node);
     # move off <entry> node so unless(){} above can work next time.
     $reader->next;
     return $read_state;

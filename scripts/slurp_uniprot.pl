@@ -33,9 +33,9 @@ while ($parser->read_record) {
     if ($buffer % 100000 == 0) {
         $logger->info("Committing 100000 records");
 #        $logger->info("Parser:".total_size $parser);
-        $logger->info("MEM: ".`ps -p $$ -h -o rss=`);
-#        $doc_store->commit;
-#        $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new( index => $opts{index_location});
+        $logger->info("MEM: ".`ps --no-headers -p $$ -o rss=`);
+        $doc_store->commit;
+        $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new( index => $opts{index_location});
 #        $logger->info("MEM2: ".`ps -p $$ -h -o rss=`);
     }
 };

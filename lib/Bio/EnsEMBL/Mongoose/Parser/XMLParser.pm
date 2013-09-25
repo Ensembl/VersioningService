@@ -4,6 +4,7 @@ use Moose::Util::TypeConstraints;
 
 use XML::LibXML::Reader;
 use XML::LibXML::XPathContext;
+use XML::LibXML;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
@@ -77,6 +78,14 @@ sub xpath_to_value {
         $self->log->debug("Xpath returned nowt, ".$xpath);
         return;
     }
+}
+
+sub detach {
+    my $self = shift;
+    my $node = shift;
+    my $foster_home = XML::LibXML::Document->new("1.0", "UTF-8");
+    $node->setOwnerDocument($foster_home);
+    
 }
 
 1;

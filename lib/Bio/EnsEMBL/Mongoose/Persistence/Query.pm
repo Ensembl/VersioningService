@@ -10,6 +10,9 @@ has config_file => (
     isa => 'String',
     is => 'ro',
     required => 1,
+    default = sub {
+        return "$Bin/../conf/swissprot.conf";
+    }
 );
 
 # $Bin/../conf/swissprot.conf

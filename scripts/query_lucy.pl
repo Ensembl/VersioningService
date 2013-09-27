@@ -14,11 +14,11 @@ our $fasta_writer = Bio::EnsEMBL::Mongoose::Serializer::FASTA->new();
 my $query = join(' ',@ARGV);
 die "Specify query string" unless $query;
 
-my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new();
+my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => "$Bin/../conf/uniparc.conf");
 $lucy->query($query);
 my $total = 0;
 print "###########\n";
-my $limit = 120000000000;
+my $limit = 120;
 
 
 while ((my $hit = $lucy->next_result) && $limit > 0) {

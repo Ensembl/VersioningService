@@ -6,12 +6,20 @@ use Config::General;
 
 use FindBin qw/$Bin/;
 
+has config_file => (
+    isa => 'String',
+    is => 'ro',
+    required => 1,
+);
+
+# $Bin/../conf/swissprot.conf
 has config => (
     isa => 'HashRef',
     is => 'ro',
     required => 1,
     default => sub {
-        my $conf = Config::General->new("$Bin/../conf/swissprot.conf");
+        my $self = shift;
+        my $conf = Config::General->new($self->config_file);
         my %opts = $conf->getall();
         return \%opts;
     },

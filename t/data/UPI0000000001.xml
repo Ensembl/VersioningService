@@ -100,4 +100,114 @@ GTGVQFYMIVIGVIILAALFMYYAKRMLFTSTNDKIKLILANKENVHWTTYMDTFFRTSP
 MVIATTDMQN
 </sequence>
 </entry>
+<entry dataset="uniparc">
+<accession>UPI000006DAC9</accession>
+<dbReference type="EMBL" id="AAK21302" version="1" version_i="1" active="Y" created="2003-03-12" last="2013-06-13">
+<property type="NCBI_GI" value="13384181"/>
+<property type="NCBI_taxonomy_id" value="9606"/>
+</dbReference>
+<dbReference type="UniProtKB/TrEMBL" id="Q9BXE6" version="1" version_i="1" active="Y" created="2001-06-01" last="2013-09-18">
+<property type="NCBI_taxonomy_id" value="9606"/>
+</dbReference>
+<dbReference type="ENSEMBL" id="ENSP00000324634" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000328951" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000308245" version_i="1" active="N" created="2003-04-01" last="2003-07-04"/>
+<dbReference type="ENSEMBL" id="ENSP00000372603" version_i="1" active="N" created="2006-04-03" last="2007-08-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000311767" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000310454" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000330775" version_i="1" active="N" created="2003-07-04" last="2003-07-04"/>
+<dbReference type="ENSEMBL" id="ENSP00000437498" version_i="1" active="N" created="2011-04-12" last="2011-04-12"/>
+<dbReference type="ENSEMBL" id="ENSP00000308393" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000312022" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000309391" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000307827" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000329371" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000372736" version_i="1" active="N" created="2006-04-03" last="2007-08-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000311369" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000332902" version_i="1" active="N" created="2003-07-04" last="2003-07-04"/>
+<dbReference type="ENSEMBL" id="ENSP00000309018" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000316559" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000309696" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000317307" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000309062" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000310731" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000323010" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000329655" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000324681" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000322908" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000330912" version_i="1" active="N" created="2003-07-04" last="2003-07-04"/>
+<dbReference type="ENSEMBL" id="ENSP00000310540" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000331247" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000312642" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000333788" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000365406" version_i="1" active="N" created="2006-04-03" last="2006-08-01"/>
+<dbReference type="ENSEMBL" id="ENSP00000311465" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000319836" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000320400" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000334209" version_i="1" active="N" created="2004-02-13" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000312547" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000309881" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000312164" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000333716" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000309284" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000309047" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000308735" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000308955" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000335314" version_i="1" active="N" created="2004-02-13" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000310288" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000312545" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000313677" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000310197" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000313319" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000308850" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000439057" version_i="1" active="N" created="2011-04-12" last="2011-04-12">
+<property type="NCBI_taxonomy_id" value="9606"/>
+</dbReference>
+<dbReference type="ENSEMBL" id="ENSP00000330922" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000309293" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000308329" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000311157" version_i="1" active="N" created="2003-04-01" last="2004-11-01"/>
+<dbReference type="ENSEMBL" id="ENSP00000333360" version_i="1" active="N" created="2003-07-04" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000310101" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000308296" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000319708" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
+<dbReference type="ENSEMBL" id="ENSP00000308106" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000310084" version_i="1" active="N" created="2003-04-01" last="2003-07-04"/>
+<dbReference type="ENSEMBL" id="ENSP00000308136" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="IPI" id="IPI00853355" version="1" version_i="1" active="N" created="2007-07-14" last="2007-07-14"/>
+<dbReference type="IPI" id="IPI00930204" version="2" version_i="2" active="N" created="2009-07-29" last="2009-07-29"/>
+<dbReference type="IPI" id="IPI00848089" version="2" version_i="2" active="N" created="2008-02-07" last="2008-02-07"/>
+<dbReference type="IPI" id="IPI00954895" version="1" version_i="1" active="N" created="2010-02-10" last="2010-03-04"/>
+<dbReference type="IPI" id="IPI00971006" version="1" version_i="1" active="N" created="2010-11-05" last="2011-01-18"/>
+<dbReference type="IPI" id="IPI00909835" version="2" version_i="2" active="N" created="2008-11-05" last="2008-12-18"/>
+<dbReference type="IPI" id="IPI00956378" version="1" version_i="1" active="N" created="2010-04-26" last="2010-06-17"/>
+<dbReference type="IPI" id="IPI00983019" version="1" version_i="1" active="N" created="2011-03-18" last="2011-06-29"/>
+<dbReference type="IPI" id="IPI00843901" version="1" version_i="1" active="N" created="2007-04-23" last="2007-04-23"/>
+<dbReference type="IPI" id="IPI00741943" version="1" version_i="1" active="N" created="2006-04-04" last="2006-05-16"/>
+<dbReference type="IPI" id="IPI01025058" version="1" version_i="1" active="Y" created="2011-09-27" last="2011-09-27">
+<property type="NCBI_taxonomy_id" value="9606"/>
+</dbReference>
+<dbReference type="IPI" id="IPI00074997" version="1" version_i="1" active="N" created="2003-03-14" last="2004-10-25"/>
+<dbReference type="IPI" id="IPI00969610" version="1" version_i="1" active="N" created="2010-08-19" last="2010-08-19"/>
+<dbReference type="IPI" id="IPI00887676" version="1" version_i="1" active="N" created="2008-03-19" last="2008-07-01"/>
+<dbReference type="IPI" id="IPI00795433" version="1" version_i="1" active="N" created="2006-11-02" last="2006-12-01"/>
+<dbReference type="IPI" id="IPI00554747" version="1" version_i="1" active="N" created="2005-04-04" last="2005-04-04"/>
+<dbReference type="IPI" id="IPI00828103" version="1" version_i="1" active="N" created="2007-02-21" last="2007-02-21"/>
+<dbReference type="IPI" id="IPI00760781" version="1" version_i="1" active="N" created="2006-07-12" last="2006-09-06"/>
+<dbReference type="IPI" id="IPI00651759" version="1" version_i="1" active="N" created="2005-10-11" last="2006-01-24"/>
+<dbReference type="IPI" id="IPI00477849" version="1" version_i="1" active="N" created="2004-12-03" last="2004-12-03"/>
+<dbReference type="IPI" id="IPI00946424" version="2" version_i="2" active="N" created="2009-12-09" last="2009-12-09"/>
+<dbReference type="ENSEMBL" id="ENSPTRP00000048754" version_i="1" active="N" created="2006-09-29" last="2007-05-29"/>
+<dbReference type="REFSEQ" id="XP_376048" version="1" version_i="1" active="N" created="2004-07-08" last="2004-09-12"/>
+<dbReference type="REFSEQ" id="XP_376048" version="1" version_i="1" active="N" created="2004-09-14" last="2005-11-11"/>
+<dbReference type="REFSEQ" id="XP_496742" version="1" version_i="1" active="N" created="2004-09-14" last="2006-03-11"/>
+<dbReference type="REFSEQ" id="XP_001140459" version="1" version_i="1" active="N" created="2006-09-17" last="2011-07-09">
+<property type="NCBI_GI" value="114689124"/>
+</dbReference>
+<dbReference type="REFSEQ" id="XP_209180" version="3" version_i="1" active="N" created="2004-07-08" last="2004-07-08"/>
+<dbReference type="REFSEQ" id="XP_496742" version="1" version_i="1" active="N" created="2004-09-12" last="2004-09-12"/>
+<sequence length="124" checksum="444CAC0E4610DA52">
+MTLNEHAAFKHLFNKAHLAPPLIHLTLSGHSTCFREHRVGGKVTDQQDPKAEEFFLVQNK MKSLPCLLLSTQTRQPSDFSIFSPPFPPFYSTKPPLSSWPVLNELLGTPPRRGGGRAEGL LTSQ
+</sequence>
+</entry>
 </uniparc>

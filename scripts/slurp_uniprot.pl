@@ -15,10 +15,11 @@ Log::Log4perl::init("$Bin/../conf/logger.conf");
 
 use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
+#use Bio::EnsEMBL::Mongoose::Persistence::FlatFileFeeder;
 
 my $parser = Bio::EnsEMBL::Mongoose::Parser::Swissprot->new( source_file => $opts{data_location} );
 my $doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new( index => $opts{index_location});
-
+#my $doc_store = Bio::EnsEMBL::Mongoose::Persistence::FlatFileFeeder->new( index => $opts{index_location});
 my $buffer = 0;
 my $logger = Log::Log4perl->get_logger();
 

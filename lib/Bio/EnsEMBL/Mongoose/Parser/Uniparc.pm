@@ -51,7 +51,7 @@ sub node_sieve {
     
     $self->accession($node);
     $self->sequence($node);
-    
+    $self->xrefs($node);
     return 1;
 }
 

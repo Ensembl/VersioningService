@@ -20,7 +20,7 @@ has search_engine => (
     default => sub {
         my $self = shift;
         return Lucy::Search::IndexSearcher->new(
-            index => $self->config->{index_location}
+            index => $self->config->{index_location},
         );
     }
 ); 

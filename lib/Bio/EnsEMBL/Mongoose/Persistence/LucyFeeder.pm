@@ -9,6 +9,8 @@ use Lucy::Index::Indexer;
 use Lucy::Plan::Schema;
 use Lucy::Plan::StringType;
 use Lucy::Plan::BlobType;
+use Lucy::Plan::FullTextType;
+use Lucy::Analysis::StandardTokenizer;
 use Sereal qw/encode_sereal/;
 
 #subtype 'Lucy::Plan::Schema' => as 'Object';
@@ -26,6 +28,11 @@ has schema => (
         my $lucy_blob = Lucy::Plan::BlobType->new(
             stored => 1,
         );
+        my $analyzer = Lucy::Analysis::StandardTokenizer->new;
+        my $lucy_text = Lucy::Plan::FullTextType->new(
+            analyzer => $analyzer,
+            sortable => 1,
+        );
         
         # Use Moose MOP to get all attributes of the Record to create a schema for Lucy
         # Treat sequence as a special case so it does not get indexed.
@@ -33,6 +40,8 @@ has schema => (
         for my $attribute ($record_meta->get_all_attributes) {
             if ($attribute->name eq 'sequence' ) {
                 $schema->spec_field( name => 'sequence', type => $lucy_blob );
+            } elsif ($attribute->name eq 'accessions') {
+                $schema->spec_field( name => 'accessions', type => $lucy_text);
             } else {
                 $schema->spec_field( name => $attribute->name, type => $lucy_str);
             }
@@ -58,10 +67,14 @@ has indexer => (
     lazy => 1,
     default => sub {
         my $self = shift;
+        my $create = 1;
+        if (-e $self->index) {
+            $create = 0;
+        }  
         return Lucy::Index::Indexer->new(
             schema => $self->schema,
             index => $self->index,
-            create => 1,
+            create => $create,
         );
     }
 );

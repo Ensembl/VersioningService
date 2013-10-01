@@ -7,7 +7,7 @@ use Config::General;
 use FindBin qw/$Bin/;
 
 has config_file => (
-    isa => 'String',
+    isa => 'Str',
     is => 'ro',
     required => 1,
     default => sub {
@@ -21,6 +21,7 @@ has config => (
     isa => 'HashRef',
     is => 'ro',
     required => 1,
+    lazy => 1,
     default => sub {
         my $self = shift;
         my $conf = Config::General->new($self->config_file);

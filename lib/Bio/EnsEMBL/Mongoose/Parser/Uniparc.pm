@@ -81,7 +81,7 @@ sub accession {
     my $node = shift;
     my $node_list = $self->xpath_context->findnodes('/uni:uniparc/uni:entry/uni:accession',$node);
     
-    # First node is "primary accession"
+    # Uniparc has no primary accession, so we store them all equally.
     my @accessions = $node_list->map(sub {$_->textContent});
     $self->record->accessions(\@accessions);
     $self->log->debug('Primary Accesion: '.$accessions[0]. ' and '.scalar(@accessions).' in total');

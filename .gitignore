@@ -1,2 +1,2 @@
 /.includepath
-/conf/logger.conf
+/conf/*.conf

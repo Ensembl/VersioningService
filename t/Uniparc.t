@@ -24,7 +24,7 @@ cmp_ok(length($seq), '==', 250, 'other length check');
 # Uniparc parser not keeping sequence, therefore no verification.
 #is($record->sequence,$seq, 'Make sure sequence regex-trimming does no harm, but removes white space');
 
-cmp_ok(scalar @{$record->xref}, '==', 0, 'No ENSEMBL xrefs in record, therefore no xrefs');
+cmp_ok(scalar @{$record->count_xrefs}, '==', 0, 'No ENSEMBL xrefs in record, therefore no xrefs');
 $xml_reader->read_record;
 $record = $xml_reader->record;
 #print ref($record->xref)."\n";

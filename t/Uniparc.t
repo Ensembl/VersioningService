@@ -8,7 +8,8 @@ use Data::Dump::Color qw/dump/;
 use Bio::EnsEMBL::Mongoose::Parser::Uniparc;
 
 my $xml_reader = new Bio::EnsEMBL::Mongoose::Parser::Uniparc(
-    source_file => "data/UPI0000000001.xml"
+    source_file => "data/UPI0000000001.xml",
+    top_tag => 'uniparc',
 );
 
 my $seq = "MGAAASIQTTVNTLSERISSKLEQEANASAQTKCDIEIGNFYIRQNHGCNLTVKNMCSADADAQLDAVLSAATETYSGLTPEQKAYVPAMFTAALNIQTSVNTVVRDFENYVKQTCNSSAVVDNKLKIQNVIIDECYGAPGSPTNLEFINTGSSKGNCAIKALMQLTTKATTQIAPKQVAGTGVQFYMIVIGVIILAALFMYYAKRMLFTSTNDKIKLILANKENVHWTTYMDTFFRTSPMVIATTDMQN";
@@ -16,7 +17,6 @@ my $seq = "MGAAASIQTTVNTLSERISSKLEQEANASAQTKCDIEIGNFYIRQNHGCNLTVKNMCSADADAQLDAVL
 $xml_reader->read_record;
 
 my $record = $xml_reader->record;
-print dump($record);
 is($record->accessions->[0], 'UPI0000000001', 'primary_accession check');
 is($record->checksum, '28FE89850863372D', 'checksum check');
 cmp_ok($record->sequence_length, '==', 250, 'sequence_length check');

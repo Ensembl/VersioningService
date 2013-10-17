@@ -5,8 +5,6 @@ use Moose;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use FindBin qw/$Bin/;
 
-Log::Log4perl::init("$Bin/../conf/logger.conf");
-
 has 'config_file' => (
     is => 'ro',
     isa => 'Str',

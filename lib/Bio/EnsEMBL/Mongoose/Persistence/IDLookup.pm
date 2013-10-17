@@ -7,11 +7,18 @@ use FindBin qw/$Bin/;
 
 Log::Log4perl::init("$Bin/../conf/logger.conf");
 
+has 'config_file' => (
+    is => 'ro',
+    isa => 'Str',
+    default => "$Bin/../conf/swissprot.conf"
+);
+
 has lucy => (
     is => 'ro',
     isa => 'Bio::EnsEMBL::Mongoose::Persistence::LucyQuery',
+    lazy => 1,
     default => sub {
-        return my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => "$Bin/../conf/swissprot.conf");
+        return my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->config_file());
     }
 );
 

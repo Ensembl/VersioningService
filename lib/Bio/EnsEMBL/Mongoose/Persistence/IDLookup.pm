@@ -34,3 +34,5 @@ sub fetch_id {
     my $hit = $self->lucy->next_result;
     return $hit->{accessions};
 }
+
+1;

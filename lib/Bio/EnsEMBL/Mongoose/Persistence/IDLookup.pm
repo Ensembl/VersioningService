@@ -18,6 +18,7 @@ has lucy => (
     isa => 'Bio::EnsEMBL::Mongoose::Persistence::LucyQuery',
     lazy => 1,
     default => sub {
+        my ($self) = @_;
         return my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->config_file());
     }
 );

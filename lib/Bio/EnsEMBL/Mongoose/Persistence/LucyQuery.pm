@@ -78,6 +78,7 @@ sub query {
     my $search = $self->query_parser->parse($query)->as_lucy_query;
     $self->query_string($query);
     $self->parsed_query($search);
+    $self->cursor(0);
     $self->log->debug('New query: '.$query);
 };
 

@@ -16,53 +16,41 @@ around BUILDARGS => sub {
     # Add some default parameters to the parser
     $args{short_namespace} = 'uni';
     $args{namespace} = 'http://uniprot.org/uniprot';
+    $args{top_tag} = 'uniprot';
     $class->$orig(%args);
-    
 };
 
 sub read_record {
     my $self = shift;
-    my $reader = $self->xml_reader;
-    
-    my $record = $self->record;
+    $self->flush_document;
+    my $slurp = $self->slurp_content;
+    if (!$slurp) {return;}
+    #my $doc = $self->xml_document;
     $self->clear_record;
     $self->log->debug('Record blanked');
-    my $read_state;
-    # fast-forward to next <entry> and extract attributes
-    
-    unless ($reader->name && $reader->name eq "entry") {
-        $read_state = $reader->nextElement("entry");
-        if ($read_state == 0) {return 0}
-    }
-    my $entry_version =$reader->getAttribute("version"); 
-    if ($entry_version) {$record->version($entry_version);}
-    
-    my $node = $reader->copyCurrentNode(1); # 1 = deep copy
-    # copyCurrentNode(1) does not spool the cursor to the end-tag!
-    
-    $self->node_sieve($node);
-    $self->detach($node);
-    # move off <entry> node so unless(){} above can work next time.
-    $reader->next;
+    my $read_state = $self->node_sieve();
     return $read_state;
 }
 
 sub node_sieve {
     my $self = shift;
-    my $node = shift;
+
     $self->log->debug('Parsing XML subtree.');
-    $self->accession($node);
-    $self->synonyms($node);
-    $self->gene_name($node);
-    $self->xrefs($node);
-    $self->description($node);
-    $self->sequence($node);
-    $self->taxon($node);
-    $self->evidence_level($node);
-    if ($self->suspicious($node)) {$self->log->debug("Found an untrustworthy Xref")}
+    my $state = $self->accession();
+    $self->synonyms();
+    $self->gene_name();
+    $self->xrefs();
+    $self->description();
+    $self->sequence();
+    $self->taxon();
+    $self->evidence_level();
+    if ($self->suspicious()) {$self->log->debug("Found an untrustworthy Xref")}
     # note: can always fetch child nodes with $node->getElementsByTagName
-    return 1;
+    return 1 if $state >0;
 }
+
+#### FIXED UP TO HERE ####
+
 
 sub accession {
     my $self = shift;

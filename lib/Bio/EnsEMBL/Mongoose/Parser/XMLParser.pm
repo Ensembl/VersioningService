@@ -120,7 +120,7 @@ sub xpath_to_value {
     my $self = shift;
     my $xpath = shift;
     
-    my $node_list = $self->xpath_context->findnodes($xpath);
+    my $node_list = $self->xpath_context->findnodes($xpath, $self->xml_document);
     if ($node_list->size > 0) {
         return $node_list->shift->textContent;
     } else {

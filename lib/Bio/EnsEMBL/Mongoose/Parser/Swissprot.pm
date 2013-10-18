@@ -49,32 +49,28 @@ sub node_sieve {
     return 1 if $state >0;
 }
 
-#### FIXED UP TO HERE ####
-
 
 sub accession {
     my $self = shift;
-    my $node = shift;
-    my $node_list = $self->xpath_context->findnodes('//uni:accession',$node);
+    my $node_list = $self->xpath_context->findnodes('//uni:accession',$self->xml_document);
     
     # First node is "primary accession"
     my ($accession,@others) = $node_list->map(sub {$_->textContent});
     $self->record->primary_accession($accession);
     $self->record->accessions(\@others);
     $self->log->debug('Primary Accesion: '.$accession. ' and '.scalar(@others).' other accessions');
+    return scalar(@others) + ($accession ? 1 : 0);
 }
 
 sub gene_name {
     my $self = shift;
-    my $node = shift;
-    $self->record->gene_name($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:gene/uni:name[@type="primary"]'));
+    $self->record->gene_name($self->xpath_to_value('/uni:uniprot/uni:entry/uni:gene/uni:name[@type="primary"]'));
 }
 
 sub synonyms {
     my $self = shift;
-    my $node = shift;
     my $xpath = '/uni:uniprot/uni:entry/uni:gene/uni:name[@type="synonym"]';
-    my $node_list = $self->xpath_context->findnodes($xpath, $node);
+    my $node_list = $self->xpath_context->findnodes($xpath,$self->xml_document);
     $node_list->foreach( sub {
         # This is a list of LibXML::Elements, a subclass of Node. Data is found in textContent, not in Value!
         #print $_->toString."\n";
@@ -84,8 +80,7 @@ sub synonyms {
 
 sub sequence {
     my $self = shift;
-    my $node = shift;
-    my $sequence = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:sequence');
+    my $sequence = $self->xpath_to_value('/uni:uniprot/uni:entry/uni:sequence');
     $sequence =~ s/\s+//g;
     $self->record->sequence($sequence);
     $self->record->sequence_length(length($sequence));
@@ -93,17 +88,15 @@ sub sequence {
 
 sub taxon {
     my $self = shift;
-    my $node = shift;
-    $self->record->taxon_id($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:organism/uni:dbReference[@type="NCBI Taxonomy"]/@id'));
+    $self->record->taxon_id($self->xpath_to_value('/uni:uniprot/uni:entry/uni:organism/uni:dbReference[@type="NCBI Taxonomy"]/@id'));
 }
 
 # /uni:uniprot/uni:entry/uni:dbReference
 sub xrefs {
     my $self = shift;
-    my $node = shift;
     
     my $xpath = '/uni:uniprot/uni:entry/uni:dbReference';
-    my $node_list = $self->xpath_context->findnodes($xpath, $node);
+    my $node_list = $self->xpath_context->findnodes($xpath, $self->xml_document);
     
     $node_list->foreach( sub {
         my $node = shift;
@@ -122,9 +115,8 @@ sub xrefs {
 # /uni:uniprot/uni:entry/uni:proteinExistence/@type
 sub evidence_level {
     my $self = shift;
-    my $node = shift;
     my $level = 0;
-    my $evidence = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:proteinExistence/@type');
+    my $evidence = $self->xpath_to_value('/uni:uniprot/uni:entry/uni:proteinExistence/@type');
     $self->log->debug("Evidence code: $evidence");
     
     $level = 1 if $evidence =~ /evidence at protein level/;
@@ -139,9 +131,7 @@ sub evidence_level {
 # Used for finding comments that indicate a reference is unreliable
 sub suspicious {
     my $self = shift;
-    my $node = shift;
-    
-    my $worry = $self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="caution"]/uni:text');
+    my $worry = $self->xpath_to_value('/uni:uniprot/uni:entry/uni:comment[@type="caution"]/uni:text');
     if ($worry && $worry =~ /Ensembl automatic/) {
         $self->record->suspicion("Ensembl");
         return 1;
@@ -151,8 +141,7 @@ sub suspicious {
 
 sub description {
     my $self = shift;
-    my $node = shift;
-    $self->record->description($self->xpath_to_value($node,'/uni:uniprot/uni:entry/uni:comment[@type="function"]/uni:text'));
+    $self->record->description($self->xpath_to_value('/uni:uniprot/uni:entry/uni:comment[@type="function"]/uni:text'));
 }
 
 __PACKAGE__->meta->make_immutable;

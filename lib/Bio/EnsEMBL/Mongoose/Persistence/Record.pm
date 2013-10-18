@@ -101,7 +101,6 @@ has schema_version => (
 has evidence_level => (
     isa => 'Int',
     is => 'rw',
-    default => 5,
 );
 
 has suspicion => (

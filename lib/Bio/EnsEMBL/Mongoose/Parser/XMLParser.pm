@@ -2,7 +2,7 @@ package Bio::EnsEMBL::Mongoose::Parser::XMLParser;
 use Moose::Role;
 use Moose::Util::TypeConstraints;
 
-use XML::LibXML::Reader;
+use XML::LibXML;
 use XML::LibXML::XPathContext;
 use XML::LibXML;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
@@ -21,21 +21,22 @@ has record => (
     clearer => 'clear_record',
 );
 
-subtype 'XML::LibXML::Reader' => as 'Object';
+subtype 'XML::LibXML::DOM' => as 'Object';
 
-coerce 'XML::LibXML::Reader' => from 'GlobRef' => via {
-    XML::LibXML::Reader->new( IO => $_);
+coerce 'XML::LibXML::DOM' => from 'Str' => via {
+    XML::LibXML->load_xml( string => $_);
 };
 
-has xml_reader => (
-    is => 'ro',
-    isa => 'XML::LibXML::Reader',
+has xml_document => (
+    is => 'rw',
+    isa => 'XML::LibXML::DOM',
     coerce => 1,
     lazy => 1,
     default => sub {
         my $self = shift;
-        return $self->source_handle;
-    }
+        return $self->content;
+    },
+    clearer => 'flush_document',
 );
 
 has xpath_context => (
@@ -62,34 +63,70 @@ has short_namespace => (
     required => 1,
 );
 
+has content => (
+    is => 'rw',
+    isa => 'Str'
+);
+
+has xml_header => (
+    is => 'rw',
+    isa => 'Str',
+);
+
+has top_tag => (
+    is => 'ro',
+    isa => 'Str',
+    default => 'uniprot',
+    lazy => 1,
+);
+has xml_footer => (
+    is => 'rw',
+    isa => 'Str',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        my $footer = '</'.$self->top_tag.'>';
+        return $footer;
+    }
+);
+
+
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
+
+
+sub slurp_content {
+    my $self = shift;
+    my $handle = $self->source_handle;
+    local $/ = '</entry>';
+    my $content = <$handle>;
+    
+    unless ($self->xml_header) {
+        $content =~ s/(.*)(?=<entry[^>]*?>)//s;
+        $self->xml_header($1);
+    } 
+    my $tag = $self->top_tag;
+    # Beyond the last </entry> is a </uniprot> or a </uniparc>
+    # We can skip this safely
+    if ($content =~ /<\/$tag>$/) {
+        return;
+    }
+    $self->content($self->xml_header.$content.$self->xml_footer);
+    return 1;
+}
 
 # General method for getting exactly one text node back.
 
 sub xpath_to_value {
     my $self = shift;
-    my $node = shift;
     my $xpath = shift;
     
-    my $node_list = $self->xpath_context->findnodes($xpath, $node);
+    my $node_list = $self->xpath_context->findnodes($xpath);
     if ($node_list->size > 0) {
         return $node_list->shift->textContent;
     } else {
         $self->log->debug("Xpath returned nowt, ".$xpath);
         return;
     }
-}
-
-# This method exists to provoke memory release in LibXML. It's efficacy is uncertain,
-# but memory consumption has been reduced by calling it.
-# An XML DOM fragment is created by xpaths, which then can be detached and disposed of
-# when $foster_home below goes out of scope.
-sub detach {
-    my $self = shift;
-    my $node = shift;
-    my $foster_home = XML::LibXML::Document->new("1.0", "UTF-8");
-    $node->setOwnerDocument($foster_home);
-    
 }
 
 1;

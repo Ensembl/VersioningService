@@ -58,11 +58,13 @@ has xref => (
     isa => 'ArrayRef[Bio::EnsEMBL::Mongoose::Persistence::RecordXref]',
     is => 'rw',
     traits => ['Array'],
+    default => sub {[]},
     handles => {
         add_xref => 'push',
         remove_xref => 'pop',
         grep_xrefs => 'grep',
         map_xrefs => 'map',
+        count_xrefs => 'count',
     }
 );
 

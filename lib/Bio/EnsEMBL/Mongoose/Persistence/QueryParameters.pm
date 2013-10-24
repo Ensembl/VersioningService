@@ -1,4 +1,4 @@
-package Bio::EnsEMBL::Mongoose::Persistence::MfetchQueryParameters;
+package Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 
 # A holding object for query parameters, prior to translation into 
 # search engine lingo. 

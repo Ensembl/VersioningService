@@ -29,6 +29,21 @@ has ids => (
     },
 );
 
+has id_type => (
+    isa => 'Str',
+    is => 'rw',
+);
+
+has evidence_level => (
+    isa => 'Str',
+    is => 'rw',
+);
+
+has result_size => (
+    isa => 'Int',
+    is => 'rw',
+    default => 10,
+);
 
 
 1;

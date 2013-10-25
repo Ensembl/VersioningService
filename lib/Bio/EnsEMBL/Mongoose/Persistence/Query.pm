@@ -35,6 +35,11 @@ has query_string => (
     is => 'rw',
 );
 
+has query_parameters => (
+    isa => 'Bio::EnsEMBL::Mongoose::Persistence::QueryParameters',
+    is => 'rw',
+);
+
 # Runs the supplied query through the query engine.
 # Returns the result size if possible
 sub query {
@@ -46,5 +51,10 @@ sub query {
 sub next_result {
     
 };
+
+# Refers to a QueryParameters object to construct a suitable query in the diallect of choice.
+sub build_query {
+    
+}
 
 1;

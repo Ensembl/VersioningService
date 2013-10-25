@@ -72,16 +72,64 @@ has buffer_size => (
 with 'Bio::EnsEMBL::Mongoose::Persistence::Query';
 with 'MooseX::Log::Log4perl';
 
+# Search::Query::Dialect::Lucy translates the following syntax into useful queries
+# Beware the shell, escape all of them outside of Perl
+#
+# Binary operators as symbols or words. AND is more or less implicit, but beware precedence
+#   accessions:(name | name2 | name3 OR name4) & (evidence_level:5)
+#
+# Range query
+#   evidence_level:4..5
+#
+# Wild cards
+#   accessions:AAAA*
+
+# See also https://metacpan.org/source/KARMAN/Search-Query-Dialect-Lucy-0.10/t/01-parser.t
+
+
+sub build_query {
+    my $self = shift;
+    my $query;
+    my $query_params = $self->query_parameters;
+    if ($query_params) {
+        if ($query_params->count_ids == 0) {
+            Bio::EnsEMBL::Mongoose::SearchEngineException->throw(
+                message => 'No accessions to query in parameter set',
+            );
+        }
+        my $accessions = $query_params->all_ids;
+        $query = $query_params->id_type.':('.join('|',@$accessions).")";
+        
+        # Add constraints
+        
+        if ($query_params->evidence_level) {
+            $query .= ' evidence_level:'.$query_params->evidence_level;
+        }
+        
+    } else {
+        Bio::EnsEMBL::Mongoose::SearchEngineException->throw(
+            message => 'Lucy requires at least some query parameters',
+        );
+    }
+    $self->log->debug('Built query: '.$query);
+    $self->query_string($query);    
+}
+
+# query() also works with an argument which circumvents the query_builder
+
 sub query {
     my $self = shift;
     my $query = shift;
-    my $search = $self->query_parser->parse($query)->as_lucy_query;
-    $self->query_string($query);
+    if (!$query) {
+        $self->build_query;
+    } else {
+        $self->query_string($query);
+    }
+    my $search = $self->query_parser->parse($self->query_string)->as_lucy_query;
     $self->parsed_query($search);
     $self->cursor(0);
-    $self->log->debug('New query: '.$query);
-};
-
+    $self->log->debug('Query: '.$query);
+}
 
 sub next_result {
     my $self = shift;

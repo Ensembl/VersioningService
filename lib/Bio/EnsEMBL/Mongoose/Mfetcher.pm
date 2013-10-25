@@ -3,6 +3,8 @@ package Bio::EnsEMBL::Mongoose::Mfetcher;
 use Moose;
 
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
+use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
+use Bio::EnsEMBL::Mongoose::Taxonomizer;
 
 has handle => (
     isa => 'Maybe[IO::File]',
@@ -25,22 +27,11 @@ has fasta_writer => (
     }
 );
 
-has default_subset => (
-    isa => 'Str',
+has query_params => (
+    isa => 'Bio::EnsEMBL::Mongoose::Persistence::QueryParameters',
     is => 'rw',
-    default => 'evidence_level:1..3',
-    
 );
 
-has query => (
-    isa => 'Str',
-    is => 'rw',
-    required => 1,
-);
 
-sub query_it {
-    my $self = shift;
-    
-}
 
 1;

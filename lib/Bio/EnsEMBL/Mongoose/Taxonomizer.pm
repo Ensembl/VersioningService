@@ -77,6 +77,7 @@ sub _get_NCBI_adaptor {
     return $ta;
 }
 
+# These next two methods are used to retrieve one or many taxon IDs
 sub fetch_nested_taxons {
     my $self = shift;
     my $taxon_id = shift;
@@ -87,5 +88,20 @@ sub fetch_nested_taxons {
     my @xylem =  map {$_->taxon_id} @$leaves;
     return \@xylem;
 }
+
+sub fetch_taxon_id_by_name {
+    my $self = shift;
+    my $name = shift;
+    my $adaptor = $self->ncbi_taxon_adaptor;
+    my $node = $adaptor->fetch_node_by_name($name);
+    if ($node) {
+        return $node->ncbi_taxid();
+    }
+    return;
+}
+
+
+
+
 
 1;

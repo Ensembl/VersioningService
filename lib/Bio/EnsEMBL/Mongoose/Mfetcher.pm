@@ -59,6 +59,10 @@ has taxonomizer => (
     }
 );
 
+with 'MooseX::Log::Log4perl';
+
+my $counter = 0;
+
 sub get_sequence {
     my $self = shift;
     $self->storage_engine->query_parameters($self->query_params);
@@ -66,6 +70,10 @@ sub get_sequence {
     my $results = $self->storage_engine->get_all_records;
     while (my $record = shift @$results) {
         $self->fasta_writer->print_record($record);
+        $counter++;
+        if ($counter % 10000) {
+            $self->log->info("Dumped $counter records");
+        }
     }
 }
 
@@ -79,6 +87,7 @@ sub get_sequence_including_descendants {
     my $self = shift;
     if ($self->query_parameters->species_name) { $self->convert_name_to_taxon }
     my $taxon_list = $self->query_params->taxons;
+    $self->log->info('Querying multiple taxons: '.join(',',@$taxon_list));
     my @final_list;
     foreach my $taxon (@$taxon_list) {
         my $list = $self->taxonomizer->fetch_nested_taxons($taxon);

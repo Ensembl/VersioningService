@@ -92,23 +92,22 @@ sub build_query {
     my $query;
     my $query_params = $self->query_parameters;
     if ($query_params) {
-        if ($query_params->count_ids == 0) {
-            Bio::EnsEMBL::Mongoose::SearchEngineException->throw(
-                message => 'No accessions to query in parameter set',
-            );
-        }
-        my @accessions = $query_params->all_ids;
-        $query = $query_params->id_type.':('.join('|',@accessions).')';
-        
         # Add constraints
-        
+        if ($query_params->count_ids > 0) {
+            my @accessions = $query_params->all_ids;
+            $query = $query_params->id_type.':('.join('|',@accessions).')';
+        }
         if ($query_params->evidence_level) {
             $query .= ' evidence_level:'.$query_params->evidence_level;
         }
         if ($query_params->has_taxons) {
             $query .= ' taxon_id:('.join('|',$query_params->constrain_to_taxons).')';
         }
-        
+        unless (length($query) > 0) {
+            Bio::EnsEMBL::Mongoose::SearchEngineException->throw(
+                message => 'Lucy requires one of accession, evidence level or taxon id to make a query',
+            );
+        }
     } else {
         Bio::EnsEMBL::Mongoose::SearchEngineException->throw(
             message => 'Lucy requires at least some query parameters',

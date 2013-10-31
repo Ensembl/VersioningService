@@ -31,7 +31,7 @@ while ((my $hit = $lucy->next_result) && $limit > 0) {
 #    }
     my $record = $lucy->convert_result_to_record($hit);
     print $record->primary_accession."\n";
-#    print dump($record)."\n";
+    print dump($record)."\n";
     print_as_FASTA($record);
     print "\n"; 
 }

@@ -97,13 +97,16 @@ sub build_query {
                 message => 'No accessions to query in parameter set',
             );
         }
-        my $accessions = $query_params->all_ids;
-        $query = $query_params->id_type.':('.join('|',@$accessions).")";
+        my @accessions = $query_params->all_ids;
+        $query = $query_params->id_type.':('.join('|',@accessions).')';
         
         # Add constraints
         
         if ($query_params->evidence_level) {
             $query .= ' evidence_level:'.$query_params->evidence_level;
+        }
+        if ($query_params->has_taxons) {
+            $query .= ' taxon_id:('.join('|',$query_params->constrain_to_taxons).')';
         }
         
     } else {
@@ -128,7 +131,7 @@ sub query {
     my $search = $self->query_parser->parse($self->query_string)->as_lucy_query;
     $self->parsed_query($search);
     $self->cursor(0);
-    $self->log->debug('Query: '.$query);
+    $self->log->debug('Query: '.$self->query_string);
 }
 
 sub next_result {

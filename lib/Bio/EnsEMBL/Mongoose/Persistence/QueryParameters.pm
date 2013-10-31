@@ -45,5 +45,20 @@ has result_size => (
     default => 10,
 );
 
+has taxons => (
+    isa => 'ArrayRef[Int]',
+    is => 'rw',
+    default => sub {[]},
+    traits => ['Array'],
+    handles => {
+        constrain_to_taxons => 'elements',
+        has_taxons => 'count',
+    }
+);
+
+has species_name => (
+    isa => 'Str',
+    is => 'rw',
+);
 
 1;

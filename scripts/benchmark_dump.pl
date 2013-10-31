@@ -22,4 +22,4 @@ my $mfetcher = Bio::EnsEMBL::Mongoose::Mfetcher->new(
     handle => $fh,
 );
 
-$mfetcher->get_sequence_including_descendents;
+$mfetcher->get_sequence_including_descendants;

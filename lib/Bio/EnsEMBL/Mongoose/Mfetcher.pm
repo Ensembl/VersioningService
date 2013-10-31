@@ -79,13 +79,13 @@ sub get_sequence {
 
 sub get_sequence_by_species_name {
     my $self = shift;
-    if ($self->query_parameters->species_name) { $self->convert_name_to_taxon }
+    if ($self->query_params->species_name) { $self->convert_name_to_taxon }
     $self->get_sequence;
 }
 
 sub get_sequence_including_descendants {
     my $self = shift;
-    if ($self->query_parameters->species_name) { $self->convert_name_to_taxon }
+    if ($self->query_params->species_name) { $self->convert_name_to_taxon }
     my $taxon_list = $self->query_params->taxons;
     $self->log->info('Querying multiple taxons: '.join(',',@$taxon_list));
     my @final_list;

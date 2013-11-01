@@ -101,7 +101,7 @@ sub build_query {
             $query .= ' evidence_level:'.$query_params->evidence_level;
         }
         if ($query_params->has_taxons) {
-            $query .= ' taxon_id:('.join('|',$query_params->constrain_to_taxons).')';
+            $query .= ' taxon_id:('.join(' | ',$query_params->constrain_to_taxons).')';
         }
         unless (length($query) > 0) {
             Bio::EnsEMBL::Mongoose::SearchEngineException->throw(

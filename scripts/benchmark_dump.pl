@@ -13,7 +13,7 @@ my $fh = IO::File->new('dirty_great_file.fa','w');
 
 my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
     evidence_level => 1,
-    taxons => [9606],
+    taxons => [40674],
 );
 
 my $mfetcher = Bio::EnsEMBL::Mongoose::Mfetcher->new(

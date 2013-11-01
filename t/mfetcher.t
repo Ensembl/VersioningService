@@ -38,4 +38,9 @@ $params->species_name('Hylarana picturata');
 $mfetcher->convert_name_to_taxon;
 is($params->taxons->[0],395594,'Test name conversion');
 
+$params->clear_species_name;
+$params->taxons([9606]);
+$mfetcher->get_sequence_including_descendants;
+
+
 done_testing;

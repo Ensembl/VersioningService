@@ -40,7 +40,7 @@ has storage_engine => (
     lazy => 1,
     default => sub {
         my $self = shift;
-        return Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->storage_engine_conf);        
+        return Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->storage_engine_conf,buffer_size => 5000);        
     }
 );
 
@@ -71,7 +71,7 @@ sub get_sequence {
     while (my $record = shift @$results) {
         $self->fasta_writer->print_record($record);
         $counter++;
-        if ($counter % 10000) {
+        if ($counter % 10000 == 0) {
             $self->log->info("Dumped $counter records");
         }
     }
@@ -87,12 +87,14 @@ sub get_sequence_including_descendants {
     my $self = shift;
     if ($self->query_params->species_name) { $self->convert_name_to_taxon }
     my $taxon_list = $self->query_params->taxons;
-    $self->log->info('Querying multiple taxons: '.join(',',@$taxon_list));
+    $self->log->info('Starter taxons: '.join(',',@$taxon_list));
     my @final_list;
     foreach my $taxon (@$taxon_list) {
         my $list = $self->taxonomizer->fetch_nested_taxons($taxon);
         push @final_list,@$list;
     }
+    $self->log->debug('Querying multiple taxons: '.join(',',@final_list));
+    $self->query_params->taxons(\@final_list);
     $self->get_sequence;
 }
 

@@ -59,6 +59,7 @@ has taxons => (
 has species_name => (
     isa => 'Str',
     is => 'rw',
+    clearer => 'clear_species_name',
 );
 
 1;

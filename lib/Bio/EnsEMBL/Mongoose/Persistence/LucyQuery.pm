@@ -157,6 +157,7 @@ sub convert_result_to_record {
     return $record;
 }
 
+# Only use in small subsets of data. This one swallows memory.
 sub get_all_records {
     my $self = shift;
     my @records;

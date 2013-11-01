@@ -67,8 +67,9 @@ sub get_sequence {
     my $self = shift;
     $self->storage_engine->query_parameters($self->query_params);
     $self->storage_engine->query();
-    my $results = $self->storage_engine->get_all_records;
-    while (my $record = shift @$results) {
+
+    while (my $result = $self->storage_engine->next_result) {
+        my $record = $self->storage_engine->convert_result_to_record($result);
         $self->fasta_writer->print_record($record);
         $counter++;
         if ($counter % 10000 == 0) {

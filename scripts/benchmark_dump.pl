@@ -12,7 +12,7 @@ use IO::File;
 my $fh = IO::File->new('dirty_great_file.fa','w');
 
 my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
-    evidence_level => 1,
+    #evidence_level => 1,
     taxons => [40674],
 );
 

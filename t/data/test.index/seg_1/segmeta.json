@@ -1,0 +1,89 @@
+{
+  "documents": {
+    "format": "2"
+  },
+  "highlight": {
+    "format": "1"
+  },
+  "lexicon": {
+    "counts": {
+      "accessions": "11",
+      "description": "1",
+      "evidence_level": "1",
+      "gene_name": "1",
+      "primary_accession": "3",
+      "sequence_length": "3",
+      "synonyms": "1",
+      "taxon_id": "3"
+    },
+    "format": "3",
+    "index_counts": {
+      "accessions": "1",
+      "description": "1",
+      "evidence_level": "1",
+      "gene_name": "1",
+      "primary_accession": "1",
+      "sequence_length": "1",
+      "synonyms": "1",
+      "taxon_id": "1"
+    }
+  },
+  "postings": {
+    "format": "1"
+  },
+  "segmeta": {
+    "count": "3",
+    "field_names": [
+      "",
+      "evidence_level",
+      "suspicion",
+      "description",
+      "display_label",
+      "synonyms",
+      "checksum",
+      "id",
+      "blob",
+      "xref",
+      "full_name",
+      "schema_version",
+      "gene_name",
+      "sequence_length",
+      "sequence",
+      "taxon_id",
+      "primary_accession",
+      "region",
+      "accessions",
+      "version"
+    ],
+    "format": "1",
+    "name": "seg_1"
+  },
+  "sort": {
+    "counts": {
+      "accessions": "2",
+      "description": "2",
+      "evidence_level": "1",
+      "gene_name": "2",
+      "primary_accession": "3",
+      "sequence_length": "3",
+      "synonyms": "2",
+      "taxon_id": "3"
+    },
+    "format": "3",
+    "null_ords": {
+      "description": "1",
+      "gene_name": "1",
+      "synonyms": "1"
+    },
+    "ord_widths": {
+      "accessions": "1",
+      "description": "1",
+      "evidence_level": "1",
+      "gene_name": "1",
+      "primary_accession": "2",
+      "sequence_length": "2",
+      "synonyms": "1",
+      "taxon_id": "2"
+    }
+  }
+}

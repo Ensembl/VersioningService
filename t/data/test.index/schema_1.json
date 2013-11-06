@@ -1,0 +1,88 @@
+{
+  "_class": "Lucy::Plan::Schema",
+  "analyzers": [
+    null,
+    {
+      "_class": "Lucy::Analysis::StandardTokenizer"
+    }
+  ],
+  "fields": {
+    "accessions": {
+      "analyzer": "1",
+      "sortable": true,
+      "type": "fulltext"
+    },
+    "blob": {
+      "stored": true,
+      "type": "blob"
+    },
+    "checksum": {
+      "sortable": true,
+      "type": "string"
+    },
+    "description": {
+      "sortable": true,
+      "type": "string"
+    },
+    "display_label": {
+      "sortable": true,
+      "type": "string"
+    },
+    "evidence_level": {
+      "sortable": true,
+      "type": "string"
+    },
+    "full_name": {
+      "sortable": true,
+      "type": "string"
+    },
+    "gene_name": {
+      "sortable": true,
+      "type": "string"
+    },
+    "id": {
+      "sortable": true,
+      "type": "string"
+    },
+    "primary_accession": {
+      "sortable": true,
+      "type": "string"
+    },
+    "region": {
+      "sortable": true,
+      "type": "string"
+    },
+    "schema_version": {
+      "sortable": true,
+      "type": "string"
+    },
+    "sequence": {
+      "stored": true,
+      "type": "blob"
+    },
+    "sequence_length": {
+      "sortable": true,
+      "type": "string"
+    },
+    "suspicion": {
+      "sortable": true,
+      "type": "string"
+    },
+    "synonyms": {
+      "sortable": true,
+      "type": "string"
+    },
+    "taxon_id": {
+      "sortable": true,
+      "type": "string"
+    },
+    "version": {
+      "sortable": true,
+      "type": "string"
+    },
+    "xref": {
+      "sortable": true,
+      "type": "string"
+    }
+  }
+}

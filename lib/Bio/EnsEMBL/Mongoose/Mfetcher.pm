@@ -6,7 +6,9 @@ use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 
-use Bio::EnsEMBL::Mongoose::SearchEngineException
+use IO::File;
+use Bio::EnsEMBL::Mongoose::SearchEngineException;
+use Bio::EnsEMBL::Mongoose::IOException;
 
 has handle => (
     isa => 'Maybe[Ref]',
@@ -59,10 +61,50 @@ has taxonomizer => (
     }
 );
 
+has refer_to_blacklist => (
+    isa => 'Bool',
+    is => 'rw',
+    traits => ['Bool'],
+    default => 0,
+    handles => {
+        use_blacklist => 'set',
+        ignore_blacklist => 'unset',
+    }
+);
+
+has blacklist => (
+    isa => 'HashRef[Str]',
+    is => 'rw',
+    lazy => 1,
+    builder => '_build_blacklist',
+    traits => ['Hash'],
+    handles => {
+        clear_blacklist => 'clear',
+    }
+);
+
+has blacklist_source => (
+    isa => 'Str',
+    is => 'rw',
+    lazy => 1,
+    default => '',
+);
+
 with 'MooseX::Log::Log4perl';
 
-my $counter = 0;
 
+sub _build_blacklist {
+    my $self = shift;
+    my $fh = IO::File->new($self->blacklist_source) 
+        || Bio::EnsEMBL::Mongoose::IOException->throw( message => "Couldn't open supplied blacklist ".$self->blacklist_source);
+    while (my $banned = <$fh>) {
+        chomp($banned);
+        $self->blacklist->set($banned => 1);
+    }
+    $self->use_blacklist;
+}
+
+my $counter = 0;
 sub get_sequence {
     my $self = shift;
     $self->storage_engine->query_parameters($self->query_params);
@@ -70,6 +112,15 @@ sub get_sequence {
 
     while (my $result = $self->storage_engine->next_result) {
         my $record = $self->storage_engine->convert_result_to_record($result);
+        # Filter record against a possible blacklist of unwanted accessions. Quite possibly slow
+        if ($self->refer_to_blacklist) {
+            my @accessions;
+            $accessions[0] = $record->primary_accession if $record->primary_accession;
+            push @accessions,@{$record->accessions} if $record->accessions;
+            foreach my $accession (@accessions) {
+                if ($self->blacklist->exists($accession)) {next; $self->log->debug('Skipping blacklisted id: '.$accession)}
+            }
+        }
         $self->fasta_writer->print_record($record);
         $counter++;
         if ($counter % 10000 == 0) {

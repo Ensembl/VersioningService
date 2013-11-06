@@ -1,0 +1,4 @@
+[Indexer setup]
+
+index_location = "uniparc.index"
+data_location = "data/uniparc_all.xml.gz"

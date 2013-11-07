@@ -14,8 +14,21 @@ has handle => (
     isa => 'Maybe[Ref]',
     is => 'ro',
     lazy => 1,
-    default => sub{},
+    default => sub {
+        my $self = shift;
+        # no file handle, let the handle point to a copy of STDOUT instead
+        my $handle;
+        $self->log->debug("Making handle");
+        open $handle, ">&STDOUT";
+        return $handle;
+    },
 );
+
+sub DEMOLISH {
+    my $self = shift;
+    close $self->handle;
+    $self->log->debug("File handle released");
+}
 
 has fasta_writer => (
     isa => 'Bio::EnsEMBL::Mongoose::Serializer::FASTA',
@@ -24,10 +37,7 @@ has fasta_writer => (
     default => sub {
         my $self = shift;
         my $handle = $self->handle;
-        if ($handle) {
-            return Bio::EnsEMBL::Mongoose::Serializer::FASTA->new(handle => $handle);
-        }
-        return Bio::EnsEMBL::Mongoose::Serializer::FASTA->new();
+        return Bio::EnsEMBL::Mongoose::Serializer::FASTA->new(handle => $handle);
     }
 );
 
@@ -160,6 +170,12 @@ sub convert_name_to_taxon {
         );
     }
     $self->query_params->taxons([$taxon]);
+}
+
+# Inteded for the retrieval of many IDs for a given species/evidence level etc. Like getting sequence, but with less output.
+sub get_ids {
+    my $self = shift;
+
 }
 
 1;

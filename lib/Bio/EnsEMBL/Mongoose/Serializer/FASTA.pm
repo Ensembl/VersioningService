@@ -2,6 +2,8 @@ package Bio::EnsEMBL::Mongoose::Serializer::FASTA;
 
 use Moose;
 
+use Bio::EnsEMBL::Mongoose::IOException;
+
 has linewidth => (
     isa => 'Int',
     is => 'ro',
@@ -32,19 +34,10 @@ has header_function => (
 has handle => (
     isa => 'Ref',
     is => 'ro',
-    default => sub {
-        # no file handle, let the handle point to a copy of STDOUT instead
-        my $handle;
-        warn "Making handle";
-        open $handle, ">&STDOUT";
-        return $handle;
-    } 
+    required => 1, 
 );
 
-sub DEMOLISH {
-    my $self = shift;
-    close $self->handle;
-}
+with 'MooseX::Log::Log4perl';
 
 sub print_record {
     my $self = shift;
@@ -57,7 +50,7 @@ sub print_record {
     my $seq = $record->sequence;
     my $width = $self->linewidth;
     $seq =~ s/(.{1,$width})/$1\n/g;
-    print $handle $seq or die "Error writing to file handle: $!";
+    print $handle $seq or Bio::EnsEMBL::Mongoose::IOException->throw(message => "Error writing to file handle: $!");
 }
 
 

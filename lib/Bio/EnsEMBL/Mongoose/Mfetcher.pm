@@ -1,8 +1,12 @@
 package Bio::EnsEMBL::Mongoose::Mfetcher;
 
 use Moose;
+use Moose::Util::TypeConstraints;
 
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
+use Bio::EnsEMBL::Mongoose::Serializer::JSON;
+use Bio::EnsEMBL::Mongoose::Serializer::ID;
+
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 
@@ -30,16 +34,27 @@ sub DEMOLISH {
     $self->log->debug("File handle released");
 }
 
-has fasta_writer => (
-    isa => 'Bio::EnsEMBL::Mongoose::Serializer::FASTA',
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        my $self = shift;
-        my $handle = $self->handle;
-        return Bio::EnsEMBL::Mongoose::Serializer::FASTA->new(handle => $handle);
-    }
+enum 'Formats', [qw(FASTA JSON ID)];
+
+has output_format => (
+    isa => 'Formats',
+    is => 'rw',
+    default => 'FASTA',
 );
+
+has writer => (
+    isa => 'Object',
+    is => 'rw',
+    lazy => 1,
+    builder => '_select_writer',
+);
+
+sub _select_writer {
+    my $self = shift;
+    my $format = $self->output_format;
+    my $writer = "Bio::EnsEMBL::Mongoose::Serializer::$format";
+    return $writer->new(handle => $self->handle);
+}
 
 has query_params => (
     isa => 'Bio::EnsEMBL::Mongoose::Persistence::QueryParameters',
@@ -115,7 +130,7 @@ sub _build_blacklist {
 }
 
 my $counter = 0;
-sub get_sequence {
+sub get_records {
     my $self = shift;
     $self->storage_engine->query_parameters($self->query_params);
     $self->storage_engine->query();
@@ -131,7 +146,7 @@ sub get_sequence {
                 if ($self->blacklist->exists($accession)) {next; $self->log->debug('Skipping blacklisted id: '.$accession)}
             }
         }
-        $self->fasta_writer->print_record($record);
+        $self->writer->print_record($record);
         $counter++;
         if ($counter % 10000 == 0) {
             $self->log->info("Dumped $counter records");
@@ -139,13 +154,13 @@ sub get_sequence {
     }
 }
 
-sub get_sequence_by_species_name {
+sub get_records_by_species_name {
     my $self = shift;
     if ($self->query_params->species_name) { $self->convert_name_to_taxon }
-    $self->get_sequence;
+    $self->get_records;
 }
 
-sub get_sequence_including_descendants {
+sub get_records_including_descendants {
     my $self = shift;
     if ($self->query_params->species_name) { $self->convert_name_to_taxon }
     my $taxon_list = $self->query_params->taxons;
@@ -157,7 +172,7 @@ sub get_sequence_including_descendants {
     }
     $self->log->debug('Querying multiple taxons: '.join(',',@final_list));
     $self->query_params->taxons(\@final_list);
-    $self->get_sequence;
+    $self->get_records;
 }
 
 sub convert_name_to_taxon {
@@ -170,12 +185,6 @@ sub convert_name_to_taxon {
         );
     }
     $self->query_params->taxons([$taxon]);
-}
-
-# Inteded for the retrieval of many IDs for a given species/evidence level etc. Like getting sequence, but with less output.
-sub get_ids {
-    my $self = shift;
-
 }
 
 1;

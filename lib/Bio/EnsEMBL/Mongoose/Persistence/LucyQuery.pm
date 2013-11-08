@@ -113,7 +113,6 @@ sub build_query {
             message => 'Lucy requires at least some query parameters',
         );
     }
-    $self->log->debug('Built query: '.$query);
     $self->query_string($query);    
 }
 

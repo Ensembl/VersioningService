@@ -33,6 +33,7 @@ has id_type => (
     isa => 'Str',
     is => 'rw',
 );
+# accessions, primary_accession, gene_name
 
 has evidence_level => (
     isa => 'Str',

@@ -100,10 +100,16 @@ sub xrefs {
     $node_list->foreach( sub {
         my $node = shift;
         my @attributes = $node->attributes();
-        my ($source,$id);
+        my ($source,$id,$active,$last);
         foreach my $attr (@attributes) {
             if ($attr->nodeName eq 'type') {$source = $attr->value}
             elsif ($attr->nodeName eq 'id') {$id = $attr->value}
+            elsif ($attr->nodeName eq 'active') {
+                $active = ($attr->value eq 'Y') ? 1 : 0;
+            }
+            elsif ($attr->nodeName eq 'last' && !$active) {
+                $last = $attr->value;
+            }
         }
         my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);
         

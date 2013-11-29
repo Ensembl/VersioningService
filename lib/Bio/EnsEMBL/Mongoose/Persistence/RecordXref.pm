@@ -14,6 +14,18 @@ has id => (
     required =>1,
 );
 
+has active => (
+    isa => 'Bool',
+    is => 'ro',
+    required => 1,
+    default => 1,
+);
+
+has version => (
+    isa => 'Str',
+    is => 'ro',
+);
+
 sub TO_JSON {
     return {%{shift()}};
 }

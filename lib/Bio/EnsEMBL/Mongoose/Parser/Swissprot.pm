@@ -55,11 +55,10 @@ sub accession {
     my $node_list = $self->xpath_context->findnodes('//uni:accession',$self->xml_document);
     
     # First node is "primary accession"
-    my ($accession,@others) = $node_list->map(sub {$_->textContent});
-    $self->record->primary_accession($accession);
-    $self->record->accessions(\@others);
-    $self->log->debug('Primary Accesion: '.$accession. ' and '.scalar(@others).' other accessions');
-    return scalar(@others) + ($accession ? 1 : 0);
+    my (@accessions) = $node_list->map(sub {$_->textContent});
+    $self->record->accessions(\@accessions);
+    $self->log->debug('Primary Accesion: '.$accessions[0]. ' and '.scalar(@accessions).' total accessions');
+    return scalar(@accessions);
 }
 
 sub gene_name {

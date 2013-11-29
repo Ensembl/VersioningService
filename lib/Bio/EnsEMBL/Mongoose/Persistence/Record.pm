@@ -24,11 +24,6 @@ has region => (
     is => 'rw',
 );
 
-has primary_accession => (
-    isa => 'Str',
-    is => 'rw',
-);
-
 has gene_name => (
     isa => 'Str',
     is => 'rw',
@@ -110,6 +105,15 @@ has suspicion => (
 
 sub TO_JSON {
     return {%{shift()}};
+}
+
+sub primary_accession {
+    my $self = shift;
+    my $accessions = $self->accessions();
+    if ($accessions) {
+        return shift @$accessions;
+    }
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

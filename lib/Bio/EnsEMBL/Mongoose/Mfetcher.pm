@@ -139,9 +139,7 @@ sub get_records {
         my $record = $self->storage_engine->convert_result_to_record($result);
         # Filter record against a possible blacklist of unwanted accessions. Quite possibly slow
         if ($self->refer_to_blacklist) {
-            my @accessions;
-            $accessions[0] = $record->primary_accession if $record->primary_accession;
-            push @accessions,@{$record->accessions} if $record->accessions;
+            my @accessions = @{$record->accessions} if $record->accessions;
             foreach my $accession (@accessions) {
                 if ($self->blacklist->exists($accession)) {next; $self->log->debug('Skipping blacklisted id: '.$accession)}
             }

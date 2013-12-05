@@ -15,27 +15,23 @@ __PACKAGE__->meta->setup(
 
   columns     => [
     version_id        => {type => 'serial', primary_key => 1, not_null => 1},
-    source_id         => {type => 'integer', not_null => 1},
+    source_id         => {type => 'integer'},
     version           => {type => 'varchar', not_null => 1, 'length' => 40 },
-    created_date      => {type => 'datetime', not_null => 1, default => 'now()'},
+    created_date      => {type => 'timestamp', not_null => 1, default => 'now()'},
     is_current        => {type => 'integer', not_null => 1, default => 0},
     count_seen        => {type => 'integer', not_null => 1, default => 1},
     record_count      => {type => 'integer'}
   ],
 
-  relationships => [
+  allow_inline_column_values => 1,
+
+  foreign_keys => [
     source => {
-      'type'        => 'many to one',
       'class'       => 'Bio::EnsEMBL::Versioning::Object::Source',
-      'column_map'  => {'source_id' => 'source_id'}
+      'key_columns'  => {'source_id' => 'source_id'}
     },
-    process => {
-      'type'        => 'many to many',
-      'map_class'   => 'Bio::EnsEMBL::Versioning::Object::ProcessVersion',
-      'map_from'    => 'version',
-      'map_to'      => 'process',
-    }
-  ]
+  ],
+
 );
 
 

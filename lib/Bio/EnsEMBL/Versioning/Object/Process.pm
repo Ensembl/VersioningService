@@ -14,24 +14,19 @@ __PACKAGE__->meta->setup(
 
   columns     => [
     process_id        => {type => 'serial', primary_key => 1, not_null => 1},
+    run_id            => {type => 'integer'},
     name              => {type => 'varchar', 'length' => 40, not_null => 1},
-    created_date      => {type => 'datetime', not_null => 1, default => 'now()'},
+    created_date      => {type => 'timestamp', not_null => 1, default => 'now()'},
   ],
 
   unique_key => ['name'],
 
-  relationships => [
-    version => {
-      'type'        => 'many to many',
-      'map_class'   => 'Bio::EnsEMBL::Versioning::Object::ProcessVersion',
-      'map_from'    => 'process',
-      'map_to'      => 'version',
-    },
+  allow_inline_column_values => 1,
+
+  foreign_keys => [
     run => {
-      'type'        => 'many to many',
-      'map_class'   => 'Bio::EnsEMBL::Versioning::Object::ProcessVersion',
-      'map_from'    => 'process',
-      'map_to'      => 'run',
+      'class'       => 'Bio::EnsEMBL::Versioning::Object::Run',
+      'key_columns' => {'run_id' => 'run_id'}
     }
   ]
 );

@@ -23,14 +23,13 @@ __PACKAGE__->meta->setup(
     },
     value              => {type => 'varchar', 'length' => 40},
     multiple_files     => {type => 'integer', not_null => 1, default => 0},
-    source_download_id => {type => 'integer', not_null => 1}
+    source_download_id => {type => 'integer'}
   ],
 
-  relationships => [
+  foreign_keys => [
     source_download => {
-      'type'        => 'many to one',
       'class'       => 'Bio::EnsEMBL::Versioning::Object::SourceDownload',
-      'column_map'  => {'source_download_id' => 'source_download_id'},
+      'key_columns'  => {'source_download_id' => 'source_download_id'},
     }
   ]
 );

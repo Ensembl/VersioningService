@@ -19,54 +19,48 @@ require Bio::EnsEMBL::Versioning::Manager::SourceDownload;
 require Bio::EnsEMBL::Versioning::Manager::Resources;
 require Bio::EnsEMBL::Versioning::Manager::Run;
 
-
-my $source_group = Bio::EnsEMBL::Versioning::Object::SourceGroup->new(name => 'UniprotGroup');
-$source_group->save();
-print $source_group->source_group_id . " id when created with " . $source_group->created_date . " created date\n";
-my $source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'Uniprot', source_group_id => $source_group->source_group_id);
-print $source->source_group->name . " source group name for source\n";
-print $source->source_group_id . " and corresponding internal id\n";
+my $source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeq');
+$source->source_group(name => 'RefSeq');
 $source->save();
-my $second_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'UniprotTrEMBL', source_group_id => $source_group->source_group_id);
-$second_source->save();
-print $source->active() . " source is active\n";
-my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', source_id => $source->source_id, record_count => 350, is_current => 1);
-print $version->version() . " new version version\n";
-print $version->source->name() . " new version source name\n";
-$version->save();
+is($source->source_group_id, 1, "Source group was saved along with source");
 
-my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '11', source_id => $source->source_id, record_count => 450);
+my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_file', type => 'file', value => 'refseq.txt');
+$resource->source_download(module => 'RefSeqParser');
+$resource->source_download->source(name => 'RefSeq');
+$resource->save();
+is($resource->source_download_id(), 1, "Source download was saved along with resource");
+
+my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 350, is_current => 1);
+$version->source(name => 'Uniprot');
+$version->source->source_group(name => 'UniprotGroup');
+$version->save();
+is($version->source->source_group->source_group_id(), 2, "UniprotGroup was correctly saved");
+
+my $run = Bio::EnsEMBL::Versioning::Object::Run->new(start => 'now()');
+$run->version($version);
+$run->save();
+my $process = Bio::EnsEMBL::Versioning::Object::Process->new(name => 'update');
+$process->run($run);
+$process->save();
+is($process->run->start(), 'now()', "Updated start date for run");
+
+my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '11', record_count => 999);
+$second_version->source(name => 'Uniprot');
 $second_version->save();
-my $third_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '11', source_id => $second_source->source_id, record_count => 250);
+
+my $third_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 238, is_current => 1);
+$third_version->source(name => 'UniprotTrEMBL');
+$third_version->source->source_group(name => 'UniprotGroup');
 $third_version->save();
 
+
 my $versions = Bio::EnsEMBL::Versioning::Manager::Version->get_versions();
-my $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_objects();
-my $processes = Bio::EnsEMBL::Versioning::Manager::Process->get_objects();
-my $source_groups = Bio::EnsEMBL::Versioning::Manager::SourceGroup->get_objects();
-my $source_downloads = Bio::EnsEMBL::Versioning::Manager::SourceDownload->get_objects();
-my $resources = Bio::EnsEMBL::Versioning::Manager::Resources->get_objects();
-my $runs = Bio::EnsEMBL::Versioning::Manager::Run->get_objects();
+is(scalar(@$versions), 3, "Fetched all version");
+my $uniprot_versions = Bio::EnsEMBL::Versioning::Manager::Version->get_all_versions('Uniprot');
+is(scalar(@$uniprot_versions), 2, "Found all Uniprot versions");
 
-my $all_versions = Bio::EnsEMBL::Versioning::Manager::Version->get_all_versions('Uniprot');
-my $many_versions = Bio::EnsEMBL::Versioning::Manager::Version->get_objects();
-print scalar(@$all_versions) . " all versions compared to " . scalar(@$many_versions) . " many versions\n";
 my $current = Bio::EnsEMBL::Versioning::Manager::Version->get_current('Uniprot');
-print $current->version . " current uniprot version\n";
+is($current->version(), 12, "Matching current version for Uniprot");
 
-my $test_source = Bio::EnsEMBL::Versioning::Manager::Source->get_objects(
-        with_objects => ['version'],
-        query =>
-        [
-          name => 'Uniprot',
-          'version.version' => '12',
-         ]);
-my $second_versions = Bio::EnsEMBL::Versioning::Manager::Version->get_objects(
-        with_objects => ['source'],
-        query =>
-        [
-          'source.name' => { like => 'Kite%' },
-          version_id   => { gt => 15 },
-        ],
-        sort_by => 'source.name');
 
+done_testing();

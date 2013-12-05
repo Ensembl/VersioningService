@@ -16,18 +16,13 @@ __PACKAGE__->meta->setup(
   columns     => [
     source_group_id   => {type => 'serial', primary_key => 1, not_null => 1},
     name              => {type => 'varchar', 'length' => 40},
-    created_date      => {type => 'datetime', not_null => 1, default => 'now()'},
+    created_date      => {type => 'timestamp', not_null => 1, default => 'now()'},
   ],
+
+  allow_inline_column_values => 1,
 
   unique_key => ['name'],
 
-  relationships => [
-    source => {
-      'type'        => 'one to many',
-      'class'       => 'Bio::EnsEMBL::Versioning::Object::Source',
-      'column_map'  => {'source_group_id' => 'source_group_id'},
-    }
-  ]
 );
 
 

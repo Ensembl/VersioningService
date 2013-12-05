@@ -14,25 +14,22 @@ __PACKAGE__->meta->setup(
   columns     => [
     source_id        => {type => 'serial', primary_key => 1, not_null => 1},
     name             => {type => 'varchar', 'length' => 40 },
-    source_group_id  => {type => 'integer', not_null => 1},
+    source_group_id  => {type => 'integer'},
     active           => {type => 'integer', 'default' => 1, not_null => 1},
-    created_date     => {type => 'datetime', not_null => 1, default => 'now()'},
+    created_date     => {type => 'timestamp', not_null => 1, default => 'now()'},
   ],
 
   unique_key => ['name'],
 
-  relationships => [
+  allow_inline_column_values => 1,
+
+  foreign_keys => [
     source_group => {
-      'type'        => 'many to one',
       'class'       => 'Bio::EnsEMBL::Versioning::Object::SourceGroup',
-      'column_map'  => {'source_group_id' => 'source_group_id'}
+      'key_columns'  => {'source_group_id' => 'source_group_id'}
     },
-    version => {
-      'type'        => 'one to many',
-      'class'       => 'Bio::EnsEMBL::Versioning::Object::Version',
-      'column_map'  => {'source_id' => 'source_id'}
-    }
-  ]
+  ],
+
 );
 
 

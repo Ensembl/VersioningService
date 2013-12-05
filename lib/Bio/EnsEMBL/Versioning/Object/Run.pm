@@ -13,18 +13,21 @@ __PACKAGE__->meta->setup(
 
   columns     => [
     run_id        => {type => 'serial', primary_key => 1, not_null => 1},
-    start         => {type => 'datetime', not_null => 1, default => 'now()'},
-    end           => {type => 'datetime'},
+    start         => {type => 'timestamp', not_null => 1, default => 'now()'},
+    end           => {type => 'timestamp'},
   ],
 
+  allow_inline_column_values => 1,
+
   relationships => [
-    process => {
+    version => {
       'type'        => 'many to many',
-      'map_class'   => 'Bio::EnsEMBL::Versioning::Object::ProcessVersion',
+      'map_class'   => 'Bio::EnsEMBL::Versioning::Object::VersionRun',
       'map_from'    => 'run',
-      'map_to'      => 'process',
-    }
-  ]
+      'map_to'      => 'version',
+    },
+  ],
+
 );
 
 

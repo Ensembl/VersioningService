@@ -14,23 +14,18 @@ __PACKAGE__->meta->setup(
 
   columns     => [
     source_download_id  => {type => 'serial', primary_key => 1, not_null => 1},
-    source_id           => {type => 'integer', not_null => 1},
+    source_id           => {type => 'integer'},
     module              => {type => 'varchar', 'length' => 40},
     parser              => {type => 'varchar', 'length' => 40},
   ],
 
   unique_key => ['module'],
 
-  relationships => [
-    resources => {
-      'type'        => 'one to many',
-      'class'       => 'Bio::EnsEMBL::Versioning::Object::Resources',
-      'column_map'  => {'source_download_id' => 'source_download_id'}
-    },
+  foreign_keys => [
     source => {
       'type'        => 'one to one',
       'class'       => 'Bio::EnsEMBL::Versioning::Object::Source',
-      'column_map'  => {'source_id' => 'source_id'}
+      'key_columns'  => {'source_id' => 'source_id'}
     }
   ]
 );

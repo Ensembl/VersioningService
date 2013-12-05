@@ -40,12 +40,16 @@ my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', re
 $version->source(name => 'Uniprot');
 $version->source->source_group(name => 'UniprotGroup');
 $version->save();
+is($version->source->source_group->source_group_id(), 2, "UniprotGroup was correctly saved");
+
 
 my $run = Bio::EnsEMBL::Versioning::Object::Run->new(start => 'now()');
+$run->version($version);
+$run->save();
 my $process = Bio::EnsEMBL::Versioning::Object::Process->new(name => 'update');
 $process->run($run);
-$process->version($version);
 $process->save();
+is($process->run->start(), 'now()', "Updated start date for run");
 
 my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '11', record_count => 999);
 $second_version->source(name => 'Uniprot');

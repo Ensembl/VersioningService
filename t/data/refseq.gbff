@@ -1,0 +1,232 @@
+LOCUS       XM_005579304            2017 bp    mRNA    linear   PRI 19-SEP-2013
+DEFINITION  PREDICTED: Macaca fascicularis frizzled family receptor 4 (FZD4),
+            transcript variant X3, mRNA.
+ACCESSION   XM_005579304
+VERSION     XM_005579304.1  GI:544488973
+DBLINK      BioProject: PRJNA215851
+KEYWORDS    RefSeq.
+SOURCE      Macaca fascicularis (crab-eating macaque)
+  ORGANISM  Macaca fascicularis
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Cercopithecidae; Cercopithecinae; Macaca.
+COMMENT     MODEL REFSEQ:  This record is predicted by automated computational
+            analysis. This record is derived from a genomic sequence
+            (NW_005092989.1) annotated using gene prediction method: Gnomon.
+            Also see:
+                Documentation of NCBI's Annotation Process
+            
+            
+            ##Genome-Annotation-Data-START##
+            Annotation Provider         :: NCBI
+            Annotation Status           :: Full annotation
+            Annotation Version          :: Macaca fascicularis Annotation
+                                           Release 100
+            Annotation Pipeline         :: NCBI eukaryotic genome annotation
+                                           pipeline
+            Annotation Software Version :: 5.1
+            Annotation Method           :: Best-placed RefSeq; Gnomon
+            Features Annotated          :: Gene; mRNA; CDS; ncRNA
+            ##Genome-Annotation-Data-END##
+FEATURES             Location/Qualifiers
+     source          1..2017
+                     /organism="Macaca fascicularis"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9541"
+                     /chromosome="14"
+                     /sex="female"
+                     /dev_stage="5.8 year-old"
+                     /country="Indonesia: Tinjil, Java South Coast"
+     gene            1..2017
+                     /gene="FZD4"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Gnomon. Supporting evidence
+                     includes similarity to: 100% coverage by RNAseq
+                     alignments, including 8 samples with support for all
+                     introns"
+                     /db_xref="GeneID:102134081"
+     CDS             164..1891
+                     /gene="FZD4"
+                     /codon_start=1
+                     /product="frizzled-4 isoform X3"
+                     /protein_id="XP_005579361.1"
+                     /db_xref="GI:544488974"
+                     /db_xref="GeneID:102134081"
+                     /translation="MAWRGAGPSVPGAPGGVGLSLGLLLQLLLLLGPARGFGDEEERR
+                     CDPIRISMCQNLGYNVTKMPNLVGHELQTDAELQLTTFTPLIQYGCSSQLQFFLCSVY
+                     VPMCTEKINIPIGPCGGMCLSVKRRCEPVLKEFGFAWPESLNCSKFPPQNDHNHMCME
+                     GPGDEEVPLPHKTPIQPGEECHSVGTNSDQYIWVKRSLNCVLKCGYDAGLYSRSAKEF
+                     TDIWMAVWASLCFISTAFTVLTFLIDSSRFSYPERPIIFLSMCYNIYSIAYIVRLTVG
+                     RERISCDFEEAAEPVLIQEGLKNTGCAIIFLLMYFFGMASSIWWVILTLTWFLAAGLK
+                     WGHEAIEMHSSYFHIAAWAIPAVKTIVILIMRLVDADELTGLCYVGNQNLDALTGFVV
+                     APLFTYLVIGTLFIAAGLVALFKIRSNLQKDGTKTDKLERLMVKIGVFSVLYTVPATC
+                     VIACYFYEISNWALFRYSADDSNMAVEMLKIFMSLLVGITSGMWIWSAKTLHTWQKCS
+                     NRLVNSGKLLGWMLCGLSWILMPPHSSRNLEANLGDFQMFDKEVPGKLPATHALNELL
+                     NFKGNGPCF"
+     misc_feature    287..664
+                     /gene="FZD4"
+                     /note="Cysteine-rich Wnt-binding domain of the frizzled 4
+                     (Fz4) receptor; Region: CRD_FZ4; cd07448"
+                     /db_xref="CDD:143557"
+     misc_feature    order(317..319,323..331,335..343)
+                     /gene="FZD4"
+                     /note="putative Wnt binding site [polypeptide binding];
+                     other site"
+                     /db_xref="CDD:143557"
+     misc_feature    791..1705
+                     /gene="FZD4"
+                     /note="Frizzled/Smoothened family membrane region; Region:
+                     Frizzled; pfam01534"
+                     /db_xref="CDD:216557"
+     STS             1740..1889
+                     /gene="FZD4"
+                     /standard_name="RH91382"
+                     /db_xref="UniSTS:83629"
+     STS             1798..1910
+                     /gene="FZD4"
+                     /standard_name="A006F30"
+                     /db_xref="UniSTS:43187"
+     STS             1798..1910
+                     /gene="FZD4"
+                     /standard_name="G20766"
+                     /db_xref="UniSTS:43186"
+ORIGIN      
+        1 gtcgcgcgca gcttctggag agccggccgc tgccccctca tcgccgcatc acactccctt
+       61 cccgggagct gggagcagcg cgggcagccg gcgcccccgt gcaaactggg ggtgtctgcc
+      121 agagcagccc ccgccgctgc cgctgctgcc cccgacgctg gccatggcct ggcggggcgc
+      181 agggccgagc gtcccggggg cgcccggggg cgtcggtctc agtctggggt tgctgctgca
+      241 gttgctgctg ctcctggggc cggcgcgggg cttcggggac gaggaggagc ggcgctgcga
+      301 ccccatccgc atctccatgt gccagaacct cggctacaac gtgaccaaga tgcccaacct
+      361 ggtggggcac gagcttcaga cggacgccga gctgcagctg acaactttca caccgctcat
+      421 ccagtacggc tgctccagcc agctgcagtt cttcctttgt tctgtttatg tgccaatgtg
+      481 cacagagaag atcaacatcc ccattggccc gtgcggcggc atgtgccttt cagtcaagag
+      541 acgctgtgaa cccgtcctga aggaatttgg atttgcctgg ccagagagtc tgaactgcag
+      601 caaattccca ccacagaacg accacaacca catgtgcatg gaagggccag gtgatgaaga
+      661 ggtgccctta cctcacaaaa cccccatcca gcctggggaa gagtgtcact ctgtgggaac
+      721 caattctgat cagtacatct gggtgaaaag gagcctgaac tgtgttctca aatgtggcta
+      781 tgatgctggc ttatacagcc gctcagccaa ggagttcacc gatatctgga tggctgtgtg
+      841 ggccagcctg tgcttcattt ccactgcctt cacagtactg accttcctga tcgattcttc
+      901 taggttttcc taccctgagc gccccatcat atttctcagt atgtgctata atatttatag
+      961 cattgcttat attgtcaggc tgactgtagg ccgggaaagg atatcctgtg attttgaaga
+     1021 ggcagcagaa cctgttctca tccaagaagg acttaagaac acaggatgtg caataatttt
+     1081 cttgctgatg tacttttttg gaatggccag ctccatttgg tgggttattc tgacactcac
+     1141 ttggtttttg gcagcaggac tcaaatgggg ccatgaagcc attgaaatgc acagctctta
+     1201 tttccacatt gcagcctggg ccatccccgc agtgaaaacc attgtcatct tgattatgag
+     1261 actggtggat gcagatgaac tgactggcct gtgctatgtt ggaaaccaaa atctcgatgc
+     1321 gctcaccggg ttcgtggtgg ctcccctctt tacttatttg gtgattggaa ctttgttcat
+     1381 tgctgcaggt ttggtggcct tgttcaaaat tcggtcaaat cttcaaaagg atgggacaaa
+     1441 gacagacaag ttagaaagac tgatggtcaa gatcggggtg ttctcagtac tgtacacagt
+     1501 tcctgcaaca tgtgtgattg cctgttactt ttatgaaatc tccaactggg cactctttcg
+     1561 gtattctgca gatgattcca acatggctgt tgaaatgttg aaaattttta tgtctttgct
+     1621 ggtgggcatc acttcaggca tgtggatttg gtctgccaaa actcttcaca cgtggcagaa
+     1681 gtgttccaac agattggtga attctggaaa gctgttgggc tggatgctct gtggcctttc
+     1741 ttggatcctc atgccacccc acagctccag gaaccttgaa gccaatctgg gggactttca
+     1801 gatgtttgac aaagaggtac caggcaaact tcctgctaca catgccctga atgaattgct
+     1861 aaatttcaaa ggaaatggac cctgctttta aggatgtaca aaagtatgtc tgcttcgatg
+     1921 tctgtactgt aaatttctaa tttatcactg tacaaagaaa accccttgct atttaatttt
+     1981 tgtattaaag gaaaataaag ttttgtttgt tagcttg
+//
+LOCUS       XR_284136                245 bp    RNA     linear   PRI 19-SEP-2013
+DEFINITION  PREDICTED: Macaca fascicularis uncharacterized LOC102135097
+            (LOC102135097), transcript variant X1, misc_RNA.
+ACCESSION   XR_284136
+VERSION     XR_284136.1  GI:544488975
+DBLINK      BioProject: PRJNA215851
+KEYWORDS    RefSeq.
+SOURCE      Macaca fascicularis (crab-eating macaque)
+  ORGANISM  Macaca fascicularis
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Cercopithecidae; Cercopithecinae; Macaca.
+COMMENT     MODEL REFSEQ:  This record is predicted by automated computational
+            analysis. This record is derived from a genomic sequence
+            (NW_005092989.1) annotated using gene prediction method: Gnomon.
+            Also see:
+                Documentation of NCBI's Annotation Process
+            
+FEATURES             Location/Qualifiers
+     source          1..245
+                     /organism="Macaca fascicularis"
+                     /mol_type="transcribed RNA"
+                     /db_xref="taxon:9541"
+                     /chromosome="14"
+                     /sex="female"
+                     /dev_stage="5.8 year-old"
+                     /country="Indonesia: Tinjil, Java South Coast"
+     gene            1..245
+                     /gene="LOC102135097"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Gnomon. Supporting evidence
+                     includes similarity to: 100% coverage by RNAseq
+                     alignments, including 3 samples with support for all
+                     introns"
+                     /db_xref="GeneID:102135097"
+     misc_RNA        1..245
+                     /gene="LOC102135097"
+                     /product="uncharacterized LOC102135097, transcript variant
+                     X1"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Gnomon. Supporting evidence
+                     includes similarity to: 100% coverage by RNAseq
+                     alignments, including 3 samples with support for all
+                     introns"
+                     /db_xref="GeneID:102135097"
+ORIGIN      
+        1 ggctgatgtg gactgtcctc tcattcttca ctgattatct ggtcaactgg cagattgttg
+       61 accccctcta ctcgtcctgt gaggtgtggc aggtttccct ggactagaca tgcttttctg
+      121 tctgcccatc accatgccaa gtgggacatc caaatttgtg tcacatgact ctcttttctc
+      181 tcctggctgt tcctgaccgc atcagaaaag gtaagaaaat ggaggtttca ttcggaaaat
+      241 aaatt
+//
+LOCUS       XR_284137                248 bp    RNA     linear   PRI 19-SEP-2013
+DEFINITION  PREDICTED: Macaca fascicularis uncharacterized LOC102135097
+            (LOC102135097), transcript variant X2, misc_RNA.
+ACCESSION   XR_284137
+VERSION     XR_284137.1  GI:544488976
+DBLINK      BioProject: PRJNA215851
+KEYWORDS    RefSeq.
+SOURCE      Macaca fascicularis (crab-eating macaque)
+  ORGANISM  Macaca fascicularis
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Cercopithecidae; Cercopithecinae; Macaca.
+COMMENT     MODEL REFSEQ:  This record is predicted by automated computational
+            analysis. This record is derived from a genomic sequence
+            (NW_005092989.1) annotated using gene prediction method: Gnomon.
+            Also see:
+                Documentation of NCBI's Annotation Process
+            
+FEATURES             Location/Qualifiers
+     source          1..248
+                     /organism="Macaca fascicularis"
+                     /mol_type="transcribed RNA"
+                     /db_xref="taxon:9541"
+                     /chromosome="14"
+                     /sex="female"
+                     /dev_stage="5.8 year-old"
+                     /country="Indonesia: Tinjil, Java South Coast"
+     gene            1..248
+                     /gene="LOC102135097"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Gnomon. Supporting evidence
+                     includes similarity to: 100% coverage by RNAseq
+                     alignments, including 1 sample with support for all
+                     introns"
+                     /db_xref="GeneID:102135097"
+     misc_RNA        1..248
+                     /gene="LOC102135097"
+                     /product="uncharacterized LOC102135097, transcript variant
+                     X2"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Gnomon. Supporting evidence
+                     includes similarity to: 100% coverage by RNAseq
+                     alignments, including 1 sample with support for all
+                     introns"
+                     /db_xref="GeneID:102135097"
+ORIGIN      
+        1 ggctgatgtg gactgtcctc tcattcttca ctgattatct ggtcaactgg cagattgttg
+       61 accccctcta ctcgtcctgt gaggtgtggc aggtttccct ggactagaca tgcttttctg
+      121 tctgcccatc accatgccaa gtgggacatc caaatttgtg tcacatgact ctcttttctc
+      181 tcctggctgt tcctgaccgc atcagaaaag cctttctact caaaatatca tctgaggacc
+      241 agtatcat
+//

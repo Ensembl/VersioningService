@@ -20,7 +20,8 @@ __PACKAGE__->meta->setup(
     created_date      => {type => 'timestamp', not_null => 1, default => 'now()'},
     is_current        => {type => 'integer', not_null => 1, default => 0},
     count_seen        => {type => 'integer', not_null => 1, default => 1},
-    record_count      => {type => 'integer'}
+    record_count      => {type => 'integer'},
+    uri               => {type => 'varchar', length => 150},
   ],
 
   allow_inline_column_values => 1,

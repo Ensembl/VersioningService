@@ -39,6 +39,7 @@ CREATE TABLE version (
   is_current               BOOLEAN NOT NULL DEFAULT 0,
   count_seen               INT(10) UNSIGNED NOT NULL,
   record_count             INT(10),
+  uri                      VARCHAR(150),
 
   PRIMARY KEY (version_id),
   KEY version_idx (source_id, version),
@@ -85,7 +86,7 @@ CREATE TABLE resources (
   resource_id              INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name                     VARCHAR(40),
   type                     ENUM('http', 'ftp', 'file', 'db') NOT NULL DEFAULT 'http',
-  value                    VARCHAR(40),
+  value                    VARCHAR(160),
   multiple_files           BOOLEAN NOT NULL DEFAULT 0,
   source_download_id       INT(10) UNSIGNED,
   

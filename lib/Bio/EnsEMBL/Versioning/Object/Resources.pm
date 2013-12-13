@@ -21,7 +21,7 @@ __PACKAGE__->meta->setup(
                            file
                            db)]
     },
-    value              => {type => 'varchar', 'length' => 40},
+    value              => {type => 'varchar', 'length' => 150},
     multiple_files     => {type => 'integer', not_null => 1, default => 0},
     source_download_id => {type => 'integer'}
   ],

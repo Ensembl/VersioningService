@@ -8,12 +8,12 @@ use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::DBSQL::DBAdaptor;
 
 my $dba = Bio::EnsEMBL::DBSQL::DBAdaptor->new(
--host => 'ens-production',
+-host => 'my_host',
 -species => 'multi',
 -group => 'versioning',
--user => 'ensadmin',
--pass => 'ensembl',
--dbname => 'versioning_db'
+-user => 'my_user',
+-pass => 'XXX',
+-dbname => 'my_db'
 );
 Bio::EnsEMBL::Versioning::DB->register_DBAdaptor($dba);
 

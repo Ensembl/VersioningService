@@ -28,3 +28,9 @@ requires 'Lucy::Search::QueryParser';
 requires 'Search::Query';
 
 requires 'Search::Query::Dialect::Lucy';
+
+# Rose dependencies
+
+requires 'Rose::DB';
+requires 'Rose::DB::Object::Manager';
+requires 'Rose::DB::Object';

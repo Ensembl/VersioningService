@@ -29,23 +29,15 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::ScheduleSources
+Bio::EnsEMBL::Pipeline::CheckLatest
 
 =head1 DESCRIPTION
 
-A module which generates update jobs for each source where the latest version is not up-to-date
+A module which checks what the latest version of a source is on the server, and if it is the same as the one locally held
 
 Allowed parameters are:
 
 =over 8
-
-=item sources   - Can be an array of sources to update
-                If specified only jobs will be created for
-                those sources. Defaults to nothing so all sources are processed
-
-=back
-
-The code flows once per source to branch 2.
 
 =cut
 

@@ -51,6 +51,15 @@ __PACKAGE__->meta->setup(
     },
   ],
 
+  relationships => [
+    run => {
+      'type'        => 'many to many',
+      'map_class'   => 'Bio::EnsEMBL::Versioning::Object::VersionRun',
+      'map_from'    => 'version',
+      'map_to'      => 'run',
+    },
+  ],
+
 );
 
 

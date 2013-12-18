@@ -48,6 +48,14 @@ __PACKAGE__->meta->setup(
     },
   ],
 
+  relationships => [
+     version => {
+       type       => 'one to many',
+       class      => 'Bio::EnsEMBL::Versioning::Object::Version',
+       column_map => { 'source_id' => 'source_id' },
+     },
+  ],
+
 );
 
 

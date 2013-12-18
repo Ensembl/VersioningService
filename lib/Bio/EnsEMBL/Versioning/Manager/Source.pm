@@ -29,5 +29,19 @@ sub object_class { 'Bio::EnsEMBL::Versioning::Object::Source' }
  __PACKAGE__->make_manager_methods('sources');
 
 
+sub get_current {
+  my $self = shift;
+  my $source = shift;
+
+  my $sources = $self->get_sources(query => [name => $source]);
+  my $source_object = $sources->[0];
+  my @versions = @{ $source_object->version };
+  foreach my $version (@versions) {
+    if ($version->is_current) {
+      return $version;
+    }
+  }
+  return;
+}
 
 1;

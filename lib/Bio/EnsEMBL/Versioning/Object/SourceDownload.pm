@@ -45,7 +45,15 @@ __PACKAGE__->meta->setup(
       'class'       => 'Bio::EnsEMBL::Versioning::Object::Source',
       'key_columns'  => {'source_id' => 'source_id'}
     }
-  ]
+  ],
+
+  relationships => [
+     resources => {
+       type       => 'one to many',
+       class      => 'Bio::EnsEMBL::Versioning::Object::Resources',
+       column_map => { 'source_download_id' => 'source_download_id' },
+     },
+  ],
 );
 
 

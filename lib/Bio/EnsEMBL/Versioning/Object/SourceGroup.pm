@@ -41,6 +41,14 @@ __PACKAGE__->meta->setup(
 
   unique_key => ['name'],
 
+  relationships => [
+     source => {
+       type       => 'one to many',
+       class      => 'Bio::EnsEMBL::Versioning::Object::Source',
+       column_map => { 'source_group_id' => 'source_group_id' },
+     },
+  ],
+
 );
 
 

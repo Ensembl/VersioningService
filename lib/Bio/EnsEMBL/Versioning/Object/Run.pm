@@ -44,6 +44,11 @@ __PACKAGE__->meta->setup(
       'map_from'    => 'run',
       'map_to'      => 'version',
     },
+    process => {
+       type       => 'one to many',
+       class      => 'Bio::EnsEMBL::Versioning::Object::Process',
+       column_map => { 'run_id' => 'run_id' },
+     },
   ],
 
 );

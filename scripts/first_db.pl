@@ -48,6 +48,11 @@ $resource->source_download(module => 'UniProtParser');
 $resource->source_download->source(name => 'UniProt');
 $resource->save();
 
+my $release_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'uniprot_ftp', type => 'ftp', value => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/knowledgebase/reldate.txt', release_version => 1);
+$release_resource->source_download(module => 'UniProtParser');
+$release_resource->source_download->source(name => 'UniProt');
+$release_resource->save();
+
 my $version_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'uniprot_version', type => 'ftp', value => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/knowledgebase/reldate.txt');
 $resource->source_download(module => 'UniProtParser');
 $resource->source_download->source(name => 'UniProt');

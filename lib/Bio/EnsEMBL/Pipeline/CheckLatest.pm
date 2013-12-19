@@ -46,6 +46,33 @@ package Bio::EnsEMBL::Pipeline::CheckLatest;
 use strict;
 use warnings;
 
+use Bio::EnsEMBL::Versioning::DB;
+use Bio::EnsEMBL::Versioning::Manager::Source;
+use POSIX qw/strftime/;
+
 use base qw/Bio::EnsEMBL::Hive::Process/;
+
+sub run {
+  my ($self) = @_;
+  my $version = $self->param('version');
+  my $source_name = $self->param('source_name');
+  my $latest_version = $self->get_version($source_name);
+  my $input_id = {
+    version => $version,
+    source_name => $source_name
+  };
+  if ($version ne $latest_version) {
+    $self->dataflow_output_id($input_id, 3);
+  }
+}
+
+sub get_version {
+  my $self = shift;
+  my $source_name = shift;
+  my $source_manager = 'Bio::EnsEMBL::Versioning::Manager::Source';
+  my $resource = $source_manager->get_release_resource($source_name);
+print "Now need to fetch " . $resource->value . " using " . $resource->type . "\n";
+}
+
 
 1;

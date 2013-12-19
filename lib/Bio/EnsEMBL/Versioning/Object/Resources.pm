@@ -41,6 +41,7 @@ __PACKAGE__->meta->setup(
     },
     value              => {type => 'varchar', 'length' => 150},
     multiple_files     => {type => 'integer', not_null => 1, default => 0},
+    release_version    => {type => 'integer', not_null => 1, default => 0},
     source_download_id => {type => 'integer'}
   ],
 

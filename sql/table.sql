@@ -110,6 +110,7 @@ CREATE TABLE resources (
   type                     ENUM('http', 'ftp', 'file', 'db') NOT NULL DEFAULT 'http',
   value                    VARCHAR(160),
   multiple_files           BOOLEAN NOT NULL DEFAULT 0,
+  release_version          BOOLEAN NOT NULL DEFAULT 0,
   source_download_id       INT(10) UNSIGNED,
   
   PRIMARY KEY (resource_id),

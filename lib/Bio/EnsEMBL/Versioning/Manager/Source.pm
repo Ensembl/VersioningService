@@ -31,14 +31,30 @@ sub object_class { 'Bio::EnsEMBL::Versioning::Object::Source' }
 
 sub get_current {
   my $self = shift;
-  my $source = shift;
+  my $source_name = shift;
 
-  my $sources = $self->get_sources(query => [name => $source]);
-  my $source_object = $sources->[0];
-  my @versions = @{ $source_object->version };
+  my $sources = $self->get_sources(query => [name => $source_name]);
+  my $source = $sources->[0];
+  my @versions = @{ $source->version };
   foreach my $version (@versions) {
     if ($version->is_current) {
       return $version;
+    }
+  }
+  return;
+}
+
+sub get_release_resource {
+  my $self = shift;
+  my $source_name = shift;
+
+  my $sources = $self->get_sources(query => [name => $source_name]);
+  my $source = $sources->[0];
+  my $source_download = $source->source_download;
+  my $resources = $source_download->resources;
+  foreach my $resource (@$resources) {
+    if ($resource->release_version) {
+      return $resource;
     }
   }
   return;

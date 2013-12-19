@@ -12,6 +12,13 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
+# Versioning db table definitions
+#
+
+# Conventions:
+#  - use lower case and underscores
+#  - internal ids are integers named tablename_id
+#  - same name is given in foreign key relations
 
 CREATE TABLE source_group (
   source_group_id          INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -103,6 +110,7 @@ CREATE TABLE resources (
   type                     ENUM('http', 'ftp', 'file', 'db') NOT NULL DEFAULT 'http',
   value                    VARCHAR(160),
   multiple_files           BOOLEAN NOT NULL DEFAULT 0,
+  release_version          BOOLEAN NOT NULL DEFAULT 0,
   source_download_id       INT(10) UNSIGNED,
   
   PRIMARY KEY (resource_id),

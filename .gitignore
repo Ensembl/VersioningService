@@ -1,3 +1,4 @@
 /.includepath
 /conf/*.conf
 /t/*.conf
+/lib/Bio/EnsEMBL/reg*

@@ -119,11 +119,6 @@ sub input_id {
   return $input_id;
 }
 
-sub db_types {
-  my ($self, $dba) = @_;
-  return $self->param('db_types');
-}
-
 sub get_versioning_db {
   my ($self) = @_;
   return Bio::EnsEMBL::Versioning::DB->new();

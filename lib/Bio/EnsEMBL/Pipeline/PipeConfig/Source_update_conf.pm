@@ -33,8 +33,11 @@ sub default_options {
         ### OVERRIDE
         
         ### Optional overrides        
+
         sources => [],
-        
+
+        ### Defaults
+
         pipeline_name => 'source_update_'.time,
         
         email => $self->o('ENV', 'USER').'@sanger.ac.uk',
@@ -58,11 +61,12 @@ sub pipeline_analyses {
       {
         -logic_name => 'ScheduleSources',
         -module     => 'Bio::EnsEMBL::Pipeline::ScheduleSources',
-        -parameters => {},
+        -parameters => {
+        },
         -input_ids  => [ {} ],
         -max_retry_count  => 10,
         -flow_into  => {
-         '3->A'  => ['CheckLatest'],
+         '2->A'  => ['CheckLatest'],
          'A->1'  => ['Notify'], 
         },
       },

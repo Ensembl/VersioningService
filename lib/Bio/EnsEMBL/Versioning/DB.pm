@@ -26,6 +26,12 @@ use base qw(Rose::DB);
 __PACKAGE__->use_private_registry;      ## Use a private registry for this class
 __PACKAGE__->default_domain('ensembl'); ## Set the default domain
 
+__PACKAGE__->register_db(
+      domain   => 'ensembl',
+      type     => 'default',
+      driver   => 'mysql',
+    );
+
 sub register_DBAdaptor {
   my $self = shift;
   my $db_adaptor = shift;

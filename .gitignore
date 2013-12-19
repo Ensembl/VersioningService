@@ -1,4 +1,4 @@
 /.includepath
 /conf/*.conf
 /t/*.conf
-/lib/Bio/EnsEMBL/reg*
+/lib/Bio/EnsEMBL/Pipeline/reg*

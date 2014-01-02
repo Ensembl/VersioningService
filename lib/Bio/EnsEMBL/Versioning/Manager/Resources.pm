@@ -29,5 +29,19 @@ sub object_class { 'Bio::EnsEMBL::Versioning::Object::Resources' }
  __PACKAGE__->make_manager_methods('resources');
 
 
+sub get_release_resource {
+  my $self = shift;
+  my $source_name = shift;
+  
+  my $resources = $self->get_objects(
+                         with_objects => ['source'],
+                         query => [
+                                   'source.name' => $source_name,
+                                   release_version => 1
+                                  ],
+                         distinct => 1);
+
+  return $resources->[0];
+}
 
 1;

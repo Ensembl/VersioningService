@@ -29,7 +29,6 @@ require Bio::EnsEMBL::Versioning::Manager::Version;
 require Bio::EnsEMBL::Versioning::Manager::Process;
 require Bio::EnsEMBL::Versioning::Manager::Source;
 require Bio::EnsEMBL::Versioning::Manager::SourceGroup;
-require Bio::EnsEMBL::Versioning::Manager::SourceDownload;
 require Bio::EnsEMBL::Versioning::Manager::Resources;
 require Bio::EnsEMBL::Versioning::Manager::Run;
 
@@ -37,20 +36,17 @@ require Bio::EnsEMBL::Versioning::Manager::Run;
 my $source_group = Bio::EnsEMBL::Versioning::Object::SourceGroup->new(name => 'UniprotGroup');
 $source_group->save();
 
-my $source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeq');
+my $source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeq', module => 'RefSeqParser');
 $source->source_group(name => 'RefSeqGroup');
 $source->save();
 is($source->source_group_id, 2, "Source group was saved along with source");
 
 my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_file', type => 'file', value => 'refseq.txt');
-$resource->source_download(module => 'RefSeqParser');
-$resource->source_download->source(name => 'RefSeq');
+$resource->source(name => 'RefSeq');
 $resource->save();
-is($resource->source_download_id(), 1, "Source download was saved along with resource");
 
-my $source_download = @{ Bio::EnsEMBL::Versioning::Manager::SourceDownload->get_source_download(module => 'RefSeqParser') }->[0];
-my $download_resources = $source_download->resources();
-is($download_resources->[0]->source_download->module(), $source_download->module(), "Can retrieve resources from source_download and source_download from resources");
+my $source_resources = $source->resources();
+is($source_resources->[0]->source->module(), $source->module(), "Can retrieve resources from source and source from resources");
 
 my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 350, is_current => 1);
 $version->source(name => 'Uniprot');
@@ -93,5 +89,8 @@ is($current->version(), 12, "Matching current version for Uniprot");
 
 my $all_versions = $source->version();
 is(scalar(@$all_versions), 0, "Refseq source has no versions");
+
+my $release_resource = Bio::EnsEMBL::Versioning::Manager::Resources->get_release_resource('RefSeq');
+is($release_resource, undef, 'No release resource available'); 
 
 done_testing();

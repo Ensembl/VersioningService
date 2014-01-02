@@ -91,9 +91,6 @@ is(scalar(@$uniprot_versions), 2, "Found all Uniprot versions");
 my $current = Bio::EnsEMBL::Versioning::Manager::Version->get_current('Uniprot');
 is($current->version(), 12, "Matching current version for Uniprot");
 
-my $second_current = Bio::EnsEMBL::Versioning::Manager::Source->get_current('Uniprot');
-is($current->version(), $second_current->version(), "Returned same current version via source and via version");
-
 my $all_versions = $source->version();
 is(scalar(@$all_versions), 0, "Refseq source has no versions");
 

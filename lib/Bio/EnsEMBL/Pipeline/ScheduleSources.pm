@@ -58,6 +58,7 @@ use Bio::EnsEMBL::Utils::IO qw/work_with_file/;
 use Bio::EnsEMBL::Utils::Scalar qw/check_ref/;
 use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::Versioning::Manager::Source;
+use Bio::EnsEMBL::Versioning::Manager::Version;
 use POSIX qw/strftime/;
 
 use base qw/Bio::EnsEMBL::Production::Pipeline::Base/;
@@ -111,9 +112,9 @@ sub do_flow {
 
 sub input_id {
   my ($self, $source) = @_;
-  my $source_manager = 'Bio::EnsEMBL::Versioning::Manager::Source';
+  my $version_manager = 'Bio::EnsEMBL::Versioning::Manager::Version';
   my $input_id = {
-    version => $source_manager->get_current($source->name())->version(),
+    version => $version_manager->get_current($source->name())->version(),
     source_name => $source->name(),
   };
   return $input_id;

@@ -47,7 +47,7 @@ use strict;
 use warnings;
 
 use Bio::EnsEMBL::Versioning::DB;
-use Bio::EnsEMBL::Versioning::Manager::Source;
+use Bio::EnsEMBL::Versioning::Manager::Resources;
 use POSIX qw/strftime/;
 
 use base qw/Bio::EnsEMBL::Hive::Process/;
@@ -69,9 +69,8 @@ sub run {
 sub get_version {
   my $self = shift;
   my $source_name = shift;
-  my $source_manager = 'Bio::EnsEMBL::Versioning::Manager::Source';
-  my $resource = $source_manager->get_release_resource($source_name);
-print "Now need to fetch " . $resource->value . " using " . $resource->type . "\n";
+  my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
+  my $resource = $resource_manager->get_release_resource($source_name);
 }
 
 

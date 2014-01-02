@@ -33,7 +33,7 @@ __PACKAGE__->meta->setup(
   columns     => [
     resource_id        => {type => 'serial', primary_key => 1, not_null => 1},
     name               => {type => 'varchar', 'length' => 64},
-    type               => {type => 'set', default => 'http', not_null => 1, 'values' => [qw(
+    type               => {type => 'enum', default => 'http', not_null => 1, 'values' => [qw(
                            http
                            ftp
                            file

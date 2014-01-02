@@ -29,20 +29,4 @@ sub object_class { 'Bio::EnsEMBL::Versioning::Object::Source' }
  __PACKAGE__->make_manager_methods('sources');
 
 
-sub get_release_resource {
-  my $self = shift;
-  my $source_name = shift;
-
-  my $sources = $self->get_sources(query => [name => $source_name]);
-  my $source = $sources->[0];
-  my $source_download = $source->source_download;
-  my $resources = $source_download->resources;
-  foreach my $resource (@$resources) {
-    if ($resource->release_version) {
-      return $resource;
-    }
-  }
-  return;
-}
-
 1;

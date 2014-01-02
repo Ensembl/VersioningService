@@ -42,13 +42,13 @@ __PACKAGE__->meta->setup(
     value              => {type => 'varchar', 'length' => 150},
     multiple_files     => {type => 'integer', not_null => 1, default => 0},
     release_version    => {type => 'integer', not_null => 1, default => 0},
-    source_download_id => {type => 'integer'}
+    source_id          => {type => 'integer'}
   ],
 
   foreign_keys => [
-    source_download => {
-      'class'       => 'Bio::EnsEMBL::Versioning::Object::SourceDownload',
-      'key_columns'  => {'source_download_id' => 'source_download_id'},
+    source => {
+      'class'       => 'Bio::EnsEMBL::Versioning::Object::Source',
+      'key_columns'  => {'source_id' => 'source_id'},
     }
   ]
 );

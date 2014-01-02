@@ -35,9 +35,12 @@ __PACKAGE__->meta->setup(
     source_group_id  => {type => 'integer'},
     active           => {type => 'integer', 'default' => 1, not_null => 1},
     created_date     => {type => 'timestamp', not_null => 1, default => 'now()'},
+    module           => {type => 'varchar', 'length' => 40 },
+    parser           => {type => 'varchar', 'length' => 40 },
   ],
 
   unique_key => ['name'],
+  unique_key => ['module'],
 
   allow_inline_column_values => 1,
 
@@ -54,9 +57,9 @@ __PACKAGE__->meta->setup(
        class      => 'Bio::EnsEMBL::Versioning::Object::Version',
        column_map => { 'source_id' => 'source_id' },
      },
-     source_download => {
-       type       => 'one to one',
-       class      => 'Bio::EnsEMBL::Versioning::Object::SourceDownload',
+     resources => {
+       type       => 'one to many',
+       class      => 'Bio::EnsEMBL::Versioning::Object::Resources',
        column_map => { 'source_id' => 'source_id' },
      },
   ],

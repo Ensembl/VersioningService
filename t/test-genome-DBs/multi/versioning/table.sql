@@ -37,9 +37,12 @@ CREATE TABLE source (
   source_group_id          INT(10) UNSIGNED,
   active                   BOOLEAN NOT NULL DEFAULT 1,
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
+  module                   VARCHAR(40),
+  parser                   VARCHAR(40),
 
   PRIMARY KEY (source_id),
   UNIQUE KEY name_idx (name),
+  UNIQUE KEY module_idx (module),
   FOREIGN KEY (source_group_id) REFERENCES source_group(source_group_id)
 
 ) COLLATE=latin1_swedish_ci ENGINE=InnoDB;
@@ -92,18 +95,6 @@ CREATE TABLE version_run (
 
 ) COLLATE=latin1_swedish_ci ENGINE=InnoDB;
 
-CREATE TABLE source_download (
-  source_download_id       INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  source_id                INT(10) UNSIGNED,
-  module                   VARCHAR(40),
-  parser                   VARCHAR(40),
-
-  PRIMARY KEY (source_download_id),
-  UNIQUE KEY module_idx (module),
-  FOREIGN KEY (source_id) REFERENCES source(source_id)
-
-) COLLATE=latin1_swedish_ci ENGINE=InnoDB;
-
 CREATE TABLE resources (
   resource_id              INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   name                     VARCHAR(40),
@@ -111,11 +102,11 @@ CREATE TABLE resources (
   value                    VARCHAR(160),
   multiple_files           BOOLEAN NOT NULL DEFAULT 0,
   release_version          BOOLEAN NOT NULL DEFAULT 0,
-  source_download_id       INT(10) UNSIGNED,
+  source_id       INT(10) UNSIGNED,
   
   PRIMARY KEY (resource_id),
   KEY name_idx (name),
-  FOREIGN KEY (source_download_id) REFERENCES source_download(source_download_id)
+  FOREIGN KEY (source_id) REFERENCES source(source_id)
 
 ) COLLATE=latin1_swedish_ci ENGINE=InnoDB;
 

@@ -32,17 +32,15 @@ require Bio::EnsEMBL::Versioning::Manager::Version;
 require Bio::EnsEMBL::Versioning::Manager::Process;
 require Bio::EnsEMBL::Versioning::Manager::Source;
 require Bio::EnsEMBL::Versioning::Manager::SourceGroup;
-require Bio::EnsEMBL::Versioning::Manager::SourceDownload;
 require Bio::EnsEMBL::Versioning::Manager::Resources;
 require Bio::EnsEMBL::Versioning::Manager::Run;
 
-my $source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeq');
+my $source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeq', module => 'RefSeqParser');
 $source->source_group(name => 'RefSeq');
 $source->save();
 
 my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_file', type => 'file', value => 'refseq.txt');
-$resource->source_download(module => 'RefSeqParser');
-$resource->source_download->source(name => 'RefSeq');
+$resource->source(name => 'RefSeq');
 $resource->save();
 
 my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 350, is_current => 1);

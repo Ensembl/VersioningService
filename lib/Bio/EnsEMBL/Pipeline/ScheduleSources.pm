@@ -53,13 +53,8 @@ package Bio::EnsEMBL::Pipeline::ScheduleSources;
 
 use strict;
 use warnings;
-use Bio::EnsEMBL::Utils::Exception qw/throw/;
-use Bio::EnsEMBL::Utils::IO qw/work_with_file/;
-use Bio::EnsEMBL::Utils::Scalar qw/check_ref/;
-use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::Versioning::Manager::Source;
 use Bio::EnsEMBL::Versioning::Manager::Version;
-use POSIX qw/strftime/;
 
 use base qw/Bio::EnsEMBL::Production::Pipeline::Base/;
 

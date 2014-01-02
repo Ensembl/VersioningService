@@ -48,9 +48,10 @@ use warnings;
 
 use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::Versioning::Manager::Resources;
-use POSIX qw/strftime/;
+use Bio::EnsEMBL::Utils::Exception qw/throw/;
+use Class::Inspector;
 
-use base qw/Bio::EnsEMBL::Hive::Process/;
+use base qw/Bio::EnsEMBL::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
@@ -71,7 +72,43 @@ sub get_version {
   my $source_name = shift;
   my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
   my $resource = $resource_manager->get_release_resource($source_name);
+  my $release_file = $resource->value();
+  my $type = $resource->type();
+  my $version;
+  if ($type eq 'ftp') {
+    $version = $self->get_ftp_version($resource);
+  }
+  return $version;
 }
 
+
+sub get_ftp_version {
+  my $self = shift;
+  my $resource = shift;
+  my $file = $self->get_ftp_file($resource);
+  my $name = $resource->source->name();
+  my $module = $self->get_module($name);
+  my $version = $module->get_version($file);
+  return $version;
+}
+
+sub get_module {
+  my $self = shift;
+  my $name = shift;
+
+  my $prefix = 'Bio::EnsEMBL::Pipeline::';
+  my $module = $prefix . $name;
+
+  eval {
+    (my $file = $module) =~ s|::|/|g;
+    if (!(Class::Inspector->loaded($module))) {
+      require $file . '.pm';
+      $module->import();
+    }
+    return $module;
+  } or do {
+    throw("Module $module could not be found");
+  };
+}
 
 1;

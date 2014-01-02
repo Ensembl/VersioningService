@@ -43,18 +43,15 @@ $source->source_group(name => 'UniProtGroup');
 $source->save();
 
 my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'uniprot_ftp', type => 'ftp', value => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/knowledgebase/uniprot_trembl.dat.gz');
-$resource->source(name => 'UniProt');
+$resource->source(name => 'UniProtSwissprot');
 $resource->save();
 
 my $release_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'uniprot_ftp', type => 'ftp', value => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/knowledgebase/reldate.txt', release_version => 1);
-$release_resource->source(name => 'UniProt');
+$release_resource->source(name => 'UniProtSwissprot');
 $release_resource->save();
 
-my $version_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'uniprot_version', type => 'ftp', value => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/knowledgebase/reldate.txt');
-$resource->source(name => 'UniProt');
-
-my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '2013_12', record_count => 49243530, is_current => 1, uri => '/lustre/scratch110/ensembl/mr6/Uniprot/203_12/uniprot.txt');
-$version->source(name => 'Uniprot');
+my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => 'UniProtKB/Swiss-Prot Release 2013_12 of 11-Dec-2013', record_count => 49243530, is_current => 1, uri => '/lustre/scratch110/ensembl/mr6/Uniprot/203_12/uniprot.txt');
+$version->source(name => 'UniProtSwissprot');
 $version->source->source_group(name => 'UniprotGroup');
 $version->save();
 

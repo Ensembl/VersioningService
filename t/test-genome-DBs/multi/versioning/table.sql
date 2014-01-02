@@ -59,7 +59,7 @@ CREATE TABLE run (
 CREATE TABLE version (
   version_id               INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   source_id                INT(10) UNSIGNED,
-  version                  VARCHAR(40),
+  version                  VARCHAR(255),
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
   is_current               BOOLEAN NOT NULL DEFAULT 0,
   count_seen               INT(10) UNSIGNED NOT NULL,

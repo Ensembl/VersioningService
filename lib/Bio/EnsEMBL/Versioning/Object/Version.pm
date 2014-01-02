@@ -34,7 +34,7 @@ __PACKAGE__->meta->setup(
   columns     => [
     version_id        => {type => 'serial', primary_key => 1, not_null => 1},
     source_id         => {type => 'integer'},
-    version           => {type => 'varchar', not_null => 1, 'length' => 40 },
+    version           => {type => 'varchar', not_null => 1, 'length' => 255},
     created_date      => {type => 'timestamp', not_null => 1, default => 'now()'},
     is_current        => {type => 'integer', not_null => 1, default => 0},
     count_seen        => {type => 'integer', not_null => 1, default => 1},

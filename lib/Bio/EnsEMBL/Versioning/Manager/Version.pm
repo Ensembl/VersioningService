@@ -20,6 +20,7 @@ package Bio::EnsEMBL::Versioning::Manager::Version;
 
 use strict;
 use warnings;
+use Carp;
 
 use Bio::EnsEMBL::Versioning::Object::Version;
 use base qw(Bio::EnsEMBL::Versioning::Manager);
@@ -34,37 +35,53 @@ sub object_class { 'Bio::EnsEMBL::Versioning::Object::Version' }
 
     Arg [0]     : String; the name of the source
     Description : Returns all the available version for a given source
-    Returntype  : ArrayRef; the list of versions
+    Returntype  : Listref of Bio::EnsEMBL::Versioning::Version objects
+    Exceptions  : die if no source name given or source name not found
+    Caller      : general
 
 =cut
 
 sub get_all_versions {
   my $self = shift;
-  my $source = shift;
+  my $source_name = shift;
+  croak("No source_name given") if !$source_name;
 
   my %versions;
   my $versions = $self->get_objects(
                          with_objects => ['source'],
                          query => [
-                                   'source.name' => $source
+                                   'source.name' => $source_name
                                   ],
                          distinct => 1);
+  croak("No versions found for $source_name") if !$versions->[0];
 
   return $versions;
 }
 
+=head2 get_current
+
+    Arg [0]     : String; the name of the source
+    Description : Returns the current version of a source
+    Returntype  : Bio::EnsEMBL::Versioning::Version
+    Exceptions  : die if no source name given or source name not found
+    Caller      : general
+
+=cut
+
 sub get_current {
   my $self = shift;
-  my $source = shift;
+  my $source_name = shift;
+  croak("No source_name given") if !$source_name;
 
   my %versions;
   my $versions = $self->get_objects(
                          with_objects => ['source'],
                          query => [
-                                   'source.name' => $source,
+                                   'source.name' => $source_name,
                                    is_current => 1
                                   ],
                          distinct => 1);
+  croak("No versions found for $source_name") if !$versions->[0];
 
   return $versions->[0];
 }

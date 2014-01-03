@@ -55,13 +55,26 @@ sub get_release_resource {
                                    release_version => 1
                                   ],
                          distinct => 1);
+  croak("No release resource found for $source_name") if !$resources->[0];
 
   return $resources->[0];
 }
 
+=head2 get_download_resource
+
+  Arg [1]    : source name
+  Example    : $resource_manager->get_download_resource('Uniprot')
+  Description: For a given source name, returns the resource object related to the main data
+  Returntype : Bio::EnsEMBL::Versioning::Object::Resources
+  Exceptions : die if no source name given or source name not found
+  Caller     : general
+
+=cut
+
 sub get_download_resource {
   my $self = shift;
   my $source_name = shift;
+  croak("No source_name given") if !$source_name;
 
   my $resources = $self->get_objects(
                          with_objects => ['source'],
@@ -70,6 +83,7 @@ sub get_download_resource {
                                    release_version => 0
                                   ],
                          distinct => 1);
+  croak("No release resource found for $source_name") if !$resources->[0];
 
   return $resources->[0];
 }

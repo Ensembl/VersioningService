@@ -29,53 +29,45 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::Base
+Bio::EnsEMBL::Pipeline::DownloadSource
 
 =head1 DESCRIPTION
 
-A module for base methods used in more than one module
+A module which downloads a given source and saves it as a file
+
+Allowed parameters are:
 
 =over 8
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::Base;
+package Bio::EnsEMBL::Pipeline::DownloadSource;
 
 use strict;
 use warnings;
 
-use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::Versioning::Manager::Resources;
-use Bio::EnsEMBL::Utils::Exception;
-use Bio::EnsEMBL::Utils::Net qw/do_FTP/;
-use Carp;
-use POSIX qw/strftime/;
+use Bio::EnsEMBL::Utils::Exception qw/throw/;
+use Class::Inspector;
 
-use base qw/Bio::EnsEMBL::Hive::Process/;
+use base qw/Bio::EnsEMBL::Pipeline::Base/;
 
-
-=head2 get_ftp_file
-
-  Example     :
-  Description : Given a ftp resource, returns the corresponding file or files
-  Returntype  : File
-  Exceptions  : Undef if file cannot be found
-  Caller      : internal
-  Status      : Stable
-
-=cut
-
-
-sub get_ftp_file
-{
-  my $self = shift;
-  my $resource = shift;
-  my $filename = shift;
-
-  my $url = $resource->value();
-  my $file = do_FTP($url, undef, undef, $filename);
-
-  return $file;
+sub run {
+  my ($self) = @_;
+  my $latest_version = $self->param('version');
+  my $source_name = $self->param('source_name');
+  my $dir = $self->param('download_dir');
+  my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
+  my $resource = $resource_manager->get_download_resource($source_name);
+  my $name = $resource->name();
+  system("mkdir -p $dir");
+  my $filename = $dir . '/' . $latest_version . '/' . $name;
+  my $type = $resource->type();
+  if ($type eq 'ftp') {
+    $self->get_ftp_file($resource, $filename);
+  }
 }
+
+
 
 1;

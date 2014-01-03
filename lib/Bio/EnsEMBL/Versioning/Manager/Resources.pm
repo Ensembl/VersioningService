@@ -20,6 +20,7 @@ package Bio::EnsEMBL::Versioning::Manager::Resources;
 
 use strict;
 use warnings;
+use Carp;
 
 use Bio::EnsEMBL::Versioning::Object::Resources;
 use base qw(Bio::EnsEMBL::Versioning::Manager);
@@ -29,15 +30,44 @@ sub object_class { 'Bio::EnsEMBL::Versioning::Object::Resources' }
  __PACKAGE__->make_manager_methods('resources');
 
 
+
+=head2 get_release_resource
+
+  Arg [1]    : source name
+  Example    : $resource_manager->get_release_resource('Uniprot')
+  Description: For a given source name, returns the resource object related to the release
+  Returntype : Bio::EnsEMBL::Versioning::Object::Resources
+  Exceptions : die if no source name given or source name not found
+  Caller     : general
+
+=cut
+
+
 sub get_release_resource {
   my $self = shift;
   my $source_name = shift;
+  croak("No source_name given") if !$source_name;
   
   my $resources = $self->get_objects(
                          with_objects => ['source'],
                          query => [
                                    'source.name' => $source_name,
                                    release_version => 1
+                                  ],
+                         distinct => 1);
+
+  return $resources->[0];
+}
+
+sub get_download_resource {
+  my $self = shift;
+  my $source_name = shift;
+
+  my $resources = $self->get_objects(
+                         with_objects => ['source'],
+                         query => [
+                                   'source.name' => $source_name,
+                                   release_version => 0
                                   ],
                          distinct => 1);
 

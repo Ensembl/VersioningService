@@ -70,9 +70,10 @@ sub get_ftp_file
 {
   my $self = shift;
   my $resource = shift;
+  my $filename = shift;
 
   my $url = $resource->value();
-  my $file = do_FTP($url);
+  my $file = do_FTP($url, undef, undef, $filename);
 
   return $file;
 }

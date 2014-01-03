@@ -29,23 +29,45 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::UniProtSwissprot
+Bio::EnsEMBL::Pipeline::DownloadSource
 
 =head1 DESCRIPTION
 
-A module for Uniprot Swissprot specific methods
+A module which downloads a given source and saves it as a file
+
+Allowed parameters are:
 
 =over 8
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::UniProtSwissprot;
+package Bio::EnsEMBL::Pipeline::DownloadSource;
 
 use strict;
 use warnings;
 
-use Bio::EnsEMBL::Utils::Net qw/do_FTP/;
+use Bio::EnsEMBL::Versioning::Manager::Resources;
+use Bio::EnsEMBL::Utils::Exception qw/throw/;
+use Class::Inspector;
 
-use base qw/Bio::EnsEMBL::Pipeline::UniProt/;
+use base qw/Bio::EnsEMBL::Pipeline::Base/;
+
+sub run {
+  my ($self) = @_;
+  my $latest_version = $self->param('version');
+  my $source_name = $self->param('source_name');
+  my $dir = $self->param('download_dir');
+  my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
+  my $resource = $resource_manager->get_download_resource($source_name);
+  my $name = $resource->name();
+  system("mkdir -p $dir");
+  my $filename = $dir . '/' . $latest_version . '/' . $name;
+  my $type = $resource->type();
+  if ($type eq 'ftp') {
+    $self->get_ftp_file($resource, $filename);
+  }
+}
+
+
 
 1;

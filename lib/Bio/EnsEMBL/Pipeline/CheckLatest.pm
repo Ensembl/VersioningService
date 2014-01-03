@@ -58,11 +58,11 @@ sub run {
   my $version = $self->param('version');
   my $source_name = $self->param('source_name');
   my $latest_version = $self->get_version($source_name);
-  my $input_id = {
-    version => $version,
-    source_name => $source_name
-  };
   if ($version ne $latest_version) {
+    my $input_id = {
+      version => $latest_version,
+      source_name => $source_name
+    };
     $self->dataflow_output_id($input_id, 3);
   }
 }

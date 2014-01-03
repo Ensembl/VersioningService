@@ -35,6 +35,7 @@ sub default_options {
         ### Optional overrides        
 
         sources => [],
+        download_dir => '',
 
         ### Defaults
 
@@ -66,14 +67,26 @@ sub pipeline_analyses {
         -input_ids  => [ {} ],
         -max_retry_count  => 10,
         -flow_into  => {
-         '2->A'  => ['CheckLatest'],
-         'A->1'  => ['Notify'], 
+         2  => ['CheckLatest'],
+         1  => ['Notify'], 
         },
       },
 
       {
         -logic_name => 'CheckLatest',
         -module     => 'Bio::EnsEMBL::Pipeline::CheckLatest',
+        -parameters => {},
+        -max_retry_count  => 3,
+        -hive_capacity    => 100,
+        -rc_name          => 'normal',
+        -flow_into  => {
+         1  => ['DownloadSource'],
+        },
+      },
+
+      {
+        -logic_name => 'DownloadSource',
+        -module     => 'Bio::EnsEMBL::Pipeline::DownloadSource',
         -parameters => {},
         -max_retry_count  => 3,
         -hive_capacity    => 100,

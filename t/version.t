@@ -45,6 +45,10 @@ my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_
 $resource->source(name => 'RefSeq');
 $resource->save();
 
+my $release_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_release', type => 'ftp', value => 'ftp://ftp.refseq', release_version => 1);
+$release_resource->source(name => 'RefSeq');
+$release_resource->save();
+
 my $source_resources = $source->resources();
 is($source_resources->[0]->source->module(), $source->module(), "Can retrieve resources from source and source from resources");
 
@@ -90,7 +94,8 @@ is($current->version(), 12, "Matching current version for Uniprot");
 my $all_versions = $source->version();
 is(scalar(@$all_versions), 0, "Refseq source has no versions");
 
-my $release_resource = Bio::EnsEMBL::Versioning::Manager::Resources->get_release_resource('RefSeq');
-is($release_resource, undef, 'No release resource available'); 
+my $current_release_resource = Bio::EnsEMBL::Versioning::Manager::Resources->get_release_resource('RefSeq');
+is($release_resource->name, 'refseq_release', 'Found refseq release resource'); 
+
 
 done_testing();

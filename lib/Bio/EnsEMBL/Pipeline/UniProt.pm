@@ -29,23 +29,49 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::UniProtSwissprot
+Bio::EnsEMBL::Pipeline::UniProt
 
 =head1 DESCRIPTION
 
-A module for Uniprot Swissprot specific methods
+A module for Uniprot specific methods
 
 =over 8
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::UniProtSwissprot;
+package Bio::EnsEMBL::Pipeline::UniProt;
 
 use strict;
 use warnings;
 
 use Bio::EnsEMBL::Utils::Net qw/do_FTP/;
 
-use base qw/Bio::EnsEMBL::Pipeline::UniProt/;
+use base qw/Bio::EnsEMBL::Hive::Process/;
+
+
+=head2 get_version
+
+  Example     : $uniprot->get_version($ftp_file)
+  Description : Given an ftp file, returns the version
+  Returntype  : String
+  Exceptions  : None
+  Caller      : internal
+  Status      : Stable
+
+=cut
+
+
+sub get_version
+{
+  my $self = shift;
+  my $file = shift;
+
+  my $version;
+  if ($file =~ m#UniProt Knowledgebase Release (\d+_\d+)#) {
+    $version = $1;
+  }
+
+  return $version;
+}
 
 1;

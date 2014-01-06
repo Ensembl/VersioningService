@@ -48,6 +48,8 @@ use warnings;
 
 use Bio::EnsEMBL::Versioning::Manager::Resources;
 use Bio::EnsEMBL::Utils::Exception qw/throw/;
+use URI;
+use File::Basename;
 use Class::Inspector;
 
 use base qw/Bio::EnsEMBL::Pipeline::Base/;
@@ -64,7 +66,21 @@ sub run {
   my $filename = $dir . '/' . $latest_version . '/' . $name;
   my $type = $resource->type();
   if ($type eq 'ftp') {
-    $self->get_ftp_file($resource, $filename);
+    if ($resource->multiple_files) {
+      my $value = $resource->value();
+      my $uri = URI->new($value);
+      my @urls = split("/", $value);
+      my $files = $self->ls_ftp_dir($uri);
+      foreach my $file (@$files) {
+        if ($file =~ /$urls[-1]/) {
+          $filename = $dir . '/' . $latest_version . '/' . $file;
+          my $url = 'ftp://' . $uri->host() . dirname($uri->path) . '/' . $file;
+          $self->get_ftp_file($url, $filename);
+        }
+      }
+    } else {
+      $self->get_ftp_file($resource->value, $filename);
+    }
   }
 }
 

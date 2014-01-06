@@ -85,7 +85,7 @@ sub get_version {
 sub get_ftp_version {
   my $self = shift;
   my $resource = shift;
-  my $file = $self->get_ftp_file($resource);
+  my $file = $self->get_ftp_file($resource->value);
   my $name = $resource->source->name();
   my $module = $self->get_module($name);
   my $version = $module->get_version($file);

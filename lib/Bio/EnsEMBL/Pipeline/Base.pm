@@ -45,11 +45,11 @@ use strict;
 use warnings;
 
 use Bio::EnsEMBL::Versioning::DB;
-use Bio::EnsEMBL::Versioning::Manager::Resources;
-use Bio::EnsEMBL::Utils::Exception;
 use Bio::EnsEMBL::Utils::Net qw/do_FTP/;
 use Carp;
-use POSIX qw/strftime/;
+use Net::FTP;
+use URI;
+use File::Basename;
 
 use base qw/Bio::EnsEMBL::Hive::Process/;
 
@@ -69,13 +69,28 @@ use base qw/Bio::EnsEMBL::Hive::Process/;
 sub get_ftp_file
 {
   my $self = shift;
-  my $resource = shift;
+  my $url = shift;
   my $filename = shift;
 
-  my $url = $resource->value();
   my $file = do_FTP($url, undef, undef, $filename);
 
   return $file;
+}
+
+sub ls_ftp_dir
+{
+  my $self = shift;
+  my $uri = shift;
+
+  my $ftp = Net::FTP->new($uri->host());
+  if (!$ftp->login('anonymous', '-anonymous@')) {
+    croak("Cannot log in on ftp host");
+  }
+  if (!$ftp->cwd(dirname($uri->path()))) {
+    croak("Cannot change directory");
+  }
+  my @files = @{ $ftp->ls() };
+  return \@files;
 }
 
 1;

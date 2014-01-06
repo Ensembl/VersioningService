@@ -45,13 +45,14 @@ use strict;
 use warnings;
 
 use Bio::EnsEMBL::Versioning::DB;
+use Bio::EnsEMBL::Versioning::Manager::Resources;
 use Bio::EnsEMBL::Utils::Net qw/do_FTP/;
 use Carp;
 use Net::FTP;
 use URI;
 use File::Basename;
 
-use base qw/Bio::EnsEMBL::Hive::Process/;
+use base qw/Bio::EnsEMBL::Production::Pipeline::Base/;
 
 
 =head2 get_ftp_file
@@ -69,12 +70,32 @@ use base qw/Bio::EnsEMBL::Hive::Process/;
 sub get_ftp_file
 {
   my $self = shift;
-  my $url = shift;
+  my $resource = shift;
   my $filename = shift;
 
-  my $file = do_FTP($url, undef, undef, $filename);
-
-  return $file;
+  my $url = $resource->value();
+  my @urls = split("/", $url);
+  my @files;
+  my $download_name;
+  if ($resource->multiple_files) {
+    my $uri = URI->new($url);
+    my $files = $self->ls_ftp_dir($uri);
+    foreach my $file (@$files) {
+      if ($file =~ /$urls[-1]/) {
+        if (defined $filename) {
+          $download_name = $filename . '/' . $file;
+        }
+        $url = 'ftp://' . $uri->host() . dirname($uri->path) . '/' . $file;
+        push @files, do_FTP($url, undef, undef, $download_name);
+      }
+    }
+  } else {
+    if (defined $filename) {
+      $filename = $filename . '/' . $urls[-1];
+    }
+    return do_FTP($url, undef, undef, $filename);
+  }
+  return \@files;
 }
 
 sub ls_ftp_dir

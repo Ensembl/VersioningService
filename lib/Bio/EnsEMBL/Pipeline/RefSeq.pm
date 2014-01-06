@@ -67,7 +67,7 @@ sub get_version
   my $file = shift;
 
   my $version;
-  if ($file =~ m#Release (\d+)#) {
+  if ($file->[0] =~ m#Release (\d+)#) {
     $version = $1;
   }
 

@@ -63,6 +63,7 @@ sub run {
       version => $latest_version,
       source_name => $source_name
     };
+    $self->fine('Flowing %s with %s to %d for %s', $source_name, $latest_version, 3, 'updated sources');
     $self->dataflow_output_id($input_id, 3);
   }
 }
@@ -85,7 +86,7 @@ sub get_version {
 sub get_ftp_version {
   my $self = shift;
   my $resource = shift;
-  my $file = $self->get_ftp_file($resource->value);
+  my $file = $self->get_ftp_file($resource);
   my $name = $resource->source->name();
   my $module = $self->get_module($name);
   my $version = $module->get_version($file);

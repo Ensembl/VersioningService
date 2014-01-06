@@ -67,8 +67,9 @@ sub pipeline_analyses {
         -input_ids  => [ {} ],
         -max_retry_count  => 10,
         -flow_into  => {
-         2  => ['CheckLatest'],
-         1  => ['Notify'], 
+         '2->B'  => ['CheckLatest'],
+         '3->B'  => ['DownloadSource'],
+         'B->1'  => ['Notify'],
         },
       },
 
@@ -80,14 +81,16 @@ sub pipeline_analyses {
         -hive_capacity    => 100,
         -rc_name          => 'normal',
         -flow_into  => {
-         1  => ['DownloadSource'],
+          3 => ['DownloadSource'],
         },
       },
 
       {
         -logic_name => 'DownloadSource',
         -module     => 'Bio::EnsEMBL::Pipeline::DownloadSource',
-        -parameters => {},
+        -parameters => {
+           download_dir => $self->o('download_dir')
+        },
         -max_retry_count  => 3,
         -hive_capacity    => 100,
         -rc_name          => 'normal',

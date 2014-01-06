@@ -11,16 +11,6 @@ use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
 with 'MooseX::Log::Log4perl';
 
-has record => (
-    is => 'rw',
-    isa => 'Bio::EnsEMBL::Mongoose::Persistence::Record',
-    lazy => 1,
-    default => sub {
-        return Bio::EnsEMBL::Mongoose::Persistence::Record->new;
-    },
-    clearer => 'clear_record',
-);
-
 subtype 'XML::LibXML::DOM' => as 'Object';
 
 coerce 'XML::LibXML::DOM' => from 'Str' => via {

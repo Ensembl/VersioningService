@@ -13,7 +13,7 @@ my %opts = $conf->getall();
 
 Log::Log4perl::init("$Bin/../conf/logger.conf");
 
-use Bio::EnsEMBL::IO::GenbankParser->open($opts->{refseq_file});
+use Bio::EnsEMBL::Mongoose::Refseq->new(source_file => $opts->{refseq_file});
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 
 my $buffer = 0;
@@ -21,8 +21,8 @@ my $logger = Log::Log4perl->get_logger();
 
 $logger->info("Beginning to parse ".$opts{data_location});
 
-while($parser->next) {
-    
+while($parser->read_record) {
+
 }
 
 print "Wayhay!\n";

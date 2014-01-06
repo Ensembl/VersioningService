@@ -97,6 +97,11 @@ has evidence_level => (
     isa => 'Int',
     is => 'rw',
 );
+# 1 = Protein level
+# 2 = Transcript level
+# 3 = Support by homology
+# 4 = Predicted
+# 5 = Uncertain
 
 has suspicion => (
     isa => 'Str',

@@ -62,10 +62,21 @@ sub run {
   my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
   my $resource = $resource_manager->get_download_resource($source_name);
   my $filename = $dir . '/' . $source_name . '/' . $latest_version;
+  my $value = $resource->value();
   system("mkdir -p $filename");
   my $type = $resource->type();
+  my $result;
   if ($type eq 'ftp') {
-    $self->get_ftp_file($resource, $filename);
+    $result = $self->get_ftp_file($resource, $filename);
+  }
+  if (!$result) {
+    my $input_id = {
+      error => "File could not be downloaded for $value",
+      source_name => $source_name
+    };
+    $self->fine('Flowing %s with %s to %d for %s', $source_name, $value, 4, 'download failed');
+    $self->dataflow_output_id($input_id, 4);
+    return;
   }
 }
 

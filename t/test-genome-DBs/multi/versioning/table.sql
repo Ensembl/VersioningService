@@ -42,7 +42,6 @@ CREATE TABLE source (
 
   PRIMARY KEY (source_id),
   UNIQUE KEY name_idx (name),
-  UNIQUE KEY module_idx (module),
   FOREIGN KEY (source_group_id) REFERENCES source_group(source_group_id)
 
 ) COLLATE=latin1_swedish_ci ENGINE=InnoDB;

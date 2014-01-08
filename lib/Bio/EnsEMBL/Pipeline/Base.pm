@@ -77,6 +77,7 @@ sub get_ftp_file
   my @urls = split("/", $url);
   my @files;
   my $download_name;
+  my $result;
   if ($resource->multiple_files) {
     my $uri = URI->new($url);
     my $files = $self->ls_ftp_dir($uri);
@@ -86,14 +87,24 @@ sub get_ftp_file
           $download_name = $filename . '/' . $file;
         }
         $url = 'ftp://' . $uri->host() . dirname($uri->path) . '/' . $file;
-        push @files, do_FTP($url, undef, undef, $download_name);
+        eval { $result = do_FTP($url, undef, undef, $download_name); };
+        if ($@) {
+          carp($@);
+          $result = undef;
+        }
+        push @files, $result;
       }
     }
   } else {
     if (defined $filename) {
       $filename = $filename . '/' . $urls[-1];
     }
-    return do_FTP($url, undef, undef, $filename);
+    eval { $result = do_FTP($url, undef, undef, $filename); };
+    if ($@) {
+      carp($@);
+      return;
+    }
+    return $result;
   }
   return \@files;
 }

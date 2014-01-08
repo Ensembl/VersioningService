@@ -48,7 +48,6 @@ use warnings;
 
 use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::Versioning::Manager::Resources;
-use Bio::EnsEMBL::Utils::Exception qw/throw/;
 use Class::Inspector;
 
 use base qw/Bio::EnsEMBL::Pipeline::Base/;
@@ -57,9 +56,22 @@ sub run {
   my ($self) = @_;
   my $version = $self->param('version');
   my $source_name = $self->param('source_name');
-  my $latest_version = $self->get_version($source_name);
+  my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
+  my $resource = $resource_manager->get_release_resource($source_name);
+  my $latest_version = $self->get_version($resource);
+  my $value = $resource->value();
+  my $input_id;
+  if (!defined $latest_version) {
+    $input_id = {
+      error => "Version could not be found for $value",
+      source_name => $source_name
+    };
+    $self->fine('Flowing %s with %s to %d for %s', $source_name, $value, 4, 'unavailable version');
+    $self->dataflow_output_id($input_id, 4);
+    return;
+  }
   if ($version ne $latest_version) {
-    my $input_id = {
+    $input_id = {
       version => $latest_version,
       source_name => $source_name
     };
@@ -70,9 +82,7 @@ sub run {
 
 sub get_version {
   my $self = shift;
-  my $source_name = shift;
-  my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
-  my $resource = $resource_manager->get_release_resource($source_name);
+  my $resource = shift;
   my $release_file = $resource->value();
   my $type = $resource->type();
   my $version;
@@ -87,8 +97,18 @@ sub get_ftp_version {
   my $self = shift;
   my $resource = shift;
   my $file = $self->get_ftp_file($resource);
-  my $name = $resource->source->name();
-  my $module = $self->get_module($name);
+  my $value = $resource->value();
+  my $source_name = $self->param('source_name');
+  if (!$file) {
+    my $input_id = {
+      error => "File could not be found for $value",
+      source_name => $source_name
+    };
+    $self->fine('Flowing %s with %s to %d for %s', $source_name, $value, 4, 'link not working');
+    $self->dataflow_output_id($input_id, 4);
+    return;
+  }
+  my $module = $self->get_module($source_name);
   my $version = $module->get_version($file);
   return $version;
 }
@@ -108,7 +128,7 @@ sub get_module {
     }
     return $module;
   } or do {
-    throw("Module $module could not be found");
+    croak("Module $module could not be found");
   };
 }
 

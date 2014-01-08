@@ -69,6 +69,7 @@ sub pipeline_analyses {
         -flow_into  => {
          '2->B'  => ['CheckLatest'],
          '3->B'  => ['DownloadSource'],
+         '4->B'  => ['ErrorLog'],
          'B->1'  => ['Notify'],
         },
       },
@@ -82,6 +83,7 @@ sub pipeline_analyses {
         -rc_name          => 'normal',
         -flow_into  => {
           3 => ['DownloadSource'],
+          4 => ['ErrorLog'],
         },
       },
 
@@ -94,13 +96,25 @@ sub pipeline_analyses {
         -max_retry_count  => 3,
         -hive_capacity    => 100,
         -rc_name          => 'normal',
+        -flow_into  => {
+          4 => ['ErrorLog'],
+        },
+      },
+
+      {
+        -logic_name => 'ErrorLog',
+        -module     => 'Bio::EnsEMBL::Pipeline::ErrorLog',
+        -parameters => {},
+        -max_retry_count  => 3,
+        -hive_capacity    => 100,
+        -rc_name          => 'normal',
       },
 
       ####### NOTIFICATION
       
       {
         -logic_name => 'Notify',
-        -module     => 'Bio::EnsEMBL::Production::Pipeline::Production::EmailSummaryCore',
+        -module     => 'Bio::EnsEMBL::Pipeline::EmailSummary',
         -parameters => {
           email   => $self->o('email'),
           subject => $self->o('pipeline_name').' has finished',

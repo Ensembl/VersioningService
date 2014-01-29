@@ -43,7 +43,7 @@ sub fetch_input {
 
   my %errors = $self->logs('ErrorLog');
 
-  my $msg = "Your Versioning Pipeline has finished. We have:\n";
+  my $msg = "Your Versioning Pipeline has finished. We have:\n\n";
   
   foreach my $key (keys %errors) {
     $msg .= $key . $errors{$key} . "\n";
@@ -85,7 +85,7 @@ sub jobs {
     };
   }
   my $id = $analysis->dbID();
-  @jobs = @{$aja->generic_fetch("j.analysis_id =$id")};
+  @jobs = @{$aja->fetch_all_by_analysis_id($id)};
   $_->{input} = destringify($_->input_id()) for @jobs;
   my %passed_sources = map { $_->{input}->{source_name}, 1 } grep { $_->status() eq 'DONE' } @jobs;
   my %failed_sources = map { $_->{input}->{source_name}, 1 } grep { $_->status() eq 'FAILED' } @jobs;

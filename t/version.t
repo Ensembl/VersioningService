@@ -39,7 +39,7 @@ $source_group->save();
 my $source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeq', module => 'RefSeqParser');
 $source->source_group(name => 'RefSeqGroup');
 $source->save();
-is($source->source_group_id, 2, "Source group was saved along with source");
+cmp_ok($source->source_group_id,'==', 2, "Source group was saved along with source");
 
 my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_file', type => 'file', value => 'refseq.txt');
 $resource->source(name => 'RefSeq');
@@ -56,7 +56,7 @@ my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', re
 $version->source(name => 'Uniprot');
 $version->source->source_group(name => 'UniprotGroup');
 $version->save();
-is($version->source->source_id, 2, "Uniprot was correctly saved");
+cmp_ok($version->source->source_id,'==', 2, "Uniprot was correctly saved");
 
 my $run = Bio::EnsEMBL::Versioning::Object::Run->new(start => 'now()');
 $run->version($version);
@@ -68,7 +68,7 @@ is($process->run->start(), 'now()', "Updated start date for run");
 my $runs = $version->run();
 is($runs->[0]->version->[0]->version(), $version->version(), "Successfully retrieved run from version object");
 my $run_process = $run->process();
-is($run_process->[0]->run->run_id, $run->run_id(), "Retrieving process from run object and run object from process");
+cmp_ok($run_process->[0]->run->run_id,'==', $run->run_id(), "Retrieving process from run object and run object from process");
 
 my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '11', record_count => 999);
 $second_version->source(name => 'Uniprot');
@@ -80,19 +80,19 @@ $third_version->source->source_group(name => 'UniprotGroup');
 $third_version->save();
 
 my $group_sources = $source_group->source();
-is(scalar(@$group_sources), 2, "Two sources for UniprotGroup");
+cmp_ok(scalar(@$group_sources),'==', 2, "Two sources for UniprotGroup");
 
 
 my $versions = Bio::EnsEMBL::Versioning::Manager::Version->get_versions();
-is(scalar(@$versions), 3, "Fetched all version");
+cmp_ok(scalar(@$versions), '==', 3, "Fetched all version");
 my $uniprot_versions = Bio::EnsEMBL::Versioning::Manager::Version->get_all_versions('Uniprot');
-is(scalar(@$uniprot_versions), 2, "Found all Uniprot versions");
+cmp_ok(scalar(@$uniprot_versions),'==', 2, "Found all Uniprot versions");
 
 my $current = Bio::EnsEMBL::Versioning::Manager::Version->get_current('Uniprot');
-is($current->version(), 12, "Matching current version for Uniprot");
+cmp_ok($current->version(),'==', 12, "Matching current version for Uniprot");
 
 my $all_versions = $source->version();
-is(scalar(@$all_versions), 0, "Refseq source has no versions");
+cmp_ok(scalar(@$all_versions),'==', 0, "Refseq source has no versions");
 
 my $current_release_resource = Bio::EnsEMBL::Versioning::Manager::Resources->get_release_resource('RefSeq');
 is($release_resource->name, 'refseq_release', 'Found refseq release resource'); 

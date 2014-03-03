@@ -44,6 +44,7 @@ sub register_DBAdaptor {
     host     => $dbc->host,
     username => $dbc->username,
     password => $dbc->password,
+    port     => $dbc->port,
     server_time_zone => 'UTC',
   );
   return;

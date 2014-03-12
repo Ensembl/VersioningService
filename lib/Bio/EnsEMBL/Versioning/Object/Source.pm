@@ -24,7 +24,14 @@ use warnings;
 use base qw(Bio::EnsEMBL::Versioning::Object);
 
 
-# A source is a type of data coming from an external source
+# Attributes of source:
+# name : Common name for source
+# source_group_id : The source belongs to a group of sources, e.g. Uniprot group contains Swissprot and Uniparc sources
+# active : Boolean flag for whether the source is being updated
+# created_date : Last date that this source was refreshed
+# downloader : Download controller for testing version and presenting correct protocol
+# parser : Name of the parser class applicable to this source
+
 
 __PACKAGE__->meta->setup(
   table       => 'source',
@@ -35,12 +42,12 @@ __PACKAGE__->meta->setup(
     source_group_id  => {type => 'integer'},
     active           => {type => 'integer', 'default' => 1, not_null => 1},
     created_date     => {type => 'timestamp', not_null => 1, default => 'now()'},
-    module           => {type => 'varchar', 'length' => 40 },
-    parser           => {type => 'varchar', 'length' => 40 },
+    downloader       => {type => 'varchar', 'length' => 60 },
+    parser           => {type => 'varchar', 'length' => 60 },
   ],
 
   unique_key => ['name'],
-  unique_key => ['module'],
+  unique_key => ['downloader'],
 
   allow_inline_column_values => 1,
 

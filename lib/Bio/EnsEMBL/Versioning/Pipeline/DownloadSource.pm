@@ -50,6 +50,7 @@ use Bio::EnsEMBL::Versioning::Manager::Resources;
 use Bio::EnsEMBL::Utils::Exception qw/throw/;
 use URI;
 use File::Basename;
+use File::Path qw/make_path/;
 use Class::Inspector;
 
 use base qw/Bio::EnsEMBL::Pipeline::Base/;
@@ -63,7 +64,7 @@ sub run {
   my $resource = $resource_manager->get_download_resource($source_name);
   my $filename = $dir . '/' . $source_name . '/' . $latest_version;
   my $value = $resource->value();
-  system("mkdir -p $filename");
+  make_path($filename, { mode => 0774 });
   my $type = $resource->type();
   my $result;
   if ($type eq 'ftp') {
@@ -76,6 +77,11 @@ sub run {
     };
     $self->fine('Flowing %s with %s to %d for %s', $source_name, $value, 4, 'download failed');
     $self->dataflow_output_id($input_id, 4);
+    return;
+  } else {
+    $self->fine('Piping downloaded resource into parser stage');
+    my $message = { source_name => $source_name };
+    $self->dataflow_output_id($message, 3);
     return;
   }
 }

@@ -18,7 +18,6 @@ limitations under the License.
 
 =pod
 
-
 =head1 CONTACT
 
   Please email comments or questions to the public Ensembl
@@ -29,24 +28,42 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::RefSeqPeptide
+Bio::EnsEMBL::Pipeline::ParseSource
 
 =head1 DESCRIPTION
 
-A module for RefSeq peptide specific methods
-
-=over 8
+eHive pipeline module for the consumption of a downloaded resource into a document store
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::RefSeqPeptide;
+package Bio::EnsEMBL::Pipeline::ParseSource;
 
 use strict;
 use warnings;
 
-use Bio::EnsEMBL::Utils::Net qw/do_FTP/;
 
-use base qw/Bio::EnsEMBL::Pipeline::RefSeq/;
 
+
+sub run {
+  my ($self) = @_;
+  my $source_name = $self->param('source_name');
+  my $resource = Bio::EnsEMBL::Versioning::Manager::Resources->get_release_resource($source_name);
+# Get parser from Source object
+  my $source = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(query => [ name => $source_name ]);
+  
+
+}
+
+sub get_destination_path {
+  
+}
+
+sub get_source_path {
+  
+}
+
+sub parse_file {
+  
+}
 
 1;

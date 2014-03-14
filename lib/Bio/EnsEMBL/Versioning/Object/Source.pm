@@ -44,6 +44,7 @@ __PACKAGE__->meta->setup(
     created_date     => {type => 'timestamp', not_null => 1, default => 'now()'},
     downloader       => {type => 'varchar', 'length' => 60 },
     parser           => {type => 'varchar', 'length' => 60 },
+    current_version  => {type => 'integer'},
   ],
 
   unique_key => ['name'],
@@ -62,11 +63,6 @@ __PACKAGE__->meta->setup(
      version => {
        type       => 'one to many',
        class      => 'Bio::EnsEMBL::Versioning::Object::Version',
-       column_map => { 'source_id' => 'source_id' },
-     },
-     resources => {
-       type       => 'one to many',
-       class      => 'Bio::EnsEMBL::Versioning::Object::Resources',
        column_map => { 'source_id' => 'source_id' },
      },
   ],

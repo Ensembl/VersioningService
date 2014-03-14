@@ -15,18 +15,19 @@
 use strict;
 use warnings;
 
-use Test::More;
-use Test::Exception;
+# use Test::More;
+# use Test::Exception;
 
 use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::DBSQL::DBAdaptor;
 
 my $dba = Bio::EnsEMBL::DBSQL::DBAdaptor->new(
--host => 'ens-production',
+-host => '127.0.0.1',
 -species => 'multi',
 -group => 'versioning',
 -user => 'ensadmin',
 -pass => 'ensembl',
+-port => 3350,
 -dbname => 'versioning_db'
 );
 Bio::EnsEMBL::Versioning::DB->register_DBAdaptor($dba);
@@ -35,30 +36,24 @@ require Bio::EnsEMBL::Versioning::Manager::Version;
 require Bio::EnsEMBL::Versioning::Manager::Process;
 require Bio::EnsEMBL::Versioning::Manager::Source;
 require Bio::EnsEMBL::Versioning::Manager::SourceGroup;
-require Bio::EnsEMBL::Versioning::Manager::Resources;
 require Bio::EnsEMBL::Versioning::Manager::Run;
 
-my $uniprot_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'UniProtSwissprot', module => 'UniProtParser');
+my $uniprot_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'UniProtSwissprot', parser => 'UniProtParser');
 $uniprot_source->source_group(name => 'UniProtGroup');
-my $uniprot_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'uniprot_ftp', type => 'ftp', value => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/knowledgebase/uniprot_trembl.dat.gz');
-$uniprot_resource->source($uniprot_source);
-$uniprot_resource->save();
-my $uniprot_release_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'uniprot_release', type => 'ftp', value => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/knowledgebase/reldate.txt', release_version => 1);
-$uniprot_release_resource->source($uniprot_source);
-$uniprot_release_resource->save();
-my $uniprot_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '2013_12', record_count => 49243530, is_current => 1, uri => '/lustre/scratch110/ensembl/mr6/Uniprot/203_12/uniprot.txt');
+$uniprot_source->save();
+my $uniprot_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/mr6/Uniprot/203_12/uniprot.txt');
 $uniprot_version->source($uniprot_source);
 $uniprot_version->save();
 
-my $refseq_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeqPeptide', module => 'RefSeqParser');
+my $refseq_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeqPeptide', parser => 'RefSeqParser');
 $refseq_source->source_group(name => 'RefSeqGroup');
-my $refseq_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_peptide_ftp', type => 'ftp', value => 'ftp://ftp.ncbi.nih.gov/refseq/release/vertebrate_mammalian/vertebrate_mammalian*.protein.gpff.gz', multiple_files => 1);
-$refseq_resource->source($refseq_source);
-$refseq_resource->save();
-my $refseq_release_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_release', type => 'ftp', value => 'ftp://ftp.ncbi.nih.gov/refseq/release/release-notes/RefSeq-release62.txt', release_version => 1);
-$refseq_release_resource->source($refseq_source);
-$refseq_release_resource->save();
-my $refseq_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '61', record_count => 49243530, is_current => 1, uri => '/lustre/scratch110/ensembl/mr6/RefSeq/61/refseq.txt');
-$refseq_version->source($refseq_source);
-$refseq_version->save();
 
+my $refseq_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '61', record_count => 49243530, uri => '/lustre/scratch110/ensembl/mr6/RefSeq/61/refseq.txt');
+$refseq_version->source($refseq_source);
+
+my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '60', record_count => 40000, uri => '/lustre/scratch110/ensembl/mr6/RefSeq/61/refseq.txt');
+$second_version->source($refseq_source);
+$second_version->save();
+$refseq_version->save();
+$refseq_source->current_version($second_version->version_id);
+$refseq_source->save;

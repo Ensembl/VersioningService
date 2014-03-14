@@ -41,18 +41,7 @@ $source->source_group(name => 'RefSeqGroup');
 $source->save();
 cmp_ok($source->source_group_id,'==', 2, "Source group was saved along with source");
 
-my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_file', type => 'file', value => 'refseq.txt');
-$resource->source(name => 'RefSeq');
-$resource->save();
-
-my $release_resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_release', type => 'ftp', value => 'ftp://ftp.refseq', release_version => 1);
-$release_resource->source(name => 'RefSeq');
-$release_resource->save();
-
-my $source_resources = $source->resources();
-is($source_resources->[0]->source->module(), $source->module(), "Can retrieve resources from source and source from resources");
-
-my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 350, is_current => 1);
+my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 350);
 $version->source(name => 'Uniprot');
 $version->source->source_group(name => 'UniprotGroup');
 $version->save();
@@ -74,7 +63,7 @@ my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '
 $second_version->source(name => 'Uniprot');
 $second_version->save();
 
-my $third_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 238, is_current => 1);
+my $third_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 238);
 $third_version->source(name => 'UniprotTrEMBL');
 $third_version->source->source_group(name => 'UniprotGroup');
 $third_version->save();

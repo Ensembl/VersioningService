@@ -28,5 +28,4 @@ sub object_class { 'Bio::EnsEMBL::Versioning::Object::Source' }
 
  __PACKAGE__->make_manager_methods('sources');
 
-
 1;

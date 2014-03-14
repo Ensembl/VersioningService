@@ -26,7 +26,7 @@ use base qw(Bio::EnsEMBL::Versioning::Object);
 
 # A version is the record of a source at a given time
 # A source can have different versions, which were created at different times
-# Only one version of a source can be current at a given time
+# It references the location of the download as well as an index built on it
 
 __PACKAGE__->meta->setup(
   table       => 'version',
@@ -34,12 +34,12 @@ __PACKAGE__->meta->setup(
   columns     => [
     version_id        => {type => 'serial', primary_key => 1, not_null => 1},
     source_id         => {type => 'integer'},
-    version           => {type => 'varchar', not_null => 1, 'length' => 255},
+    version           => {type => 'varchar', not_null => 1, length => 255},
     created_date      => {type => 'timestamp', not_null => 1, default => 'now()'},
-    is_current        => {type => 'integer', not_null => 1, default => 0},
     count_seen        => {type => 'integer', not_null => 1, default => 1},
     record_count      => {type => 'integer'},
-    uri               => {type => 'varchar', length => 150},
+    uri               => {type => 'varchar', length => 255},  # location to find the local source copy
+    index_uri         => {type => 'varchar', length => 255},  # location of index for this version of a source
   ],
 
   allow_inline_column_values => 1,

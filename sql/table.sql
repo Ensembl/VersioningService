@@ -37,8 +37,9 @@ CREATE TABLE source (
   source_group_id          INT(10) UNSIGNED,
   active                   BOOLEAN NOT NULL DEFAULT 1,
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
-  module                   VARCHAR(40),
-  parser                   VARCHAR(40),
+  downloader               VARCHAR(60),
+  parser                   VARCHAR(60),
+  current_version          INT(10) UNSIGNED,
 
   PRIMARY KEY (source_id),
   UNIQUE KEY name_idx (name),
@@ -60,10 +61,10 @@ CREATE TABLE version (
   source_id                INT(10) UNSIGNED,
   version                  VARCHAR(255),
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
-  is_current               BOOLEAN NOT NULL DEFAULT 0,
   count_seen               INT(10) UNSIGNED NOT NULL,
   record_count             INT(10),
-  uri                      VARCHAR(150),
+  uri                      VARCHAR(255),
+  index_uri                VARCHAR(255),
 
   PRIMARY KEY (version_id),
   KEY version_idx (source_id, version),
@@ -91,21 +92,6 @@ CREATE TABLE version_run (
   PRIMARY KEY (version_run_id),
   FOREIGN KEY (version_id) REFERENCES version(version_id),
   FOREIGN KEY (run_id) REFERENCES run(run_id)
-
-) COLLATE=latin1_swedish_ci ENGINE=InnoDB;
-
-CREATE TABLE resources (
-  resource_id              INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  name                     VARCHAR(40),
-  type                     ENUM('http', 'ftp', 'file', 'db') NOT NULL DEFAULT 'http',
-  value                    VARCHAR(160),
-  multiple_files           BOOLEAN NOT NULL DEFAULT 0,
-  release_version          BOOLEAN NOT NULL DEFAULT 0,
-  source_id       INT(10) UNSIGNED,
-  
-  PRIMARY KEY (resource_id),
-  KEY name_idx (name),
-  FOREIGN KEY (source_id) REFERENCES source(source_id)
 
 ) COLLATE=latin1_swedish_ci ENGINE=InnoDB;
 

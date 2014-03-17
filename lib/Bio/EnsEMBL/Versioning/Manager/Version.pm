@@ -78,9 +78,10 @@ sub get_current {
                          with_objects => ['source'],
                          query => [
                                    'source.name' => $source_name,
-                                   is_current => 1
+                                   'source.current_version' => 'version.version_id',
                                   ],
-                         distinct => 1);
+                         distinct => 1,
+                         debug => 1);
   croak("No versions found for $source_name") if !$versions->[0];
 
   return $versions->[0];

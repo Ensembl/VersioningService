@@ -65,6 +65,11 @@ __PACKAGE__->meta->setup(
        class      => 'Bio::EnsEMBL::Versioning::Object::Version',
        column_map => { 'source_id' => 'source_id' },
      },
+     current_version => {
+       type       => 'one to one',
+       class      => 'Bio::EnsEMBL::Versioning::Object::Version',
+       column_map => { 'current_version' => 'source_id'},
+     }
   ],
 
 );

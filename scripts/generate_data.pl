@@ -43,7 +43,7 @@ my $resource = Bio::EnsEMBL::Versioning::Object::Resources->new(name => 'refseq_
 $resource->source(name => 'RefSeq');
 $resource->save();
 
-my $version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 350, is_current => 1);
+my $version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '12', record_count => 350, is_current => 1);
 $version->source(name => 'Uniprot');
 $version->source->source_group(name => 'UniprotGroup');
 $version->save();
@@ -56,11 +56,11 @@ my $process = Bio::EnsEMBL::Versioning::Object::Process->new(name => 'update');
 $process->run($run);
 $process->save();
 
-my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '11', record_count => 999);
+my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '11', record_count => 999);
 $second_version->source(name => 'Uniprot');
 $second_version->save();
 
-my $third_version = Bio::EnsEMBL::Versioning::Object::Version->new(version => '12', record_count => 238, is_current => 1);
+my $third_version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '12', record_count => 238, is_current => 1);
 $third_version->source(name => 'UniprotTrEMBL');
 $third_version->source->source_group(name => 'UniprotGroup');
 $third_version->save();

@@ -59,7 +59,7 @@ CREATE TABLE run (
 CREATE TABLE version (
   version_id               INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   source_id                INT(10) UNSIGNED,
-  version                  VARCHAR(255),
+  revision                 VARCHAR(255),
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
   count_seen               INT(10) UNSIGNED NOT NULL,
   record_count             INT(10),
@@ -67,7 +67,7 @@ CREATE TABLE version (
   index_uri                VARCHAR(255),
 
   PRIMARY KEY (version_id),
-  KEY version_idx (source_id, version),
+  KEY version_idx (source_id, revision),
   FOREIGN KEY (source_id) REFERENCES source(source_id)
 
 ) COLLATE=latin1_swedish_ci ENGINE=InnoDB;

@@ -1,17 +1,15 @@
 package Bio::EnsEMBL::Mongoose::Persistence::Query;
 use Moose::Role;
 
-
 use Config::General;
-
-use FindBin qw/$Bin/;
 
 has config_file => (
     isa => 'Str',
     is => 'ro',
     required => 1,
     default => sub {
-        my $path = "$Bin/../conf/swissprot.conf";
+        ## TODO FIXME BROKEN BROKEN BROKEN
+        my $path = "$ENV{MONGOOSE}/conf/swissprot.conf";
         return $path;
     },
 );

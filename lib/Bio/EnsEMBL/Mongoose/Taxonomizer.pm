@@ -7,14 +7,13 @@ use Bio::EnsEMBL::Compara::DBSQL::NCBITaxonAdaptor;
 use Bio::EnsEMBL::Mongoose::IOException;
 
 use Config::General;
-use FindBin qw/$Bin/;
 
 has config_file => (
     isa => 'Str',
     is => 'ro',
     required => 1,
     default => sub {
-        return "$Bin/../conf/databases.conf";
+        return "$ENV{MONGOOSE}/conf/databases.conf";
     }
 );
 

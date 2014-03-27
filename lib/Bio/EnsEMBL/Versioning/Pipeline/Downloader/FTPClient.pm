@@ -71,4 +71,9 @@ sub ls_ftp_dir
   return $files;
 }
 
+# pass-through method to allow Role methods to cross over
+sub do_FTP {
+  return Bio::EnsEMBL::Utils::Net::do_FTP(@_);
+}
+
 1;

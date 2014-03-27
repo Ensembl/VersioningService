@@ -2,10 +2,9 @@ use Test::More;
 use Test::Differences;
 use Cwd;
 use Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq;
-use FindBin qw/$Bin/;
 
 use Log::Log4perl;
-Log::Log4perl::init("$Bin/../conf/logger.conf");
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 my $refseq = Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq->new();
 $refseq->file_pattern('vertebrate_mammalian\.55\.protein.*');

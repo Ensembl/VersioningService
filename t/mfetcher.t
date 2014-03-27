@@ -1,9 +1,8 @@
 use Test::More;
 use Test::Differences;
 
-use FindBin qw/$Bin/;
 use Log::Log4perl;
-Log::Log4perl::init("$Bin/../conf/logger.conf");
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 use Bio::EnsEMBL::Mongoose::Mfetcher;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;

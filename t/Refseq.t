@@ -1,14 +1,13 @@
 use Test::More;
 use Test::Differences;
 
-use FindBin qw/$Bin/;
 use Log::Log4perl;
-Log::Log4perl::init("$Bin/../conf/logger.conf");
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Data::Dump::Color qw/dump/;
 use Bio::EnsEMBL::Mongoose::Parser::Refseq;
 
 
-my $source = $Bin."/data/XM_005579308.gbff";
+my $source = $ENV{MONGOOSE}."/t/data/XM_005579308.gbff";
 my $ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::Refseq->new(
     source_file => $source,
 );

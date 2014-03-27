@@ -1,13 +1,12 @@
 use XML::LibXML;
 use XML::LibXML::SAX;
-use FindBin qw/$Bin/;
 use PerlIO::gzip;
 use XML::SAX::ParserFactory;
 
 
 
 my $source = "/mysql/mongoose/data/uniprot_trembl.xml.gz";
-$source = "$BIN../t/data/braf.xml";
+$source = "$ENV{MONGOOSE}/t/data/braf.xml";
 $source = "/Users/ktaylor/projects/data/uniprot_sprot.xml.gz";
 
 my $fh;

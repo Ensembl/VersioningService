@@ -5,16 +5,15 @@ use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
 use Data::Dump::Color qw/dump/;
 use Log::Log4perl;
-use FindBin qw/$Bin/;
 
-Log::Log4perl::init("$Bin/../conf/logger.conf");
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 our $fasta_writer = Bio::EnsEMBL::Mongoose::Serializer::FASTA->new();
 
 my $query = join(' ',@ARGV);
 die "Specify query string" unless $query;
 #config_file => "$Bin/../conf/uniparc.conf"
-my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => "$Bin/../conf/swissprot.conf");
+my $lucy = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => "$ENV{MONGOOSE}/conf/swissprot.conf");
 $lucy->query($query);
 my $total = 0;
 print "###########\n";

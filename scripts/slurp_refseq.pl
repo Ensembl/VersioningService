@@ -8,10 +8,10 @@ use Devel::Size qw/total_size/;
 
 use Config::General;
 
-my $conf = Config::General->new("$Bin/../conf/refseq.conf");
+my $conf = Config::General->new("$ENV{MONGOOSE}/conf/refseq.conf");
 my %opts = $conf->getall();
 
-Log::Log4perl::init("$Bin/../conf/logger.conf");
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 use Bio::EnsEMBL::Mongoose::Parser::Refseq;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;

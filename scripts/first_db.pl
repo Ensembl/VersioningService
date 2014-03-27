@@ -28,7 +28,7 @@ my $dba = Bio::EnsEMBL::DBSQL::DBAdaptor->new(
 -user => 'ensadmin',
 -pass => 'ensembl',
 -port => 3350,
--dbname => 'versioning_db'
+-dbname => 'kt7_versioning_db'
 );
 Bio::EnsEMBL::Versioning::DB->register_DBAdaptor($dba);
 
@@ -38,14 +38,28 @@ require Bio::EnsEMBL::Versioning::Manager::Source;
 require Bio::EnsEMBL::Versioning::Manager::SourceGroup;
 require Bio::EnsEMBL::Versioning::Manager::Run;
 
-my $uniprot_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'UniProtSwissprot', parser => 'UniProtParser');
+my $uniprot_source = Bio::EnsEMBL::Versioning::Object::Source->new(
+  name => 'UniProtSwissprot', 
+  parser => 'Bio::EnsEMBL::Mongoose::Parser::Swissprot',
+  downloader => 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissprot',
+  active => 1,
+);
 $uniprot_source->source_group(name => 'UniProtGroup');
 $uniprot_source->save();
-my $uniprot_version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/mr6/Uniprot/203_12/uniprot.txt');
+my $uniprot_version = Bio::EnsEMBL::Versioning::Object::Version->new(
+  revision => '2013_12', 
+  record_count => 49243530, 
+  uri => '/lustre/scratch110/ensembl/mr6/Uniprot/2013_12/uniprot.txt'
+);
 $uniprot_version->source($uniprot_source);
 $uniprot_version->save();
 
-my $refseq_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeqPeptide', parser => 'RefSeqParser');
+my $refseq_source = Bio::EnsEMBL::Versioning::Object::Source->new(
+  name => 'RefSeqPeptide', 
+  parser => 'Bio::EnsEMBL::Mongoose::Parser::Refseq',
+  downloader => 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq',
+  active => 1,
+);
 $refseq_source->source_group(name => 'RefSeqGroup');
 
 my $refseq_version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '61', record_count => 49243530, uri => '/lustre/scratch110/ensembl/mr6/RefSeq/61/refseq.txt');

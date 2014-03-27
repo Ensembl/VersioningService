@@ -1,9 +1,8 @@
 use strict;
 use warnings;
 
-use FindBin qw/$Bin/;
 use Log::Log4perl;
-Log::Log4perl::init("$Bin/../conf/logger.conf");
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 use Bio::EnsEMBL::Mongoose::Mfetcher;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
@@ -17,7 +16,7 @@ my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
 );
 
 my $mfetcher = Bio::EnsEMBL::Mongoose::Mfetcher->new(
-    storage_engine_conf => "$Bin/../conf/swissprot.conf",
+    storage_engine_conf => "$ENV{MONGOOSE}/conf/swissprot.conf",
     query_params => $params,
     handle => $fh,
 );

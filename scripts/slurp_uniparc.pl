@@ -1,17 +1,16 @@
 use strict;
 use warnings;
 
-use FindBin qw/$Bin/;
 use Log::Log4perl;
 use Data::Dump::Color qw/dump/;
 use Devel::Size qw/total_size/;
 
 use Config::General;
 
-my $conf = Config::General->new("$Bin/../conf/uniparc.conf");
+my $conf = Config::General->new("$ENV{MONGOOSE}/conf/uniparc.conf");
 my %opts = $conf->getall();
 
-Log::Log4perl::init("$Bin/../conf/logger.conf");
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 use Bio::EnsEMBL::Mongoose::Parser::Uniparc;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;

@@ -29,6 +29,7 @@ A module for Swissprot specific methods
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt;
 
 use Moose;
+use Try::Tiny;
 
 extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
 has uri => (
@@ -46,7 +47,7 @@ has file_pattern => (
 has version_uri => ( 
   isa => 'Str', 
   is => 'ro', 
-  default => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/complete/reldate.txt',
+  default => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/relnotes.txt',
 );
 with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient';
 with 'MooseX::Log::Log4perl';
@@ -54,9 +55,16 @@ with 'MooseX::Log::Log4perl';
 sub get_version
 {
   my $self = shift;
-  my $file = $self->do_FTP($self->version_uri);
+
+  my $file;
   my $version;
-  if ($file =~ m#UniProt Knowledgebase Release (\d+_\d+)#) {
+  my $url = $self->version_uri();
+  try {
+    $file = do_FTP($url);
+  } catch {
+    Bio::EnsEMBL::Mongoose::NetException->throw('Failed to retrieve version from '.$url);
+  };
+  if ($file =~ /UniProt Release (\d+_\d+)/m) {
     $version = $1;
   }
   Bio::EnsEMBL::Mongoose::NetException->throw('Failed to get version from UniProt release notes') unless $version;

@@ -22,7 +22,7 @@
 
 CREATE TABLE source_group (
   source_group_id          INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  name                     VARCHAR(40),
+  name                     VARCHAR(128),
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
 
   PRIMARY KEY (source_group_id),
@@ -33,12 +33,12 @@ CREATE TABLE source_group (
 
 CREATE TABLE source (
   source_id                INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  name                     VARCHAR(40),
+  name                     VARCHAR(128),
   source_group_id          INT(10) UNSIGNED,
   active                   BOOLEAN NOT NULL DEFAULT 1,
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
-  downloader               VARCHAR(60),
-  parser                   VARCHAR(60),
+  downloader               VARCHAR(128),
+  parser                   VARCHAR(128),
   current_version          INT(10) UNSIGNED,
 
   PRIMARY KEY (source_id),
@@ -75,7 +75,7 @@ CREATE TABLE version (
 CREATE TABLE process (
   process_id               INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   run_id                   INT(10) UNSIGNED,
-  name                     VARCHAR(40),
+  name                     VARCHAR(128),
   created_date             TIMESTAMP NOT NULL DEFAULT NOW(),
 
   PRIMARY KEY (process_id),

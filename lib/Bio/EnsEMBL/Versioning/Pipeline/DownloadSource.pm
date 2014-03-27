@@ -29,61 +29,53 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::DownloadSource
+Bio::EnsEMBL::Versioning::Pipeline::DownloadSource
 
 =head1 DESCRIPTION
 
 A module which downloads a given source and saves it as a file
 
-Allowed parameters are:
-
-=over 8
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::DownloadSource;
+package Bio::EnsEMBL::Versioning::Pipeline::DownloadSource;
 
 use strict;
 use warnings;
 
-use Bio::EnsEMBL::Versioning::Manager::Resources;
-use Bio::EnsEMBL::Utils::Exception qw/throw/;
-use URI;
-use File::Basename;
-use File::Path qw/make_path/;
-use Class::Inspector;
+use Bio::EnsEMBL::Versioning::Broker;
+use Try::Tiny;
 
-use base qw/Bio::EnsEMBL::Pipeline::Base/;
+use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
   my $latest_version = $self->param('version');
   my $source_name = $self->param('source_name');
-  my $dir = $self->param('download_dir');
-  my $resource_manager = 'Bio::EnsEMBL::Versioning::Manager::Resources';
-  my $resource = $resource_manager->get_download_resource($source_name);
-  my $filename = $dir . '/' . $source_name . '/' . $latest_version;
-  my $value = $resource->value();
-  make_path($filename, { mode => 0774 });
-  my $type = $resource->type();
+  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+
+  my $source = $broker->get_current_source_by_name($source_name);
+  my $downloader = $self->get_module($source->downloader)->new;
   my $result;
-  if ($type eq 'ftp') {
-    $result = $self->get_ftp_file($resource, $filename);
-  }
-  if (!$result) {
+  my $temp_location = $broker->temp_location;
+  try {
+    $result = $downloader->download_to($temp_location);
+  } catch {
     my $input_id = {
-      error => "File could not be downloaded for $value",
+      error => "Files could not be downloaded for ".$source_name.". Exception: ".$_->message,
       source_name => $source_name
     };
-    $self->fine('Flowing %s with %s to %d for %s', $source_name, $value, 4, 'download failed');
+    $self->warning('Flowing %s to %d for %s', $source_name, 4, 'download failed');
     $self->dataflow_output_id($input_id, 4);
     return;
-  } else {
-    $self->fine('Piping downloaded resource into parser stage');
-    my $message = { source_name => $source_name };
-    $self->dataflow_output_id($message, 3);
-    return;
-  }
+  };
+  $broker->finalise_download($source,$latest_version,$temp_location);
+
+  $self->warning('Piping downloaded resource into parser stage');
+  my $message = { source_name => $source_name };
+  $self->dataflow_output_id($message, 2);
+  return;
+
 }
 
 

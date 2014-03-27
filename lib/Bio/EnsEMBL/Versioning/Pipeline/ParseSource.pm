@@ -28,7 +28,7 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::ParseSource
+Bio::EnsEMBL::Versioning::Pipeline::ParseSource
 
 =head1 DESCRIPTION
 
@@ -36,34 +36,51 @@ eHive pipeline module for the consumption of a downloaded resource into a docume
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::ParseSource;
+package Bio::EnsEMBL::Versioning::Pipeline::ParseSource;
 
 use strict;
 use warnings;
 
-
-
+use Bio::EnsEMBL::Versioning::Broker;
+use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
   my $source_name = $self->param('source_name');
-  my $resource = Bio::EnsEMBL::Versioning::Manager::Resources->get_release_resource($source_name);
-# Get parser from Source object
-  my $source = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(query => [ name => $source_name ]);
-  
+  my $specific_version = $self->param('version');
+  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
 
-}
+  my $source;
+  if (defined $specific_version) {
+    $source = $broker->get_source_by_name_and_version($source_name,$specific_version);
+  } else {
+    $source = $broker->get_current_source_by_name($source_name);
+  }
 
-sub get_destination_path {
-  
-}
+  my $parser_name = $self->get_module($source->parser);
+  my $files = $broker->get_file_list_for_source($source);
+  my $temp = $broker->temp_location.'/'.$source_name.'.index';
+  my $total_records = 0;
+  my $doc_store;
+  foreach (@$files) {
+    my $parser = $parser_name->new(source_file => $_);
+    
+    $doc_store = $broker->document_store($temp);
+    my $buffer = 0; 
 
-sub get_source_path {
-  
-}
-
-sub parse_file {
-  
+    while($parser->read_record) {
+      my $record = $parser->record;
+      $doc_store->store_record($record);
+      $buffer++;
+      if ($buffer % 100000 == 0) {
+          $doc_store->commit;
+          $doc_store = $broker->document_store;
+      }
+    }
+    $total_records += $buffer;
+    $doc_store->commit;
+  }
+  $broker->finalise_index($source,$doc_store,$total_records);
 }
 
 1;

@@ -29,7 +29,7 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::ScheduleSources
+Bio::EnsEMBL::Versioning::Pipeline::ScheduleSources
 
 =head1 DESCRIPTION
 
@@ -49,14 +49,13 @@ The code flows once per source to branch 2.
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::ScheduleSources;
+package Bio::EnsEMBL::Versioning::Pipeline::ScheduleSources;
 
 use strict;
 use warnings;
-use Bio::EnsEMBL::Versioning::Manager::Source;
-use Bio::EnsEMBL::Versioning::Manager::Version;
+use Bio::EnsEMBL::Versioning::Broker;
 
-use base qw/Bio::EnsEMBL::Production::Pipeline::Base/;
+use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub param_defaults {
   my ($self) = @_;
@@ -67,57 +66,27 @@ sub param_defaults {
 
 sub fetch_input {
   my ($self) = @_;
-  
-  my $versioning_db = $self->get_versioning_db();
-  my $source_manager = 'Bio::EnsEMBL::Versioning::Manager::Source';
-  my $sources = $source_manager->get_sources();
-  $self->info('Found %d sources(s) to process', scalar(@{$sources}));
+  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+  my $sources = $broker->get_active_sources;
+  $self->warning(sprintf 'Found %d sources(s) to process', scalar(@{$sources}));
   $self->param('sources', $sources);
-  
   return;
 }
   
 sub run {
   my ($self) = @_;
-  my @sources;
-  foreach my $source (@{$self->param('sources')}) {
-    my $input_id = $self->input_id($source);
-    push(@sources, [ $input_id, 2 ]);
-  }
-  $self->param('sources', \@sources);
   return;
 }
 
 sub write_output {
   my ($self) = @_;
-  $self->do_flow('sources');
-  return;
-}
-
-sub do_flow {
-  my ($self, $key) = @_;
-  my $targets = $self->param($key);
-  foreach my $entry (@{$targets}) {
-    my ($input_id, $flow) = @{$entry};
-    $self->fine('Flowing %s to %d for %s', $input_id->{source_name}, $flow, $key);
-    $self->dataflow_output_id($input_id, $flow);
+  my $sources = $self->param('sources');
+  my $flow = 2;
+  foreach my $source (@{$sources}) {
+    # $self->fine('Flowing %s to %d for %s', $source->name, $flow, 'source_name');
+    $self->dataflow_output_id($source->name,$flow);
   }
   return;
-}
-
-sub input_id {
-  my ($self, $source) = @_;
-  my $version_manager = 'Bio::EnsEMBL::Versioning::Manager::Version';
-  my $input_id = {
-    version => $version_manager->get_current($source->name())->version(),
-    source_name => $source->name(),
-  };
-  return $input_id;
-}
-
-sub get_versioning_db {
-  my ($self) = @_;
-  return Bio::EnsEMBL::Versioning::DB->new();
 }
 
 1;

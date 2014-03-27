@@ -17,19 +17,24 @@ package Bio::EnsEMBL::Versioning::Broker;
 
 use Moose;
 
-use FindBin qw/$Bin/;
+use Env;
 use Log::Log4perl;
 use Config::General;
 use File::Temp qw/tempdir/;
 use File::Path qw/make_path/;
-use Data::Dumper;
+use File::Copy;
+
+use Try::Tiny;
+use Class::Inspector;
 
 use Bio::EnsEMBL::Versioning::Manager;
 use Bio::EnsEMBL::Versioning::Manager::Source;
+use Bio::EnsEMBL::Versioning::Object::Version;
 use Bio::EnsEMBL::Mongoose::DBException;
 use Bio::EnsEMBL::Mongoose::UsageException;
+use Bio::EnsEMBL::Mongoose::IOException;
 
-my $conf = Config::General->new("$Bin/../conf/manager.conf");
+my $conf = Config::General->new($ENV{MONGOOSE}.'/conf/manager.conf');
 my %opts = $conf->getall();
 
 # supply a temp folder for downloading to.
@@ -37,7 +42,7 @@ sub temp_location {
     my $self = shift;
     my $root = $opts{temp};
     my $dir = tempdir(DIR => $root, CLEANUP => 1);
-    $self->temp_file_path($dir);
+    return $dir;
 }
 
 
@@ -45,11 +50,29 @@ sub temp_location {
 sub location {
     my $self = shift;
     my $source = shift;
-    
+    my $version = shift;
+
     my $root = $opts{home};
-    my $path = $root.'/'.$source->source_group->name.'/'.$source->name().'/'.$source->version->revision();
-    make_path($path, { mode => '774'});
+    my $path = $root.'/'.$source->source_group->name.'/'.$source->name().'/'.$version->revision();
+    make_path($path, { mode => 0774 });
     return $path;
+}
+
+sub finalise_download {
+    my $self = shift;
+    my $source = shift;
+    my $revision = shift;
+    my $temp_location = shift;
+
+    my $version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => $revision);
+    my $final_location = $self->location($source,$version);
+    for my $file (glob $temp_location."/*") {
+        move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location);
+    }
+    $version->uri($final_location);
+    $source->version($version);
+    $source->update;
+    return $final_location;
 }
 
 sub get_current_source_by_name {
@@ -59,7 +82,6 @@ sub get_current_source_by_name {
     my $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
         require_objects => ['current_version'], 
         query => [ name => $source_name ],
-        debug => 1,
     );
     if (scalar(@$sources) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No source found for '.$source_name.'. Possible integrity issue')};
     return $sources->[0];
@@ -90,6 +112,68 @@ sub get_source_by_name_and_version {
     );
     if (scalar(@$sources) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No source: '.$source_name.' found with version '.$version)}
     return $sources->[0];
+}
+
+sub get_active_sources {
+    my $self = shift;
+    my $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
+        query =>[ active => 1 ],
+    );
+    return $sources;
+}
+
+sub get_file_list_for_source {
+  my $self = shift;
+  my $source = shift;
+  my $dir = $source->version->[0]->uri;
+  my @files = glob($dir.'/*');
+  print "Found files: ".join(',',@files);
+  return \@files;
+}
+
+sub document_store {
+  my $self = shift;
+  my $path = shift;
+  my $doc_store_package = $opts{'doc_store'};
+  unless ($doc_store_package) { Bio::EnsEMBL::Mongoose::UsageException->throw('Document store undefined in config. Specify doc_store = package::name ')}
+  $self->get_module($doc_store_package);
+  if ($path) {
+    return $doc_store_package->new(index => $path);
+  } else {
+    return $doc_store_package->new(index => $self->temp_location);
+  }
+}
+
+sub finalise_index {
+  my $self = shift;
+  my $source = shift;
+  my $doc_store = shift;
+  my $record_count = shift;
+
+  my $temp_location = $doc_store->index;
+  my $final_location = $self->location($source,$source->version->[0]); ##### need to sort where indexes go!
+  for my $file (glob $temp_location."/*") {
+    move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_location);
+  }
+  $source->version->[0]->index_uri($final_location);
+  $source->version->[0]->record_count($record_count);
+  $source->update;
+}
+
+sub get_module {
+  my $self = shift;
+  my $name = shift;
+
+  try {
+    (my $file = $name) =~ s|::|/|g;
+    if (!(Class::Inspector->loaded($name))) {
+      require $file . '.pm';
+      $name->import();
+    }
+    return $name;
+  } catch {
+    Bio::EnsEMBL::Mongoose::UsageException->throw("Module $name could not be found. $_");
+  };
 }
 
 1;

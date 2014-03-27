@@ -21,7 +21,7 @@ package Bio::EnsEMBL::Versioning::Object::Run;
 use strict;
 use warnings;
 
-use base qw(Bio::EnsEMBL::Versioning::Object);
+use parent qw(Bio::EnsEMBL::Versioning::Object);
 
 
 # Run is the record of when a process is run for a given source version

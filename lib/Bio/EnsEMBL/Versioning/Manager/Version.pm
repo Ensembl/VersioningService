@@ -23,7 +23,7 @@ use warnings;
 use Carp;
 
 use Bio::EnsEMBL::Versioning::Object::Version;
-use base qw(Bio::EnsEMBL::Versioning::Manager);
+use parent qw(Bio::EnsEMBL::Versioning::Manager);
 
 
 sub object_class { 'Bio::EnsEMBL::Versioning::Object::Version' }

@@ -27,7 +27,7 @@ use warnings;
 use strict;
 use warnings;
 
-use base 'Rose::DB::Object';
+use parent 'Rose::DB::Object';
 use Bio::EnsEMBL::Versioning::DB;
 
 

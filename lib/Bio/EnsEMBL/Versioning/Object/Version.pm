@@ -21,7 +21,7 @@ package Bio::EnsEMBL::Versioning::Object::Version;
 use strict;
 use warnings;
 
-use base qw(Bio::EnsEMBL::Versioning::Object);
+use parent qw(Bio::EnsEMBL::Versioning::Object);
 
 
 # A version is the record of a source at a given time

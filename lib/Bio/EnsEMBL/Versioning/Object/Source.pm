@@ -21,7 +21,7 @@ package Bio::EnsEMBL::Versioning::Object::Source;
 use strict;
 use warnings;
 
-use base qw(Bio::EnsEMBL::Versioning::Object);
+use parent qw(Bio::EnsEMBL::Versioning::Object);
 
 
 # Attributes of source:
@@ -38,12 +38,12 @@ __PACKAGE__->meta->setup(
 
   columns     => [
     source_id        => {type => 'serial', primary_key => 1, not_null => 1},
-    name             => {type => 'varchar', 'length' => 40 },
+    name             => {type => 'varchar', 'length' => 128 },
     source_group_id  => {type => 'integer'},
     active           => {type => 'integer', 'default' => 1, not_null => 1},
     created_date     => {type => 'timestamp', not_null => 1, default => 'now()'},
-    downloader       => {type => 'varchar', 'length' => 60 },
-    parser           => {type => 'varchar', 'length' => 60 },
+    downloader       => {type => 'varchar', 'length' => 128 },
+    parser           => {type => 'varchar', 'length' => 128 },
     current_version  => {type => 'integer'},
   ],
 

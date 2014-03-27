@@ -21,7 +21,7 @@ package Bio::EnsEMBL::Versioning::Object::VersionRun;
 use strict;
 use warnings;
 
-use base qw(Bio::EnsEMBL::Versioning::Object);
+use parent qw(Bio::EnsEMBL::Versioning::Object);
 
 
 # A version run maps a run with versions

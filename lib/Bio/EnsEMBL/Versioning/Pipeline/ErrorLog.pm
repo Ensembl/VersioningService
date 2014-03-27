@@ -33,10 +33,6 @@ Bio::EnsEMBL::Pipeline::ErrorLog
 
 =head1 DESCRIPTION
 
-A module for Uniprot Swissprot specific methods
-
-=over 8
-
 =cut
 
 package Bio::EnsEMBL::Pipeline::ErrorLog;
@@ -44,6 +40,6 @@ package Bio::EnsEMBL::Pipeline::ErrorLog;
 use strict;
 use warnings;
 
-use base qw/Bio::EnsEMBL::Pipeline::Base/;
+use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 1;

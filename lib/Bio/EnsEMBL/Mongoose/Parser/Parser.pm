@@ -2,6 +2,7 @@ package Bio::EnsEMBL::Mongoose::Parser::Parser;
 use Moose::Role;
 
 use PerlIO::gzip;
+use Bio::EnsEMBL::Mongoose::IOException;
 
 has record => (
     is => 'rw',
@@ -26,7 +27,8 @@ has 'source_handle' => (
     default => sub {
         my $self = shift;
         my $fh;
-        open $fh, "<:gzip(autopop)", $self->source_file;
+        open $fh, "<:gzip(autopop)", $self->source_file 
+          || Bio::EnsEMBL::Mongoose::IOException->throw('Failed to open source_file '.$self->source_file);
         return $fh;
     }
 );

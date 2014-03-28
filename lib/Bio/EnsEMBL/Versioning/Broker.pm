@@ -23,6 +23,8 @@ use Config::General;
 use File::Temp qw/tempdir/;
 use File::Path qw/make_path/;
 use File::Copy;
+use File::Spec;
+use IO::Dir;
 
 use Try::Tiny;
 use Class::Inspector;
@@ -166,14 +168,16 @@ sub finalise_index {
   my $doc_store = shift;
   my $record_count = shift;
 
-  my $temp_location = $doc_store->index;
+  my $temp_path = $doc_store->index;
+  my $temp_location = IO::Dir->new($temp_path);
   my $final_location = $self->location($source,$source->version->[0]);
-  print 'copying index from '.$temp_location.' to '.$final_location."\n";
-  for my $file (glob $temp_location."/*") {
-    move($file, $final_location."/") 
-      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_location.'/'.$file.' to '.$final_location."/$file .".$!);
+  print 'Moving index from '.$temp_path.' to '.$final_location."\n";
+  while (my $file = $temp_location->read) {
+    next if $file =~ /^\.+$/;
+    move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
+      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_location.'/'.$file.' to '.$final_location.'  '.$!);
   }
-  $source->version->[0]->index_uri($final_location);
+  $source->version->[0]->index_uri(File::Spec->catfile($final_location,'index');
   $source->version->[0]->record_count($record_count);
   $source->version->[0]->update; # updates do not cascade from source
 }

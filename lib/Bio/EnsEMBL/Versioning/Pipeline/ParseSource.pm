@@ -57,7 +57,7 @@ sub run {
     $source = $broker->get_current_source_by_name($source_name);
   }
 
-  my $parser_name = $self->get_module($source->parser);
+  my $parser_name = $broker->get_module($source->parser);
   my $files = $broker->get_file_list_for_source($source);
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
@@ -74,7 +74,7 @@ sub run {
       $buffer++;
       if ($buffer % 100000 == 0) {
           $doc_store->commit;
-          $doc_store = $broker->document_store;
+          $doc_store = $broker->document_store($temp);
       }
     }
     $total_records += $buffer;

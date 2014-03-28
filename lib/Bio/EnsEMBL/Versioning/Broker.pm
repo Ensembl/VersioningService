@@ -37,6 +37,22 @@ use Bio::EnsEMBL::Mongoose::IOException;
 my $conf = Config::General->new($ENV{MONGOOSE}.'/conf/manager.conf');
 my %opts = $conf->getall();
 
+# subroutine to be called if using the broker outside of a pipeline or test suite.
+sub init_broker {
+  require Bio::EnsEMBL::Versioning::DB;
+  Bio::EnsEMBL::Versioning::DB->register_db(
+    domain   => 'ensembl',
+    type     => 'default',
+    driver   => $opts{driver},
+    database => $opts{db},
+    host     => $opts{host},
+    username => $opts{user},
+    password => $opts{pass},
+    port     => $opts{port},
+    server_time_zone => 'UTC',
+  );
+}
+
 # supply a temp folder for downloading to.
 sub temp_location {
     my $self = shift;
@@ -151,13 +167,15 @@ sub finalise_index {
   my $record_count = shift;
 
   my $temp_location = $doc_store->index;
-  my $final_location = $self->location($source,$source->version->[0]); ##### need to sort where indexes go!
+  my $final_location = $self->location($source,$source->version->[0]);
+  print 'copying index from '.$temp_location.' to '.$final_location."\n";
   for my $file (glob $temp_location."/*") {
-    move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_location);
+    move($file, $final_location."/") 
+      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_location.'/'.$file.' to '.$final_location."/$file .".$!);
   }
   $source->version->[0]->index_uri($final_location);
   $source->version->[0]->record_count($record_count);
-  $source->update;
+  $source->version->[0]->update; # updates do not cascade from source
 }
 
 sub get_module {

@@ -55,7 +55,7 @@ sub run {
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
 
   my $source = $broker->get_current_source_by_name($source_name);
-  my $downloader = $self->get_module($source->downloader)->new;
+  my $downloader = $broker->get_module($source->downloader)->new;
   my $result;
   my $temp_location = $broker->temp_location;
   try {

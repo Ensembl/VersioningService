@@ -1,0 +1,12 @@
+[Manager conf]
+
+home = #home folder for storage
+temp = #temp folder for downloaded resources
+doc_store = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder
+
+driver = mysql
+db     = versioning_db
+host   = 
+user   = 
+pass   = 
+port   = 3306

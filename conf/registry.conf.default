@@ -1,0 +1,17 @@
+# Config file for eHive pipeline use
+
+use Bio::EnsEMBL::Versioning::DB;
+use Bio::EnsEMBL::DBSQL::DBAdaptor;
+
+my $dba = Bio::EnsEMBL::DBSQL::DBAdaptor->new(
+-host => versioning_database_host,
+-species => 'multi',
+-group => 'versioning',
+-user => user,
+-pass => password,
+-port => 3306,
+-dbname => 'versioning_db'
+);
+Bio::EnsEMBL::Versioning::DB->register_DBAdaptor($dba);
+
+1;

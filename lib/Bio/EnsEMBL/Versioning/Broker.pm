@@ -177,7 +177,7 @@ sub finalise_index {
     move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
       || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_location.'/'.$file.' to '.$final_location.'  '.$!);
   }
-  $source->version->[0]->index_uri(File::Spec->catfile($final_location,'index');
+  $source->version->[0]->index_uri(File::Spec->catfile($final_location,'index'));
   $source->version->[0]->record_count($record_count);
   $source->version->[0]->update; # updates do not cascade from source
 }

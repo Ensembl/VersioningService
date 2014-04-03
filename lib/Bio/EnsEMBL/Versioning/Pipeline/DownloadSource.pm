@@ -65,7 +65,7 @@ sub run {
       error => "Files could not be downloaded for ".$source_name.". Exception: ".$_->message,
       source_name => $source_name
     };
-    $self->warning('Flowing %s to %d for %s', $source_name, 4, 'download failed');
+    $self->warning(sprintf 'Flowing %s to %d for %s', $source_name, 4, 'download failed');
     $self->dataflow_output_id($input_id, 4);
     return;
   };

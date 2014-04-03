@@ -101,7 +101,13 @@ sub get_current_source_by_name {
         require_objects => ['current_version'], 
         query => [ name => $source_name ],
     );
-    if (scalar(@$sources) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No source found for '.$source_name.'. Possible integrity issue')};
+    # if (scalar(@$sources) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No source found for '.$source_name.'. Possible integrity issue')};
+    if (scalar(@$sources) == 0) {
+      # No current version available. Starting from scratch.
+      $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
+        query => [ name => $source_name ],
+      );
+    }
     return $sources->[0];
 }
 

@@ -57,26 +57,30 @@ sub run {
   my $source = $broker->get_current_source_by_name($source_name);
   my $downloader = $broker->get_module($source->downloader)->new;
   my $remote_version = $downloader->get_version;
-  my $local_version = $source->version->[0]->revision;
+  my $local_version;
+  $local_version = $source->version;
+  my $local_revision;
+  if (defined $local_version) {$local_revision = $local_version->[0]->revision}
+  else {$local_revision = ''}
   my $input_id;
   if (!defined $remote_version) {
     $input_id = {
       error => "Version could not be found for $source_name",
       source_name => $source_name
     };
-    $self->fine('Flowing %s with %s to %d for %s', $source_name, $local_version, 4, 'unavailable version');
+    $self->warning('Flowing %s with %s to %d for %s', $source_name, $local_revision, 4, 'unavailable version');
     $self->dataflow_output_id($input_id, 4);
     return;
   }
-  if ($remote_version ne $local_version) {
+  if ($remote_version ne $local_revision) {
     $input_id = {
       source_name => $source_name,
       version => $remote_version,
     };
-    $self->warning(sprintf 'Flowing %s with %s to %d for %s', $source_name, $remote_version, 2, 'updated sources');
+    $self->warning(sprintf('Flowing %s with %s to %d for %s', $source_name, $remote_version, 2), 'updated sources');
     $self->dataflow_output_id($input_id, 2);
   } else {
-    $self->warning(sprintf 'Source %s left at version %s', $source_name, $local_version, 'updated sources');
+    $self->warning(sprintf('Source %s left at version %s', $source_name, $local_revision), 'updated sources');
   }
 }
 

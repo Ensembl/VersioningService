@@ -35,13 +35,13 @@ extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
 has uri => (
   isa => 'Str', 
   is => 'ro',
-  default => 'ftp://ftp.ncbi.nlm.nih.gov/refseq/release/vertebrate_mammalian/',
+  default => 'ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/',
 );
 
 has file_pattern => (
   isa => 'Str',
   is => 'rw', # to allow test runs
-  default => 'vertebrate_mammalian.*',
+  default => 'complete\.\d+(\.\d+)?\.(protein|rna)\.g[bp]ff.gz',
 );
 
 has version_uri => ( 

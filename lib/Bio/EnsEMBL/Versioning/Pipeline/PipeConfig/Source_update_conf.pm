@@ -16,7 +16,7 @@ limitations under the License.
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::PipeConfig::Source_update_conf;
+package Bio::EnsEMBL::Versioning::Pipeline::PipeConfig::Source_update_conf;
 
 use strict;
 use warnings;
@@ -35,7 +35,6 @@ sub default_options {
         ### Optional overrides        
 
         sources => [],
-        download_dir => '',
 
         ### Defaults
 
@@ -61,57 +60,53 @@ sub pipeline_analyses {
     
       {
         -logic_name => 'ScheduleSources',
-        -module     => 'Bio::EnsEMBL::Pipeline::ScheduleSources',
+        -module     => 'Bio::EnsEMBL::Versioning::Pipeline::ScheduleSources',
         -parameters => {
         },
         -input_ids  => [ {} ],
         -max_retry_count  => 10,
         -flow_into  => {
-         '2->B'  => ['CheckLatest'],
-         '3->B'  => ['DownloadSource'],
-         '4->B'  => ['ErrorLog'],
-         '5->B'  => ['ParseSource'],
-         'B->1'  => ['Notify'],
+         '2->A'  => ['CheckLatest'],
+         'A->1'  => ['Notify'],
         },
       },
 
       {
         -logic_name => 'CheckLatest',
-        -module     => 'Bio::EnsEMBL::Pipeline::CheckLatest',
+        -module     => 'Bio::EnsEMBL::Versioning::Pipeline::CheckLatest',
         -parameters => {},
         -max_retry_count  => 3,
         -hive_capacity    => 100,
         -rc_name          => 'normal',
         -flow_into  => {
-          3 => ['DownloadSource'],
+          2 => ['DownloadSource'],
           4 => ['ErrorLog'],
         },
       },
 
       {
         -logic_name => 'DownloadSource',
-        -module     => 'Bio::EnsEMBL::Pipeline::DownloadSource',
+        -module     => 'Bio::EnsEMBL::Versioning::Pipeline::DownloadSource',
         -parameters => {
-           download_dir => $self->o('download_dir')
         },
         -max_retry_count  => 3,
         -hive_capacity    => 100,
         -rc_name          => 'normal',
         -flow_into  => {
-          3 => ['ParseSource'],
+          2 => ['ParseSource'],
           4 => ['ErrorLog'],
         },
       },
 
       {
         -logic_name => 'ParseSource',
-        -module => 'Bio::EnsEMBL::Pipeline::ParseSource',
+        -module => 'Bio::EnsEMBL::Versioning::Pipeline::ParseSource',
         -parameters => {
 
         },
-        -max_retry_count => 3,
-        -hive_capacity => ,
-        -rc_name => 'normal',
+        -max_retry_count => 1, # low to prevent pointless parsing repetition until someone can get attend to the problem.
+        -hive_capacity => 10,
+        -rc_name => 'mem',
         -flow_into => {
           4 => ['ErrorLog'],
         },
@@ -119,7 +114,7 @@ sub pipeline_analyses {
 
       {
         -logic_name => 'ErrorLog',
-        -module     => 'Bio::EnsEMBL::Pipeline::ErrorLog',
+        -module     => 'Bio::EnsEMBL::Versioning::Pipeline::ErrorLog',
         -parameters => {},
         -max_retry_count  => 3,
         -hive_capacity    => 100,
@@ -130,7 +125,7 @@ sub pipeline_analyses {
       
       {
         -logic_name => 'Notify',
-        -module     => 'Bio::EnsEMBL::Pipeline::EmailSummary',
+        -module     => 'Bio::EnsEMBL::Versioning::Pipeline::EmailSummary',
         -parameters => {
           email   => $self->o('email'),
           subject => $self->o('pipeline_name').' has finished',

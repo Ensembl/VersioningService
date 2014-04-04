@@ -83,8 +83,7 @@ sub write_output {
   my $sources = $self->param('sources');
   my $flow = 2;
   foreach my $source (@{$sources}) {
-    # $self->fine('Flowing %s to %d for %s', $source->name, $flow, 'source_name');
-    $self->dataflow_output_id($source->name,$flow);
+    $self->dataflow_output_id({'source_name' => $source->name},$flow);
   }
   return;
 }

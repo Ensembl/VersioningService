@@ -46,21 +46,19 @@ use warnings;
 use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::Versioning::Broker;
 
-use Class::Inspector;
-
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
-  my $source_name = $self->param('source_name');
+  my $source_name = $self->param_required('source_name');
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
   my $source = $broker->get_current_source_by_name($source_name);
   my $downloader = $broker->get_module($source->downloader)->new;
   my $remote_version = $downloader->get_version;
   my $local_version;
-  $local_version = $source->version;
+  $local_version = $source->version->[0];
   my $local_revision;
-  if (defined $local_version) {$local_revision = $local_version->[0]->revision}
+  if (defined $local_version) {$local_revision = $local_version->revision}
   else {$local_revision = ''}
   my $input_id;
   if (!defined $remote_version) {
@@ -68,7 +66,6 @@ sub run {
       error => "Version could not be found for $source_name",
       source_name => $source_name
     };
-    $self->warning('Flowing %s with %s to %d for %s', $source_name, $local_revision, 4, 'unavailable version');
     $self->dataflow_output_id($input_id, 4);
     return;
   }
@@ -77,10 +74,10 @@ sub run {
       source_name => $source_name,
       version => $remote_version,
     };
-    $self->warning(sprintf('Flowing %s with %s to %d for %s', $source_name, $remote_version, 2), 'updated sources');
+    $self->warning(sprintf('Flowing %s with %s to %d for %s', $source_name, $remote_version, 2, 'updater pipeline'));
     $self->dataflow_output_id($input_id, 2);
   } else {
-    $self->warning(sprintf('Source %s left at version %s', $source_name, $local_revision), 'updated sources');
+    $self->warning(sprintf('Source %s left at version %s', $source_name, $local_revision)));
   }
 }
 

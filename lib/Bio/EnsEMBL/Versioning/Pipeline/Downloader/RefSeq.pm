@@ -29,6 +29,7 @@ A module for RefSeq specific downloading methods
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq;
 
 use Moose;
+use Try::Tiny;
 
 extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
 

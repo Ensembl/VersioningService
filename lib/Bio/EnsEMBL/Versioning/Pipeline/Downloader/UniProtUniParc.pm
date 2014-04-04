@@ -29,6 +29,7 @@ A module for UniParc specific methods
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtUniParc;
 
 use Moose;
+use Try::Tiny;
 
 has uri => (
   isa => 'Str', 
@@ -53,9 +54,16 @@ with 'MooseX::Log::Log4perl';
 sub get_version
 {
   my $self = shift;
-  my $file = $self->do_FTP($self->version_uri);
+
+  my $file;
   my $version;
-  if ($file =~ m#UniProt Release (\d+_\d+)#) {
+  my $url = $self->version_uri();
+  try {
+    $file = do_FTP($url);
+  } catch {
+    Bio::EnsEMBL::Mongoose::NetException->throw('Failed to retrieve version from '.$url);
+  };
+  if ($file =~ /UniProt Release (\d+_\d+)/m) {
     $version = $1;
   }
   Bio::EnsEMBL::Mongoose::NetException->throw('Failed to get version from UniParc release notes') unless $version;

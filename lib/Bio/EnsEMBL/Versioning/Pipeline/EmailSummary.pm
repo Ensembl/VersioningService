@@ -16,7 +16,7 @@ limitations under the License.
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::EmailSummary;
+package Bio::EnsEMBL::Versioning::Pipeline::EmailSummary;
 
 use strict;
 use warnings;

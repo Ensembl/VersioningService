@@ -29,13 +29,13 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Pipeline::ErrorLog
+Bio::EnsEMBL::Versioning::Pipeline::ErrorLog
 
 =head1 DESCRIPTION
 
 =cut
 
-package Bio::EnsEMBL::Pipeline::ErrorLog;
+package Bio::EnsEMBL::Versioning::Pipeline::ErrorLog;
 
 use strict;
 use warnings;

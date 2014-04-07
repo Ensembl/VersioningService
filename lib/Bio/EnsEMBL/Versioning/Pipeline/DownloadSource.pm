@@ -71,8 +71,8 @@ sub run {
   };
   $broker->finalise_download($source,$latest_version,$temp_location);
 
-  $self->warning('Piping downloaded resource into parser stage');
-  my $message = { source_name => $source_name };
+  $self->warning("Piping downloaded resource $source_name into parser stage");
+  my $message = { source_name => $source_name , version => $latest_version };
   $self->dataflow_output_id($message, 2);
   return;
 

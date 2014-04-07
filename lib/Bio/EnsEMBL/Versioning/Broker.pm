@@ -88,6 +88,7 @@ sub finalise_download {
         move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location);
     }
     $version->uri($final_location);
+    $version->save; ### needed?
     $source->version($version);
     $source->update;
     return $final_location;

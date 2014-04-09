@@ -181,8 +181,9 @@ sub finalise_index {
   print 'Moving index from '.$temp_path.' to '.$final_location."\n";
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
+    make_path(File::Spec::catfile($final_location,'index'), { mode => 0774 });
     move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
-      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_location.'/'.$file.' to '.$final_location.'  '.$!);
+      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'index/  '.$!);
   }
   $source->version->[0]->index_uri(File::Spec->catfile($final_location,'index'));
   $source->version->[0]->record_count($record_count);

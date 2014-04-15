@@ -81,8 +81,6 @@ cmp_ok(scalar(@$group_sources),'==', 2, "Two sources for UniProtGroup");
 
 my $versions = Bio::EnsEMBL::Versioning::Manager::Version->get_versions();
 cmp_ok(scalar(@$versions), '==', 3, "Fetched all version");
-my $uniprot_versions = Bio::EnsEMBL::Versioning::Manager::Version->get_all_versions('UniProt');
-cmp_ok(scalar(@$uniprot_versions),'==', 2, "Found all UniProt versions");
 
 # my $current = Bio::EnsEMBL::Versioning::Manager::Version->get_current('UniProt');
 # cmp_ok($current->revision(),'==', 12, "Matching current version for UniProt");

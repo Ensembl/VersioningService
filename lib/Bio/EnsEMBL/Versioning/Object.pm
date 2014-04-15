@@ -18,10 +18,6 @@ limitations under the License.
 
 package Bio::EnsEMBL::Versioning::Object;
 
-
-use strict;
-use warnings;
-
 ### Abstract base class for rose based data objects
 
 use strict;

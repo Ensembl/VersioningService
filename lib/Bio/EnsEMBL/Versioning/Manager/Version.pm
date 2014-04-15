@@ -20,7 +20,6 @@ package Bio::EnsEMBL::Versioning::Manager::Version;
 
 use strict;
 use warnings;
-use Carp;
 
 use Bio::EnsEMBL::Versioning::Object::Version;
 use parent qw(Bio::EnsEMBL::Versioning::Manager);

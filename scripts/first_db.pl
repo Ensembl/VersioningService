@@ -26,9 +26,8 @@ my $dba = Bio::EnsEMBL::DBSQL::DBAdaptor->new(
 -species => 'multi',
 -group => 'versioning',
 -user => 'ensadmin',
--pass => 'ensembl',
--port => 3350,
--dbname => 'kt7_versioning_db'
+-port => 3306,
+-dbname => 'versioning_db',
 );
 Bio::EnsEMBL::Versioning::DB->register_DBAdaptor($dba);
 

@@ -34,3 +34,4 @@ requires 'Search::Query::Dialect::Lucy';
 requires 'Rose::DB';
 requires 'Rose::DB::Object::Manager';
 requires 'Rose::DB::Object';
+requires 'Rose::DBx::AutoReconnect';

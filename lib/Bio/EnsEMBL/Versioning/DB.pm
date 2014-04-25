@@ -21,8 +21,8 @@ package Bio::EnsEMBL::Versioning::DB;
 use strict;
 use warnings;
 
-use parent qw(Rose::DB);
-use Rose::DBx::AutoReconnect;
+# use parent qw(Rose::DB);
+use parent qw(Rose::DBx::AutoReconnect);
 
 __PACKAGE__->use_private_registry;      ## Use a private registry for this class
 __PACKAGE__->default_domain('ensembl'); ## Set the default domain

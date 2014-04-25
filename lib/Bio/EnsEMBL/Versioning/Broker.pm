@@ -59,7 +59,7 @@ sub init_broker {
 sub temp_location {
     my $self = shift;
     my $root = $opts{temp};
-    my $dir = tempdir(DIR => $root, CLEANUP => 1);
+    my $dir = tempdir(DIR => $root, CLEANUP => 0);
     return $dir;
 }
 
@@ -88,6 +88,7 @@ sub finalise_download {
         move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location);
     }
     $version->uri($final_location);
+    $version->source($source);
     $version->save; ### needed?
     $source->version($version);
     $source->update;
@@ -102,7 +103,6 @@ sub get_current_source_by_name {
         require_objects => ['current_version'], 
         query => [ name => $source_name ],
     );
-    # if (scalar(@$sources) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No source found for '.$source_name.'. Possible integrity issue')};
     if (scalar(@$sources) == 0) {
       # No current version available. Starting from scratch.
       $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
@@ -181,7 +181,7 @@ sub finalise_index {
   print 'Moving index from '.$temp_path.' to '.$final_location."\n";
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
-    make_path(File::Spec::catfile($final_location,'index'), { mode => 0774 });
+    make_path(File::Spec->catfile($final_location,'index'), { mode => 0774 });
     move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
       || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'index/  '.$!);
   }

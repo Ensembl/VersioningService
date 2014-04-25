@@ -26,8 +26,12 @@ use warnings;
 use parent 'Rose::DB::Object';
 use Bio::EnsEMBL::Versioning::DB;
 
+sub init_db {
+  # TODO consult the Rose::DB::Registry in order to verify that we're on a MySQL driver
+  # Currently the driver is assumed in order to force reconnect behaviour from MySQL
+  Bio::EnsEMBL::Versioning::DB->new; 
 
-sub init_db { Bio::EnsEMBL::Versioning::DB->new(); }
+}
 
 
 1;

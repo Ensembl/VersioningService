@@ -52,6 +52,7 @@ sub init_broker {
     password => $opts{pass},
     port     => $opts{port},
     server_time_zone => 'UTC',
+    mysql_auto_reconnect => 1,
   );
 }
 

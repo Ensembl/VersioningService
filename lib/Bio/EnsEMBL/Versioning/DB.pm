@@ -21,8 +21,7 @@ package Bio::EnsEMBL::Versioning::DB;
 use strict;
 use warnings;
 
-# use parent qw(Rose::DB);
-use parent qw(Rose::DBx::AutoReconnect);
+use parent qw(Rose::DB);
 
 __PACKAGE__->use_private_registry;      ## Use a private registry for this class
 __PACKAGE__->default_domain('ensembl'); ## Set the default domain
@@ -47,9 +46,11 @@ sub register_DBAdaptor {
     password => $dbc->password,
     port     => $dbc->port,
     server_time_zone => 'UTC',
+    mysql_auto_reconnect => 1,
   );
   return;
 }
+
 
 
 1;

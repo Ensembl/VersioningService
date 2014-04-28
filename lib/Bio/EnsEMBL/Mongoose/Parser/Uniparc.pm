@@ -59,10 +59,14 @@ sub xrefs {
                 $active = ($attr->value eq 'Y') ? 1 : 0;
             }
             elsif ($attr->nodeName eq 'last' && !$active) {
+                # Only really interested in last seen in the event that an ID has been retired.
                 $last = $attr->value;
             }
         }
-        my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id, active => $active, version => $last);
+        unless (defined($source) && defined($id) && defined($active)) { $self->log->debug(sprintf 'Faulty xref: %s,%s,%s,%s',$source,$id,$active,$last); return; }
+        my %attribs = (source => $source, id => $id, active => $active);
+        if ($last) { $attribs{version} = $last }
+        my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(%attribs);
         
         $record->add_xref($xref);
     });

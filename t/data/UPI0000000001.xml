@@ -172,8 +172,8 @@ MVIATTDMQN
 <dbReference type="ENSEMBL" id="ENSP00000308296" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
 <dbReference type="ENSEMBL" id="ENSP00000319708" version_i="1" active="N" created="2003-04-01" last="2003-06-03"/>
 <dbReference type="ENSEMBL" id="ENSP00000308106" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
-<dbReference type="ENSEMBL" id="ENSP00000310084" version_i="1" active="N" created="2003-04-01" last="2003-07-04"/>
-<dbReference type="ENSEMBL" id="ENSP00000308136" version_i="1" active="N" created="2003-04-01" last="2004-02-13"/>
+<dbReference type="ENSEMBL" id="ENSP00000310084" version_i="1" active="Y" created="2003-04-01" last="2003-07-04"/>
+<dbReference type="ENSEMBL" id="ENSP00000308136" version_i="1" active="Y" created="2003-04-01" last="2004-02-13"/>
 <dbReference type="IPI" id="IPI00853355" version="1" version_i="1" active="N" created="2007-07-14" last="2007-07-14"/>
 <dbReference type="IPI" id="IPI00930204" version="2" version_i="2" active="N" created="2009-07-29" last="2009-07-29"/>
 <dbReference type="IPI" id="IPI00848089" version="2" version_i="2" active="N" created="2008-02-07" last="2008-02-07"/>

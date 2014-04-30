@@ -35,3 +35,7 @@ requires 'Rose::DB';
 requires 'Rose::DB::Object::Manager';
 requires 'Rose::DB::Object';
 requires 'Rose::DBx::AutoReconnect';
+
+# Others
+
+requires 'Test::Differences';

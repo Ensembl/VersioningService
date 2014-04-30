@@ -1,10 +1,9 @@
 use strict;
 use warnings;
 
-use FindBin qw/$Bin/;
 use Log::Log4perl;
 use Data::Dump::Color qw/dump/;
-use Devel::Size qw/total_size/;
+# use Devel::Size qw/total_size/;
 
 use Config::General;
 
@@ -25,7 +24,7 @@ $logger->info("Beginning to parse ".$opts{data_location});
 
 while($parser->read_record) {
     my $record = $parser->record;
-    printf "Main accession: Gene name: %s, Taxon: %s\n", $record->id, $record->taxon_id;
+    $logger->info(sprintf "Main accession: Gene name: %s, Taxon: %s\n", $record->id, $record->taxon_id);
     $doc_store->store_record($record);
     $buffer++;
     if ($buffer % 100000 == 0) {

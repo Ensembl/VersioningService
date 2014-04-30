@@ -42,17 +42,17 @@ sub read_record {
     my $taxon = $self->determine_taxon;
     $self->record->taxon_id($taxon);
     #next unless $taxon;
-    $self->record->id($parser->getLocusId);
-    $self->record->accessions([$parser->getAccession]);
-    my $sequence = $parser->getSequence();
+    $self->record->id($parser->get_locus_id);
+    $self->record->accessions([$parser->get_accession]);
+    my $sequence = $parser->get_sequence();
     if ($sequence) {
         $self->record->sequence( $sequence );
         $self->record->sequence_length(length($sequence));
     }
-    $self->record->description( $parser->getDescription() );
+    $self->record->description( $parser->get_description() );
     $self->chew_description;
-    $self->record->version($parser->getSeqVersion);
-    my $db_links = $parser->getRawDBLinks;
+    $self->record->version($parser->get_sequence_version);
+    my $db_links = $parser->get_raw_dblinks;
     if ($db_links) {
         my $xrefs = $self->chew_dblinks($db_links);
         $self->record->xref($xrefs);
@@ -80,10 +80,7 @@ sub chew_description {
 # Transform a word-based taxonomy into a taxon ID
 sub determine_taxon {
     my $self = shift;
-    my $beastie = $self->genbank_parser->getOrganism;
-    my @ranks = split /; /,$beastie;
-    my $name = $ranks[-1];
-    $name =~ s/.\s*$//;
+    my $name = $self->genbank_parser->get_organism;
     my $taxon = $self->taxonomizer->fetch_taxon_id_by_name($name);
     return $taxon;
 }

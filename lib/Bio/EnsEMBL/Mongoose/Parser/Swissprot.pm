@@ -39,6 +39,9 @@ sub node_sieve {
     my $state = $self->accession();
     $self->synonyms();
     $self->gene_name();
+    $self->entry_name();
+    $self->protein_name();
+    $self->sequence_version();
     $self->xrefs();
     $self->description();
     $self->sequence();
@@ -64,6 +67,21 @@ sub accession {
 sub gene_name {
     my $self = shift;
     $self->record->gene_name($self->xpath_to_value('/uni:uniprot/uni:entry/uni:gene/uni:name[@type="primary"]'));
+}
+
+sub entry_name {
+    my $self = shift;
+    $self->record->entry_name($self->xpath_to_value('/uni:uniprot/uni:entry/uni:name'));
+}
+
+sub protein_name {
+    my $self = shift;
+    $self->record->protein_name($self->xpath_to_value('/uni:uniprot/uni:entry/uni:protein/uni:recommendedName/uni:fullName'));
+}
+
+sub sequence_version{
+    my $self = shift;
+    $self->record->sequence_version($self->xpath_to_value('/uni:uniprot/uni:entry/uni:sequence/@version'));
 }
 
 sub synonyms {

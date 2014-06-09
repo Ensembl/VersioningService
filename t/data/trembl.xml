@@ -1,0 +1,311 @@
+<uniprot xmlns="http://uniprot.org/uniprot" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://uniprot.org/uniprot http://www.uniprot.org/support/docs/uniprot.xsd">
+<entry dataset="TrEMBL" created="2014-02-19" modified="2014-05-14" version="4">
+<accession>V5JRM9</accession>
+<name>V5JRM9_HUMAN</name>
+<protein>
+<recommendedName>
+<fullName evidence="1">NADH-ubiquinone oxidoreductase chain 2</fullName>
+<ecNumber evidence="1">1.6.5.3</ecNumber>
+</recommendedName>
+</protein>
+<gene>
+<name type="primary" evidence="13">ND2</name>
+</gene>
+<organism evidence="13">
+<name type="scientific">Homo sapiens</name>
+<name type="common">Human</name>
+<dbReference type="NCBI Taxonomy" id="9606"/>
+<lineage>
+<taxon>Eukaryota</taxon>
+<taxon>Metazoa</taxon>
+<taxon>Chordata</taxon>
+<taxon>Craniata</taxon>
+<taxon>Vertebrata</taxon>
+<taxon>Euteleostomi</taxon>
+<taxon>Mammalia</taxon>
+<taxon>Eutheria</taxon>
+<taxon>Euarchontoglires</taxon>
+<taxon>Primates</taxon>
+<taxon>Haplorrhini</taxon>
+<taxon>Catarrhini</taxon>
+<taxon>Hominidae</taxon>
+<taxon>Homo</taxon>
+</lineage>
+</organism>
+<geneLocation type="mitochondrion" evidence="13"/>
+<reference key="1" evidence="13">
+<citation type="journal article" date="2013" name="PLoS ONE" volume="8" first="E80673" last="E80673">
+<title>Complete mitochondrial DNA diversity in iranians.</title>
+<authorList>
+<person name="Derenko M."/>
+<person name="Malyarchuk B."/>
+<person name="Bahmanimehr A."/>
+<person name="Denisova G."/>
+<person name="Perkova M."/>
+<person name="Farjadian S."/>
+<person name="Yepiskoposyan L."/>
+</authorList>
+<dbReference type="PubMed" id="24244704"/>
+</citation>
+<scope>NUCLEOTIDE SEQUENCE</scope>
+</reference>
+<comment type="function">
+<text evidence="11">
+Core subunit of the mitochondrial membrane respiratory chain NADH dehydrogenase (Complex I) that is believed to belong to the minimal assembly required for catalysis. Complex I functions in the transfer of electrons from NADH to the respiratory chain. The immediate electron acceptor for the enzyme is believed to be ubiquinone (By similarity).
+</text>
+</comment>
+<comment type="catalytic activity">
+<text evidence="1 12">
+NADH + ubiquinone + 5 H(+)(In) = NAD(+) + ubiquinol + 4 H(+)(Out).
+</text>
+</comment>
+<comment type="subcellular location">
+<subcellularLocation>
+<location>Mitochondrion inner membrane</location>
+<topology status="by similarity" evidence="1 10">Multi-pass membrane protein</topology>
+</subcellularLocation>
+</comment>
+<comment type="similarity">
+<text evidence="1">Belongs to the complex I subunit 2 family.</text>
+</comment>
+<dbReference type="EC" id="1.6.5.3" evidence="1"/>
+<dbReference type="EMBL" id="KC911509">
+<property type="protein sequence ID" value="AGO93358.1"/>
+<property type="molecule type" value="Genomic_DNA"/>
+</dbReference>
+<dbReference type="GO" id="GO:0016021">
+<property type="term" value="C:integral component of membrane"/>
+<property type="evidence" value="IEA:UniProtKB-KW"/>
+</dbReference>
+<dbReference type="GO" id="GO:0005743">
+<property type="term" value="C:mitochondrial inner membrane"/>
+<property type="evidence" value="IEA:UniProtKB-SubCell"/>
+</dbReference>
+<dbReference type="GO" id="GO:0070469">
+<property type="term" value="C:respiratory chain"/>
+<property type="evidence" value="IEA:UniProtKB-KW"/>
+</dbReference>
+<dbReference type="GO" id="GO:0008137">
+<property type="term" value="F:NADH dehydrogenase (ubiquinone) activity"/>
+<property type="evidence" value="IEA:UniProtKB-EC"/>
+</dbReference>
+<dbReference type="GO" id="GO:0006120">
+<property type="term" value="P:mitochondrial electron transport, NADH to ubiquinone"/>
+<property type="evidence" value="IEA:InterPro"/>
+</dbReference>
+<dbReference type="InterPro" id="IPR010933">
+<property type="entry name" value="NADH_DH_su2_C"/>
+</dbReference>
+<dbReference type="InterPro" id="IPR001750">
+<property type="entry name" value="NADH_UbQ/plastoQ_OxRdtase"/>
+</dbReference>
+<dbReference type="InterPro" id="IPR003917">
+<property type="entry name" value="NADH_UbQ_OxRdtase_chain2"/>
+</dbReference>
+<dbReference type="Pfam" id="PF06444">
+<property type="entry name" value="NADH_dehy_S2_C"/>
+<property type="match status" value="1"/>
+</dbReference>
+<dbReference type="Pfam" id="PF00361">
+<property type="entry name" value="Oxidored_q1"/>
+<property type="match status" value="1"/>
+</dbReference>
+<dbReference type="PRINTS" id="PR01436">
+<property type="entry name" value="NADHDHGNASE2"/>
+</dbReference>
+<proteinExistence type="inferred from homology"/>
+<keyword id="KW-0249" evidence="6">Electron transport</keyword>
+<keyword id="KW-0472" evidence="9 4">Membrane</keyword>
+<keyword id="KW-0496" evidence="9">Mitochondrion</keyword>
+<keyword id="KW-0999" evidence="9">Mitochondrion inner membrane</keyword>
+<keyword id="KW-0520" evidence="2 5">NAD</keyword>
+<keyword id="KW-0560" evidence="2 8">Oxidoreductase</keyword>
+<keyword id="KW-0679" evidence="6">Respiratory chain</keyword>
+<keyword id="KW-0812" evidence="4">Transmembrane</keyword>
+<keyword id="KW-1133" evidence="4">Transmembrane helix</keyword>
+<keyword id="KW-0813" evidence="6">Transport</keyword>
+<keyword id="KW-0830" evidence="3 7">Ubiquinone</keyword>
+<evidence key="1" type="ECO:0000256">
+<source>
+<dbReference type="RuleBase" id="RU003403"/>
+</source>
+</evidence>
+<evidence key="2" type="ECO:0000256">
+<source>
+<dbReference type="RuleBase" id="RU000317"/>
+</source>
+</evidence>
+<evidence key="3" type="ECO:0000256">
+<source>
+<dbReference type="RuleBase" id="RU000318"/>
+</source>
+</evidence>
+<evidence key="4" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_000533"/>
+</source>
+</evidence>
+<evidence key="5" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_000049"/>
+</source>
+</evidence>
+<evidence key="6" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_000478"/>
+</source>
+</evidence>
+<evidence key="7" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_000262"/>
+</source>
+</evidence>
+<evidence key="8" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_000380"/>
+</source>
+</evidence>
+<evidence key="9" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_000898"/>
+</source>
+</evidence>
+<evidence key="10" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_000000"/>
+</source>
+</evidence>
+<evidence key="11" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_061668"/>
+</source>
+</evidence>
+<evidence key="12" type="ECO:0000256">
+<source>
+<dbReference type="SAAS" id="SAAS003917_004_004422"/>
+</source>
+</evidence>
+<evidence key="13" type="ECO:0000313">
+<source>
+<dbReference type="EMBL" id="AGO93358.1"/>
+</source>
+</evidence>
+<sequence length="347" mass="38947" checksum="C079A33EF70683FD" modified="2014-02-19" version="1">
+MNPLAQPVIYSTIFAGTLITALSSHWFFTWVGLEMNMLAFIPVLTKKMNPRSTEAAIKYF LTQATASMILLMAILFNNMLSGQWTMTNTTNQYSSLMIMMAMAMKLGMAPFHFWVPEVTQ GTPLTSGLLLLTWQKLAPISIMYQISPSLNVSLLLTLSILSIMAGSWGGLNQTQLRKILA YSSITHMGWMMAVLPYNPNMTILNLTIYIILTTTAFLLLNLNSSTTTLLLSRTWNKLTWL TPLIPSTLLSLGGLPPLTGFLPKWAVIEEFTKNNSLIIPTIMATITLLNLYFYLRLIYST SITLLPMSNNVKMKWQFEHTKPTPFLPTLIALTTLLLPISPFMLMIL
+</sequence>
+</entry>
+<entry dataset="TrEMBL" created="2006-11-14" modified="2014-01-22" version="44">
+<accession>A0A2G2</accession>
+<name>A0A2G2_HUMAN</name>
+<protein>
+<submittedName>
+<fullName evidence="2">Coagulation factor VIII</fullName>
+</submittedName>
+</protein>
+<gene>
+<name type="primary" evidence="2">F8</name>
+</gene>
+<organism evidence="2">
+<name type="scientific">Homo sapiens</name>
+<name type="common">Human</name>
+<dbReference type="NCBI Taxonomy" id="9606"/>
+<lineage>
+<taxon>Eukaryota</taxon>
+<taxon>Metazoa</taxon>
+<taxon>Chordata</taxon>
+<taxon>Craniata</taxon>
+<taxon>Vertebrata</taxon>
+<taxon>Euteleostomi</taxon>
+<taxon>Mammalia</taxon>
+<taxon>Eutheria</taxon>
+<taxon>Euarchontoglires</taxon>
+<taxon>Primates</taxon>
+<taxon>Haplorrhini</taxon>
+<taxon>Catarrhini</taxon>
+<taxon>Hominidae</taxon>
+<taxon>Homo</taxon>
+</lineage>
+</organism>
+<reference key="1" evidence="2">
+<citation type="submission" date="2006-09" db="EMBL/GenBank/DDBJ databases">
+<title>
+Mutation analysis in Iranian patients with hemophilia A.
+</title>
+<authorList>
+<person name="Rastegar-lari G."/>
+<person name="Ravanbod S."/>
+<person name="Rassoulzadegan M."/>
+<person name="Hejazi S."/>
+<person name="Fard Esfehani P."/>
+<person name="Ala F."/>
+</authorList>
+</citation>
+<scope>NUCLEOTIDE SEQUENCE</scope>
+<source>
+<strain evidence="2">HA106</strain>
+</source>
+</reference>
+<comment type="similarity">
+<text evidence="1">Contains 1 F5/8 type C domain.</text>
+</comment>
+<dbReference type="EMBL" id="EF012145">
+<property type="protein sequence ID" value="ABJ51923.1"/>
+<property type="molecule type" value="Genomic_DNA"/>
+</dbReference>
+<dbReference type="ProteinModelPortal" id="A0A2G2"/>
+<dbReference type="GO" id="GO:0007155">
+<property type="term" value="P:cell adhesion"/>
+<property type="evidence" value="IEA:InterPro"/>
+</dbReference>
+<dbReference type="Gene3D" id="2.60.120.260">
+<property type="match status" value="1"/>
+</dbReference>
+<dbReference type="InterPro" id="IPR000421">
+<property type="entry name" value="Coagulation_fac_5/8-C_type_dom"/>
+</dbReference>
+<dbReference type="InterPro" id="IPR008979">
+<property type="entry name" value="Galactose-bd-like"/>
+</dbReference>
+<dbReference type="Pfam" id="PF00754">
+<property type="entry name" value="F5_F8_type_C"/>
+<property type="match status" value="1"/>
+</dbReference>
+<dbReference type="SUPFAM" id="SSF49785">
+<property type="entry name" value="SSF49785"/>
+<property type="match status" value="1"/>
+</dbReference>
+<dbReference type="PROSITE" id="PS01286">
+<property type="entry name" value="FA58C_2"/>
+<property type="match status" value="1"/>
+</dbReference>
+<dbReference type="PROSITE" id="PS50022">
+<property type="entry name" value="FA58C_3"/>
+<property type="match status" value="1"/>
+</dbReference>
+<proteinExistence type="predicted"/>
+<feature type="non-terminal residue" evidence="2">
+<location>
+<position position="1"/>
+</location>
+</feature>
+<feature type="non-terminal residue" evidence="2">
+<location>
+<position position="48"/>
+</location>
+</feature>
+<evidence key="1" type="ECO:0000256">
+<source>
+<dbReference type="RuleBase" id="RU003308"/>
+</source>
+</evidence>
+<evidence key="2" type="ECO:0000313">
+<source>
+<dbReference type="EMBL" id="ABJ51923.1"/>
+</source>
+</evidence>
+<sequence length="48" mass="5492" checksum="01296C31BCEE296D" modified="2006-11-14" version="1" fragment="single">VFFGNVDSSGIKHNIFNPPIIARYIRLHPTHYSICSTLRMELMGCDLN</sequence>
+</entry>
+<copyright>
+Copyrighted by the UniProt Consortium, see http://www.uniprot.org/terms Distributed under the Creative Commons Attribution-NoDerivs License
+</copyright>
+</uniprot>

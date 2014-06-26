@@ -39,3 +39,4 @@ requires 'Rose::DBx::AutoReconnect';
 # Others
 
 requires 'Test::Differences';
+requires 'Class::Inspector';

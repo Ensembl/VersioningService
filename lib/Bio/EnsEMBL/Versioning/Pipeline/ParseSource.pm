@@ -44,6 +44,8 @@ use warnings;
 use Bio::EnsEMBL::Versioning::Broker;
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
+use Try::Tiny;
+
 sub run {
   my ($self) = @_;
   my $source_name = $self->param('source_name');
@@ -58,6 +60,11 @@ sub run {
   }
 
   my $parser_name = $broker->get_module($source->parser);
+  if ($parser_name eq 'Bio::EnsEMBL::Mongoose::Parser::Refseq') {
+    # Unpack files for uncooperative Refseq parser that doesn't take file handles.
+    my $path = $broker->get_source_path($source);
+    `gunzip $path/*.gz`;
+  }
   my $files = $broker->get_file_list_for_source($source);
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
@@ -70,8 +77,11 @@ sub run {
 
     while($parser->read_record) {
       my $record = $parser->record;
-      $doc_store->store_record($record);
-      $buffer++;
+      # validate record for key fields.
+      if ($record->has_taxon_id && $record->has_accessions) {
+        $doc_store->store_record($record);
+        $buffer++;
+      }
       if ($buffer % 100000 == 0) {
           $doc_store->commit;
           $doc_store = $broker->document_store($temp);
@@ -79,6 +89,11 @@ sub run {
     }
     $total_records += $buffer;
     $doc_store->commit;
+  }
+  if ($parser_name eq 'Bio::EnsEMBL::Mongoose::Parser::Refseq') {
+    # Repack files for Refseq parser to keep size down.
+    my $path = $broker->get_source_path($source);
+    `gzip $path/*`;
   }
   $broker->finalise_index($source,$doc_store,$total_records);
 }

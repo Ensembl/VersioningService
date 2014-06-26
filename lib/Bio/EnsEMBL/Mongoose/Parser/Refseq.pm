@@ -1,7 +1,6 @@
 package Bio::EnsEMBL::Mongoose::Parser::Refseq;
 use Moose;
 use Moose::Util::TypeConstraints;
-use Data::Dump::Color qw/dump/;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
@@ -40,24 +39,38 @@ sub read_record {
     my $read_state = $parser->next;
     if ($read_state == 0) {return 0}
     my $taxon = $self->determine_taxon;
-    $self->record->taxon_id($taxon);
-    #next unless $taxon;
-    $self->record->id($parser->get_locus_id);
-    $self->record->accessions([$parser->get_accession]);
+    $self->record->taxon_id($taxon) if ($taxon);
+    my $id = $parser->get_locus_id;
+    $self->record->id($id) if ($id);
+    my $accession = $parser->get_accession;
+    $self->record->accessions([$accession]) if ($accession);
     my $sequence = $parser->get_sequence();
     if ($sequence) {
         $self->record->sequence( $sequence );
         $self->record->sequence_length(length($sequence));
     }
-    $self->record->description( $parser->get_description() );
-    $self->chew_description;
-    $self->record->version($parser->get_sequence_version);
+    my $description = $parser->get_description();
+    if ($description) {
+        $self->record->description( $description );
+        $self->chew_description;
+    }
+    my $comment = join("\n",$parser->get_raw_comment);
+    if ($comment) {
+        $self->record->comment( $comment );
+    }
+    my $seq_version = $parser->get_sequence_version;
+    if ($seq_version) {
+        $self->record->version($seq_version);
+    }
     my $db_links = $parser->get_raw_dblinks;
     if ($db_links) {
         my $xrefs = $self->chew_dblinks($db_links);
         $self->record->xref($xrefs);
     }
 
+    if (!($id || $taxon || $accession)) {
+        $self->log->info('Partial record. $id,$taxon, from '.$self->genbank_parser->{filename});
+    }
     return $read_state;
 }
 
@@ -81,6 +94,7 @@ sub chew_description {
 sub determine_taxon {
     my $self = shift;
     my $name = $self->genbank_parser->get_organism;
+    return unless ($name);
     my $taxon = $self->taxonomizer->fetch_taxon_id_by_name($name);
     return $taxon;
 }

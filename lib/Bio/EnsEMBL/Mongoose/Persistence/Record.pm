@@ -38,6 +38,7 @@ has accessions => (
     isa => 'ArrayRef[Str]',
     is => 'rw',
     traits => ['Array'],
+    predicate => 'has_accessions',
 );
 
 has synonyms => (
@@ -73,6 +74,12 @@ has description => (
     is => 'rw',
 );
 
+# Comment field is for supporting text that will be carried through to the browser.
+has comment => (
+    isa => 'Str',
+    is => 'rw',
+);
+
 has checksum => (
     isa => 'Str',
     is => 'rw',
@@ -86,6 +93,7 @@ has version => (
 has taxon_id => (
     isa => 'Int',
     is => 'rw',
+    predicate => 'has_taxon_id',
 );
 
 has schema_version => (

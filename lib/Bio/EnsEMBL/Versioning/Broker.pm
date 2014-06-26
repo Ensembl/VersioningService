@@ -153,8 +153,14 @@ sub get_file_list_for_source {
   my $source = shift;
   my $dir = $source->version->[0]->uri;
   my @files = glob($dir.'/*');
-  print "Found files: ".join(',',@files);
+  # print "Found files: ".join(',',@files);
   return \@files;
+}
+
+sub get_source_path {
+  my $self = shift;
+  my $source = shift;
+  return $source->version->[0]->uri;
 }
 
 sub document_store {
@@ -170,6 +176,8 @@ sub document_store {
   }
 }
 
+# finalise_index moves the index out of temp and into a permanent location
+# Requires a source with only one attached version, as if one had just created that newest version.
 sub finalise_index {
   my $self = shift;
   my $source = shift;
@@ -189,6 +197,9 @@ sub finalise_index {
   $source->version->[0]->index_uri(File::Spec->catfile($final_location,'index'));
   $source->version->[0]->record_count($record_count);
   $source->version->[0]->update; # updates do not cascade from source
+  
+  $source->current_version($source->version->[0]);
+  $source->update;
 }
 
 sub get_module {

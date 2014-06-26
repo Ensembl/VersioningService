@@ -30,4 +30,17 @@ $record = $ref_seq_reader->record;
 #print "Xrefs ".scalar(@{$record->xref})."\n";
 ok(!$ref_seq_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
 
+$ref_seq_reader = undef;
+
+$source = $ENV{MONGOOSE}."/t/data/YP_001693987.gpff";
+$ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::Refseq->new(
+    source_file => $source,
+);
+
+$ref_seq_reader->read_record;
+$accessions = $record->accessions;
+# No accession found in certain micro-organisms
+# is($record->accessions->[0], 'YP_001693987','Testing Refseq GPFF file');
+
+
 done_testing;

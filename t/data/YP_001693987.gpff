@@ -1,0 +1,135 @@
+LOCUS       YP_001693987             560 aa            linear   CON 10-JUN-2013
+DEFINITION  ABC transporter ATP-binding protein // [Streptococcus pneumoniae
+            Hungary19A-6].
+ACCESSION   YP_001693987
+VERSION     YP_001693987.1  GI:169833930
+DBLINK      Project: 59117
+            BioProject: PRJNA59117
+DBSOURCE    REFSEQ: accession NC_010380.1
+KEYWORDS    RefSeq.
+SOURCE      Streptococcus pneumoniae Hungary19A-6
+  ORGANISM  Streptococcus pneumoniae Hungary19A-6
+            Bacteria; Firmicutes; Bacilli; Lactobacillales; Streptococcaceae;
+            Streptococcus.
+REFERENCE   1  (residues 1 to 560)
+  AUTHORS   Hotopp,J.D., Censini,S., Masignani,V., Covacci,A. and Tettelin,H.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (01-FEB-2008) J. Craig Venter Institute, 9704 Medical
+            Center Drive, Rockville, MD 20850, USA
+REFERENCE   2  (residues 1 to 560)
+  CONSRTM   NCBI Genome Project
+  TITLE     Direct Submission
+  JOURNAL   Submitted (13-JAN-2005) National Center for Biotechnology
+            Information, NIH, Bethesda, MD 20894, USA
+COMMENT     PROVISIONAL REFSEQ: This record has not yet been subject to final
+            NCBI review. The reference sequence was derived from ACA37044.
+            Submission of strain to ATCC is pending.
+            Method: conceptual translation.
+FEATURES             Location/Qualifiers
+     source          1..560
+                     /organism="Streptococcus pneumoniae Hungary19A-6"
+                     /strain="Hungary19A-6"
+                     /db_xref="taxon:487214"
+     Protein         1..560
+                     /product="ABC transporter ATP-binding protein //"
+                     /EC_number="3.6.3.-"
+                     /calculated_mol_wt=62695
+     Region          5..236
+                     /region_name="CbiO"
+                     /note="ABC-type cobalt transport system, ATPase component
+                     [Inorganic ion transport and metabolism]; COG1122"
+                     /db_xref="CDD:224047"
+     Region          9..224
+                     /region_name="ABC_cobalt_CbiO_domain1"
+                     /note="First domain of the ATP-binding cassette component
+                     of cobalt transport system; cd03225"
+                     /db_xref="CDD:213192"
+     Site            40..47
+                     /site_type="other"
+                     /note="Walker A/P-loop"
+                     /db_xref="CDD:213192"
+     Site            order(43..44,46..48,93,170..171,204)
+                     /site_type="other"
+                     /note="ATP binding site [chemical binding]"
+                     /db_xref="CDD:213192"
+     Site            90..93
+                     /site_type="other"
+                     /note="Q-loop/lid"
+                     /db_xref="CDD:213192"
+     Site            146..155
+                     /site_type="other"
+                     /note="ABC transporter signature motif"
+                     /db_xref="CDD:213192"
+     Site            166..171
+                     /site_type="other"
+                     /note="Walker B"
+                     /db_xref="CDD:213192"
+     Site            174..177
+                     /site_type="other"
+                     /note="D-loop"
+                     /db_xref="CDD:213192"
+     Site            200..206
+                     /site_type="other"
+                     /note="H-loop/switch region"
+                     /db_xref="CDD:213192"
+     Region          236..304
+                     /region_name="DUF3744"
+                     /note="ATP-binding cassette cobalt transporter; pfam12558"
+                     /db_xref="CDD:193079"
+     Region          295..524
+                     /region_name="CbiO"
+                     /note="ABC-type cobalt transport system, ATPase component
+                     [Inorganic ion transport and metabolism]; COG1122"
+                     /db_xref="CDD:224047"
+     Region          298..505
+                     /region_name="ABC_cobalt_CbiO_domain1"
+                     /note="First domain of the ATP-binding cassette component
+                     of cobalt transport system; cd03225"
+                     /db_xref="CDD:213192"
+     Site            329..336
+                     /site_type="other"
+                     /note="Walker A/P-loop"
+                     /db_xref="CDD:213192"
+     Site            order(332..333,335..337,376,453..454,486)
+                     /site_type="other"
+                     /note="ATP binding site [chemical binding]"
+                     /db_xref="CDD:213192"
+     Site            373..376
+                     /site_type="other"
+                     /note="Q-loop/lid"
+                     /db_xref="CDD:213192"
+     Site            429..438
+                     /site_type="other"
+                     /note="ABC transporter signature motif"
+                     /db_xref="CDD:213192"
+     Site            449..454
+                     /site_type="other"
+                     /note="Walker B"
+                     /db_xref="CDD:213192"
+     Site            457..460
+                     /site_type="other"
+                     /note="D-loop"
+                     /db_xref="CDD:213192"
+     Site            482..488
+                     /site_type="other"
+                     /note="H-loop/switch region"
+                     /db_xref="CDD:213192"
+     CDS             1..560
+                     /locus_tag="SPH_0596"
+                     /coded_by="NC_010380.1:544997..546679"
+                     /note="identified by match to protein family HMM PF00005"
+                     /transl_table=11
+                     /db_xref="GeneID:6029714"
+CONTIG      join(WP_000656523.1:1..560)
+ORIGIN      
+        1 mkeaiiewkd fsfryetqqe ptlqgidlti ykgekvlivg psgsgkstlg qclngiipni
+       61 ykgqtygefl ikgqaafdms iydkshlvst vlqdtdgqfi glsvaedlaf alendvtald
+      121 emkgrvykwa ekldllplld qrpqdlsggq kqrvslagvl idespillfd eplanldpks
+      181 gqdiielidq ihkeegtttl iiehrledvl hrpvdrivli ndgrilfngs pdqllatdll
+      241 tqngireply lttlrqlgvd lvkeeqlanl dnmsiskgqv qlqnelaket pelqslfkle
+      301 dvsfsyddrp ilkslhldik kgekiaivgk ngagkstlak aissfiqteg cylwekqdik
+      361 gdsvaeraer vgyvlqnpnq mistnmifde valglrlrgv dekeietrvy etlkicglye
+      421 frnwpisals fgqkkrvtia silvlgaeii lldeptagqd qknyteimef leelhqkght
+      481 ivmithdmql mldysdrvlv mvdgeliadt vpasllsdpe llvkanlket sifnlakkld
+      541 vdpldltafy kerregckln
+//

@@ -19,6 +19,12 @@ has sequence_length => (
     is => 'rw',
 );
 
+# Sequence version is independent of record version for some sources
+has sequence_version => (
+    isa => 'Int',
+    is => 'rw',
+);
+
 has region => (
     isa => 'Str',
     is => 'rw',
@@ -29,7 +35,12 @@ has gene_name => (
     is => 'rw',
 );
 
-has full_name => (
+has protein_name => (
+    isa => 'Str',
+    is => 'rw',
+);
+
+has entry_name => (
     isa => 'Str',
     is => 'rw',
 );
@@ -89,6 +100,7 @@ has version => (
     isa => 'Int',
     is => 'rw',
 );
+
 
 has taxon_id => (
     isa => 'Int',

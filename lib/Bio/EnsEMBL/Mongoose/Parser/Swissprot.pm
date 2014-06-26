@@ -39,6 +39,9 @@ sub node_sieve {
     my $state = $self->accession();
     $self->synonyms();
     $self->gene_name();
+    $self->entry_name();
+    $self->protein_name();
+    $self->sequence_version();
     $self->xrefs();
     $self->description();
     $self->sequence();
@@ -64,6 +67,30 @@ sub accession {
 sub gene_name {
     my $self = shift;
     $self->record->gene_name($self->xpath_to_value('/uni:uniprot/uni:entry/uni:gene/uni:name[@type="primary"]'));
+}
+
+sub entry_name {
+    my $self = shift;
+    $self->record->entry_name($self->xpath_to_value('/uni:uniprot/uni:entry/uni:name'));
+}
+
+sub protein_name {
+    my $self = shift;
+    my $protein_name=$self->xpath_to_value('/uni:uniprot/uni:entry/uni:protein/uni:recommendedName/uni:fullName');
+    #All of the Swissprot and some of the Trembl records have a recommendedName tag
+    if (defined($protein_name)) {
+        $self->record->protein_name($protein_name);
+    }
+    #Most of the Trembl records seems to have a submittedName tag
+    else {
+        $protein_name=$self->xpath_to_value('/uni:uniprot/uni:entry/uni:protein/uni:submittedName/uni:fullName');
+        $self->record->protein_name($protein_name);
+    }
+}
+
+sub sequence_version{
+    my $self = shift;
+    $self->record->sequence_version($self->xpath_to_value('/uni:uniprot/uni:entry/uni:sequence/@version'));
 }
 
 sub synonyms {

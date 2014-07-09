@@ -62,7 +62,7 @@ has cursor => (
         move_cursor => 'inc',
     }
 );
-
+# Consider setting buffer size from config?
 has buffer_size => (
     isa => 'Int',
     is => 'rw',

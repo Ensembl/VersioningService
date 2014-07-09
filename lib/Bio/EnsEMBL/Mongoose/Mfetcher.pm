@@ -2,6 +2,7 @@ package Bio::EnsEMBL::Mongoose::Mfetcher;
 
 use Moose;
 use Moose::Util::TypeConstraints;
+use MooseX::Method::Signatures;
 
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
 use Bio::EnsEMBL::Mongoose::Serializer::JSON;
@@ -9,6 +10,7 @@ use Bio::EnsEMBL::Mongoose::Serializer::ID;
 
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
+use Bio::EnsEMBL::Versioning::Broker;
 
 use IO::File;
 use Bio::EnsEMBL::Mongoose::SearchEngineException;
@@ -35,6 +37,18 @@ sub DEMOLISH {
 }
 
 enum 'Formats', [qw(FASTA JSON ID)];
+
+has versioning_service => (
+    isa => 'Bio::EnsEMBL::Versioning::Broker',
+    is => 'ro',
+    lazy => 1,
+    default => sub { 
+        my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+        $broker->init_broker;
+        return $broker;
+    },
+    predicate => 'versioning_service_ready',
+);
 
 has output_format => (
     isa => 'Formats',
@@ -63,19 +77,23 @@ has query_params => (
 
 has storage_engine => (
     isa => 'Bio::EnsEMBL::Mongoose::Persistence::LucyQuery',
-    is => 'ro',
+    is => 'rw',
     lazy => 1,
-    default => sub {
-        my $self = shift;
-        return Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->storage_engine_conf,buffer_size => 5000);        
-    }
+    builder => '_configure_storage_engine',
 );
 
-has storage_engine_conf => (
-    isa => 'Str',
-    is => 'ro',
-    required => 1,
-);
+sub _configure_storage_engine {
+    my $self = shift;
+    if ($self->using_conf_file) {
+        return Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->storage_engine_conf_file,buffer_size => 5000);
+    } else {
+        return Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf,buffer_size => 5000);    
+    }
+}
+
+# Contains information about the index Lucy will use, either by file or hash.
+has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file');
+has storage_engine_conf => (isa => 'HashRef', is => 'rw');
 
 has taxonomizer => (
     isa => 'Bio::EnsEMBL::Mongoose::Taxonomizer',
@@ -184,5 +202,20 @@ sub convert_name_to_taxon {
     }
     $self->query_params->taxons([$taxon]);
 }
+
+method work_with_source ( $source, $version? )  {
+    # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
+    my $service = $self->versioning_service;
+    my $record;
+    if ($version) {
+        $record = $service->get_source_by_name_and_version($source,$version);
+    } else {
+        $record = $service->get_current_source_by_name($source);
+    }
+    $self->storage_engine_conf({ index_location => $record->version->[0]->index_uri });
+    $self->storage_engine();
+    $self->log->debug('Switching to index: '.$record->version->[0]->index_uri);
+}
+
 
 1;

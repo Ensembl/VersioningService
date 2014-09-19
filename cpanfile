@@ -16,7 +16,7 @@ requires 'Moose';
 requires 'Moose::Role';
 requires 'MooseX::Log::Log4perl';
 requires 'MooseX::Storage';
-requires 'MooseX::Method::Signature'
+requires 'MooseX::Method::Signatures';
 requires 'Throwable::Error';
 
 # Lucy dependencies

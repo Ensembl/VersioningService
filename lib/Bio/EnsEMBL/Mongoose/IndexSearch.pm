@@ -1,4 +1,4 @@
-package Bio::EnsEMBL::Mongoose::Mfetcher;
+package Bio::EnsEMBL::Mongoose::IndexSearch;
 
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -7,6 +7,7 @@ use MooseX::Method::Signatures;
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
 use Bio::EnsEMBL::Mongoose::Serializer::JSON;
 use Bio::EnsEMBL::Mongoose::Serializer::ID;
+use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
@@ -36,19 +37,7 @@ sub DEMOLISH {
     $self->log->debug("File handle released");
 }
 
-enum 'Formats', [qw(FASTA JSON ID)];
-
-has versioning_service => (
-    isa => 'Bio::EnsEMBL::Versioning::Broker',
-    is => 'ro',
-    lazy => 1,
-    default => sub { 
-        my $broker = Bio::EnsEMBL::Versioning::Broker->new;
-        $broker->init_broker;
-        return $broker;
-    },
-    predicate => 'versioning_service_ready',
-);
+enum 'Formats', [qw(FASTA JSON ID RDF EnsemblRDF)];
 
 has output_format => (
     isa => 'Formats',
@@ -68,27 +57,6 @@ sub _select_writer {
     my $format = $self->output_format;
     my $writer = "Bio::EnsEMBL::Mongoose::Serializer::$format";
     return $writer->new(handle => $self->handle);
-}
-
-has query_params => (
-    isa => 'Bio::EnsEMBL::Mongoose::Persistence::QueryParameters',
-    is => 'rw',
-);
-
-has storage_engine => (
-    isa => 'Bio::EnsEMBL::Mongoose::Persistence::LucyQuery',
-    is => 'rw',
-    lazy => 1,
-    builder => '_configure_storage_engine',
-);
-
-sub _configure_storage_engine {
-    my $self = shift;
-    if ($self->using_conf_file) {
-        return Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->storage_engine_conf_file,buffer_size => 5000);
-    } else {
-        return Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf,buffer_size => 5000);    
-    }
 }
 
 # Contains information about the index Lucy will use, either by file or hash.
@@ -217,5 +185,10 @@ method work_with_source ( $source, $version? )  {
     $self->log->debug('Switching to index: '.$record->version->[0]->index_uri);
 }
 
+method work_with_index ( $source, $version? ) {
+  my $path = $self->versioning_service->get_index_by_name_and_version($source,$version);
+  $self->storage_engine_conf({ index_location => $path });
+  $self->storage_engine();
+}
 
 1;

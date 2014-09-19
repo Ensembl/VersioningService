@@ -3,7 +3,7 @@ use warnings;
 
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
-use Bio::EnsEMBL::Mongoose::Mfetcher;
+use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use Data::Dump::Color qw/dump/;
 use Log::Log4perl;
@@ -13,7 +13,7 @@ Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 my $query = shift;
 die "Specify query string" unless $query;
 
-my $mfetcher = Bio::EnsEMBL::Mongoose::Mfetcher->new();
+my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new();
 $mfetcher->work_with_source('UniProtSwissProt','2014_04');
 
 my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(

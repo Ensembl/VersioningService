@@ -4,7 +4,7 @@ use warnings;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
-use Bio::EnsEMBL::Mongoose::Mfetcher;
+use Bio::EnsEMBL::Mongoose::IndexSearcher;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use IO::File;
 
@@ -15,7 +15,7 @@ my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
     taxons => [40674],
 );
 
-my $mfetcher = Bio::EnsEMBL::Mongoose::Mfetcher->new(
+my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearcher->new(
     storage_engine_conf => "$ENV{MONGOOSE}/conf/swissprot.conf",
     query_params => $params,
     handle => $fh,

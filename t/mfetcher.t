@@ -4,7 +4,7 @@ use Test::Differences;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
-use Bio::EnsEMBL::Mongoose::Mfetcher;
+use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use IO::String;
 my $out;
@@ -17,7 +17,7 @@ my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
     taxons => [9606],
 );
 
-my $mfetcher = Bio::EnsEMBL::Mongoose::Mfetcher->new(
+my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
     storage_engine_conf => "$Bin/../conf/test.conf",
     query_params => $params,
     handle => $fh,
@@ -75,7 +75,7 @@ $fh = IO::String->new($out);
 $fh->setpos(0);
 $params->taxons([110109]);
 $params->evidence_level('1');
-$mfetcher = Bio::EnsEMBL::Mongoose::Mfetcher->new(
+$mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
     storage_engine_conf => "$Bin/../conf/test.conf",
     query_params => $params,
     handle => $fh,

@@ -18,13 +18,13 @@ package Bio::EnsEMBL::Versioning::Broker;
 use Moose;
 
 use Env;
-use Log::Log4perl;
 use Config::General;
 use File::Temp qw/tempdir/;
 use File::Path qw/make_path/;
 use File::Copy;
 use File::Spec;
 use IO::Dir;
+use Data::Dumper;
 
 use Try::Tiny;
 use Class::Inspector;
@@ -38,6 +38,8 @@ use Bio::EnsEMBL::Mongoose::IOException;
 
 my $conf = Config::General->new($ENV{MONGOOSE}.'/conf/manager.conf');
 my %opts = $conf->getall();
+
+with 'MooseX::Log::Log4perl';
 
 # subroutine to be called if using the broker outside of a pipeline or test suite.
 sub init_broker {
@@ -138,6 +140,17 @@ sub get_source_by_name_and_version {
     );
     if (scalar(@$sources) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No source: '.$source_name.' found with version '.$version)}
     return $sources->[0];
+}
+
+sub get_index_by_name_and_version {
+  my $self = shift;
+  my $source_name = shift;
+  my $version = shift;
+  my $source;
+  $self->log->info('Fetching index: '.$source_name.'  '.$version);
+  if (defined $version) { $source = $self->get_source_by_name_and_version($source_name,$version) } 
+  else { $source = $self->get_current_source_by_name($source_name) }
+  return $source->version->[0]->index_uri;
 }
 
 sub get_active_sources {

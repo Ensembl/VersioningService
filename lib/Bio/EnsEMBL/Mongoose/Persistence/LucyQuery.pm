@@ -10,6 +10,8 @@ use Search::Query::Dialect::Lucy;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 
+use Bio::EnsEMBL::Mongoose::SearchEngineException;
+
 use Data::Dump::Color qw/dump/;
 use Sereal::Decoder qw/decode_sereal/;
 
@@ -17,13 +19,14 @@ has search_engine => (
     isa => 'Lucy::Search::IndexSearcher',
     is => 'ro',
     required => 1,
+    lazy => 1,
     default => sub {
         my $self = shift;
         return Lucy::Search::IndexSearcher->new(
             index => $self->config->{index_location},
         );
     }
-); 
+);
 
 has query_parser => (
     isa => 'Search::Query::Parser',

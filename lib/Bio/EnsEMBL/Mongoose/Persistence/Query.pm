@@ -8,6 +8,7 @@ use Config::General;
 has config_file => (
     isa => 'Str',
     is => 'ro',
+    lazy => 1,
     default => sub {
         ## TODO FIXME BROKEN BROKEN BROKEN
         my $path = "$ENV{MONGOOSE}/conf/swissprot.conf";

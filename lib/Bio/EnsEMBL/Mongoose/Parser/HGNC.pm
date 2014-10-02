@@ -28,6 +28,7 @@ sub node_sieve {
   $self->display_label();
   $self->synonyms();
   $self->xref();
+  $self->gene_name();
 }
 
 
@@ -37,20 +38,16 @@ sub accession {
   $self->record->accessions([$accession]) if $accession;
 }
 
-sub getRawAccession {
-  my $self = shift;
-  return $self->{'current_block'}[0];
-}
-
 sub display_label {
   my $self = shift;
   my $display_label = $self->getRawLabel;
   $self->record->display_label($display_label) if $display_label;
 }
 
-sub getRawLabel {
+sub gene_name {
   my $self = shift;
-  return $self->{'current_block'}[1];
+  my $gene_name = $self->getRawName;
+  $self->record->gene_name($gene_name) if $gene_name;
 }
 
 sub synonyms {
@@ -59,12 +56,10 @@ sub synonyms {
   foreach my $synonym (@$synonyms) {
     $self->record->add_synonym($synonym);
   }
-}
-
-sub getRawSynonyms {
-  my $self = shift;
-  my @synonyms = split(', ', $self->{'current_block'}[8]);
-  return \@synonyms;
+  my $aliases = $self->getRawAlias;
+  foreach my $alias (@$aliases) {
+    $self->record->add_synonym($alias);
+  }
 }
 
 sub xref {
@@ -96,6 +91,22 @@ sub xref {
   }
 }
 
+sub getRawAccession {
+  my $self = shift;
+  return $self->{'current_block'}[0];
+}
+
+sub getRawLabel {
+  my $self = shift;
+  return $self->{'current_block'}[1];
+}
+
+sub getRawSynonyms {
+  my $self = shift;
+  my @synonyms = split(', ', $self->{'current_block'}[8]);
+  return \@synonyms;
+}
+
 sub getRawRefseqXrefs {
   my $self = shift;
   my @refseq_xrefs = split(', ', $self->{'current_block'}[23]);
@@ -120,6 +131,17 @@ sub getRawLRGXrefs {
   return \@lrg_xrefs;
 }
 
+sub getRawAlias {
+  my $self = shift;
+  my @alias = split(', ', $self->{'current_block'}[6]);
+  return \@alias;
+}
+
+sub getRawName {
+  my $self = shift;
+  return $self->{'current_block'}[2];
+}
+
 sub check_header {
   my $self = shift;
   my $content = shift;
@@ -132,6 +154,9 @@ sub check_header {
   }
   if ($line[2] ne 'Approved Name') {
     Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[2] . " does not match Approved Name");
+  }
+  if ($line[6] ne 'Previous Symbols') {
+    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[6] . " does not match Previous Symbols");
   }
   if ($line[8] ne 'Synonyms') {
     Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[8] . " does not match Synonyms");

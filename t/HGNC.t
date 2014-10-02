@@ -14,7 +14,6 @@ my $hgnc_reader = new Bio::EnsEMBL::Mongoose::Parser::HGNC(
 $hgnc_reader->read_record;
 
 my $record = $hgnc_reader->record;
-print "Fetching first $record\n";
 #print dump($record);
 my $accessions = $record->accessions;
 note(scalar @$accessions);
@@ -23,6 +22,8 @@ is($record->display_label, 'A1BG', 'display_label check');
 my $xrefs = $record->xref;
 is($record->xref->[0]->source, 'RefSeq', 'Xref source check');
 is($record->xref->[0]->id, 'NM_130786', 'Xref id check');
+is($record->xref->[1]->source, 'Ensembl', 'Xref source check 2');
+is($record->xref->[2]->source, 'CCDS', 'Xref source check 3');
 $hgnc_reader->read_record;
 $hgnc_reader->read_record;
 ok(!$hgnc_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');

@@ -72,6 +72,10 @@ has buffer_size => (
     default => 1000,
 );
 
+# Used to inform the writer where this data came from, e.g. for URI generation or metadata.
+has source => (is => 'rw',isa => 'Str');
+has version => (is => 'rw', isa => 'Maybe[Str]');
+
 with 'Bio::EnsEMBL::Mongoose::Persistence::Query';
 with 'MooseX::Log::Log4perl';
 

@@ -63,6 +63,59 @@ sub _select_writer {
 has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file');
 has storage_engine_conf => (isa => 'HashRef', is => 'rw');
 
+has storage_engine => (
+    isa => 'Bio::EnsEMBL::Mongoose::Persistence::LucyQuery',
+    is => 'ro',
+    lazy => 1,
+    builder => '_init_storage',
+);
+
+sub _init_storage {
+    my $self = shift;
+    my $store;
+    if ($self->using_conf_file) {
+        $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->storage_engine_conf_file);
+    } else {
+        $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf);
+    }
+    return $store;
+}
+
+has species => (isa => 'Str', is => 'rw',default => 'human');
+has source => (isa => 'Str', is => 'rw',default => 'UniProtSwissProt');
+
+has query_params => (
+    isa => 'Object',
+    is => 'rw',
+    builder => '_populate_query_object',
+    lazy => 1,
+);
+
+sub _populate_query_object {
+    my $self = shift;
+    my $taxon = $self->taxonomizer->fetch_taxon_id_by_name($self->species);
+    my $query = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
+        taxons => [$taxon],
+        format => $self->output_format,
+    );
+    return $query;
+}
+
+has versioning_service => (
+    isa => 'Bio::EnsEMBL::Versioning::Broker',
+    is => 'ro',
+    lazy => 1,
+    predicate => 'versioning_service_ready',
+    builder => '_awaken_giant',
+);
+
+sub _awaken_giant {
+    my $self = shift;
+    my $broker = Bio::EnsEMBL::Versioning::Broker->new();
+    $broker->init_broker;
+    return $broker;
+}
+
 has taxonomizer => (
     isa => 'Bio::EnsEMBL::Mongoose::Taxonomizer',
     is => 'ro',
@@ -120,7 +173,7 @@ sub get_records {
     my $self = shift;
     $self->storage_engine->query_parameters($self->query_params);
     $self->storage_engine->query();
-
+    my $source = $self->source();
     while (my $result = $self->storage_engine->next_result) {
         my $record = $self->storage_engine->convert_result_to_record($result);
         # Filter record against a possible blacklist of unwanted accessions. Quite possibly slow
@@ -130,7 +183,7 @@ sub get_records {
                 if ($self->blacklist->exists($accession)) {next; $self->log->debug('Skipping blacklisted id: '.$accession)}
             }
         }
-        $self->writer->print_record($record);
+        $self->writer->print_record($record, $source);
         $counter++;
         if ($counter % 10000 == 0) {
             $self->log->info("Dumped $counter records");
@@ -171,24 +224,14 @@ sub convert_name_to_taxon {
     $self->query_params->taxons([$taxon]);
 }
 
-method work_with_source ( $source, $version? )  {
-    # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
-    my $service = $self->versioning_service;
-    my $record;
-    if ($version) {
-        $record = $service->get_source_by_name_and_version($source,$version);
-    } else {
-        $record = $service->get_current_source_by_name($source);
-    }
-    $self->storage_engine_conf({ index_location => $record->version->[0]->index_uri });
-    $self->storage_engine();
-    $self->log->debug('Switching to index: '.$record->version->[0]->index_uri);
-}
-
-method work_with_index ( $source, $version? ) {
+method work_with_index ( Str :$source, Str :$version? ) {
+  # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
   my $path = $self->versioning_service->get_index_by_name_and_version($source,$version);
-  $self->storage_engine_conf({ index_location => $path });
+  $self->log->debug('Switching to index: '.$path);
+  $self->storage_engine_conf({ index_location => $path, source => $source, version => $version});
   $self->storage_engine();
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;

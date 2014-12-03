@@ -13,7 +13,7 @@ has source => (
 );
 
 has output_format => (
-    isa => enum([qw( FASTA JSON)]),
+    isa => enum([qw( FASTA JSON RDF EnsemblRDF)]),
     is => 'ro',
     default => 'FASTA',
 );

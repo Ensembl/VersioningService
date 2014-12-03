@@ -1,0 +1,71 @@
+# Pulls the gene model out of Ensembl and turns it into a basic graph
+
+package Bio::EnsEMBL::Mongoose::Serializer::EnsemblRDF;
+
+use Moose;
+use IO::File;
+use Config::General;
+use Bio::EnsEMBL::Registry;
+
+extends 'Bio::EnsEMBL::Mongoose::Serializer::RDFLib';
+
+has file => (is => 'rw', isa => 'IO::File', lazy => 1);
+
+has species =>  (is => 'rw', isa=>'Str',required => 1);
+
+has config_file => (
+  isa => 'Str',
+  is => 'ro',
+  default => sub {
+    my $path = "$ENV{MONGOOSE}/conf/databases.conf";
+    return $path;
+  },
+);
+
+has config => (
+  isa => 'HashRef',
+  is => 'ro',
+  required => 1,
+  default => sub {
+    my $self = shift;
+    my $conf = Config::General->new($self->config_file);
+    my %opts = $conf->getall();
+    return \%opts;
+  },
+);
+
+# modify to support two ensembl DBs...
+before print_record => sub {
+  my $self = shift;
+  Bio::EnsEMBL::Registry->load_registry_from_db(
+    -host => $self->config->{ensembl_host},
+    -user => $self->config->{ensembl_user},
+    -port => $self->config->{ensembl_port},
+    -pass => $self->config->{ensembl_pass},
+    -db_version => $self->config->{ensembl_version},
+    -no_cache => 1,
+  );
+}
+
+sub print_record {
+  my $self = shift;
+  my $fh = $self->handle;
+  my $ga = Bio::EnsEMBL::Registry->get_adaptor($self->species,'core','Gene');
+  my $genes = $ga->fetch_all;
+  while (my $gene = shift @{$genes}) {
+    my $transcripts = $gene->get_all_Transcripts;
+    while (my $transcript = shift @{$transcripts}) {
+      print $fh triple( u(prefix('ensembl').$transcript->stable_id),
+                        u(prefix('obo').'SO_transcribed_from'),
+                        u(prefix('ensembl').$gene->stable_id));
+      my $translation = $transcript->translation;
+      print $fh triple( u(prefix('ensembl').$transcript->stable_id),
+                        u(prefix('obo').'SO_translates_to'),
+                        u(prefix('ensembl').$translation->stable_id));  
+    }
+  }
+}
+
+
+
+1;

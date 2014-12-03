@@ -25,6 +25,7 @@ has namespace => (
   handles => { prefix => 'get'}
 );
 
+has handle => (is => 'rw', isa => 'IO::File', required => 1);
 has bnode => ( is => 'rw', isa => 'Int', default => 0, handles => {bplus => 'inc'});
 
 sub triple {
@@ -40,9 +41,10 @@ sub u {
 
 sub new_bnode {
   my $self = shift;
-  $self->bplus;
+  $self->bplus();
   return '_'.$self->bnode;
 }
+
 
 sub dump_prefixes {
   my $self = shift;

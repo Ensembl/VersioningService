@@ -2,7 +2,7 @@ package Bio::EnsEMBL::Mongoose::IndexSearch;
 
 use Moose;
 use Moose::Util::TypeConstraints;
-use MooseX::Method::Signatures;
+use Method::Signatures;
 
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
 use Bio::EnsEMBL::Mongoose::Serializer::JSON;

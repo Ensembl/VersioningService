@@ -16,7 +16,7 @@ requires 'Moose';
 requires 'Moose::Role';
 requires 'MooseX::Log::Log4perl';
 requires 'MooseX::Storage';
-requires 'MooseX::Method::Signatures';
+requires 'Method::Signatures';
 requires 'Throwable::Error';
 
 # Lucy dependencies
@@ -41,3 +41,8 @@ requires 'Rose::DBx::AutoReconnect';
 
 requires 'Test::Differences';
 requires 'Class::Inspector';
+requires 'REST::Neo4p';
+
+# Graphing
+
+requires 'RDF::Query::Client';

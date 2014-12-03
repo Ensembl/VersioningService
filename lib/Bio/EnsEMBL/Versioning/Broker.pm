@@ -148,9 +148,17 @@ sub get_index_by_name_and_version {
   my $version = shift;
   my $source;
   $self->log->info('Fetching index: '.$source_name.'  '.$version);
-  if (defined $version) { $source = $self->get_source_by_name_and_version($source_name,$version) } 
-  else { $source = $self->get_current_source_by_name($source_name) }
-  return $source->version->[0]->index_uri;
+  my $index;
+  if (defined $version) { 
+    $source = $self->get_source_by_name_and_version($source_name,$version); 
+    $index = $source->version->[0]->index_uri;
+  } 
+  else { 
+    $source = $self->get_current_source_by_name($source_name);
+    $index = $source->current_version->index_uri;
+  }
+  # $self->log->debug(Dumper $source);
+  return $index;
 }
 
 sub get_active_sources {
@@ -230,5 +238,7 @@ sub get_module {
     Bio::EnsEMBL::Mongoose::UsageException->throw("Module $name could not be found. $_");
   };
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;

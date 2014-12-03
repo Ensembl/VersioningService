@@ -50,6 +50,9 @@ has accessions => (
     is => 'rw',
     traits => ['Array'],
     predicate => 'has_accessions',
+    handles => {
+        'get_any_old_accession' => 'shift',
+    }
 );
 
 has synonyms => (
@@ -91,6 +94,7 @@ has comment => (
     is => 'rw',
 );
 
+# For sequence equality matching
 has checksum => (
     isa => 'Str',
     is => 'rw',

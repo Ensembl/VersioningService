@@ -22,8 +22,8 @@ has header_function => (
             my $self = shift;
             my $record = shift;
             my $accession = $record->primary_accession;
-            unless ($accession) {
-                $accession = $record->accessions->shift;
+            unless ($accession || !$record->has_accessions) {
+                $accession = $record->get_any_old_accession;
             }
             my $handle = $self->handle;
             printf $handle "> %s %s %s %s\n", $accession, $record->taxon_id, $record->evidence_level, ""; 

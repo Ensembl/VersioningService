@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+# A singleton that provides the interface for the versioning service.
+# It can retrieve different versions of a particular source as well as add
+# new versions of sources to the versioning service.
+
 package Bio::EnsEMBL::Versioning::Broker;
 
 use Moose;
@@ -147,7 +152,10 @@ sub get_index_by_name_and_version {
   my $source_name = shift;
   my $version = shift;
   my $source;
-  $self->log->info('Fetching index: '.$source_name.'  '.$version);
+  {
+    no warnings;
+    $self->log->info('Fetching index: '.$source_name.'  '.$version);
+  }
   my $index;
   if (defined $version) { 
     $source = $self->get_source_by_name_and_version($source_name,$version); 
@@ -223,6 +231,7 @@ sub finalise_index {
   $source->update;
 }
 
+# imports modules required for accessing the document store of choice, e.g. Lucy
 sub get_module {
   my $self = shift;
   my $name = shift;

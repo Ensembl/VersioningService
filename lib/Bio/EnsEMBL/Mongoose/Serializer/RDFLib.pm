@@ -12,7 +12,7 @@ has namespace => (
   isa => 'HashRef',
   default => sub { {
     ensembl => 'http://rdf.ebi.ac.uk/resource/ensembl/',
-    ensemblterms => 'http://rdf.ebi.ac.uk/terms/ensembl/',
+    ensemblterm => 'http://rdf.ebi.ac.uk/terms/ensembl/',
     rdf => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
     rdfs => 'http://www.w3.org/2000/01/rdf-schema#',
     rdfg => 'http://www.w3.org/2004/03/trix/rdfg-1/',
@@ -23,12 +23,36 @@ has namespace => (
     # obo includes sequence ontology for some reason
     sio => 'http://semanticscience.org/resource/',
     faldo => 'http://biohackathon.org/resource/faldo',
+    uniprotswissprot => 'http://purl.uniprot.org/uniparc/',
+    uniprottrembl => 'http://purl.uniprot.org/uniparc/',
+    uniprotuniparc => 'http://purl.uniprot.org/uniparc/',
+    embl => 'http://www.embl.de/',
+    refseq => 'www.ncbi.nlm.nih.gov/refseq/',
+    go => 'http://purl.obolibrary.org/obo/',
+    chembl => 'http://rdf.ebi.ac.uk/resource/chembl/target/',
+    entrezgene => 'http://identifiers.org/ncbigene/',
+    protein_id => 'http://identifiers.org/insdc/',
+    goslim_goa => 'http://purl.obolibrary.org/obo/',
+
   } },
-  handles => { prefix => 'get'}
+
 );
 
 has handle => (is => 'rw', isa => 'IO::File', required => 1);
-has bnode => ( is => 'rw', isa => 'Int', default => 0, handles => {bplus => 'inc'});
+has bnode => ( is => 'rw', traits => ['Counter'], isa => 'Int', default => 0, handles => {bplus => 'inc'});
+
+with 'MooseX::Log::Log4perl';
+
+sub prefix {
+  my $self = shift;
+  my $source = shift;
+  $source = lc $source;
+  if ( exists $self->namespace->{$source}) { return $self->namespace->{$source} }
+  else { 
+    $self->log->debug('Failed to match source '.$source.' with namespace');
+    return $self->namespace->{ensembl}.'source/';
+  }
+}
 
 sub triple {
   my $self = shift;
@@ -37,6 +61,7 @@ sub triple {
 }
 
 sub u {
+  my $self = shift;
   my $stuff= shift;
   return '<'.$stuff.'>';
 }
@@ -57,5 +82,6 @@ sub dump_prefixes {
   }
 }
 
+__PACKAGE__->meta->make_immutable;
 
 1;

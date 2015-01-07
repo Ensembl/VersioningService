@@ -9,8 +9,6 @@ use Bio::EnsEMBL::Registry;
 
 extends 'Bio::EnsEMBL::Mongoose::Serializer::RDFLib';
 
-has file => (is => 'rw', isa => 'IO::File', lazy => 1);
-
 has species =>  (is => 'rw', isa=>'Str',required => 1);
 
 has config_file => (
@@ -35,7 +33,7 @@ has config => (
 );
 
 # modify to support two ensembl DBs...
-before print_record => sub {
+before 'print_record' => sub {
   my $self = shift;
   Bio::EnsEMBL::Registry->load_registry_from_db(
     -host => $self->config->{ensembl_host},
@@ -45,7 +43,7 @@ before print_record => sub {
     -db_version => $self->config->{ensembl_version},
     -no_cache => 1,
   );
-}
+};
 
 sub print_record {
   my $self = shift;
@@ -55,13 +53,15 @@ sub print_record {
   while (my $gene = shift @{$genes}) {
     my $transcripts = $gene->get_all_Transcripts;
     while (my $transcript = shift @{$transcripts}) {
-      print $fh triple( u(prefix('ensembl').$transcript->stable_id),
-                        u(prefix('obo').'SO_transcribed_from'),
-                        u(prefix('ensembl').$gene->stable_id));
+      print $fh $self->triple( $self->u($self->prefix('ensembl').$transcript->stable_id),
+                        $self->u($self->prefix('obo').'SO_transcribed_from'),
+                        $self->u($self->prefix('ensembl').$gene->stable_id));
       my $translation = $transcript->translation;
-      print $fh triple( u(prefix('ensembl').$transcript->stable_id),
-                        u(prefix('obo').'SO_translates_to'),
-                        u(prefix('ensembl').$translation->stable_id));  
+      if ($translation) {
+        print $fh $self->triple( $self->u($self->prefix('ensembl').$transcript->stable_id),
+                          $self->u($self->prefix('obo').'SO_translates_to'),
+                          $self->u($self->prefix('ensembl').$translation->stable_id));  
+      }
     }
   }
 }

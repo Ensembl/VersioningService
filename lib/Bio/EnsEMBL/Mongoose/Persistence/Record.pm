@@ -25,6 +25,7 @@ has sequence_version => (
     is => 'rw',
 );
 
+# A location string, such as 6:1000-1010
 has region => (
     isa => 'Str',
     is => 'rw',
@@ -45,6 +46,7 @@ has entry_name => (
     is => 'rw',
 );
 
+# first accession is the "primary" accession
 has accessions => (
     isa => 'ArrayRef[Str]',
     is => 'rw',
@@ -78,6 +80,7 @@ has xref => (
     }
 );
 
+# The favourite accession/id/name for displaying to users
 has display_label => (
     isa => 'Str',
     is => 'rw',
@@ -105,7 +108,6 @@ has version => (
     is => 'rw',
 );
 
-
 has taxon_id => (
     isa => 'Int',
     is => 'rw',
@@ -127,6 +129,7 @@ has evidence_level => (
 # 4 = Predicted
 # 5 = Uncertain
 
+# Place to put warnings about why this record may not be reliable.
 has suspicion => (
     isa => 'Str',
     is => 'rw',

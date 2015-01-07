@@ -1,3 +1,5 @@
+# tinpot writer for checking data integrity in the document store
+
 package Bio::EnsEMBL::Mongoose::Serializer::ID;
 
 use Moose;

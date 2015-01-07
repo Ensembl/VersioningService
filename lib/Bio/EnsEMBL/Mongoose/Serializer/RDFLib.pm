@@ -1,8 +1,10 @@
 # Superclass of things that get data from specific source indexes and turn them into triples.
+# Convenience methods supplied for writing RDF swiftly (i.e. not through a library)
 
 package Bio::EnsEMBL::Mongoose::Serializer::RDFLib;
 
 use Moose;
+use namespace::autoclean;
 
 has namespace => (
   traits => ['Hash'],

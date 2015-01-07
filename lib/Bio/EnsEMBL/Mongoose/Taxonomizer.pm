@@ -1,3 +1,5 @@
+# Translate taxons into species names, and to get multiple taxons from child branches.
+
 package Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Moose;
 

@@ -138,7 +138,18 @@ sub xrefs {
                 $last = $attr->value;
             }
         }
+        # nearby property may contain evidence code/attribution to source.
+        my $code; # evidence code
+        my $author; #dependent xref source
+        if ($node->hasChildNodes) {
+            my @evidence_list = $self->xpath_context->findnodes('//uni:property[@type="evidence"]/@value',$node)->get_nodelist;
+            if ( scalar @evidence_list > 1) {
+                $author = $evidence_list[0]->getValue;
+                ($code,$author) = $author =~ /(\w+:)(.*)/; # remove evidence code for potential reuse/turning to ECO.
+            }
+        }        
         my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);
+        if ($author) {$xref->author($author)};
         
         $self->record->add_xref($xref);
     });

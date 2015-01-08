@@ -32,7 +32,7 @@ has version => (
 # who said this link exists. Needed where xref sources are aggregators themselves.
 has author => (
     isa => 'Str',
-    is => 'ro',
+    is => 'rw',
 );
 
 sub TO_JSON {

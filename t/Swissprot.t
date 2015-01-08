@@ -26,6 +26,12 @@ is($record->sequence,$seq, 'Make sure sequence regex-trimming does no harm, but 
 
 cmp_ok($record->evidence_level, '==', 1, 'evidence level correctly extracted');
 ok(!$record->suspicion, 'record should not be suspicious');
+
+my @xrefs = @{ $record->xref };
+my @go_xref = grep {$_->id eq 'GO:0005829'} @xrefs;
+cmp_ok(scalar @go_xref, '==', 1, 'GO xref found');
+is($go_xref[0]->author,'Reactome','Check correct extraction of author of xref');
+
 $xml_reader->read_record;
 $xml_reader->read_record;
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');

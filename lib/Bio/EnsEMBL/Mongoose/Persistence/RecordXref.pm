@@ -30,7 +30,8 @@ has version => (
 );
 
 # who said this link exists. Needed where xref sources are aggregators themselves.
-has author => (
+# name matched with dublin core
+has creator => (
     isa => 'Str',
     is => 'rw',
 );

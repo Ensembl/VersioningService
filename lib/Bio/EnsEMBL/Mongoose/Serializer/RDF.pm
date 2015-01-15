@@ -9,21 +9,38 @@ sub print_record {
   my $record = shift;
   my $source = shift;
   my $fh = $self->handle;
-  print "Record from ".$source."\n";
+  print "Record from $source\n";
   my $anchor = $self->prefix($source).$record->primary_accession;
+  
+  # Attach description nodes
+  my $annotation_bnode = $self->new_bnode;
+  print $fh $self->triple($self->u($anchor),$self->u($self->prefix('dcterms').'source'), $annotation_bnode );
+  print $fh $self->triple( $annotation_bnode, $self->u($self->prefix('rdf').'label'), $record->primary_accession );
+  print $fh $self->triple( $annotation_bnode, $self->u($self->prefix('rdf').'type'), $self->u( $self->identifiers($source)) );
+
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     print "Xref from ".$xref->source." ID: ".$xref->id."\n";
     my $other = $self->prefix($xref->source).$xref->id;
     my $bnode = $self->new_bnode;
+
+    # entity comes from ...
     print $fh $self->triple($self->u($anchor),
-                     $self->prefix('ensemblterm')."source",
-                     $self->u($self->prefix($source)))
+                $self->u($self->prefix('ensemblterm').'source'),
+                $self->u($self->prefix($source)) )
       or Bio::EnsEMBL::Mongoose::IOException->throw(message => "Error writing to file handle: $!");
-    print $fh $self->triple($self->u($anchor),$self->prefix('ensemblterm')."xref",$bnode);
-    print $fh $self->triple($bnode,$self->prefix('ensemblterm')."refers-to",$self->u($other));
-    print $fh $self->triple($bnode,$self->prefix('rdf')."type",$self->prefix('ensemblterm').'Direct');
-    print $fh $self->triple($self->u($other),$self->prefix('ensemblterm')."source",$self->u($self->prefix($source)));
+    # link to xref, note symmetric property to allow transitive queries, while preventing circular queries
+    print $fh $self->triple($self->u($anchor),$self->u($self->prefix('ensemblterm').'refers-to'),$bnode);
+    print $fh $self->triple($bnode,$self->u($self->prefix('ensemblterm').'refers-from'),$self->u($anchor));
+    # xref links to target ID
+    print $fh $self->triple($bnode,$self->u($self->prefix('ensemblterm').'refers-to'),$self->u($other));
+    print $fh $self->triple($self->u($other),$self->u($self->prefix('ensemblterm').'refers-from'),$bnode);
+    # xref type
+    print $fh $self->triple($bnode,$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('ensemblterm').'Direct'));
+    # if xref assertion came from a secondary/dependent source, mention them.
+    if ($xref->creator) {
+      print $fh $self->triple($bnode,$self->u($self->prefix('dcterms').'creator'),$self->u($self->prefix('ensembl').$xref->creator));
+    }
   }
 }
 

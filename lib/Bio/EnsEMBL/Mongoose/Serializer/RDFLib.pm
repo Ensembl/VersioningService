@@ -13,6 +13,7 @@ has namespace => (
   default => sub { {
     ensembl => 'http://rdf.ebi.ac.uk/resource/ensembl/',
     ensemblterm => 'http://rdf.ebi.ac.uk/terms/ensembl/',
+    ensemblsource => 'http://rdf.ebi.ac.uk/resource/ensembl/source',
     rdf => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
     rdfs => 'http://www.w3.org/2000/01/rdf-schema#',
     rdfg => 'http://www.w3.org/2004/03/trix/rdfg-1/',
@@ -38,6 +39,31 @@ has namespace => (
 
 );
 
+# list of canonical URIs for particular data providers resolved through idtype.indentifiers.org . Best practice.
+has identifiers => (
+  traits => ['Hash'],
+  is => 'ro',
+  isa => 'HashRef',
+  default => sub {
+    {
+      ccds => 'ccds',
+      chembl => 'chembl.target',
+      embl => 'ena.embl',
+      ensembl => 'ensembl',
+      entrezgene => 'ncbigene',
+      go => 'go',
+      goa => 'goa',
+      hgnc => 'hgnc',
+      interpro => 'interpro',
+      refseq => 'refseq',
+      uniparc => 'uniparc',
+      uniprotswissprot => 'uniprot',
+      uniprottrembl => 'uniprot',
+    }
+  },
+
+  );
+
 has handle => (is => 'rw', isa => 'IO::File', required => 1);
 has bnode => ( is => 'rw', traits => ['Counter'], isa => 'Int', default => 0, handles => {bplus => 'inc'});
 
@@ -51,6 +77,17 @@ sub prefix {
   else { 
     $self->log->debug('Failed to match source '.$source.' with namespace');
     return $self->namespace->{ensembl}.'source/';
+  }
+}
+
+sub identifier {
+  my $self = shift;
+  my $source = shift;
+  $source = lc $source;
+  if (exists $self->identifiers->{$source}) { return 'http://identifiers.org/'.$self->identifiers->{$source} }
+  else {
+    $self->log->debug("No identifiers.org standard path available for $source");
+    return "http://identifiers.org/general/$source";
   }
 }
 

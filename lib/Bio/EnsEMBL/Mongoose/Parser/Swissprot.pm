@@ -47,7 +47,7 @@ sub node_sieve {
     $self->sequence();
     $self->taxon();
     $self->evidence_level();
-    if ($self->suspicious()) {$self->log->debug("Found an untrustworthy Xref")}
+    if ($self->suspicious()) {$self->log->debug("Found an untrustworthy Xref, ".$self->record->id())}
     # note: can always fetch child nodes with $node->getElementsByTagName
     return 1 if $state >0;
 }
@@ -140,16 +140,16 @@ sub xrefs {
         }
         # nearby property may contain evidence code/attribution to source.
         my $code; # evidence code
-        my $author; #dependent xref source
+        my $creator; #dependent xref source
         if ($node->hasChildNodes) {
             my @evidence_list = $self->xpath_context->findnodes('//uni:property[@type="evidence"]/@value',$node)->get_nodelist;
             if ( scalar @evidence_list > 1) {
-                $author = $evidence_list[0]->getValue;
-                ($code,$author) = $author =~ /(\w+:)(.*)/; # remove evidence code for potential reuse/turning to ECO.
+                $creator = $evidence_list[0]->getValue;
+                ($code,$creator) = $creator =~ /(\w+:)(.*)/; # remove evidence code for potential reuse/turning to ECO.
             }
         }        
         my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);
-        if ($author) {$xref->author($author)};
+        if ($creator) {$xref->creator($creator)};
         
         $self->record->add_xref($xref);
     });

@@ -3,6 +3,7 @@ use Moose;
 
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
+# primary internal identifier, e.g. ENSG/UPI:
 has id => (
     isa => 'Str',
     is => 'rw',
@@ -25,17 +26,19 @@ has sequence_version => (
     is => 'rw',
 );
 
-# A location string, such as 6:1000-1010
+# A genomic location string, such as 6:1000-1010
 has region => (
     isa => 'Str',
     is => 'rw',
 );
 
+# A name for the gene this refers to
 has gene_name => (
     isa => 'Str',
     is => 'rw',
 );
 
+# Name of the protein this record refers to
 has protein_name => (
     isa => 'Str',
     is => 'rw',
@@ -57,6 +60,7 @@ has accessions => (
     }
 );
 
+# labels that are the same as the record, not xrefs
 has synonyms => (
     isa => 'ArrayRef[Str]',
     is => 'rw',
@@ -66,6 +70,7 @@ has synonyms => (
     }
 );
 
+# links however tenuous to external resources that describe the same entity
 has xref => (
     isa => 'ArrayRef[Bio::EnsEMBL::Mongoose::Persistence::RecordXref]',
     is => 'rw',
@@ -108,6 +113,7 @@ has version => (
     is => 'rw',
 );
 
+# instead of species, less ambiguous.
 has taxon_id => (
     isa => 'Int',
     is => 'rw',
@@ -119,6 +125,7 @@ has schema_version => (
     is => 'rw',
 );
 
+# meaning specific to source. Mainly a uniprot property
 has evidence_level => (
     isa => 'Int',
     is => 'rw',

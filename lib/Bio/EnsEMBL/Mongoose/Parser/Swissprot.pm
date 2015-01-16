@@ -25,7 +25,6 @@ sub read_record {
     $self->flush_document;
     my $slurp = $self->slurp_content;
     if (!$slurp) {return;}
-    #my $doc = $self->xml_document;
     $self->clear_record;
     $self->log->debug('Record blanked');
     my $read_state = $self->node_sieve();
@@ -47,7 +46,7 @@ sub node_sieve {
     $self->sequence();
     $self->taxon();
     $self->evidence_level();
-    if ($self->suspicious()) {$self->log->debug("Found an untrustworthy Xref, ".$self->record->id())}
+    if ($self->suspicious()) {$self->log->debug("Found an untrustworthy Xref, ".$self->record->primary_accession)}
     # note: can always fetch child nodes with $node->getElementsByTagName
     return 1 if $state >0;
 }

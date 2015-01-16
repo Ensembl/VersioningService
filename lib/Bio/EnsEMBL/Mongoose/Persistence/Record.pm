@@ -60,7 +60,7 @@ has accessions => (
     }
 );
 
-# labels that are the same as the record, not xrefs
+# labels that are other names than the gene_name
 has synonyms => (
     isa => 'ArrayRef[Str]',
     is => 'rw',
@@ -135,6 +135,15 @@ has evidence_level => (
 # 3 = Support by homology
 # 4 = Predicted
 # 5 = Uncertain
+
+# Certain sources (OMIM) have multiple data types in one bundle. These can be differentiated by tagging them.
+# For OMIM, look for 'phenotype' and 'gene', both can be present
+has tag => (
+    isa => 'ArrayRef[Str]',
+    is => 'rw',
+    traits => ['Array'],
+    handles => { add_tag => 'push' },
+);
 
 # Place to put warnings about why this record may not be reliable.
 has suspicion => (

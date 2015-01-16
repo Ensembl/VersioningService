@@ -18,7 +18,7 @@ sub read_record {
   my $self = shift;
   local $/ = '*RECORD*';
   $self->clear_record;
-  $self->$record->taxon_id(9606); # Mendelian inheritance in man after all.
+  $self->record->taxon_id(9606); # Mendelian inheritance in man after all.
   
   my $fh = $self->source_handle;
   my $content = <$fh>;
@@ -67,31 +67,39 @@ sub NO {
 sub TI {
   my $self = shift;
   my $field = shift;
+  my $record = $self->record;
   return unless (@$field > 0);
-  use Data::Dumper;
-  print Dumper $field;
-  # chomp @$field;
+  # use Data::Dumper;
+  # print Dumper $field;
   my @bits = split /;;/, join '',splice(@$field,1,scalar @$field); # ;; denotes a separate entry of the same syntax as those before
   my $starter = shift @bits;
-  my ($sigil,$id,$gene_name,$symbol) = $starter =~ /^\s*([\%\*\+\-\#])?(\d+)?\s*(.*)?(;\s*(\w+))?/;
+  my $symbol;
+  ($starter,$symbol) = split /;/,$starter;
+  my ($sigil,$id,$gene_name) = $starter =~ /^\s*([\%\*\+\-\#])?(\d+)?\s*(.*)/;
   # $sigil can be * = gene only, nothing, # or % = phenotype only, + = both, ^ = retired
   # retired IDs become xrefs to other MIM IDs if MOVED TO appears. Does not retain retired accessions beyond the MIM ID
-  if ($sigil eq '^') {
+  if ($sigil && $sigil eq '^') {
     if ($gene_name =~ /MOVED_TO/) {
       my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'MIM', id => $id, creator => 'MIM');
       $self->record->add_xref($xref);
     } # else { die you awkward data }
   } elsif (!defined($sigil) || $sigil eq '#' || $sigil eq '%' || $sigil eq '+' ) {
-    # this is a description of a disease (MIM morbid)
+    # this is a description of a phenotype (MIM morbid)
+    $record->add_tag('phenotype');
   }
-  if ($sigil eq '+' || $sigil eq '*') {
+  if ($sigil && ($sigil eq '+' || $sigil eq '*')) {
     # this is a description of a gene
+    $record->add_tag('gene');
   }
+  $record->id($id) if $id;
+  $record->display_label($gene_name) if $gene_name;
+  $record->gene_name($symbol) if $symbol;
 
   foreach my $bit (@bits) {
     my @subbits = split /;/,$bit;
     $gene_name = shift @subbits;
-    my @symbols = @subbits;  
+    $record->add_synonym($gene_name) if $gene_name; # maybe put this in another field?
+    $record->add_synonym(@subbits) if $#subbits > 0;
   }
 }
 
@@ -106,10 +114,17 @@ sub TX {
   return 1;
 }
 
+# These contain mentions of rsIDs useful to variation; more parsing may be required
+sub AV {
+  my $self = shift;
+  my $field = shift;
+  my $description = join "\n",@$field;
+  $self->record->comment($description);
+  return 1;
+}
 # lots of other fields of no particular interest to Ensembl. Implement if needed
 sub RF {return 1;}
 sub CS {return 1;} # contains affected tissue types, might be worth parsing.
 sub CN {return 1;}
 sub CD {return 1;}
 sub ED {return 1;}
-sub AV {return 1;}

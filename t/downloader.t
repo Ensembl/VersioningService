@@ -7,13 +7,15 @@ use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 my $refseq = Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq->new();
-$refseq->file_pattern('vertebrate_mammalian\.55\.protein.*');
+$refseq->file_pattern('complete\.55\.bna.*');
 
 my $version = $refseq->get_version;
-cmp_ok($version,'==',63,'Current RefSeq version is as expected');
+# cmp_ok($version,'==',69,'Current RefSeq version is as expected'); # Not version independent obviously
+note("Downloading Refseq version: ".$version);
 
 my $result = $refseq->download_to(cwd());
-is($result->[0],cwd().'/vertebrate_mammalian.55.protein.gpff.gz','Download of single Refseq file successful');
-is($result->[1],cwd().'/vertebrate_mammalian.55.protein.faa.gz','Download of second Refseq file successful');
+# is($result->[0],cwd().'/complete.55.1.genomic.fna.gz','Download of single Refseq file successful');
+is($result->[0],cwd().'/complete.55.bna.gz','Download of only matching Refseq file successful');
+# is($result->[0],cwd().'/complete.55.genomic.gbff.gz','Download of third Refseq file successful');
 
 done_testing;

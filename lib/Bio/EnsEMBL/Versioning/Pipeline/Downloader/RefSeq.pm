@@ -79,4 +79,6 @@ sub _get_remote {
   Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from RefSeq source");
 }
 
+__PACKAGE__->meta->make_immutable;
+
 1;

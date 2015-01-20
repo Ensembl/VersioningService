@@ -128,3 +128,5 @@ sub CS {return 1;} # contains affected tissue types, might be worth parsing.
 sub CN {return 1;}
 sub CD {return 1;}
 sub ED {return 1;}
+
+__PACKAGE__->meta->make_immutable;

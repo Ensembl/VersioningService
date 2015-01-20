@@ -1,0 +1,30 @@
+# MIM Number	Type	Gene IDs	Approved Gene Symbols
+100050	predominantly phenotypes	-	-
+100070	phenotype	100329167	-
+100100	phenotype	-	-
+100200	predominantly phenotypes	-	-
+100300	phenotype	-	-
+100500	moved/removed	-	-
+100600	phenotype	-	-
+100640	gene	216	ALDH1A1
+100650	gene/phenotype	217	ALDH2
+100660	gene	218	ALDH3A1
+100670	gene	219	ALDH1B1
+100675	predominantly phenotypes	-	-
+100678	gene	39	ACAT2
+100680	moved/removed	-	-
+100690	gene	1134	CHRNA1
+100700	predominantly phenotypes	-	-
+100710	gene	1140	CHRNB1
+100720	gene	1144	CHRND
+100725	gene	1145	CHRNE
+100730	gene	1146	CHRNG
+100735	moved/removed	-	-
+100740	gene	43	ACHE
+100790	gene	429	ASCL1
+100800	phenotype	-	-
+100820	phenotype	-	-
+100850	gene	50	ACO2
+100880	gene	48	ACO1
+100900	moved/removed	-	-
+101000	phenotype	-	-

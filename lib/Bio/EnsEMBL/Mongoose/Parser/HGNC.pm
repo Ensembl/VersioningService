@@ -9,8 +9,6 @@ use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 # Consumes HGNC file and emits Mongoose::Persistence::Records
 with 'MooseX::Log::Log4perl';
-
-# 'uni','http://uniprot.org/uniprot'
 with 'Bio::EnsEMBL::Mongoose::Parser::TextParser';
 
 sub read_record {
@@ -18,19 +16,13 @@ sub read_record {
     my $content = $self->slurp_content;
     if (!$content) { return; }
     $self->clear_record;
-    $self->node_sieve();
+    $self->accession();
+    $self->display_label();
+    $self->synonyms();
+    $self->xref();
+    $self->gene_name();
     return 1;
 }
-
-sub node_sieve {
-  my $self = shift;
-  $self->accession();
-  $self->display_label();
-  $self->synonyms();
-  $self->xref();
-  $self->gene_name();
-}
-
 
 sub accession {
   my $self = shift;
@@ -68,25 +60,25 @@ sub xref {
   my $refseq_xrefs = $self->getRawRefseqXrefs;
   foreach my $refseq_xref (@$refseq_xrefs) {
     $source = 'RefSeq';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $refseq_xref);
+    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $refseq_xref, creator => 'HGNC');
     $self->record->add_xref($xref);
   }
   my $ensembl_xrefs = $self->getRawEnsemblXrefs;
   foreach my $ensembl_xref (@$ensembl_xrefs) {
     $source = 'Ensembl';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $ensembl_xref);
+    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $ensembl_xref, creator => 'HGNC');
     $self->record->add_xref($xref);
   }
   my $ccds_xrefs = $self->getRawCCDSXrefs;
   foreach my $ccds_xref (@$ccds_xrefs) {
     $source = 'CCDS';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $ccds_xref);
+    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $ccds_xref, creator => 'HGNC');
     $self->record->add_xref($xref);
   }
   my $lrg_xrefs = $self->getRawLRGXrefs;
   foreach my $lrg_xref (@$lrg_xrefs) {
     $source = 'LRG_HGNC_notransfer';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $lrg_xref);
+    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $lrg_xref, creator => 'HGNC');
     $self->record->add_xref($xref);
   }
 }

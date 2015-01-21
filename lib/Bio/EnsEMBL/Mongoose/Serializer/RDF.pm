@@ -10,7 +10,7 @@ sub print_record {
   my $source = shift;
   my $fh = $self->handle;
   print "Record from $source\n";
-  my $anchor = $self->prefix($source).$record->primary_accession;
+  my $anchor = $self->identifiers($source).$record->primary_accession;
   
   # Attach description nodes
   my $annotation_bnode = $self->new_bnode;

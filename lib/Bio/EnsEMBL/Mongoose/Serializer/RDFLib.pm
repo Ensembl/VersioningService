@@ -19,7 +19,7 @@ has unidirection_sources => (
     interpro => 1
   }},
   handles => { 
-    exists => 'matches'
+    exists => 'is_unidirectional'
   }
 );
 
@@ -115,7 +115,8 @@ sub identifier {
 sub triple {
   my $self = shift;
   my ($subject,$predicate,$object) = @_;
-  return sprintf "%s %s %s .\n",$subject,$predicate,$object;
+  my $fh = $self->handle;
+  printf $fh "%s %s %s .\n",$subject,$predicate,$object || Bio::EnsEMBL::Mongoose::IOException->throw(message => "Error writing to file handle: $!");;
 }
 
 sub u {

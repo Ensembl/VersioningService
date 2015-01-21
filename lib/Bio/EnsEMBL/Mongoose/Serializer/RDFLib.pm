@@ -23,7 +23,7 @@ has unidirection_sources => (
   }
 );
 
-
+# namespaces for predicates. Identifiers should really user the identifiers.org resolution below
 has namespace => (
   traits => ['Hash'],
   is => 'ro',
@@ -31,7 +31,6 @@ has namespace => (
   default => sub { {
     ensembl => 'http://rdf.ebi.ac.uk/resource/ensembl/',
     ensemblterm => 'http://rdf.ebi.ac.uk/terms/ensembl/',
-    ensemblsource => 'http://rdf.ebi.ac.uk/resource/ensembl/source',
     rdf => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
     rdfs => 'http://www.w3.org/2000/01/rdf-schema#',
     rdfg => 'http://www.w3.org/2004/03/trix/rdfg-1/',
@@ -42,14 +41,8 @@ has namespace => (
     # obo includes sequence ontology for some reason
     sio => 'http://semanticscience.org/resource/',
     faldo => 'http://biohackathon.org/resource/faldo',
-    uniprotswissprot => 'http://purl.uniprot.org/uniparc/',
-    uniprottrembl => 'http://purl.uniprot.org/uniparc/',
-    uniprotuniparc => 'http://purl.uniprot.org/uniparc/',
-    embl => 'http://www.embl.de/',
-    refseq => 'www.ncbi.nlm.nih.gov/refseq/',
     go => 'http://purl.obolibrary.org/obo/',
     chembl => 'http://rdf.ebi.ac.uk/resource/chembl/target/',
-    entrezgene => 'http://identifiers.org/ncbigene/',
     protein_id => 'http://identifiers.org/insdc/',
     goslim_goa => 'http://purl.obolibrary.org/obo/',
 
@@ -57,7 +50,7 @@ has namespace => (
 
 );
 
-# list of canonical URIs for particular data providers resolved through idtype.indentifiers.org . Best practice.
+# list of canonical URIs for particular data providers resolved through idtype.identifiers.org . Best practice.
 has identifiers => (
   traits => ['Hash'],
   is => 'ro',

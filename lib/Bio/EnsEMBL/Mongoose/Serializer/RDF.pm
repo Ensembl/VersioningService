@@ -31,10 +31,13 @@ sub print_record {
       or Bio::EnsEMBL::Mongoose::IOException->throw(message => "Error writing to file handle: $!");
     # link to xref, note symmetric property to allow transitive queries, while preventing circular queries
     print $fh $self->triple($self->u($anchor),$self->u($self->prefix('ensemblterm').'refers-to'),$bnode);
-    print $fh $self->triple($bnode,$self->u($self->prefix('ensemblterm').'refers-from'),$self->u($anchor));
     # xref links to target ID
     print $fh $self->triple($bnode,$self->u($self->prefix('ensemblterm').'refers-to'),$self->u($other));
-    print $fh $self->triple($self->u($other),$self->u($self->prefix('ensemblterm').'refers-from'),$bnode);
+    # reverse links
+    unless ( $self->unidirectional_sources->matches(lc $xref->source)) {
+      print $fh $self->triple($bnode,$self->u($self->prefix('ensemblterm').'refers-from'),$self->u($anchor));
+      print $fh $self->triple($self->u($other),$self->u($self->prefix('ensemblterm').'refers-from'),$bnode);
+    }
     # xref type
     print $fh $self->triple($bnode,$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('ensemblterm').'Direct'));
     # if xref assertion came from a secondary/dependent source, mention them.

@@ -6,6 +6,24 @@ package Bio::EnsEMBL::Mongoose::Serializer::RDFLib;
 use Moose;
 use namespace::autoclean;
 
+
+# lookup for IDs that classify annotation, rather than identity between genomic resources
+# If here, the relationship between two IDs should be unidirectional to prevent logical armageddon
+
+has unidirection_sources => (
+  traits => ['Hash'],
+  is => 'ro',
+  isa => 'HashRef',
+  default => sub {{
+    go => 1,
+    interpro => 1
+  }},
+  handles => { 
+    exists => 'matches'
+  }
+);
+
+
 has namespace => (
   traits => ['Hash'],
   is => 'ro',

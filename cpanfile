@@ -3,6 +3,7 @@
 requires 'Config::General';
 requires 'PerlIO::gzip';
 
+requires 'REST::Client';
 requires 'JSON::XS';
 requires 'JSON::Any';
 requires 'XML::LibXML';

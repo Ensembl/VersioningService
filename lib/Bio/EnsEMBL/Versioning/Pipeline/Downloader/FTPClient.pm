@@ -16,6 +16,8 @@ has ftp => (
   predicate => 'connected_to_ftp',
 );
 
+with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::NetClient';
+
 method connect_to_ftp_site ($url, $user, $password){
   my $ftp = Net::FTP->new($url->host);
   $ftp->login($user,$password) or Bio::EnsEMBL::Mongoose::NetException->throw("Cannot log into FPT site $url with $user:$password");
@@ -58,7 +60,7 @@ method get_ftp_files (
       print "Pattern matched $file\n";
       my $download_name = $path . '/' . $file;
       
-      my $success = _retry_sleep( sub {
+      my $success = retry_sleep( sub {
         my $response = $self->ftp->get($file);
         unless ($response) {print $self->ftp->message."\n"; return}
           else {return $response}
@@ -90,29 +92,6 @@ method get_timestamp ($uri,$file,$user = 'anonymous' ,$password = '-anonymous@')
   $self->ftp->cwd($uri->path()) or Bio::EnsEMBL::Mongoose::NetException->throw("Unable to change to remote directory ".$uri->path." on server ".$uri->host);
   my $time = $self->ftp->mdtm($file);
   return $time;
-}
-
-# taken from Ensembl Utils/Net
-sub _retry_sleep {
-  my ($callback, $total_attempts, $sleep) = @_;
-  $total_attempts ||= 1;
-  $sleep ||= 0;
-  my $response;
-  my $retries = 0;
-  my $fail = 1;
-  while($retries <= $total_attempts) {
-    $response = $callback->();
-    if(defined $response) {
-      $fail = 0;
-      last;
-    }
-    $retries++;
-    Time::HiRes::sleep($sleep);
-  }
-  if($fail) {
-    Bio::EnsEMBL::Mongoose::NetException->throw("Could not request remote resource after $total_attempts attempts");
-  }
-  return $response;
 }
 
 1;

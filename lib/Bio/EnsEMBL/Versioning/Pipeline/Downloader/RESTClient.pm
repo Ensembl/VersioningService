@@ -22,6 +22,7 @@ with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::NetClient';
   Arg [file_name]: [Optional] when a specific file name is required 
   Arg [content_type]: [Optional] declare the content-type of the message. Sets the header accordingly
   Arg [bodge]    : [Optional] conflate accepts and content-type headers
+  Arg [body]     : [Optional] content for POST or PUT requests
 
   Description : Given a REST server, command and parameters, it returns the corresponding data
   Returntype  : listref of File paths to the downloaded resources
@@ -41,6 +42,7 @@ method get_json (
     :$retry_delay = 10,
     :$retry_attempts = 2,
     :$bodge,
+    :$body
     )
 {
   my $rest = REST::Client->new;
@@ -52,7 +54,7 @@ method get_json (
   my $response;
 
   retry_sleep( sub {
-    $rest->$method($path);
+    $rest->$method($path, $body);
     if ($rest->responseCode eq '200') {
       $response = $rest->responseContent;
       return 1;
@@ -65,9 +67,9 @@ method get_json (
   if ($file_path && $response) {
     my $extension;
     # crudely limited to json vs xml at the mo.
-    print $accepts."\n";
+    # print $accepts."\n";
     $extension = ($accepts =~ /json/) ? '.json' : '.xml';
-    print $extension."\n";
+    # print $extension."\n";
     my $canonical_file = File::Spec->catfile($file_path,$file_name.$extension);
     my $fh = IO::File->new($canonical_file, 'w') || Bio::EnsEMBL::Mongoose::IOException->throw($@);
     print $fh $response || Bio::EnsEMBL::Mongoose::IOException->throw($@);

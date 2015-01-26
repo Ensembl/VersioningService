@@ -17,7 +17,8 @@ with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::NetClient';
 =head2 call
 
   Arg [host]     : The URL of the service
-  Arg [method]   : The commands chained below the service
+  Arg [path]     : The commands chained below the service
+  Arg [method]   : In the event of not GETting, specify another method, such as POST
   Arg [file_path]: [Optional] somewhere to force the downloaded data to go
   Arg [file_name]: [Optional] when a specific file name is required 
   Arg [content_type]: [Optional] declare the content-type of the message. Sets the header accordingly

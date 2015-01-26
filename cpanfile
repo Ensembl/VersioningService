@@ -41,6 +41,7 @@ requires 'Rose::DBx::AutoReconnect';
 # Others
 
 requires 'Test::Differences';
+requires 'Test::JSON';
 requires 'Class::Inspector';
 requires 'REST::Neo4p';
 

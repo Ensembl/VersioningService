@@ -14,7 +14,7 @@ use Bio::EnsEMBL::Mongoose::IOException;
 
 with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::NetClient';
 
-=head2 get_json
+=head2 call
 
   Arg [host]     : The URL of the service
   Arg [method]   : The commands chained below the service
@@ -31,7 +31,7 @@ with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::NetClient';
 
 =cut
 
-method get_json (
+method call (
     Str :$host, 
     Str :$method = 'GET',
     Str :$path,

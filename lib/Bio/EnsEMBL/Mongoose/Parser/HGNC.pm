@@ -1,175 +1,153 @@
 package Bio::EnsEMBL::Mongoose::Parser::HGNC;
 use Moose;
 use Moose::Util::TypeConstraints;
-use Bio::EnsEMBL::IO::ColumnBasedParser;
 use Bio::EnsEMBL::Mongoose::IOException qw(throw);
 
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
-# Consumes HGNC file and emits Mongoose::Persistence::Records
-with 'MooseX::Log::Log4perl';
-with 'Bio::EnsEMBL::Mongoose::Parser::TextParser';
+use JSON::SL; # streaming! woo!
 
+has json_document => (
+  is => 'rw',
+  isa => 'JSON::SL',
+  builder => '_prepare_stream',
+
+);
+
+# buffer of complete json fragments
+has buffer => (
+  traits => ['Array'],
+  is => 'rw',
+  isa => 'ArrayRef[HashRef]',
+  default => sub {[]},
+  handles => { add_record => 'push', next_record => 'shift'},
+  predicate => 'content_available'
+);
+
+with 'Bio::EnsEMBL::Mongoose::Parser::Parser','MooseX::Log::Log4perl';
+
+sub _prepare_stream {
+  my $stream = JSON::SL->new();
+  # Google JSON path
+  $stream->set_jsonpointer( ["/response/docs/^"]);
+  return $stream;
+}
+
+sub get_data {
+  my $self = shift;
+  my $fh = $self->source_handle;
+  my $record = $self->next_record;
+  # Slurping by bytes, the JSON parser fishes out sections that match the pattern above.
+  # These are buffered here, so no slurping occurs until we have run out of parsed JSON
+  # elements. It's not fast, but should keep memory consumption down.
+  until (defined $record && exists $record->{Value}) {
+    local $/ = \1024;
+    my $fragment = <$fh>;
+    return unless $fragment;
+    my @matches = $self->json_document->feed($fragment);
+    $self->add_record(@matches) if ($#matches > 0);
+    $record = $self->next_record;
+  }
+  return $record;
+}
+
+# Consumes HGNC file and emits Mongoose::Persistence::Records
 sub read_record {
     my $self = shift;
-    my $content = $self->slurp_content;
-    if (!$content) { return; }
     $self->clear_record;
-    $self->accession();
-    $self->display_label();
-    $self->synonyms();
-    $self->xref();
-    $self->gene_name();
+    my $match = $self->get_data;
+    return unless $match; # no match, end of file.
+    my %doc = %{$match->{Value} };
+    $self->record->id($doc{hgnc_id});
+    $self->record->accessions([$doc{hgnc_id}]) if exists $doc{hgnc_id};
+    $self->record->display_label($doc{symbol}) if exists $doc{symbol};
+    $self->record->gene_name($doc{name}) if exists $doc{name};
+    my $list = $doc{prev_symbol} if exists $doc{prev_symbol};
+    push @$list,@$doc{alias_symbol} if exists $doc{alias_symbol};
+    foreach (@$list) {
+      $self->add_synonym($_);
+    }
+    $self->create_xref('RefSeq',$doc{refseq_accession}) if exists $doc{refseq_accession};
+    $self->create_xref('Ensembl',$doc{ensembl_gene_id}) if exists $doc{ensembl_gene_id};
+    $self->create_xref('CCDS',$doc{ccds_id}) if exists $doc{ccds_id};
+    # $self->create_xref('CCDS',$doc{ccds_id}) if exists $doc{ccds_id};
     return 1;
 }
 
-sub accession {
-  my $self = shift;
-  my $accession = $self->getRawAccession();
-  $self->record->accessions([$accession]) if $accession;
-}
 
-sub display_label {
+sub create_xref {
   my $self = shift;
-  my $display_label = $self->getRawLabel;
-  $self->record->display_label($display_label) if $display_label;
-}
-
-sub gene_name {
-  my $self = shift;
-  my $gene_name = $self->getRawName;
-  $self->record->gene_name($gene_name) if $gene_name;
-}
-
-sub synonyms {
-  my $self = shift;
-  my $synonyms = $self->getRawSynonyms;
-  foreach my $synonym (@$synonyms) {
-    $self->record->add_synonym($synonym);
+  my $source = shift;
+  my $id = shift;
+  my @ids = ($id);
+  if (ref $id eq 'ARRAY') {
+    @ids = @$id;
   }
-  my $aliases = $self->getRawAlias;
-  foreach my $alias (@$aliases) {
-    $self->record->add_synonym($alias);
+  foreach $id (@ids) {
+    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id, creator => 'HGNC');
   }
 }
 
-sub xref {
-  my $self = shift;
-  my ($source, $xref);
-  my $refseq_xrefs = $self->getRawRefseqXrefs;
-  foreach my $refseq_xref (@$refseq_xrefs) {
-    $source = 'RefSeq';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $refseq_xref, creator => 'HGNC');
-    $self->record->add_xref($xref);
-  }
-  my $ensembl_xrefs = $self->getRawEnsemblXrefs;
-  foreach my $ensembl_xref (@$ensembl_xrefs) {
-    $source = 'Ensembl';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $ensembl_xref, creator => 'HGNC');
-    $self->record->add_xref($xref);
-  }
-  my $ccds_xrefs = $self->getRawCCDSXrefs;
-  foreach my $ccds_xref (@$ccds_xrefs) {
-    $source = 'CCDS';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $ccds_xref, creator => 'HGNC');
-    $self->record->add_xref($xref);
-  }
-  my $lrg_xrefs = $self->getRawLRGXrefs;
-  foreach my $lrg_xref (@$lrg_xrefs) {
-    $source = 'LRG_HGNC_notransfer';
-    $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $lrg_xref, creator => 'HGNC');
-    $self->record->add_xref($xref);
-  }
-}
 
-sub getRawAccession {
-  my $self = shift;
-  return $self->{'current_block'}[0];
-}
+#   my $lrg_xrefs = $self->getRawLRGXrefs;
+#   foreach my $lrg_xref (@$lrg_xrefs) {
+#     $source = 'LRG_HGNC_notransfer';
+#     $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $lrg_xref, creator => 'HGNC');
+#     $self->record->add_xref($xref);
+#   }
+# }
 
-sub getRawLabel {
-  my $self = shift;
-  return $self->{'current_block'}[1];
-}
+# sub getRawAccession {
+#   my $self = shift;
+#   return $self->{'current_block'}[0];
+# }
 
-sub getRawSynonyms {
-  my $self = shift;
-  my @synonyms = split(', ', $self->{'current_block'}[8]);
-  return \@synonyms;
-}
+# sub getRawLabel {
+#   my $self = shift;
+#   return $self->{'current_block'}[1];
+# }
 
-sub getRawRefseqXrefs {
-  my $self = shift;
-  my @refseq_xrefs = split(', ', $self->{'current_block'}[23]);
-  return \@refseq_xrefs;
-}
+# sub getRawSynonyms {
+#   my $self = shift;
+#   my @synonyms = split(', ', $self->{'current_block'}[8]);
+#   return \@synonyms;
+# }
 
-sub getRawEnsemblXrefs {
-  my $self = shift;
-  my @ensembl_xrefs = split(', ', $self->{'current_block'}[18]);
-  return \@ensembl_xrefs;
-}
+# sub getRawRefseqXrefs {
+#   my $self = shift;
+#   my @refseq_xrefs = split(', ', $self->{'current_block'}[23]);
+#   return \@refseq_xrefs;
+# }
 
-sub getRawCCDSXrefs {
-  my $self = shift;
-  my @ccds_xrefs = split(', ', $self->{'current_block'}[29]);
-  return \@ccds_xrefs;
-}
+# sub getRawEnsemblXrefs {
+#   my $self = shift;
+#   my @ensembl_xrefs = split(', ', $self->{'current_block'}[18]);
+#   return \@ensembl_xrefs;
+# }
 
-sub getRawLRGXrefs {
-  my $self = shift;
-  my @lrg_xrefs = split(', ', $self->{'current_block'}[31]);
-  return \@lrg_xrefs;
-}
+# sub getRawCCDSXrefs {
+#   my $self = shift;
+#   my @ccds_xrefs = split(', ', $self->{'current_block'}[29]);
+#   return \@ccds_xrefs;
+# }
 
-sub getRawAlias {
-  my $self = shift;
-  my @alias = split(', ', $self->{'current_block'}[6]);
-  return \@alias;
-}
+# sub getRawLRGXrefs {
+#   my $self = shift;
+#   my @lrg_xrefs = split(', ', $self->{'current_block'}[31]);
+#   return \@lrg_xrefs;
+# }
 
-sub getRawName {
-  my $self = shift;
-  return $self->{'current_block'}[2];
-}
+# sub getRawAlias {
+#   my $self = shift;
+#   my @alias = split(', ', $self->{'current_block'}[6]);
+#   return \@alias;
+# }
 
-sub check_header {
-  my $self = shift;
-  my $content = shift;
-  my @line = split($self->delimiter, $content);
-  if ($line[0] ne 'HGNC ID') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[0] . " does not match HGNC ID");
-  }
-  if ($line[1] ne 'Approved Symbol') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[1] . " does not match Approved Symbol");
-  }
-  if ($line[2] ne 'Approved Name') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[2] . " does not match Approved Name");
-  }
-  if ($line[6] ne 'Previous Symbols') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[6] . " does not match Previous Symbols");
-  }
-  if ($line[8] ne 'Synonyms') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[8] . " does not match Synonyms");
-  }
-  if ($line[15] ne 'Accession Numbers') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[15] . " does not match Accession Numbers");
-  }
-  if ($line[18] ne 'Ensembl Gene ID') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[18] . " does not match Ensembl Gene ID");
-  }
-  if ($line[23] ne 'RefSeq IDs') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[23] . " does not match RefSeq IDs");
-  }
-  if ($line[29] ne 'CCDS IDs') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[29] . " does not match CCDS IDs");
-  }
-  if ($line[31] ne 'Locus Specific Databases') {
-    Bio::EnsEMBL::Mongoose::IOException->throw("Column " . $line[29] . " does not match CCDS IDs");
-  }
-  return $line[0];
-}
+# sub getRawName {
+#   my $self = shift;
+#   return $self->{'current_block'}[2];
+# }
 
 __PACKAGE__->meta->make_immutable;
 

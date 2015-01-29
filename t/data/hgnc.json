@@ -1,0 +1,53 @@
+{
+  "responseHeader": {
+    "status": 0,
+    "QTime": 16
+  },
+  "response": {
+    "numFound": 39435,
+    "start": 0,
+    "docs": [{
+      "hgnc_id": "HGNC:5",
+      "symbol": "A1BG",
+      "name": "alpha-1-B glycoprotein",
+      "status": "Approved",
+      "locus_type": "gene with protein product",
+      "location": "19q13.43",
+      "date_approved_reserved": "1989-06-30T00:00:00Z",
+      "date_modified": "2014-11-18T00:00:00Z",
+      "entrez_id": "1",
+      "mgd_id": [
+        "MGI:2152878"
+      ],
+      "merops": "I43.950",
+      "cosmic": "A1BG",
+      "pubmed_id": [
+        2591067
+      ],
+      "refseq_accession": [
+        "NM_130786"
+      ],
+      "gene_family": [
+        "Immunoglobulin superfamily / Immunoglobulin-like domain containing"
+      ],
+      "vega_id": "OTTHUMG00000183507",
+      "ensembl_gene_id": "ENSG00000121410",
+      "ccds_id": [
+        "CCDS12976"
+      ],
+      "locus_group": "protein-coding gene",
+      "omim_id": [
+        138670
+      ],
+      "uniprot_ids": [
+        "P04217"
+      ],
+      "ucsc_id": "uc002qsd.4",
+      "rgd_id": [
+        "RGD:69417"
+      ],
+      "uuid": "03e3aa86-9d07-4a04-afb7-cba9782243e4",
+      "_version_": 1490976232727117824
+    }, { "hgnc_id" : "Cave", "symbol" : "AAAA"},{"hgnc_id" : "Johnson", "symbol" : "BBBB"},{"hgnc_id" : "Lemons", "symbol" : "CCCC"}]
+  }
+}

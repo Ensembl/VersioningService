@@ -6,6 +6,7 @@ requires 'PerlIO::gzip';
 requires 'REST::Client';
 requires 'JSON::XS';
 requires 'JSON::Any';
+requires 'JSON::SL';
 requires 'XML::LibXML';
 requires 'Log::Log4perl';
 requires 'Compress::Snappy';

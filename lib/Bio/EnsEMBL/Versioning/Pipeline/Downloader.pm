@@ -60,7 +60,7 @@ sub download_to {
 
   Example     : $downloader->_get_remote
   Description : Worker function, defined in each subclass of downloader. See module documentation.
-  Returntype  : Boolean
+  Returntype  : Listref of files downloaded and their paths
   Exceptions  : IOException in case of storage failures, download interruptions etc.
   Caller      : internal
 

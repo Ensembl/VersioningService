@@ -50,17 +50,16 @@ method call (
   $rest->setHost($host);
   $rest->setTimeout(30); # default medium-long for response
   $rest->addHeader('Content-Type', $content_type);
-  if ($bodge) { $rest->addHeader('accepts',$content_type)}
-  $rest->addHeader('accepts',$accepts);
+  if ($bodge) { $rest->addHeader('Accept',$content_type)}
+  $rest->addHeader('Accept',$accepts);
   my $response;
-
   retry_sleep( sub {
     $rest->$method($path, $body);
     if ($rest->responseCode eq '200') {
       $response = $rest->responseContent;
       return 1;
     } else {
-      print "HTTP error code ".$rest->responseContent."\n";
+      print "HTTP error code ".$rest->responseCode."\n".$rest->responseContent."\n";
     }
     
   }, $retry_attempts,$retry_delay);
@@ -75,6 +74,7 @@ method call (
     my $fh = IO::File->new($canonical_file, 'w') || Bio::EnsEMBL::Mongoose::IOException->throw($@);
     print $fh $response || Bio::EnsEMBL::Mongoose::IOException->throw($@);
     $fh->close;
+    return [$canonical_file];
   } else {
     return $response;
   }

@@ -43,7 +43,7 @@ extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
 has uri => (
   isa => 'Str', 
   is => 'ro',
-  default => 'http:/rest.genenames.org/',
+  default => 'http://rest.genenames.org/',
 );
 
 with 'MooseX::Log::Log4perl', 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient';
@@ -53,17 +53,17 @@ sub get_version
 {
   my $self = shift;
   my $gmt = gmtime();
-  my $time = sprintf "%04u%02s%02s",$gmt->year + 1900,$gmt->month,$gmt->day;
+  my $time = sprintf "%04u%02s%02s",$gmt->year + 1900,$gmt->mon,$gmt->mday;
 }
 
 sub _get_remote {
   my $self = shift;
   my $path = shift; # path is already checked as valid.
 
-  $self->call(host => $self->uri, path => 'fetch/status/Approved', file_path => $path, file_name => 'hgnc', retry_delay => 30);
-
-  unless ($result) { Bio::EnsEMBL::Mongoose::NetException->throw("Failed to download HGNC file") }
-  return ;
+  my $result;
+  $result = $self->call(host => $self->uri, path => 'fetch/status/Approved', file_path => $path, file_name => 'hgnc', retry_delay => 30);
+  unless (scalar @$result) { Bio::EnsEMBL::Mongoose::NetException->throw("Failed to download HGNC file") }
+  return $result;
 }
 
 __PACKAGE__->meta->make_immutable;

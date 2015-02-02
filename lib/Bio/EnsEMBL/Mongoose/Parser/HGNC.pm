@@ -64,14 +64,16 @@ sub read_record {
     $self->record->display_label($doc{symbol}) if exists $doc{symbol};
     $self->record->gene_name($doc{name}) if exists $doc{name};
     my $list = $doc{prev_symbol} if exists $doc{prev_symbol};
-    push @$list,@$doc{alias_symbol} if exists $doc{alias_symbol};
+    push @$list,@{$doc{alias_symbol}} if exists $doc{alias_symbol};
     foreach (@$list) {
       $self->add_synonym($_);
     }
     $self->create_xref('RefSeq',$doc{refseq_accession}) if exists $doc{refseq_accession};
     $self->create_xref('Ensembl',$doc{ensembl_gene_id}) if exists $doc{ensembl_gene_id};
     $self->create_xref('CCDS',$doc{ccds_id}) if exists $doc{ccds_id};
-    # $self->create_xref('CCDS',$doc{ccds_id}) if exists $doc{ccds_id};
+    if (exists $doc{lsdb} && $doc{lsdb} ~~ /LRG/) {
+      $self->create_xref('LRG',$doc{lsdb});
+    }
     return 1;
 }
 
@@ -85,69 +87,9 @@ sub create_xref {
     @ids = @$id;
   }
   foreach $id (@ids) {
-    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id, creator => 'HGNC');
+    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id, creator => 'HGNC'));
   }
 }
-
-
-#   my $lrg_xrefs = $self->getRawLRGXrefs;
-#   foreach my $lrg_xref (@$lrg_xrefs) {
-#     $source = 'LRG_HGNC_notransfer';
-#     $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $lrg_xref, creator => 'HGNC');
-#     $self->record->add_xref($xref);
-#   }
-# }
-
-# sub getRawAccession {
-#   my $self = shift;
-#   return $self->{'current_block'}[0];
-# }
-
-# sub getRawLabel {
-#   my $self = shift;
-#   return $self->{'current_block'}[1];
-# }
-
-# sub getRawSynonyms {
-#   my $self = shift;
-#   my @synonyms = split(', ', $self->{'current_block'}[8]);
-#   return \@synonyms;
-# }
-
-# sub getRawRefseqXrefs {
-#   my $self = shift;
-#   my @refseq_xrefs = split(', ', $self->{'current_block'}[23]);
-#   return \@refseq_xrefs;
-# }
-
-# sub getRawEnsemblXrefs {
-#   my $self = shift;
-#   my @ensembl_xrefs = split(', ', $self->{'current_block'}[18]);
-#   return \@ensembl_xrefs;
-# }
-
-# sub getRawCCDSXrefs {
-#   my $self = shift;
-#   my @ccds_xrefs = split(', ', $self->{'current_block'}[29]);
-#   return \@ccds_xrefs;
-# }
-
-# sub getRawLRGXrefs {
-#   my $self = shift;
-#   my @lrg_xrefs = split(', ', $self->{'current_block'}[31]);
-#   return \@lrg_xrefs;
-# }
-
-# sub getRawAlias {
-#   my $self = shift;
-#   my @alias = split(', ', $self->{'current_block'}[6]);
-#   return \@alias;
-# }
-
-# sub getRawName {
-#   my $self = shift;
-#   return $self->{'current_block'}[2];
-# }
 
 __PACKAGE__->meta->make_immutable;
 

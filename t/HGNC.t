@@ -16,6 +16,10 @@ my $state = $hgnc_reader->read_record;
 ok ($state, 'First record read correctly');
 my $record = $hgnc_reader->record;
 is($record->display_label, 'A1BG', 'Test ID extraction');
+my @ens_ids = ();
+@ens_ids = $record->grep_xrefs(sub{ $_->source eq /Ensembl/; $_});
+eq_or_diff([map { $_->id } @ens_ids], [qw/NM_130786 ENSG00000121410 CCDS12976/], 'Xrefs are all successfully extracted');
+
 $hgnc_reader->read_record;
 $record = $hgnc_reader->record;
 is($record->display_label, 'AAAA', 'Test ID extraction');

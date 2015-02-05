@@ -1,0 +1,45 @@
+Running Project Mongoose components
+===================================
+
+All parts of Mongoose require the environment variable `MONGOOSE` to point to the root folder of the checkout.
+
+`export MONGOOSE=$HOME/mongoose`
+
+Also include eHive in the PERL5LIB
+
+Versioning pipeline
+-------------------
+
+Configurations are set in conf/manager.conf and conf/logger.conf . These files tell the pipeline how to manage its own data. The **Manager** object requires a SQL database of some sort to keep track of sources and how to handle them when it gets them. It also needs a big storage space to put copies of downloaded data and indices in.
+
+`~/ensembl/ensembl-hive/scripts/init_pipeline.pl -pipeline_url mysql://user:password@db:port/version_update_hive`
+
+To run a job individually
+
+`~/ensembl/ensembl-hive/scripts/run_worker.pl -url mysql://user:password@db:port/version_update_hive -job_id 1`
+
+Once it is running, the pipeline will interrogate each remote source and download a new version if it has changed. The old version will remain archived to provide a fallback. It works by there being a database record of each source and the modules required to download or parse them. Each downloaded source is then pushed through a parser which creates an index of the content tuned for xref use. The downloading and parsing of sources is decoupled from the deduction of external references.
+
+
+Building the xref database
+--------------------------
+
+A particular species can be selected from the index, and each result is unpacked and translated into RDF. The resulting set of RDF files can be imported into Virtuoso as follows
+
+`export PATH=$PATH:/usr/local/virtuoso-opensource/bin`
+`export VIRTUOSO_HOME=/usr/local/virtuoso-opensource/var/lib/virtuoso/db`
+
+
+# Bulk import
+`isql`
+`ld_dir('path/to/rdf','triples_%','http://www.ensembl.org');`
+`rdf_loader_run();`
+
+To see what has been identified for bulk loading, use `select * from DB.DBA.load_list;` before calling `rdf_loader_run()`.
+
+
+
+Determine xref connections
+--------------------------
+
+T.B.A.

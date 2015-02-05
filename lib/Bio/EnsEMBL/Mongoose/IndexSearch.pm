@@ -112,7 +112,6 @@ has versioning_service => (
 sub _awaken_giant {
     my $self = shift;
     my $broker = Bio::EnsEMBL::Versioning::Broker->new();
-    $broker->init_broker;
     return $broker;
 }
 

@@ -44,9 +44,14 @@ use Bio::EnsEMBL::Mongoose::IOException;
 my $conf = Config::General->new($ENV{MONGOOSE}.'/conf/manager.conf');
 my %opts = $conf->getall();
 
+has RoseDB => (
+  is => 'ro',
+  required => 1,
+  builder => 'init_broker'
+);
+
 with 'MooseX::Log::Log4perl';
 
-# subroutine to be called if using the broker outside of a pipeline or test suite.
 sub init_broker {
   require Bio::EnsEMBL::Versioning::DB;
   Bio::EnsEMBL::Versioning::DB->register_db(

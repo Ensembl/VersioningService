@@ -16,13 +16,13 @@ limitations under the License.
  
 =cut
 
+
+# Abstract Rose Manager for inheritance.
+
 package Bio::EnsEMBL::Versioning::Manager;
 
 use strict;
 use warnings;
-
-use ORM::EnsEMBL::Utils::Exception;
-use ORM::EnsEMBL::Utils::Helper qw(load_package);
 
 use parent qw(Rose::DB::Object::Manager);
 

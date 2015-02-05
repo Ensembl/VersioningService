@@ -16,6 +16,8 @@ limitations under the License.
  
 =cut
 
+# Rose abstract class with ability to link to Ensembl adaptors
+
 package Bio::EnsEMBL::Versioning::DB;
 
 use strict;

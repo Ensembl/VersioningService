@@ -3,6 +3,7 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient;
 use Moose::Role;
 
 use Net::FTP;
+use LWP::UserAgent;
 use URI;
 use Cwd;
 use File::Basename;
@@ -66,10 +67,19 @@ method get_ftp_files (
           else {return $response}
       }, 2   );
 
-      if ($success) { push @files, $download_name} else { Bio::EnsEMBL::Mongoose::NetException->throw("Incomplete download for $host_URL $filename_pattern") }; 
+      if ($success) { push @files, $download_name} else { $self->close_ftp; Bio::EnsEMBL::Mongoose::NetException->throw("Incomplete download for $host_URL $filename_pattern") }; 
     }
   }
   return \@files;
+}
+
+method read_ftp_file ($uri) {
+  # tried to use Net::FTP, but too convoluted for the end result.
+  my $ua = LWP::UserAgent->new();
+  $ua->env_proxy;
+  my $response = $ua->get($uri);
+  return $response->content if $response->is_success;
+  Bio::EnsEMBL::Mongoose::NetException->throw('Unable to get FTP file content, '.$response->status_line. ' for '.$uri);
 }
 
 method ls_ftp_dir ($uri, $user = 'anonymous', $password = '-anonymous@') {
@@ -78,6 +88,7 @@ method ls_ftp_dir ($uri, $user = 'anonymous', $password = '-anonymous@') {
     $self->connect_to_ftp_site($uri,$user,$password);
   }
   if (!$self->ftp->cwd($uri->path())) {
+    $self->close_ftp;
     Bio::EnsEMBL::Mongoose::NetException->throw('Cannot navigate to path on FTP host '.$uri->path);
   }
   my $files = $self->ftp->ls();
@@ -92,6 +103,11 @@ method get_timestamp ($uri,$file,$user = 'anonymous' ,$password = '-anonymous@')
   $self->ftp->cwd($uri->path()) or Bio::EnsEMBL::Mongoose::NetException->throw("Unable to change to remote directory ".$uri->path." on server ".$uri->host);
   my $time = $self->ftp->mdtm($file);
   return $time;
+}
+
+sub close_ftp {
+  my $self = shift;
+  $self->ftp->quit;
 }
 
 1;

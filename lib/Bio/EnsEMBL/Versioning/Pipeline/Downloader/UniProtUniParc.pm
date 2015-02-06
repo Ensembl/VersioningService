@@ -60,7 +60,7 @@ sub get_version
   my $version;
   my $url = $self->version_uri();
   try {
-    $file = do_FTP($url);
+    $file = read_ftp_file($url);
   } catch {
     Bio::EnsEMBL::Mongoose::NetException->throw('Failed to retrieve version from '.$url);
   };

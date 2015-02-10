@@ -62,7 +62,7 @@ method get_ftp_files (
       my $download_name = $path . '/' . $file;
       
       my $success = retry_sleep( sub {
-        my $response = $self->ftp->get($file);
+        my $response = $self->ftp->get($file,$download_name);
         unless ($response) {print $self->ftp->message."\n"; return}
           else {return $response}
       }, 2   );

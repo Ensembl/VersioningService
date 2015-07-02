@@ -33,45 +33,77 @@ use Data::Dumper;
 
 use Try::Tiny;
 use Class::Inspector;
-
-use Bio::EnsEMBL::Versioning::Manager;
-use Bio::EnsEMBL::Versioning::Manager::Source;
-use Bio::EnsEMBL::Versioning::Object::Version;
 use Bio::EnsEMBL::Mongoose::DBException;
 use Bio::EnsEMBL::Mongoose::UsageException;
 use Bio::EnsEMBL::Mongoose::IOException;
+use Bio::EnsEMBL::Versioning::ORM::Schema;
 
-my $conf = Config::General->new($ENV{MONGOOSE}.'/conf/manager.conf');
-my %opts = $conf->getall();
+has config_file => (
+    isa => 'Str',
+    is => 'ro',
+    required => 1,
+    default => sub {
+        return "$ENV{MONGOOSE}/conf/manager.conf";
+    }
+);
 
-has RoseDB => (
+has config => (
+    isa => 'HashRef',
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        my $conf = Config::General->new($self->config_file);
+        my %opts = $conf->getall();
+        return \%opts;
+    },
+);
+# set flag for testing or deployment, see also Versioning::TestDB
+has create => (
+  isa => 'Bool',
   is => 'ro',
-  required => 1,
+  default => 0
+);
+
+has schema => (
+  isa => 'Bio::EnsEMBL::Versioning::ORM::Schema',
+  is => 'ro',
+  lazy => 1,
   builder => 'init_broker'
 );
 
 with 'MooseX::Log::Log4perl';
 
+
+# A bunch of these DBIx::Class queries could be abstracted into the Schema classes for neatness.
+
 sub init_broker {
-  require Bio::EnsEMBL::Versioning::DB;
-  Bio::EnsEMBL::Versioning::DB->register_db(
-    domain   => 'ensembl',
-    type     => 'default',
-    driver   => $opts{driver},
-    database => $opts{db},
-    host     => $opts{host},
-    username => $opts{user},
-    password => $opts{pass},
-    port     => $opts{port},
-    server_time_zone => 'UTC',
-    mysql_auto_reconnect => 1,
+  my $self = shift;
+  my %conf = %{ $self->config };
+  my %opts; 
+  $opts{mysql_enable_utf8} = 1 if ($conf{driver} eq 'mysql');
+  $opts{pg_enable_utf8 } = 1 if ($conf{driver} eq 'Pg');
+  $opts{sqlite_unicode} = 1 if($conf{driver} eq 'SQLite');
+  my $dsn; 
+  if ($conf{driver} eq 'SQLite') { 
+    $dsn = sprintf("dbi:%s:database=%s",$conf{driver},$conf{file}); 
+  } else {
+    $dsn = sprintf("dbi:%s:database=%s;host=%s;port=%s",$conf{driver},$conf{db},$conf{host},$conf{port}); 
+  }
+  my $schema = Bio::EnsEMBL::Versioning::ORM::Schema->connect(
+    $dsn, 
+    $conf{user}, 
+    $conf{pass},
+    { %opts },
   );
+  $schema->deploy({ add_drop_table => 1}) if ($self->create() == 1);
+  return $schema;
 }
 
 # supply a temp folder for downloading to.
 sub temp_location {
     my $self = shift;
-    my $root = $opts{temp};
+    my $root = $self->config->{temp};
     my $dir = tempdir(DIR => $root, CLEANUP => 0);
     return $dir;
 }
@@ -81,10 +113,10 @@ sub temp_location {
 sub location {
     my $self = shift;
     my $source = shift;
-    my $version = shift;
+    my $revision = shift;
 
-    my $root = $opts{home};
-    my $path = $root.'/'.$source->source_group->name.'/'.$source->name().'/'.$version->revision();
+    my $root = $self->config->{home};
+    my $path = $root.'/'.$source->source_group->name.'/'.$source->name().'/'.$revision;
     make_path($path, { mode => 0774 });
     return $path;
 }
@@ -94,17 +126,18 @@ sub finalise_download {
     my $source = shift;
     my $revision = shift;
     my $temp_location = shift;
-
-    my $version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => $revision);
-    my $final_location = $self->location($source,$version);
+    
+    my $final_location = $self->location($source,$revision);
     for my $file (glob $temp_location."/*") {
         move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location);
     }
-    $version->uri($final_location);
-    $version->source($source);
-    $version->save; ### needed?
-    $source->version($version);
-    $source->update;
+    
+    my $version = $self->schema->resultset('Version')->create( 
+      revision => $revision,
+      uri => $final_location,
+      source => $source,
+    );
+
     return $final_location;
 }
 
@@ -112,30 +145,26 @@ sub get_current_source_by_name {
     my $self = shift;
     my $source_name = shift;
     unless ($source_name) {Bio::EnsEMBL::Mongoose::UsageException->throw('Cannot get a source without a source name')};
-    my $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
-        require_objects => ['current_version'], 
-        query => [ name => $source_name ],
+
+    my $source_rs = $self->schema->resultset('Source')->search(
+      { name => $source_name },
+      { join => 'current_version', rows => 1 }
     );
-    if (scalar(@$sources) == 0) {
-      # No current version available. Starting from scratch.
-      $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
-        query => [ name => $source_name ],
-      );
-    }
-    return $sources->[0];
+    my $source = $source_rs->single;
+    return $source;
 }
 
 sub list_versions_by_source {
     my $self = shift;
     my $source_name = shift;
     unless ($source_name) {Bio::EnsEMBL::Mongoose::UsageException->throw('Versions of a source demand an actual source')};
-    my $versions = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
-        query => [ name => $source_name ], 
-        require_objects => ['version'], 
-        sort_by => 'version.revision',
+    my $result = $self->schema->resultset('Version')->search(
+      { 'sources.name' => $source_name },
+      { join => 'sources', order_by => ['revision'] }
     );
-    if (scalar(@$versions) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No versions found for source: '.$source_name.'. Possible integrity issue')};
-    my $revisions = [ map {$_->revision} @{$versions->[0]->version} ];
+    my @versions = $result->all;
+    if (scalar(@versions) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No versions found for source: '.$source_name.'. Possible integrity issue')};
+    my $revisions = [ map {$_->revision} @versions ];
     return $revisions;
 }
 
@@ -144,12 +173,14 @@ sub get_source_by_name_and_version {
     my $source_name = shift;
     my $version = shift;
     unless ($source_name && $version) {Bio::EnsEMBL::Mongoose::UsageException->throw('Cannot get a source without a source name AND version number')};
-    my $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
-        query => [ name => $source_name, 'version.revision' => $version],
-        require_objects => ['version'],
+
+    my $result = $self->schema->resultset('Source')->search(
+      { name => $source_name, 'versions.revision' => $version },
+      { join => 'versions' }
     );
-    if (scalar(@$sources) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No source: '.$source_name.' found with version '.$version)}
-    return $sources->[0];
+    my $source = $result->single;
+    if (! $source ) { Bio::EnsEMBL::Mongoose::DBException->throw('No source: '.$source_name.' found with version '.$version)}
+    return $source;
 }
 
 sub get_index_by_name_and_version {
@@ -164,8 +195,8 @@ sub get_index_by_name_and_version {
   my $index;
   if (defined $version) { 
     $source = $self->get_source_by_name_and_version($source_name,$version); 
-    $index = $source->version->[0]->index_uri;
-  } 
+    $index = $source->version->index_uri;
+  }
   else { 
     $source = $self->get_current_source_by_name($source_name);
     $index = $source->current_version->index_uri;
@@ -176,16 +207,16 @@ sub get_index_by_name_and_version {
 
 sub get_active_sources {
     my $self = shift;
-    my $sources = Bio::EnsEMBL::Versioning::Manager::Source->get_sources(
-        query =>[ active => 1 ],
+    my $result = $self->schema->resultset('Source')->search(
+      { active => 1}
     );
-    return $sources;
+    return [ $result->all ];
 }
 
 sub get_file_list_for_source {
   my $self = shift;
   my $source = shift;
-  my $dir = $source->version->[0]->uri;
+  my $dir = $source->version->uri;
   my @files = glob($dir.'/*');
   # print "Found files: ".join(',',@files);
   return \@files;
@@ -194,13 +225,13 @@ sub get_file_list_for_source {
 sub get_source_path {
   my $self = shift;
   my $source = shift;
-  return $source->version->[0]->uri;
+  return $source->version->uri;
 }
 
 sub document_store {
   my $self = shift;
   my $path = shift;
-  my $doc_store_package = $opts{'doc_store'};
+  my $doc_store_package = $self->config->{'doc_store'};
   unless ($doc_store_package) { Bio::EnsEMBL::Mongoose::UsageException->throw('Document store undefined in config. Specify doc_store = package::name ')}
   $self->get_module($doc_store_package);
   if ($path) {
@@ -211,16 +242,16 @@ sub document_store {
 }
 
 # finalise_index moves the index out of temp and into a permanent location
-# Requires a source with only one attached version, as if one had just created that newest version.
 sub finalise_index {
   my $self = shift;
   my $source = shift;
+  my $version = shift;
   my $doc_store = shift;
   my $record_count = shift;
 
   my $temp_path = $doc_store->index;
   my $temp_location = IO::Dir->new($temp_path);
-  my $final_location = $self->location($source,$source->version->[0]);
+  my $final_location = $self->location($source,$source->version);
   print 'Moving index from '.$temp_path.' to '.$final_location."\n";
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
@@ -228,11 +259,14 @@ sub finalise_index {
     move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
       || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'index/  '.$!);
   }
-  $source->version->[0]->index_uri(File::Spec->catfile($final_location,'index'));
-  $source->version->[0]->record_count($record_count);
-  $source->version->[0]->update; # updates do not cascade from source
-  
-  $source->current_version($source->version->[0]);
+  my $version_set = $self->schema->resultset('Version')->find(
+      { version => $version }
+  );
+  $version_set->index_uri(File::Spec->catfile($final_location,'index'));
+  $version_set->record_count($record_count);
+  $version_set->update;
+
+  $source->current_version($version_set->single->version_id);
   $source->update;
 }
 

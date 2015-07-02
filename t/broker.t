@@ -17,45 +17,37 @@ use warnings;
 
 use Test::More;
 use Test::Exception;
-
-use Bio::EnsEMBL::Versioning::DB;
-use Bio::EnsEMBL::Test::MultiTestDB;
-
+use Env;
 use Bio::EnsEMBL::Versioning::Broker;
-my $multi = Bio::EnsEMBL::Test::MultiTestDB->new('multi');
-my $versioning_dba = $multi->get_DBAdaptor('versioning');
-Bio::EnsEMBL::Versioning::DB->register_DBAdaptor($versioning_dba);
-
-my $uniprot_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'UniProtSwissprot', parser => 'UniProtParser');
-$uniprot_source->source_group(name => 'UniProtGroup');
-$uniprot_source->save();
-my $uniprot_version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/mr6/Uniprot/203_12/uniprot.txt');
-$uniprot_version->source($uniprot_source);
-$uniprot_version->save();
-
-my $refseq_source = Bio::EnsEMBL::Versioning::Object::Source->new(name => 'RefSeq', parser => 'RefSeqParser');
-$refseq_source->source_group(name => 'RefSeqGroup');
-
-my $refseq_version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '61', record_count => 49243530, uri => '/lustre/scratch110/ensembl/mr6/RefSeq/61/refseq.txt');
-$refseq_version->source($refseq_source);
-$refseq_version->save();
-
-my $second_version = Bio::EnsEMBL::Versioning::Object::Version->new(revision => '60', record_count => 40000, uri => '/lustre/scratch110/ensembl/mr6/RefSeq/61/refseq.txt');
-$second_version->source($refseq_source);
-$second_version->save();
-$refseq_source->current_version($second_version->version_id);
-$refseq_source->save;
+use Bio::EnsEMBL::Versioning::TestDB qw/broker/;
 
 
+my $broker = broker();
+# throw in some test data
+# consider changing to "fixtures", for neat and tidy test data.
+# $broker->schema->result();
+my $uniprot_version = $broker->schema->resultset('Version')->create({revision => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/Uniprot/203_12/uniprot.txt', count_seen => 1});
 
-my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+my $uniprot_group = $broker->schema->resultset('SourceGroup')->create({ name => 'UniProtGroup' });
+my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProtSwissprot', parser => 'UniProtParser', current_version => $uniprot_version});
+
+ok($uniprot_source->in_storage(),"Source created in DB");
+
+my $refseq_group = $broker->schema->resultset('SourceGroup')->create({ name => 'RefSeqGroup' });
+my $refseq_source = $refseq_group->create_related('sources', {name => 'RefSeq', parser => 'RefSeqParser'});
+
+my $first_version = $refseq_source->create_related('versions', {revision => '61', record_count => 49243530, uri => '/lustre/scratch110/ensembl/RefSeq/61/refseq.txt', count_seen => 1});
+my $second_version = $refseq_source->create_related('versions', {revision => '60', record_count => 40000, uri => '/lustre/scratch110/ensembl/RefSeq/61/refseq.txt',count_seen => 1});
+
+$refseq_source->update( {current_version => $second_version});
 
 my $list = $broker->list_versions_by_source('RefSeq');
 is_deeply($list,[60,61],'Both versions of test data returned');
+
 my $source = $broker->get_current_source_by_name('RefSeq');
-cmp_ok($source->version->[0]->revision,'==',60,'Check release revision is correct');
+cmp_ok($source->current_version->revision,'==',60,'Check release revision is correct');
 
 $source = $broker->get_source_by_name_and_version('RefSeq',61);
-cmp_ok($source->version->[0]->revision,'==',61,'Source fetching by specific version');
+cmp_ok($source->versions->first->revision,'==',61,'Source fetching by specific version');
 
 done_testing;

@@ -32,19 +32,20 @@ requires 'Search::Query';
 
 requires 'Search::Query::Dialect::Lucy';
 
-# Rose dependencies
+# DBIx
 
-requires 'Rose::DB';
-requires 'Rose::DB::Object::Manager';
-requires 'Rose::DB::Object';
-requires 'Rose::DBx::AutoReconnect';
+requires 'DBIx::Class';
+requires 'DBIx::Class::TimeStamp';
+requires 'MooseX::MarkAsMethods'; # needed for Moosed DBICs
+requires 'MooseX::NonMoose'; # needed for Moosed DBICs
+
+recommends 'DBIx::Class::Schema::Loader';
 
 # Others
 
 requires 'Test::Differences';
 requires 'Test::JSON';
 requires 'Class::Inspector';
-requires 'REST::Neo4p';
 
 # Graphing
 

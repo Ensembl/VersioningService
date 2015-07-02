@@ -3,3 +3,4 @@
 /t/*.conf
 /lib/Bio/EnsEMBL/Pipeline/reg*
 /.project
+/t/test.db

@@ -122,12 +122,7 @@ sub location {
 }
 
 # Move downloaded files from temp folder to a more permanent location, and update the versioning service to match.
-sub finalise_download {
-    my $self = shift;
-    my $source = shift;
-    my $revision = shift;
-    my $temp_location = shift;
-    
+method finalise_download (Str $source, Str $revision, Str $temp_location){
     my $final_location = $self->location($source,$revision);
     for my $file (glob $temp_location."/*") {
         move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location);
@@ -229,17 +224,11 @@ sub document_store {
 }
 
 # finalise_index moves the index out of temp and into a permanent location
-sub finalise_index {
-  my $self = shift;
-  my $source = shift;
-  my $version = shift;
-  my $doc_store = shift;
-  my $record_count = shift;
-
+method finalise_index ($source, $version, $doc_store, Int $record_count){
   my $temp_path = $doc_store->index;
   my $temp_location = IO::Dir->new($temp_path);
   my $final_location = $self->location($source,$source->version);
-  print 'Moving index from '.$temp_path.' to '.$final_location."\n";
+  $self->log->info("Moving index from $temp_path to $final_location");
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
     make_path(File::Spec->catfile($final_location,'index'), { mode => 0774 });

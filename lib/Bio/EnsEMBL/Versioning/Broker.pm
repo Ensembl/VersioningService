@@ -21,7 +21,7 @@
 package Bio::EnsEMBL::Versioning::Broker;
 
 use Moose;
-
+use Method::Signatures;
 use Env;
 use Config::General;
 use File::Temp qw/tempdir/;
@@ -121,6 +121,7 @@ sub location {
     return $path;
 }
 
+# Move downloaded files from temp folder to a more permanent location, and update the versioning service to match.
 sub finalise_download {
     my $self = shift;
     my $source = shift;
@@ -141,17 +142,16 @@ sub finalise_download {
     return $final_location;
 }
 
-sub get_current_source_by_name {
-    my $self = shift;
-    my $source_name = shift;
+method get_current_version_of_source ( Str $source_name ) {
+
     unless ($source_name) {Bio::EnsEMBL::Mongoose::UsageException->throw('Cannot get a source without a source name')};
 
     my $source_rs = $self->schema->resultset('Source')->search(
       { name => $source_name },
       { join => 'current_version', rows => 1 }
-    );
-    my $source = $source_rs->single;
-    return $source;
+    )->first;
+    my $version = $source_rs->current_version;
+    return $version;
 }
 
 sub list_versions_by_source {
@@ -168,41 +168,28 @@ sub list_versions_by_source {
     return $revisions;
 }
 
-sub get_source_by_name_and_version {
-    my $self = shift;
-    my $source_name = shift;
-    my $version = shift;
-    unless ($source_name && $version) {Bio::EnsEMBL::Mongoose::UsageException->throw('Cannot get a source without a source name AND version number')};
-
-    my $result = $self->schema->resultset('Source')->search(
-      { name => $source_name, 'versions.revision' => $version },
-      { join => 'versions' }
+method get_version_of_source (Str $source_name, Str $version){
+    my $result = $self->schema->resultset('Version')->search(
+      { 'sources.name' => $source_name, revision => $version },
+      { join => 'sources' }
     );
-    my $source = $result->single;
-    if (! $source ) { Bio::EnsEMBL::Mongoose::DBException->throw('No source: '.$source_name.' found with version '.$version)}
-    return $source;
+    my $version_rs = $result->single;
+    if (! $version_rs) { Bio::EnsEMBL::Mongoose::DBException->throw('No source: '.$source_name.' found with version '.$version)}
+    return $version_rs;
 }
 
-sub get_index_by_name_and_version {
-  my $self = shift;
-  my $source_name = shift;
-  my $version = shift;
-  my $source;
+method get_index_by_name_and_version (Str $source_name, Str $version? ){
   {
     no warnings;
     $self->log->info('Fetching index: '.$source_name.'  '.$version);
   }
-  my $index;
-  if (defined $version) { 
-    $source = $self->get_source_by_name_and_version($source_name,$version); 
-    $index = $source->version->index_uri;
+  my $version_rs;
+  if (defined $version) {
+    $version_rs = $self->get_version_of_source($source_name,$version); 
+  } else { 
+    $version_rs = $self->get_current_version_of_source($source_name);
   }
-  else { 
-    $source = $self->get_current_source_by_name($source_name);
-    $index = $source->current_version->index_uri;
-  }
-  # $self->log->debug(Dumper $source);
-  return $index;
+  return $version_rs->index_uri;
 }
 
 sub get_active_sources {

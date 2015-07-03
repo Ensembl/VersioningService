@@ -44,10 +44,14 @@ $refseq_source->update( {current_version => $second_version});
 my $list = $broker->list_versions_by_source('RefSeq');
 is_deeply($list,[60,61],'Both versions of test data returned');
 
-my $source = $broker->get_current_source_by_name('RefSeq');
-cmp_ok($source->current_version->revision,'==',60,'Check release revision is correct');
+my $version = $broker->get_current_version_of_source('RefSeq');
+cmp_ok($version->revision,'==',60,'Check release revision is correct');
 
-$source = $broker->get_source_by_name_and_version('RefSeq',61);
-cmp_ok($source->versions->first->revision,'==',61,'Source fetching by specific version');
+$version = $broker->get_version_of_source('RefSeq',61);
+cmp_ok($version->revision,'==',61,'Source fetching by specific version');
+
+
+
+
 
 done_testing;

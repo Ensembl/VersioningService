@@ -52,20 +52,20 @@ sub run {
   my $specific_version = $self->param('version');
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
 
-  my $source;
+  my $version;
   if (defined $specific_version) {
-    $source = $broker->get_source_by_name_and_version($source_name,$specific_version);
+    $version = $broker->get_version_of_source($source_name,$specific_version);
   } else {
-    $source = $broker->get_current_source_by_name($source_name);
+    $version = $broker->get_current_version_of_source($source_name);
   }
 
-  my $parser_name = $broker->get_module($source->parser);
+  my $parser_name = $broker->get_module($version->parser);
   if ($parser_name eq 'Bio::EnsEMBL::Mongoose::Parser::Refseq') {
     # Unpack files for uncooperative Refseq parser that doesn't take file handles.
-    my $path = $broker->get_source_path($source);
+    my $path = $broker->get_source_path($version);
     `gunzip $path/*.gz`;
   }
-  my $files = $broker->get_file_list_for_source($source);
+  my $files = $broker->get_file_list_for_source($version);
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
   my $doc_store;
@@ -92,10 +92,10 @@ sub run {
   }
   if ($parser_name eq 'Bio::EnsEMBL::Mongoose::Parser::Refseq') {
     # Repack files for Refseq parser to keep size down.
-    my $path = $broker->get_source_path($source);
+    my $path = $broker->get_source_path($version);
     `gzip $path/*`;
   }
-  $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
+  $broker->finalise_index($version,$specific_version,$doc_store,$total_records);
 }
 
 1;

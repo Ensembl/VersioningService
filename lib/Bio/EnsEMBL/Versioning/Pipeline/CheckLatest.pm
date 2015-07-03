@@ -52,11 +52,9 @@ sub run {
   my ($self) = @_;
   my $source_name = $self->param_required('source_name');
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
-  my $source = $broker->get_current_source_by_name($source_name);
+  my $local_version = $broker->get_current_version_of_source($source_name);
   my $downloader = $broker->get_module($source->downloader)->new;
   my $remote_version = $downloader->get_version;
-  my $local_version;
-  $local_version = $source->version->[0];
   my $local_revision;
   if (defined $local_version) {$local_revision = $local_version->revision}
   else {$local_revision = ''}

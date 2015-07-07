@@ -30,7 +30,7 @@ my $broker = broker();
 my $uniprot_version = $broker->schema->resultset('Version')->create({revision => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/Uniprot/203_12/uniprot.txt', count_seen => 1});
 
 my $uniprot_group = $broker->schema->resultset('SourceGroup')->create({ name => 'UniProtGroup' });
-my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProtSwissprot', parser => 'UniProtParser', current_version => $uniprot_version});
+my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProtSwissprot', parser => 'UniProtParser', current_version => $uniprot_version, active => 1});
 
 # Connect version to source now that it exists
 $uniprot_version->sources($uniprot_source);
@@ -41,7 +41,7 @@ ok($uniprot_version->in_storage(),"Version created in DB");
 ok($uniprot_group->in_storage(),"Group created in DB");
 
 my $refseq_group = $broker->schema->resultset('SourceGroup')->create({ name => 'RefSeqGroup' });
-my $refseq_source = $refseq_group->create_related('sources', {name => 'RefSeq', parser => 'RefSeqParser'});
+my $refseq_source = $refseq_group->create_related('sources', {name => 'RefSeq', parser => 'RefSeqParser', active=> 1});
 
 my $first_version = $refseq_source->create_related('versions', {revision => '61', record_count => 49243530, uri => '/lustre/scratch110/ensembl/RefSeq/61/refseq.txt', count_seen => 1});
 my $second_version = $refseq_source->create_related('versions', {revision => '60', record_count => 40000, uri => '/lustre/scratch110/ensembl/RefSeq/61/refseq.txt',count_seen => 1});
@@ -84,5 +84,8 @@ my $other_index_uri = $broker->get_index_by_name_and_version('UniProtSwissprot')
 ok($index_uri,'Index URI returned');
 ok($other_index_uri,'Index returned via current');
 is($index_uri,$other_index_uri,'Same URI retrieved by different routes');
+
+my @sources = @{ $broker->get_active_sources };
+ok(scalar @sources == 2, 'Found two active sources');
 
 done_testing;

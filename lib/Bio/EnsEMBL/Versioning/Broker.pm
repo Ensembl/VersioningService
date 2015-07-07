@@ -199,12 +199,6 @@ sub get_file_list_for_source {
   return \@files;
 }
 
-sub get_source_path {
-  my $self = shift;
-  my $source = shift;
-  return $source->version->uri;
-}
-
 sub document_store {
   my $self = shift;
   my $path = shift;

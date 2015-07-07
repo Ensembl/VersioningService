@@ -70,7 +70,7 @@ my $new_path = $broker->finalise_download($uniprot_source,'2015_06',$dir);
 ok($new_path,'Broker able to move new files into versioning');
 is_deeply( $broker->list_versions_by_source('UniProtSwissprot'), ['2013_12','2015_06'],'Versioning DB updated' );
 
-# Create a fake document store to defray configuration mess
+# Create a fake document store to bypass onerous configuration
 my $docstore = Test::MockObject->new();
 $docstore->mock( 'index', sub { return tempdir() });
 

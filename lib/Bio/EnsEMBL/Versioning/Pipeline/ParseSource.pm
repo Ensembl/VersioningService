@@ -62,7 +62,7 @@ sub run {
   my $parser_name = $broker->get_module($version->parser);
   if ($parser_name eq 'Bio::EnsEMBL::Mongoose::Parser::Refseq') {
     # Unpack files for uncooperative Refseq parser that doesn't take file handles.
-    my $path = $broker->get_source_path($version);
+    my $path = $version->uri;
     `gunzip $path/*.gz`;
   }
   my $files = $broker->get_file_list_for_source($version);
@@ -92,7 +92,7 @@ sub run {
   }
   if ($parser_name eq 'Bio::EnsEMBL::Mongoose::Parser::Refseq') {
     # Repack files for Refseq parser to keep size down.
-    my $path = $broker->get_source_path($version);
+    my $path = $version->uri;
     `gzip $path/*`;
   }
   $broker->finalise_index($version,$specific_version,$doc_store,$total_records);

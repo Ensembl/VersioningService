@@ -70,12 +70,19 @@ my $new_path = $broker->finalise_download($uniprot_source,'2015_06',$dir);
 ok($new_path,'Broker able to move new files into versioning');
 is_deeply( $broker->list_versions_by_source('UniProtSwissprot'), ['2013_12','2015_06'],'Versioning DB updated' );
 
-# Create a fake document store
+# Create a fake document store to defray configuration mess
 my $docstore = Test::MockObject->new();
 $docstore->mock( 'index', sub { return tempdir() });
 
 $broker->finalise_index($uniprot_source, '2015_06', $docstore, 666);
 is($broker->get_current_version_of_source('UniProtSwissprot')->revision, '2015_06', 'finalise_index() sets new current version');
 
+# Fetch the location of the index we've just 'created'
+
+my $index_uri = $broker->get_index_by_name_and_version('UniProtSwissprot','2015_06');
+my $other_index_uri = $broker->get_index_by_name_and_version('UniProtSwissprot');
+ok($index_uri,'Index URI returned');
+ok($other_index_uri,'Index returned via current');
+is($index_uri,$other_index_uri,'Same URI retrieved by different routes');
 
 done_testing;

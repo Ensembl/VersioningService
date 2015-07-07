@@ -116,31 +116,29 @@ sub location {
     my $revision = shift;
 
     my $root = $self->config->{home};
-    my $path = $root.'/'.$source->source_group->name.'/'.$source->name().'/'.$revision;
+    my $path = $root.'/'.$source->source_groups->name.'/'.$source->name().'/'.$revision;
     make_path($path, { mode => 0774 });
     return $path;
 }
 
 # Move downloaded files from temp folder to a more permanent location, and update the versioning service to match.
-method finalise_download (Str $source, Str $revision, Str $temp_location){
+method finalise_download ($source, Str $revision, Str $temp_location){
     my $final_location = $self->location($source,$revision);
     for my $file (glob $temp_location."/*") {
         move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location);
     }
     
-    my $version = $self->schema->resultset('Version')->create( 
+    my $version = $self->schema->resultset('Version')->create( {
       revision => $revision,
       uri => $final_location,
-      source => $source,
-    );
+      sources => $source, 
+      count_seen => 1
+    });
 
     return $final_location;
 }
 
 method get_current_version_of_source ( Str $source_name ) {
-
-    unless ($source_name) {Bio::EnsEMBL::Mongoose::UsageException->throw('Cannot get a source without a source name')};
-
     my $source_rs = $self->schema->resultset('Source')->search(
       { name => $source_name },
       { join => 'current_version', rows => 1 }
@@ -153,10 +151,7 @@ sub list_versions_by_source {
     my $self = shift;
     my $source_name = shift;
     unless ($source_name) {Bio::EnsEMBL::Mongoose::UsageException->throw('Versions of a source demand an actual source')};
-    my $result = $self->schema->resultset('Version')->search(
-      { 'sources.name' => $source_name },
-      { join => 'sources', order_by => ['revision'] }
-    );
+    my $result = $self->schema->resultset('Source')->search_related('versions', {name => $source_name});
     my @versions = $result->all;
     if (scalar(@versions) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No versions found for source: '.$source_name.'. Possible integrity issue')};
     my $revisions = [ map {$_->revision} @versions ];
@@ -224,10 +219,10 @@ sub document_store {
 }
 
 # finalise_index moves the index out of temp and into a permanent location
-method finalise_index ($source, $version, $doc_store, Int $record_count){
+method finalise_index ($source, $revision, $doc_store, Int $record_count){
   my $temp_path = $doc_store->index;
   my $temp_location = IO::Dir->new($temp_path);
-  my $final_location = $self->location($source,$source->version);
+  my $final_location = $self->location($source,$revision);
   $self->log->info("Moving index from $temp_path to $final_location");
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
@@ -236,13 +231,13 @@ method finalise_index ($source, $version, $doc_store, Int $record_count){
       || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'index/  '.$!);
   }
   my $version_set = $self->schema->resultset('Version')->find(
-      { version => $version }
+      { revision => $revision }
   );
   $version_set->index_uri(File::Spec->catfile($final_location,'index'));
   $version_set->record_count($record_count);
   $version_set->update;
 
-  $source->current_version($version_set->single->version_id);
+  $source->current_version($version_set);
   $source->update;
 }
 

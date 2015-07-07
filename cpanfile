@@ -45,6 +45,7 @@ recommends 'DBIx::Class::Schema::Loader';
 
 requires 'Test::Differences';
 requires 'Test::JSON';
+requires 'Test::MockObject';
 requires 'Class::Inspector';
 
 # Graphing

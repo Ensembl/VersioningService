@@ -190,10 +190,10 @@ sub get_active_sources {
     return [ $result->all ];
 }
 
-sub get_file_list_for_source {
+sub get_file_list_for_version {
   my $self = shift;
-  my $source = shift;
-  my $dir = $source->version->uri;
+  my $version = shift;
+  my $dir = $version->uri;
   my @files = glob($dir.'/*');
   # print "Found files: ".join(',',@files);
   return \@files;

@@ -65,7 +65,7 @@ sub run {
     my $path = $version->uri;
     `gunzip $path/*.gz`;
   }
-  my $files = $broker->get_file_list_for_source($version);
+  my $files = $broker->get_file_list_for_version($version);
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
   my $doc_store;

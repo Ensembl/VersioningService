@@ -2,6 +2,7 @@
 # General dependencies
 requires 'Config::General';
 requires 'PerlIO::gzip';
+requires 'Modern::Perl';
 
 requires 'REST::Client';
 requires 'JSON::XS';
@@ -21,9 +22,19 @@ requires 'MooseX::Storage';
 requires 'Method::Signatures';
 requires 'Throwable::Error';
 
+# Testing
+
+requires 'Test::Differences';
+requires 'Test::JSON';
+requires 'Test::MockObject';
+requires 'Test::MockObject::Extends';
+requires 'Test::Exception';
+requires 'Class::Inspector';
+requires 'namespace::sweep';
+
 # Lucy dependencies
 
-requires 'Lucy';
+requires 'Lucy', '>= 0.3.3';
 requires 'Lucy::Index::Indexer';
 requires 'Lucy::Plan::Schema';
 requires 'Lucy::Search::IndexSearcher';
@@ -40,13 +51,6 @@ requires 'MooseX::MarkAsMethods'; # needed for Moosed DBICs
 requires 'MooseX::NonMoose'; # needed for Moosed DBICs
 
 recommends 'DBIx::Class::Schema::Loader';
-
-# Others
-
-requires 'Test::Differences';
-requires 'Test::JSON';
-requires 'Test::MockObject';
-requires 'Class::Inspector';
 
 # Graphing
 

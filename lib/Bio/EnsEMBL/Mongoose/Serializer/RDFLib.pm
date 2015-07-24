@@ -33,7 +33,7 @@ has unidirection_sources => (
     interpro => 1
   }},
   handles => { 
-    exists => 'is_unidirectional'
+    is_unidirectional => 'exists'
   }
 );
 
@@ -146,6 +146,13 @@ sub dump_prefixes {
   foreach my $key (keys %namespaces) {
     print $fh triple('@prefix',$key.':',u($namespaces{$key}) );
   }
+}
+
+# For murky name strings that don't fit in turtle format.
+sub escape {
+    my $string = shift;
+    $string =~s/(["])/\\$1/g;
+    return $string;
 }
 
 __PACKAGE__->meta->make_immutable;

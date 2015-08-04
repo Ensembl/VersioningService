@@ -20,10 +20,9 @@ use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
-with 'MooseX::Log::Log4perl';
+with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Mongoose::Parser::XMLParser';
 
 # 'uni','http://uniprot.org/uniprot'
-with 'Bio::EnsEMBL::Mongoose::Parser::XMLParser';
 
 around BUILDARGS => sub {
     my ($orig, $class, %args) = @_;

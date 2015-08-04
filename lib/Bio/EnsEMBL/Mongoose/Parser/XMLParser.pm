@@ -23,7 +23,6 @@ use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
-with 'MooseX::Log::Log4perl';
 
 subtype 'XML::LibXML::DOM' => as 'Object';
 
@@ -95,7 +94,7 @@ has xml_footer => (
 );
 
 
-with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
+with 'Bio::EnsEMBL::Mongoose::Parser::Parser', 'MooseX::Log::Log4perl';
 
 
 sub slurp_content {

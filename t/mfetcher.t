@@ -18,7 +18,7 @@ my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
 );
 
 my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
-    storage_engine_conf => "$Bin/../conf/test.conf",
+    storage_engine_conf_file => "$Bin/../conf/test.conf",
     query_params => $params,
     handle => $fh,
 );

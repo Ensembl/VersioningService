@@ -3,7 +3,7 @@ use Test::Differences;
 
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
-
+use FindBin qw/$Bin/;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use IO::String;

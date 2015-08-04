@@ -20,6 +20,10 @@
       "sortable": true,
       "type": "string"
     },
+    "comment": {
+      "sortable": true,
+      "type": "string"
+    },
     "description": {
       "sortable": true,
       "type": "string"
@@ -28,11 +32,11 @@
       "sortable": true,
       "type": "string"
     },
-    "evidence_level": {
+    "entry_name": {
       "sortable": true,
       "type": "string"
     },
-    "full_name": {
+    "evidence_level": {
       "sortable": true,
       "type": "string"
     },
@@ -44,7 +48,7 @@
       "sortable": true,
       "type": "string"
     },
-    "primary_accession": {
+    "protein_name": {
       "sortable": true,
       "type": "string"
     },
@@ -64,11 +68,19 @@
       "sortable": true,
       "type": "string"
     },
+    "sequence_version": {
+      "sortable": true,
+      "type": "string"
+    },
     "suspicion": {
       "sortable": true,
       "type": "string"
     },
     "synonyms": {
+      "sortable": true,
+      "type": "string"
+    },
+    "tag": {
       "sortable": true,
       "type": "string"
     },

@@ -7,12 +7,14 @@
   },
   "lexicon": {
     "counts": {
-      "accessions": "11",
+      "accessions": "14",
       "description": "1",
+      "entry_name": "3",
       "evidence_level": "1",
       "gene_name": "1",
-      "primary_accession": "3",
+      "protein_name": "3",
       "sequence_length": "3",
+      "sequence_version": "2",
       "synonyms": "1",
       "taxon_id": "3"
     },
@@ -20,10 +22,12 @@
     "index_counts": {
       "accessions": "1",
       "description": "1",
+      "entry_name": "1",
       "evidence_level": "1",
       "gene_name": "1",
-      "primary_accession": "1",
+      "protein_name": "1",
       "sequence_length": "1",
+      "sequence_version": "1",
       "synonyms": "1",
       "taxon_id": "1"
     }
@@ -35,24 +39,27 @@
     "count": "3",
     "field_names": [
       "",
-      "evidence_level",
-      "suspicion",
+      "sequence_version",
       "description",
-      "display_label",
+      "protein_name",
       "synonyms",
       "checksum",
-      "id",
-      "blob",
-      "xref",
-      "full_name",
-      "schema_version",
+      "display_label",
+      "entry_name",
       "gene_name",
+      "comment",
       "sequence_length",
       "sequence",
       "taxon_id",
-      "primary_accession",
-      "region",
       "accessions",
+      "region",
+      "evidence_level",
+      "suspicion",
+      "blob",
+      "id",
+      "xref",
+      "schema_version",
+      "tag",
       "version"
     ],
     "format": "1",
@@ -60,12 +67,14 @@
   },
   "sort": {
     "counts": {
-      "accessions": "2",
+      "accessions": "3",
       "description": "2",
+      "entry_name": "3",
       "evidence_level": "1",
       "gene_name": "2",
-      "primary_accession": "3",
+      "protein_name": "3",
       "sequence_length": "3",
+      "sequence_version": "2",
       "synonyms": "2",
       "taxon_id": "3"
     },
@@ -76,12 +85,14 @@
       "synonyms": "1"
     },
     "ord_widths": {
-      "accessions": "1",
+      "accessions": "2",
       "description": "1",
+      "entry_name": "2",
       "evidence_level": "1",
       "gene_name": "1",
-      "primary_accession": "2",
+      "protein_name": "2",
       "sequence_length": "2",
+      "sequence_version": "1",
       "synonyms": "1",
       "taxon_id": "2"
     }

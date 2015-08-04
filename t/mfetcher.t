@@ -76,13 +76,12 @@ $fh->setpos(0);
 $params->taxons([110109]);
 $params->evidence_level('1');
 $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
-    storage_engine_conf => "$Bin/../conf/test.conf",
+    storage_engine_conf_file => "$Bin/../conf/test.conf",
     query_params => $params,
     handle => $fh,
     output_format => 'JSON',
 );
 
 $mfetcher->get_records;
-is($out,'{"evidence_level":"1","xref":[{"source":"GO","id":"GO:0005576"},{"source":"GO","id":"GO:0042742"}],"sequence":"FLPLLFGAISHLL","accessions":[],"taxon_id":"110109","sequence_length":13,"primary_accession":"P84858"}','Try JSON Format');
-
+is($out,'{"evidence_level":1,"xref":[{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0005576"},{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0042742"}],"sequence":"FLPLLFGAISHLL","taxon_id":"110109","sequence_length":13,"protein_name":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1"}');
 done_testing;

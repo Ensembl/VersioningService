@@ -90,8 +90,7 @@ has buffer_size => (
 has source => (is => 'rw',isa => 'Str');
 has version => (is => 'rw', isa => 'Maybe[Str]');
 
-with 'Bio::EnsEMBL::Mongoose::Persistence::Query';
-with 'MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Mongoose::Persistence::Query','MooseX::Log::Log4perl';
 
 # Search::Query::Dialect::Lucy translates the following syntax into useful queries
 # Beware the shell, escape all of them outside of Perl

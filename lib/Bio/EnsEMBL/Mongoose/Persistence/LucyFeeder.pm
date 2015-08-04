@@ -93,8 +93,7 @@ has indexer => (
     }
 );
 
-with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore';
-with 'MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Mongoose::Persistence::DocumentStore','MooseX::Log::Log4perl';
 
 sub store_record {
     my $self = shift;

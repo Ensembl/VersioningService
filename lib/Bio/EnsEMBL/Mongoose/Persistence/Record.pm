@@ -70,7 +70,7 @@ has accessions => (
     traits => ['Array'],
     predicate => 'has_accessions',
     handles => {
-        'get_any_old_accession' => 'shift',
+        'get_accession' => 'get'
     }
 );
 
@@ -171,10 +171,8 @@ sub TO_JSON {
 
 sub primary_accession {
     my $self = shift;
-    my $accessions = $self->accessions();
-    if ($accessions) {
-        return shift @$accessions;
-    }
+    my $accession = $self->get_accession(0);
+    return $accession if $accession;
     return;
 }
 

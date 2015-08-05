@@ -1,0 +1,12 @@
+[Indexer setup]
+
+# Help Lucy find index and raw data for test cases
+index_location = "t/data/test.index"
+data_location = "t/data/braf.xml"
+#data_location = "/Users/ktaylor/Documents/workspace/mongoose/t/data/UPI0000000001.xml"
+
+# Define test database type. Can also be other flavours of SQL
+type   = sqlite
+driver = SQLite
+db     = versioning_test
+file   = test.db

@@ -1,5 +1,0 @@
-[Indexer setup]
-
-index_location = "t/data/test.index"
-data_location = "t/data/braf.xml"
-#data_location = "/Users/ktaylor/Documents/workspace/mongoose/t/data/UPI0000000001.xml"

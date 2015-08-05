@@ -1,7 +1,0 @@
-[compara config]
-
-compara_host = hostname
-compara_db = ensembl_compara_73
-compara_pass = 
-compara_user = ensro
-compara_port = 3306

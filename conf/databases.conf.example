@@ -1,0 +1,10 @@
+[compara config]
+
+# Required mainly for taxonomic lookups.
+# Note that taxonomies shift around a bit between releases as per the taxonomists wishes
+
+compara_host = hostname
+compara_db = ensembl_compara_81
+compara_pass = 
+compara_user = anonymous
+compara_port = 3306

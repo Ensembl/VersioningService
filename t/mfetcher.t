@@ -46,14 +46,14 @@ $out = '';
 $fh->setpos(0);
 $params->ids([]);
 $params->taxons([]);
-$params->species_name('Hylarana picturata');
-
+# $params->species_name('Hylarana picturata');
+$params->species_name('Pulchrana picturata');
 
 $mfetcher->convert_name_to_taxon;
 is($params->taxons->[0],395594,'Test name conversion');
 
 $params->clear_species_name;
-$params->taxons([1008893]);
+$params->taxons([8397]); # riparian frogs in NCBI taxonomy (as of Compara 81)
 $mfetcher->get_records_including_descendants;
 
 $desired = "> P0C8T7 395594 1 

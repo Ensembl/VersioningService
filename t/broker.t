@@ -88,4 +88,8 @@ is($index_uri,$other_index_uri,'Same URI retrieved by different routes');
 my @sources = @{ $broker->get_active_sources };
 ok(scalar @sources == 2, 'Found two active sources');
 
+ok($broker->add_new_source('UniProtUniParc','UniProtGroup',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtUniParc','Bio::EnsEMBL::Mongoose::Parser::Uniparc'),'Try to create a new source');
+throws_ok( sub { $broker->add_new_source('UniPurple','UniProtGroup',1,'Bio::Pish::Purple','Bilge::Pish::Purple') }, qr/is not of type PackageName/,'Source add fails on untestable downloader/parser code');
+
+
 done_testing;

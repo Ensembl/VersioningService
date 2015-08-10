@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package Bio::EnsEMBL::Mongoose::Parser::Refseq;
+package Bio::EnsEMBL::Mongoose::Parser::RefSeq;
 use Moose;
 use Moose::Util::TypeConstraints;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;

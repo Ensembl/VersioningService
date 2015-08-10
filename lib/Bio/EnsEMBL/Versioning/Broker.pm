@@ -22,6 +22,8 @@ package Bio::EnsEMBL::Versioning::Broker;
 
 use Moose;
 use Method::Signatures;
+use Moose::Util::TypeConstraints;
+use Module::Load::Conditional qw/can_load/;
 use Env;
 use Config::General;
 use File::Temp qw/tempdir/;
@@ -71,6 +73,13 @@ has schema => (
   lazy => 1,
   builder => 'init_broker'
 );
+
+# Subtype used to validate creation of new sources
+subtype 'PackageName',
+  as 'Str',
+  message { "Provided package name does not resolve to a valid package in PERL5LIB" },
+  where { can_load(modules => ({$_ => undef})) };
+
 
 with 'MooseX::Log::Log4perl';
 
@@ -233,6 +242,16 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
 
   $source->current_version($version_set);
   $source->update;
+}
+
+method add_new_source (Str $name,Str $group_name,Bool $active,PackageName $downloader,PackageName $parser) { 
+  return $self->schema->resultset('Source')->create({
+    name => $name,
+    source_groups => { name => $group_name },
+    active => $active,
+    downloader => $downloader,
+    parser => $parser
+  });
 }
 
 # imports modules required for accessing the document store of choice, e.g. Lucy

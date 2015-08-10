@@ -31,6 +31,7 @@ requires 'Test::MockObject::Extends';
 requires 'Test::Exception';
 requires 'Class::Inspector';
 requires 'namespace::sweep';
+requires 'Module::Load::Conditional';
 
 # Lucy dependencies
 

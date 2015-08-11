@@ -43,7 +43,6 @@ package Bio::EnsEMBL::Versioning::Pipeline::CheckLatest;
 use strict;
 use warnings;
 
-use Bio::EnsEMBL::Versioning::DB;
 use Bio::EnsEMBL::Versioning::Broker;
 
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;

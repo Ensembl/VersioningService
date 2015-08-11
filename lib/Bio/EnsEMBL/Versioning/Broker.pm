@@ -152,7 +152,10 @@ method get_current_version_of_source ( Str $source_name ) {
       { name => $source_name },
       { join => 'current_version', rows => 1 }
     )->first;
-    my $version = $source_rs->current_version;
+    my $version;
+    if ($source_rs) {
+      $version = $source_rs->current_version;
+    }
     return $version;
 }
 
@@ -253,6 +256,15 @@ method add_new_source (Str $name,Str $group_name,Bool $active,PackageName $downl
     parser => $parser
   });
 }
+
+sub get_downloader {
+  my $self = shift;
+  my $name = shift;
+  my $source_rs = $self->schema->resultset('Source')->search( { name => $name } )->first;
+  unless ($source_rs) { Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot find source $name to supply downloader module") }
+  return $source_rs->downloader;
+}
+
 
 # imports modules required for accessing the document store of choice, e.g. Lucy
 sub get_module {

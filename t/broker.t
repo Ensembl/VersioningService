@@ -30,7 +30,7 @@ my $broker = broker();
 my $uniprot_version = $broker->schema->resultset('Version')->create({revision => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/Uniprot/203_12/uniprot.txt', count_seen => 1});
 
 my $uniprot_group = $broker->schema->resultset('SourceGroup')->create({ name => 'UniProtGroup' });
-my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProtSwissprot', parser => 'UniProtParser', current_version => $uniprot_version, active => 1});
+my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProtSwissprot', parser => 'UniProtParser', current_version => $uniprot_version, active => 1, downloader => 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'});
 
 # Connect version to source now that it exists
 $uniprot_version->sources($uniprot_source);
@@ -91,5 +91,10 @@ ok(scalar @sources == 2, 'Found two active sources');
 ok($broker->add_new_source('UniProtUniParc','UniProtGroup',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtUniParc','Bio::EnsEMBL::Mongoose::Parser::Uniparc'),'Try to create a new source');
 throws_ok( sub { $broker->add_new_source('UniPurple','UniProtGroup',1,'Bio::Pish::Purple','Bilge::Pish::Purple') }, qr/is not of type PackageName/,'Source add fails on untestable downloader/parser code');
 
+my $downloader;
+ok( $downloader = $broker->get_downloader('UniProtSwissprot'), "Loading downloader module proceeds successfully" );
+is($downloader,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt','Test correct download module name returned');
+my $module = $broker->get_module($downloader);
+ok($module->isa('Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'),'Check module can be loaded successfully');
 
 done_testing;

@@ -20,7 +20,7 @@ package Bio::EnsEMBL::Versioning::Pipeline::EmailSummary;
 
 use strict;
 use warnings;
-use parent qw/Bio::EnsEMBL::Hive::RunnableDB::NotifyByEmail Bio::EnsEMBL::Production::Pipeline::Base/;
+use parent qw/Bio::EnsEMBL::Hive::RunnableDB::NotifyByEmail/;
 use Bio::EnsEMBL::Hive::Utils qw/destringify/;
 
 sub fetch_input {

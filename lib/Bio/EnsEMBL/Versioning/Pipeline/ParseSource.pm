@@ -59,7 +59,7 @@ sub run {
     $version = $broker->get_current_version_of_source($source_name);
   }
 
-  my $parser_name = $broker->get_module($version->parser);
+  my $parser_name = $broker->get_module($broker->get_source($source_name)->parser);
   if ($parser_name eq 'Bio::EnsEMBL::Mongoose::Parser::Refseq') {
     # Unpack files for uncooperative Refseq parser that doesn't take file handles.
     my $path = $version->uri;

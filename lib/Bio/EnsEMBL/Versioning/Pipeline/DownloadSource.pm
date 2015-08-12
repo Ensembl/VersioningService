@@ -53,9 +53,8 @@ sub run {
   my $latest_version = $self->param('version');
   my $source_name = $self->param('source_name');
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
-
-  my $version = $broker->get_current_version_of_source($source_name);
-  my $downloader = $broker->get_module($version->downloader)->new;
+  my $source = $broker->get_source($source_name);
+  my $downloader = $broker->get_module($broker->get_downloader($source_name))->new;
   my $result;
   my $temp_location = $broker->temp_location;
   try {
@@ -69,7 +68,7 @@ sub run {
     $self->dataflow_output_id($input_id, 4);
     return;
   };
-  $broker->finalise_download($version,$latest_version,$temp_location);
+  $broker->finalise_download($source,$latest_version,$temp_location);
 
   $self->warning("Piping downloaded resource $source_name into parser stage");
   my $message = { source_name => $source_name , version => $latest_version };

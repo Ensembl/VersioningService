@@ -194,6 +194,15 @@ method get_index_by_name_and_version (Str $source_name, Str $version? ){
   return $version_rs->index_uri;
 }
 
+sub get_source {
+  my $self = shift;
+  my $source_name = shift;
+  my $result = $self->schema->resultset('Source')->search(
+    { name => $source_name }
+  );
+  return $result->first;
+}
+
 sub get_active_sources {
     my $self = shift;
     my $result = $self->schema->resultset('Source')->search(

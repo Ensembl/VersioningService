@@ -95,7 +95,8 @@ sub run {
     my $path = $version->uri;
     `gzip $path/*`;
   }
-  $broker->finalise_index($version,$specific_version,$doc_store,$total_records);
+  my $source = $broker->get_source($source_name);
+  $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
 }
 
 1;

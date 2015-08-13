@@ -21,7 +21,7 @@ with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::NetClient';
 
 method connect_to_ftp_site ($url, $user, $password){
   my $ftp = Net::FTP->new($url->host);
-  $ftp->login($user,$password) or Bio::EnsEMBL::Mongoose::NetException->throw("Cannot log into FPT site $url with $user:$password");
+  $ftp->login($user,$password) or Bio::EnsEMBL::Mongoose::NetException->throw("Cannot log into FTP site $url with $user:$password");
   $self->ftp($ftp);
 }
 
@@ -62,6 +62,7 @@ method get_ftp_files (
       my $download_name = $path . '/' . $file;
       
       my $success = retry_sleep( sub {
+        $self->ftp->binary;
         my $response = $self->ftp->get($file,$download_name);
         unless ($response) {print $self->ftp->message."\n"; return}
           else {return $response}

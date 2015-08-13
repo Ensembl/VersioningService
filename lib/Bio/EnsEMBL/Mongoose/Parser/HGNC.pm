@@ -77,10 +77,11 @@ sub read_record {
     $self->record->accessions([$doc{hgnc_id}]) if exists $doc{hgnc_id};
     $self->record->display_label($doc{symbol}) if exists $doc{symbol};
     $self->record->gene_name($doc{name}) if exists $doc{name};
-    my $list = $doc{prev_symbol} if exists $doc{prev_symbol};
+    my $list;
+    $list = $doc{prev_symbol} if exists $doc{prev_symbol};
     push @$list,@{$doc{alias_symbol}} if exists $doc{alias_symbol};
     foreach (@$list) {
-      $self->add_synonym($_);
+      $self->record->add_synonym($_);
     }
     $self->create_xref('RefSeq',$doc{refseq_accession}) if exists $doc{refseq_accession};
     $self->create_xref('Ensembl',$doc{ensembl_gene_id}) if exists $doc{ensembl_gene_id};
@@ -100,8 +101,8 @@ sub create_xref {
   if (ref $id eq 'ARRAY') {
     @ids = @$id;
   }
-  foreach $id (@ids) {
-    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id, creator => 'HGNC'));
+  foreach my $thing (@ids) {
+    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $thing, creator => 'HGNC'));
   }
 }
 

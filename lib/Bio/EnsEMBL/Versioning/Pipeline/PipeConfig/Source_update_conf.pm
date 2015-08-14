@@ -90,6 +90,7 @@ sub pipeline_analyses {
         -parameters => {
         },
         -max_retry_count  => 3,
+        -failed_job_tolerance => 25,
         -hive_capacity    => 100,
         -rc_name          => 'normal',
         -flow_into  => {
@@ -106,6 +107,7 @@ sub pipeline_analyses {
         },
         -max_retry_count => 1, # low to prevent pointless parsing repetition until someone can get attend to the problem.
         -hive_capacity => 10,
+        -failed_job_tolerance => 25, # percent of jobs that can fail while allowing the pipeline to complete.
         -rc_name => 'mem',
         -flow_into => {
           4 => ['ErrorLog'],
@@ -116,7 +118,7 @@ sub pipeline_analyses {
         -logic_name => 'ErrorLog',
         -module     => 'Bio::EnsEMBL::Versioning::Pipeline::ErrorLog',
         -parameters => {},
-        -max_retry_count  => 3,
+        -max_retry_count  => 1,
         -hive_capacity    => 100,
         -rc_name          => 'normal',
       },
@@ -151,7 +153,7 @@ sub resource_classes {
 # sanger farm suggested config      # 'mem'     => { 'LSF' => '-q normal -M 1500 -R"select[myens_stag1tok>800 && myens_stag2tok>800 && mem>1500] rusage[myens_stag1tok=10:myens_stag2tok=10:duration=10, mem=1500]"'},
       # EBI farm config
       'normal'  => { 'LSF' => '-q research-rh6 -M 500 -R"select[mem>500] rusage[mem=500]"'},
-      'mem'  => { 'LSF' => '-q research-rh6 -M 1500 -R"select[mem>1500] rusage[mem=1500]"'},
+      'mem'  => { 'LSF' => '-q research-rh6 -M 4000 -R"select[mem>4000] rusage[mem=4000]"'},
     }
 }
 

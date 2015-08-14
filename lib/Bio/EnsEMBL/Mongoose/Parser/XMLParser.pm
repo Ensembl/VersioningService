@@ -21,13 +21,20 @@ use XML::LibXML::XPathContext;
 use XML::LibXML;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
+use Bio::EnsEMBL::Mongoose::IOException;
+use Try::Tiny;
 
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
 
 subtype 'XML::LibXML::DOM' => as 'Object';
 
 coerce 'XML::LibXML::DOM' => from 'Str' => via {
-    XML::LibXML->load_xml( string => $_);
+  my $xml_chunk = $_;
+  try {  
+    XML::LibXML->load_xml( string => $xml_chunk, huge => 1);
+  } catch {
+    Bio::EnsEMBL::Mongoose::IOException->throw("XML parsing error: $_");
+  };
 };
 
 has xml_document => (

@@ -180,7 +180,7 @@ method get_version_of_source (Str $source_name, Str $version){
     return $version_rs;
 }
 
-method get_index_by_name_and_version (Str $source_name, Str $version? ){
+method get_index_by_name_and_version (Str $source_name, Maybe[Str] $version? ){
   {
     no warnings;
     $self->log->info('Fetching index: '.$source_name.'  '.$version);

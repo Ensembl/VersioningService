@@ -14,7 +14,7 @@ my $query = shift;
 die "Specify query string" unless $query;
 
 my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new();
-$mfetcher->work_with_index('Swissprot','2015_08');
+$mfetcher->work_with_index(source => 'Swissprot');
 
 my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
     species_name => $query

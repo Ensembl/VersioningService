@@ -63,8 +63,7 @@ has user => (
   default => 'anonymous',
 );
 
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient';
-with 'MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
 
 sub get_version
 {

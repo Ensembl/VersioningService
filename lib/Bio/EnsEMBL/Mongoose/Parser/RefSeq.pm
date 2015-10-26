@@ -42,8 +42,7 @@ has 'taxonomizer' => (
 );
 
 # Consumes Refseq files and emits Mongoose::Persistence::Records
-with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
-with 'MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Mongoose::Parser::Parser','MooseX::Log::Log4perl';
 
 sub read_record {
     my $self = shift;

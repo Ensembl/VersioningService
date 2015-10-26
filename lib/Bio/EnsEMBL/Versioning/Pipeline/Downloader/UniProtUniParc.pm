@@ -49,8 +49,7 @@ has version_uri => (
   default => 'ftp://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/relnotes.txt',
 );
 extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient';
-with 'MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
 
 sub get_version
 {

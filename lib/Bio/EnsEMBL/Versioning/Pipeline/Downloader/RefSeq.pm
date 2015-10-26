@@ -51,8 +51,7 @@ has version_uri => (
   default => 'ftp://ftp.ncbi.nlm.nih.gov/refseq/release/release-notes/',
 );
 
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient';
-with 'MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
 
 sub get_version
 {

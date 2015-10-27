@@ -8,7 +8,7 @@ use Bio::EnsEMBL::Mongoose::Parser::Refseq;
 
 
 my $source = $ENV{MONGOOSE}."/t/data/XM_005579308.gbff";
-my $ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::Refseq->new(
+my $ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::RefSeq->new(
     source_file => $source,
 );
 
@@ -33,7 +33,7 @@ ok(!$ref_seq_reader->read_record, 'Check end-of-file behaviour. Reader should re
 $ref_seq_reader = undef;
 
 $source = $ENV{MONGOOSE}."/t/data/YP_001693987.gpff";
-$ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::Refseq->new(
+$ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::RefSeq->new(
     source_file => $source,
 );
 

@@ -89,7 +89,7 @@ sub read_record {
 
 sub _ready_parser {
     my $self = shift;
-    return Bio::EnsEMBL::IO::Parser::GenbankParser->open($self->source_file);
+    return Bio::EnsEMBL::IO::Parser::GenbankParser->open($self->source_handle);
 }
 
 # Pulls gene name from the lines of DEFINITION

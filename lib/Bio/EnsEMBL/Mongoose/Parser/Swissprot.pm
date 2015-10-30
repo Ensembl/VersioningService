@@ -59,6 +59,7 @@ sub node_sieve {
     $self->sequence();
     $self->taxon();
     $self->evidence_level();
+    $self->isoform();
     if ($self->suspicious()) {$self->log->debug("Found an untrustworthy Xref, ".$self->record->primary_accession)}
     # note: can always fetch child nodes with $node->getElementsByTagName
     return 1 if $state >0;
@@ -197,6 +198,18 @@ sub suspicious {
 sub description {
     my $self = shift;
     $self->record->description($self->xpath_to_value('/uni:uniprot/uni:entry/uni:comment[@type="function"]/uni:text'));
+}
+
+sub isoform {
+    my $self = shift;
+    my $xpath = '/uni:uniprot/uni:entry/uni:comment[@type="alternative products"]/uni:isoform/uni:id';
+    my $node_list = $self->xpath_context->findnodes($xpath, $self->xml_document);
+    $node_list->foreach( sub { 
+        my $node = shift;
+        my $iso_string = $node->textContent;
+        my @isoforms = split ' ',$iso_string;
+        $self->record->add_isoform(@isoforms);
+    });
 }
 
 __PACKAGE__->meta->make_immutable;

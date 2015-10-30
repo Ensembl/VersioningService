@@ -30,9 +30,14 @@ ok(!$record->suspicion, 'record should not be suspicious');
 my @xrefs = @{ $record->xref };
 my @go_xref = grep {$_->id eq 'GO:0005829'} @xrefs;
 cmp_ok(scalar @go_xref, '==', 1, 'GO xref found');
-is($go_xref[0]->author,'Reactome','Check correct extraction of author of xref');
+is($go_xref[0]->source,'GO','Check correct extraction of author of xref');
+
+my $iso_list = $record->isoforms;
+is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');
 
 $xml_reader->read_record;
+$iso_list = $xml_reader->record->isoforms;
+ok(!$iso_list,'No Isoform in second record, no problem');
 $xml_reader->read_record;
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
 

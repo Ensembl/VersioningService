@@ -877,6 +877,14 @@
 			</conflict>
 			<text>Translation N-terminally shortened.</text>
 		</comment>
+		<comment type="alternative products">
+			<event type="alternative splicing"/>
+			<isoform>
+				<id>P66666-2</id>
+				<name>Fake isoform</name>
+				<sequence type="displayed"/>
+			</isoform>
+		</comment>
 		<comment type="online information"
 			name="Atlas of Genetics and Cytogenetics in Oncology and Haematology">
 			<link uri="http://atlasgeneticsoncology.org/Genes/BRAFID828.html" />

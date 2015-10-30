@@ -83,6 +83,16 @@ has synonyms => (
         add_synonym => 'push'
     }
 );
+# Lists accessions which refer to structural isoforms, such as is found in Uniprot data
+# Does not contain the actual isoforms themselves.
+has isoforms => (
+    isa => 'ArrayRef[Str]',
+    is => 'rw',
+    traits => ['Array'],
+    handles => {
+        add_isoform => 'push'
+    }
+);
 
 # links however tenuous to external resources that describe the same entity
 has xref => (

@@ -109,9 +109,14 @@ sub store_record {
         my @synonyms = @{$flattened_record{synonyms}};
         $flattened_record{synonyms} = join ' ',@synonyms;
     }
+    if (exists $flattened_record{isoforms}) {
+        my @isoforms = @{$flattened_record{isoforms}};
+        $flattened_record{isoforms = join ' ',@isoforms}
+    }
     # Throw out pointless duplicates
     if (exists $flattened_record{'sequence'}) {delete $flattened_record{'sequence'}};
     if (exists $flattened_record{'xref'}) {delete $flattened_record{'xref'}};
+    if (exists $flattened_record{'isoforms'}) {delete $flattened_record{'isoforms'}};
     # blob the record into the docstore for restoration on query
     $flattened_record{blob} = $self->compress_sereal($record);
     

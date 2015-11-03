@@ -102,8 +102,10 @@ sub store_record {
     # record must be processed into separate fields, because Lucy does not understand arrays.
     my %flattened_record;
     %flattened_record = %{$record};
-    my @accessions = @{$flattened_record{accessions}};
-    $flattened_record{accessions} = join ' ',@accessions;
+    if (exists $flattened_record{accessions}) {
+        my @accessions = @{$flattened_record{accessions}};
+        $flattened_record{accessions} = join ' ',@accessions;
+    }
     # could also define a ->reduce handler in Record
     if (exists $flattened_record{synonyms}) {
         my @synonyms = @{$flattened_record{synonyms}};

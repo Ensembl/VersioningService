@@ -20,8 +20,7 @@ use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 use Try::Tiny;
 use Bio::EnsEMBL::Mongoose::IOException;
-with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
-with 'MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Mongoose::Parser::Parser','MooseX::Log::Log4perl';
 
 # consumes the mim2gene.txt file
 # see also primary parser consuming omim.txt file

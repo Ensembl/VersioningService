@@ -20,10 +20,9 @@ use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 # Consumes HGNC file and emits Mongoose::Persistence::Records
-with 'MooseX::Log::Log4perl';
+with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Mongoose::Parser::Parser';
 
 # 'uni','http://uniprot.org/uniprot'
-with 'Bio::EnsEMBL::Mongoose::Parser::Parser';
 
 has content => (
     is => 'rw',

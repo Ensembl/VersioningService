@@ -167,7 +167,18 @@ has blacklist_source => (
     default => '',
 );
 
-with 'MooseX::Log::Log4perl';
+has isoforms => (
+    isa => 'Bool',
+    is => 'rw',
+    default => 0,
+    traits => ['Bool'],
+    handles => {
+        include_isoforms => 'set',
+        ignore_isoforms => 'unset'
+    }
+);
+
+with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient';
 
 
 sub _build_blacklist {
@@ -191,12 +202,16 @@ sub get_records {
         my $record = $self->storage_engine->convert_result_to_record($result);
         # Filter record against a possible blacklist of unwanted accessions. Quite possibly slow
         if ($self->refer_to_blacklist) {
-            my @accessions = @{$record->accessions} if $record->accessions;
+            my @accessions;
+            @accessions = @{$record->accessions} if $record->accessions;
             foreach my $accession (@accessions) {
                 if ($self->blacklist->exists($accession)) {next; $self->log->debug('Skipping blacklisted id: '.$accession)}
             }
         }
         $self->writer->print_record($record, $source);
+        if ($self->isoforms) {
+            $self->add_isoforms($record);
+        }
         $counter++;
         if ($counter % 10000 == 0) {
             $self->log->info("Dumped $counter records");
@@ -244,6 +259,21 @@ method work_with_index ( Str :$source, Str :$version? ) {
   $self->storage_engine_conf({ index_location => $path, source => $source, version => $version});
   $self->storage_engine();
 }
+
+sub add_isoforms { 
+    my $self = shift;
+    my $record = shift;
+    my $isoforms = $record->isoforms;
+    my $fh = $self->writer->handle;
+    foreach my $iso (@$isoforms) {
+        my $response = call( -host => 'www.uniprot.org',
+              -path => 'uniprot/'.$iso.'.fasta',
+        );
+        print $fh $response;
+    }
+}
+
+
 
 __PACKAGE__->meta->make_immutable;
 

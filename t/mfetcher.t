@@ -83,5 +83,24 @@ $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 );
 
 $mfetcher->get_records;
-is($out,'{"evidence_level":1,"xref":[{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0005576"},{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0042742"}],"sequence":"FLPLLFGAISHLL","taxon_id":"110109","sequence_length":13,"protein_name":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1"}');
+is($out,'{"evidence_level":1,"xref":[{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0005576"},{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0042742"}],"sequence":"FLPLLFGAISHLL","taxon_id":"110109","sequence_length":13,"protein_name":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1"}','JSON output plus evidence level filter');
+
+$out = '';
+$fh = IO::String->new($out);
+$mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+    storage_engine_conf_file => "$Bin/../conf/test.conf",
+    query_params => $params,
+    handle => $fh,
+    output_format => 'FASTA',
+);
+$mfetcher->include_isoforms();
+$mfetcher->get_records();
+
+# Watch out, whitespace at end of header
+$desired = "> P84858 110109 1 
+FLPLLFGAISHLL
+";
+
+eq_or_diff($out,$desired,'Isoform fetched from Uniprot');
+
 done_testing;

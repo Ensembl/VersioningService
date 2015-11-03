@@ -78,7 +78,7 @@ sub run {
     while($parser->read_record) {
       my $record = $parser->record;
       # validate record for key fields.
-      if ($record->has_taxon_id && $record->has_accessions) {
+      if ($record->has_taxon_id && ($record->has_accessions || defined $record->id) {
         $doc_store->store_record($record);
         $buffer++;
       }

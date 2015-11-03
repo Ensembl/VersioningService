@@ -111,7 +111,7 @@ sub store_record {
     }
     if (exists $flattened_record{isoforms}) {
         my @isoforms = @{$flattened_record{isoforms}};
-        $flattened_record{isoforms = join ' ',@isoforms}
+        $flattened_record{isoforms} = join ' ',@isoforms;
     }
     # Throw out pointless duplicates
     if (exists $flattened_record{'sequence'}) {delete $flattened_record{'sequence'}};

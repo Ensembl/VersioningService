@@ -4,3 +4,9 @@
 /lib/Bio/EnsEMBL/Pipeline/reg*
 /.project
 /t/test.db
+target/
+*.iml
+*.DS_store
+.idea
+*~
+*.conf

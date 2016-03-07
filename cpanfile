@@ -53,6 +53,19 @@ requires 'MooseX::NonMoose'; # needed for Moosed DBICs
 
 recommends 'DBIx::Class::Schema::Loader';
 
-# Graphing
+# RDF
 
 requires 'RDF::Query::Client';
+requires 'RDF::Trine';
+requires 'RDF::Query';
+requires 'Test::Deep';
+requires 'List::Compare';
+
+requires 'Exporter::Auto';
+requires 'Getopt::Long';
+requires 'Pod::Usage';
+requires 'URI::Escape';
+requires 'LWP::UserAgent';
+requires 'Digest::MD5';
+
+

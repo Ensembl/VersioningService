@@ -10,3 +10,8 @@ type   = sqlite
 driver = SQLite
 db     = versioning_test
 file   = test.db
+
+
+[RDF config]
+# Used to assist linked data generation by RDF code
+LOD_location = "/path/to/xref_LOD_mapping.json"

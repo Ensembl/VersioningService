@@ -1,0 +1,13 @@
+README
+
+This folder contains files required to deploy Ensembl RDF onto a server
+
+*.owl, *.ttl, *.rdf must all be loaded into the triplestore to allow intelligent querying
+*.js, *.property files belong to the lodestar SPARQL interface, and must copied into the appropriate place
+  when building lodestar for deployment
+
+RDF, turtle and OWL files 
+
+When deploying Lodestar, copy the javascript files to lodestar/src/main/webapp/scripts/
+Edit the property file before building a WAR to preconfigure, except in production where the application 
+looks for an XML file to configure things like server connections, and your intervention isn't necessary

@@ -19,10 +19,17 @@ limitations under the License.
     EnsemblToIdentifierMappings - Module to help map Ensembl Xrefs to Identifiers.org namespaces
 
 =head1 SYNOPSIS
-
+  my $mapper = Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings->new($config_file);
+  print $mapper->LOD_uri('uniprot');
+  # http://purl.uniprot.org/uniprot
+  print $mapper->identifier_org_translation('uniprot')
+  # http://identifiers.org/uniprot
   
 =head1 DESCRIPTION
 
+  This module takes Ensembl internal names for things and converts them into identifiers.org URIs,
+  or directly to the specific namespace of the host organisation for the data type if we know it.
+  It requires a xref_LOD_mapping.json file on instantiation
 
 =cut
 
@@ -65,6 +72,7 @@ sub get_mapping {
   }
 }
 
+# Returns an identifiers.org URI for a given ensembl internal name
 sub identifier_org_translation {
   my $self = shift;
   my $e_name = shift;
@@ -77,6 +85,7 @@ sub identifier_org_translation {
   }
 }
 
+# Returns the abbreviated form of the identifiers.org namespace
 sub identifier_org_short {
   my $self = shift;
   my $e_name = shift;
@@ -89,6 +98,9 @@ sub identifier_org_short {
   }
 }
 
+# Returns Linked Open Data URIs instead of identifiers.org ones. This is useful for resources that
+# have well defined URIs that we can formulate locallym hence allowing federation/merging without
+# querying identifiers.org to find equivalence.
 sub LOD_uri {
   my $self = shift;
   my $e_name = shift;

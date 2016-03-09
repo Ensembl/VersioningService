@@ -24,7 +24,7 @@ limitations under the License.
   # http://purl.uniprot.org/uniprot
   print $mapper->identifier_org_translation('uniprot')
   # http://identifiers.org/uniprot
-  
+
 =head1 DESCRIPTION
 
   This module takes Ensembl internal names for things and converts them into identifiers.org URIs,
@@ -76,8 +76,9 @@ sub get_mapping {
 sub identifier_org_translation {
   my $self = shift;
   my $e_name = shift;
+  return unless $e_name;
   my $mappings = $self->{xref_mapping};
-  if (exists $mappings->{$e_name}) {
+  if (exists $mappings->{$e_name} && $mappings->{$e_name} && exists $mappings->{$e_name}->{id_namespace}) {
     my $id_url = $mappings->{$e_name}->{id_namespace};
     return "http://identifiers.org/".$id_url."/";
   } else { 

@@ -18,46 +18,47 @@ use Moose;
 use Bio::EnsEMBL::Mongoose::IOException;
 extends 'Bio::EnsEMBL::Mongoose::Serializer::RDFLib';
 
+has fh => ('is' => 'ro', required => 1, isa => 'Ref');
+
 sub print_record {
   my $self = shift;
   my $record = shift;
   my $source = shift;
+  my $fh = $self->fh;
   print "Record from $source\n";
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $anchor = $self->identifiers($source).$id;
   
   # Attach description nodes to root
-  my $annotation_bnode = $self->new_bnode;
-  $self->triple($self->u($anchor),$self->u($self->prefix('dcterms').'source'), $annotation_bnode );
-  $self->triple( $annotation_bnode, $self->u($self->prefix('rdf').'label'), $record->primary_accession );
-  $self->triple( $annotation_bnode, $self->u($self->prefix('rdf').'type'), $self->u( $self->identifiers($source)) );
+  my $annotation_bnode = $self->new_bnode();
+  print $fh triple(u($anchor),u(prefix('dcterms').'source'), $annotation_bnode );
+  print $fh triple( $annotation_bnode, u(prefix('rdf').'label'), $record->primary_accession );
+  print $fh triple( $annotation_bnode, u(prefix('rdf').'type'), u( $self->identifiers($source)) );
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     print "Xref from ".$xref->source." ID: ".$xref->id."\n";
     my $source = $self->identifiers($xref->source);
     my $other = $source.$xref->id;
-    my $bnode = $self->new_bnode;
+    my $bnode = $self->new_bnode();
 
     # entity comes from ...
-    $self->triple($self->u($anchor),
-                  $self->u($self->prefix('ensemblterm').'source'),
-                  $self->u($self->prefix($source)) );
+    print $fh triple(u($anchor), u(prefix('ensemblterm').'source'), u(prefix($source)) );
     # link to xref, note symmetric property to allow transitive queries, while preventing circular queries
-    $self->triple($self->u($anchor),$self->u($self->prefix('ensemblterm').'refers-to'),$bnode);
+    print $fh triple(u($anchor),u(prefix('ensemblterm').'refers-to'),$bnode);
     # xref links to target ID
-    $self->triple($bnode,$self->u($self->prefix('ensemblterm').'refers-to'),$self->u($other));
+    print $fh triple($bnode,u(prefix('ensemblterm').'refers-to'),u($other));
     # reverse links
     unless ( $self->is_unidirectional(lc $xref->source)) {
-      $self->triple($bnode,$self->u($self->prefix('ensemblterm').'refers-from'),$self->u($anchor));
-      $self->triple($self->u($other),$self->u($self->prefix('ensemblterm').'refers-from'),$bnode);
+      print $fh triple($bnode,u(prefix('ensemblterm').'refers-from'),u($anchor));
+      print $fh triple(u($other),u(prefix('ensemblterm').'refers-from'),$bnode);
     }
     # xref type
-    $self->triple($bnode,$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('ensemblterm').'Direct'));
+    print $fh triple($bnode,u(prefix('rdf').'type'),u(prefix('ensemblterm').'Direct'));
     # if xref assertion came from a secondary/dependent source, mention them.
     if ($xref->creator) {
-      $self->triple($bnode,$self->u($self->prefix('dcterms').'creator'),$self->u($self->identifier($xref->creator)));
+      print $fh triple($bnode,u(prefix('dcterms').'creator'),u($self->identifier($xref->creator)));
     }
   }
 }

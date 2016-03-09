@@ -39,7 +39,7 @@ package Bio::EnsEMBL::RDF::EnsemblToTripleConverter;
 
 use Modern::Perl;
 use Bio::EnsEMBL::ApiVersion;
-use Bio::EnsEMBL::RDF::RDFlib;
+use Bio::EnsEMBL::RDF::RDFlib ':all';
 use Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings;
 use Bio::EnsEMBL::Utils::SequenceOntologyMapper;
 use Carp;

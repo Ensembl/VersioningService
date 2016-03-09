@@ -61,7 +61,6 @@ requires 'RDF::Query';
 requires 'Test::Deep';
 requires 'List::Compare';
 
-requires 'Exporter::Auto';
 requires 'Getopt::Long';
 requires 'Pod::Usage';
 requires 'URI::Escape';

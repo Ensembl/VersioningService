@@ -12,147 +12,112 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Superclass of things that get data from specific source indexes and turn them into triples.
-# Convenience methods supplied for writing RDF swiftly (i.e. not through a library)
+# This is a thin wrapper around the non-Moose RDF libraries that are also used by the unMoosey RDF dumping pipeline
 
 package Bio::EnsEMBL::Mongoose::Serializer::RDFLib;
 
 use Moose;
 use namespace::autoclean;
 
-
-# lookup for IDs that classify annotation, rather than identity between genomic resources
-# If here, the relationship between two IDs should be unidirectional to prevent logical armageddon
-
+use Bio::EnsEMBL::RDF::RDFlib;
+use Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings;
+use Bio::EnsEMBL::Mongoose::UsageException;
+use Config::General;
+# lookup for IDs that classify annotation, rather than assert identity between genomic resources
+# If listed here, the relationship between two IDs should be unidirectional to prevent logical armageddon
 has unidirection_sources => (
   traits => ['Hash'],
   is => 'ro',
   isa => 'HashRef',
   default => sub {{
     go => 1,
-    interpro => 1
+    interpro => 1,
+    rfam => 1,
+    treefam => 1,
+    mim_morbid => 1
   }},
   handles => { 
     is_unidirectional => 'exists'
   }
 );
 
-# namespaces for predicates. Identifiers should really user the identifiers.org resolution below
-has namespace => (
-  traits => ['Hash'],
-  is => 'ro',
-  isa => 'HashRef',
-  default => sub { {
-    ensembl => 'http://rdf.ebi.ac.uk/resource/ensembl/',
-    ensemblterm => 'http://rdf.ebi.ac.uk/terms/ensembl/',
-    rdf => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-    rdfs => 'http://www.w3.org/2000/01/rdf-schema#',
-    rdfg => 'http://www.w3.org/2004/03/trix/rdfg-1/',
-    # RDF graph descriptions.. subgraph etc.
-    owl => 'http://www.w3.org/2002/07/owl#',
-    dcterms => 'http://purl.org/dc/terms/identifier',
-    obo => 'http://purl.obolibrary.org/obo/',
-    # obo includes sequence ontology for some reason
-    sio => 'http://semanticscience.org/resource/',
-    faldo => 'http://biohackathon.org/resource/faldo',
-    go => 'http://purl.obolibrary.org/obo/',
-    chembl => 'http://rdf.ebi.ac.uk/resource/chembl/target/',
-    protein_id => 'http://identifiers.org/insdc/',
-    goslim_goa => 'http://purl.obolibrary.org/obo/',
-
-  } },
-
+has identifier_mapping => (is => 'ro', isa => 'Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings', builder => '_load_mapper');
+has config_file => (is => 'ro', isa =>'Str', required => 1);
+has config => (
+    isa => 'HashRef',
+    is => 'rw',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        my $conf = Config::General->new($self->config_file);
+        my %opts = $conf->getall();
+        return \%opts;
+    },
 );
-
-# list of canonical URIs for particular data providers resolved through idtype.identifiers.org . Best practice.
-has identifiers => (
-  traits => ['Hash'],
-  is => 'ro',
-  isa => 'HashRef',
-  default => sub {
-    {
-      ccds => 'ccds',
-      chembl => 'chembl.target',
-      embl => 'ena.embl',
-      ensembl => 'ensembl',
-      entrezgene => 'ncbigene',
-      go => 'go',
-      goa => 'goa',
-      hgnc => 'hgnc',
-      interpro => 'interpro',
-      omim => 'omim',
-      mim => 'omim',
-      mim2gene => 'omim',
-      refseq => 'refseq',
-      uniparc => 'uniparc',
-      uniprotswissprot => 'uniprot',
-      uniprottrembl => 'uniprot',
-    }
-  },
-
-  );
-
-has handle => (is => 'rw', isa => 'IO::File', required => 1);
-has bnode => ( is => 'rw', traits => ['Counter'], isa => 'Int', default => 0, handles => {bplus => 'inc'});
 
 with 'MooseX::Log::Log4perl';
 
-sub prefix {
+sub _load_mapper {
   my $self = shift;
-  my $source = shift;
-  $source = lc $source;
-  if ( exists $self->namespace->{$source}) { return $self->namespace->{$source} }
-  else { 
-    $self->log->debug('Failed to match source '.$source.' with namespace');
-    return $self->namespace->{ensembl}.'source/';
+  my $path_to_lod_file = $self->config->{LOD_location};
+  unless (defined $path_to_lod_file) { 
+    Bio::EnsEMBL::Mongoose::UsageException->throw('Identifiers.org mappings require config file '.$self->config_file.' to link to a JSON mappings file with key LOD_location');
   }
+  return Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings->new($path_to_lod_file);
 }
 
+# Requires $source argument to be an Ensembl name for an external source
 sub identifier {
   my $self = shift;
   my $source = shift;
-  $source = lc $source;
-  if (exists $self->identifiers->{$source}) { return 'http://identifiers.org/'.$self->identifiers->{$source} }
-  else {
-    $self->log->debug("No identifiers.org standard path available for $source");
-    return "http://identifiers.org/general/$source";
+  Bio::EnsEMBL::Mongoose::UsageException->throw('No argument to RDFLib::identifier()') unless defined $source;
+  my $id_org = $self->identifier_mapping->LOD_uri($source);
+  if ($id_org) {
+    return $id_org;
+  } else {
+    return $self->identifier_mapping->identifier_org_translation($source);
   }
 }
 
-sub triple {
-  my $self = shift;
-  my ($subject,$predicate,$object) = @_;
-  my $fh = $self->handle;
-  printf $fh "%s %s %s .\n",$subject,$predicate,$object || Bio::EnsEMBL::Mongoose::IOException->throw(message => "Error writing to file handle: $!");;
+# Bunch of accessors for subroutines provided by non-object-based library 
+sub prefix {
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::prefix(@_);
 }
 
 sub u {
-  my $self = shift;
-  my $stuff= shift;
-  return '<'.$stuff.'>';
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::u(@_);
 }
 
-sub new_bnode {
-  my $self = shift;
-  $self->bplus();
-  return '_'.$self->bnode;
+sub triple {
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::triple(@_);
 }
 
-
-sub dump_prefixes {
-  my $self = shift;
-  my $fh = $self->handle;
-  my %namespaces = %{$self->namespace};
-  foreach my $key (keys %namespaces) {
-    print $fh triple('@prefix',$key.':',u($namespaces{$key}) );
-  }
-}
-
-# For murky name strings that don't fit in turtle format.
 sub escape {
-    my $string = shift;
-    $string =~s/(["])/\\$1/g;
-    return $string;
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::escape(@_);
+}
+
+sub clean_for_uri {
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::clean_for_uri(@_);
+}
+
+sub taxon_triple {
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::taxon_triple(@_);
+}
+
+sub namespaces {
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::namespaces(@_);
+}
+
+sub compatible_name_spaces {
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::compatible_name_spaces(@_);
 }
 
 __PACKAGE__->meta->make_immutable;

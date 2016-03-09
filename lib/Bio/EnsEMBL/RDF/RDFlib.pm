@@ -36,7 +36,10 @@ limitations under the License.
 package Bio::EnsEMBL::RDF::RDFlib;
 
 use Modern::Perl;
-use Exporter::Auto;
+use parent 'Exporter';
+our @EXPORT_OK = qw(u triple escape clean_for_uri taxon_triple prefix name_spaces compatible_name_spaces);
+our %EXPORT_TAGS = (all => [qw(u triple escape clean_for_uri taxon_triple prefix name_spaces compatible_name_spaces)],
+                    query => [qw(prefix compatible_name_spaces escape clean_for_uri)]);
 use URI::Escape;
 
 # common prefixes used

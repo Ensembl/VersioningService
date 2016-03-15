@@ -120,6 +120,11 @@ sub compatible_name_spaces {
   return Bio::EnsEMBL::RDF::RDFlib::compatible_name_spaces(@_);
 }
 
+sub new_bnode {
+  shift;
+  return Bio::EnsEMBL::RDF::RDFlib::new_bnode(@_);
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;

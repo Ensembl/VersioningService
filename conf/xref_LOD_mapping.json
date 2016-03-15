@@ -56,8 +56,21 @@
     },
     {
       "db_name": "ensembl",
-      "exampled_id": "ENSG00000265094",
-      "id_namespace": "ensembl"
+      "example_id": "ENSG00000265094",
+      "id_namespace": "ensembl",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/"
+    },
+    {
+      "db_name": "ensembl_transcript",
+      "example_id": "ENST00000266557",
+      "id_namespace": "ensembl",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl.transcript/"
+    },
+    {
+      "db_name": "ensembl_protein",
+      "example_id": "ENSP00000014214",
+      "id_namespace": "ensembl",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl.protein/"
     },
     {
       "db_name": "EC_NUMBER",

@@ -51,7 +51,7 @@ sub DEMOLISH {
     $self->log->debug("File handle released");
 }
 
-enum 'Formats', [qw(FASTA JSON ID RDF EnsemblRDF)];
+enum 'Formats', [qw(FASTA JSON ID RDF)];
 
 has output_format => (
     isa => 'Formats',

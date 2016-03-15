@@ -55,6 +55,15 @@ has config => (
     },
 );
 
+has xref_id => (
+  is => 'rw',
+  isa => 'Num',
+  traits => ['Counter'], 
+  default => 0, 
+  handles => {
+    another_xref => 'inc',
+  });
+
 with 'MooseX::Log::Log4perl';
 
 sub _load_mapper {
@@ -65,6 +74,13 @@ sub _load_mapper {
   }
   return Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings->new($path_to_lod_file);
 }
+
+sub new_xref {
+  my $self = shift;
+  $self->another_xref;
+  return $self->prefix('ensembl').'xref/'.$self->xref_id();
+}
+
 
 # Requires $source argument to be an Ensembl name for an external source
 sub identifier {

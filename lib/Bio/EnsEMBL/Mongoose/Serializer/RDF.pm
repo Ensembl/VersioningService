@@ -25,40 +25,40 @@ sub print_record {
   my $record = shift;
   my $source = shift;
   my $fh = $self->fh;
-  print "Record from $source\n";
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
-  my $anchor = $self->identifiers($source).$id;
+  my $namespace = $self->identifier($source);
+  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
+  my $base_entity = $namespace.$id;
+  # Attach description and labels to root
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source)) );
+  print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('rdf').'label'), '"'.$record->primary_accession.'"' );
   
-  # Attach description nodes to root
-  my $annotation_bnode = $self->new_bnode();
-  print $fh triple(u($anchor),u(prefix('dcterms').'source'), $annotation_bnode );
-  print $fh triple( $annotation_bnode, u(prefix('rdf').'label'), $record->primary_accession );
-  print $fh triple( $annotation_bnode, u(prefix('rdf').'type'), u( $self->identifiers($source)) );
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
-    print "Xref from ".$xref->source." ID: ".$xref->id."\n";
-    my $source = $self->identifiers($xref->source);
-    my $other = $source.$xref->id;
-    my $bnode = $self->new_bnode();
+    my $xref_source = $self->identifier($xref->source);
+    my $xref_uri = $xref_source.$xref->id;
+    my $xref_link = $self->new_xref;
 
     # entity comes from ...
-    print $fh triple(u($anchor), u(prefix('ensemblterm').'source'), u(prefix($source)) );
-    # link to xref, note symmetric property to allow transitive queries, while preventing circular queries
-    print $fh triple(u($anchor),u(prefix('ensemblterm').'refers-to'),$bnode);
+    print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'source'), $self->u($xref_source));
+
+    # link to xref, 
+    print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
     # xref links to target ID
-    print $fh triple($bnode,u(prefix('ensemblterm').'refers-to'),u($other));
+    print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
     # reverse links
+    # from and to links prevent cyclic queries, while still allowing transitive queries across the xrefs
     unless ( $self->is_unidirectional(lc $xref->source)) {
-      print $fh triple($bnode,u(prefix('ensemblterm').'refers-from'),u($anchor));
-      print $fh triple(u($other),u(prefix('ensemblterm').'refers-from'),$bnode);
+      print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-from'),$self->u($base_entity));
+      print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('term').'refers-from'),$self->u($xref_link));
     }
     # xref type
-    print $fh triple($bnode,u(prefix('rdf').'type'),u(prefix('ensemblterm').'Direct'));
+    print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Direct'));
     # if xref assertion came from a secondary/dependent source, mention them.
     if ($xref->creator) {
-      print $fh triple($bnode,u(prefix('dcterms').'creator'),u($self->identifier($xref->creator)));
+      print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('dcterms').'creator'),$self->u($self->identifier($xref->creator)));
     }
   }
 }

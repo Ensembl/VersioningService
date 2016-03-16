@@ -91,7 +91,9 @@ sub identifier {
   if ($id_org) {
     return $id_org;
   } else {
-    return $self->identifier_mapping->identifier_org_translation($source);
+    $id_org = $self->identifier_mapping->identifier_org_translation($source);
+    unless ($id_org) { $id_org = $self->prefix('ensembl').'xref/'.$source.'/'}
+    return $id_org;
   }
 }
 

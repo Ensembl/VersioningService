@@ -34,7 +34,18 @@ sub print_record {
 
   print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
   print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('rdf').'label'), '"'.$record->primary_accession.'"' );
-
+  foreach my $label (@{ $record->accessions }) { 
+    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('skos').'altLabel'),qq/"$label"/);
+  }
+  if ($record->checksum) {
+    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('term').'checksum'),'"'.$record->checksum.'"');
+  }
+  if ($record->display_label) {
+    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('term').'display_label'),'"'.$record->display_label.'"');
+  }
+  if ($record->description) {
+    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'description'),'"'.$record->description.'"');
+  }
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;

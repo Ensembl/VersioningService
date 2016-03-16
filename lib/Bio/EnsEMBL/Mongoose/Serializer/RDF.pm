@@ -31,9 +31,10 @@ sub print_record {
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$id;
   # Attach description and labels to root
-  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source)) );
+
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
   print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('rdf').'label'), '"'.$record->primary_accession.'"' );
-  
+
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
@@ -41,8 +42,10 @@ sub print_record {
     my $xref_uri = $xref_source.$xref->id;
     my $xref_link = $self->new_xref;
 
-    # entity comes from ...
-    print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'source'), $self->u($xref_source));
+    # xref is from data source... but not necessarily asserted by them. See creator below.
+    # Root entity source uses different namespaced source than xref source to prevent confusion between directly asserted sources and 
+    # inferred sources from a data providers' xrefs
+    print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('dcterms').'source'), $self->u($xref_source));
 
     # link to xref, 
     print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));

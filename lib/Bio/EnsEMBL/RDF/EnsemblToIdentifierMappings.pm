@@ -81,7 +81,8 @@ sub identifier_org_translation {
   if (exists $mappings->{$e_name} && $mappings->{$e_name} && exists $mappings->{$e_name}->{id_namespace}) {
     my $id_url = $mappings->{$e_name}->{id_namespace};
     return "http://identifiers.org/".$id_url."/";
-  } else { 
+  } else {
+    warn "No identifiers.org name for $e_name"; 
     return; 
   }
 }

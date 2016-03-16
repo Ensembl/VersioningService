@@ -16,7 +16,8 @@ package Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 use Moose;
 
-# source of the xref, not necessarily the source that made the link.
+# source of the xref, not necessarily the source that made the link. 
+# Also the key for namespace of URIs of the xref
 has source => (
     isa => 'Str',
     is => 'rw',

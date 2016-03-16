@@ -45,7 +45,7 @@ use Bio::EnsEMBL::Utils::SequenceOntologyMapper;
 use Carp;
 use IO::File;
 use Try::Tiny;
-
+use URI::Escape;
 
 # allow override of release value from API
 sub new {
@@ -166,6 +166,7 @@ sub generate_feature_uri {
   elsif ($feature_type eq 'variant') {$prefix = 'ensembl_variant'}
   else { confess "Cannot map $feature_type to a prefix in RDFLib"}
   my $namespace = prefix($prefix);
+  $id = uri_escape($id);
   return $namespace.$id;
 }
 
@@ -310,11 +311,11 @@ sub print_feature {
       else {
         $so_term = $self->getSOOntologyId($biotype);
       }
-      print $fh triple(u($feature_uri), 'a', 'obo:'.clean_for_uri($so_term)) if $so_term;
+      print $fh triple(u($feature_uri), 'rdf:type', 'obo:'.clean_for_uri($so_term)) if $so_term;
     } catch { 
       if (! exists $self->{ontology_cache}->{$biotype}) { warn sprintf "Failed to map biotype %s to SO term\n",$biotype; $self->{ontology_cache}->{$biotype} = undef }
     };
-    print $fh triple(u($feature_uri), 'a', 'term:'.clean_for_uri($biotype));
+    print $fh triple(u($feature_uri), 'rdf:type', 'term:'.clean_for_uri($biotype));
   }
   print $fh triple(u($feature_uri), 'rdfs:label', '"'.$feature->{name}.'"') if defined $feature->{name};
   print $fh triple(u($feature_uri), 'dc:description', '"'.escape($feature->{description}).'"') if defined $feature->{description};
@@ -368,7 +369,7 @@ sub print_feature {
       my $translation_uri = prefix('protein').$translation->{id};
       $self->print_feature($translation,$translation_uri,'translation');
       print $fh triple(u($feature_uri),'obo:SO_translates_to',u($translation_uri));
-      print $fh triple(u($translation_uri), 'a', 'term:protein');
+      print $fh triple(u($translation_uri), 'rdf:type', 'term:protein');
       if (exists $translation->{protein_features} && defined $translation->{protein_features}) {
         $self->print_protein_features($translation_uri,$translation->{protein_features});
       }
@@ -432,15 +433,15 @@ sub print_exons {
   # Assert Exon bag for a given transcript, exons are ordered by rank of the transcript.
   foreach my $exon (@{ $transcript->{exons} }) {
       # exon type of SO exon, both gene and transcript are linked via has part
-      print $fh triple('exon:'.$exon->{id},'a','obo:SO_0000147');
-      #triple('exon:'.$exon->stable_id,'a','term:exon');
+      print $fh triple('exon:'.$exon->{id},'rdf:type','obo:SO_0000147');
+      #triple('exon:'.$exon->stable_id,'rdf:type','term:exon');
       print $fh triple('exon:'.$exon->{id}, 'rdfs:label', '"'.$exon->{id}.'"');
       print $fh triple('transcript:'.$transcript->{id}, 'obo:SO_has_part', 'exon:'.$exon->{id});
       
       $self->print_feature($exon, prefix('exon').$exon->{id},'exon');
       my $rank = $exon->{rank};
       print $fh triple('transcript:'.$transcript->{id}, 'sio:SIO_000974',  u(prefix('transcript').$transcript->{id}.'#Exon_'.$rank));
-      print $fh triple(u(prefix('transcript').$transcript->{id}.'#Exon_'.$rank),  'a', 'sio:SIO_001261');
+      print $fh triple(u(prefix('transcript').$transcript->{id}.'#Exon_'.$rank),  'rdf:type', 'sio:SIO_001261');
       print $fh triple(u(prefix('transcript').$transcript->{id}.'#Exon_'.$rank), 'sio:SIO_000628', 'exon:'.$exon->{id});
       print $fh triple(u(prefix('transcript').$transcript->{id}.'#Exon_'.$rank), 'sio:SIO_000300', $rank);
     }
@@ -464,7 +465,7 @@ sub print_xrefs {
     my $label = $xref->{display_id};
     my $db_name = $xref->{dbname};
     my $id = $xref->{primary_id};
-    $id = clean_for_uri($id);
+    $id = uri_escape($id);
     my $desc = $xref->{description};
     # Replace generic link with more specific one from Xref record. NONE is boring though.
     if (exists $xref->{info_type} && defined $xref->{info_type} && $xref->{info_type} ne 'NONE') {
@@ -485,9 +486,9 @@ sub print_xrefs {
       # Fall back to a new xref uri without identifiers.org
       $xref_uri = prefix('ensembl').$db_name.'/'.$id;
       # Create Ensembl-centric fallback xref source
-      print $fh triple(u($xref_uri), 'a', u(prefix('ensembl').$db_name));
+      print $fh triple(u($xref_uri), 'rdf:type', u(prefix('ensembl').$db_name));
     }
-    print $fh triple(u($xref_uri), 'a', u(prefix('term').'EnsemblDBEntry'));
+    print $fh triple(u($xref_uri), 'rdf:type', u(prefix('term').'EnsemblDBEntry'));
 
     print $fh triple(u($feature_uri), $relation, u($xref_uri));
     if (exists $xref->{info_text} && defined $xref->{info_text} && $xref->{info_text} ne '') {
@@ -532,7 +533,7 @@ sub identifiers_org_mapping {
   if ($id_org_abbrev) {
     $id_org_uri = prefix('identifiers').$id_org_abbrev.'/'.$feature_id;
     print $fh triple(u($feature_uri), 'rdfs:seeAlso', u( $id_org_uri ));
-    print $fh triple(u($id_org_uri), 'a', 'identifiers:'.$id_org_abbrev);
+    print $fh triple(u($id_org_uri), 'rdf:type', 'identifiers:'.$id_org_abbrev);
     print $fh triple(u($id_org_uri),'sio:SIO_000671',"[a ident_type:$id_org_abbrev; sio:SIO_000300 \"$feature_id\"]");
     return $id_org_uri;
   } else {

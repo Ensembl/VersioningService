@@ -191,6 +191,7 @@ method get_index_by_name_and_version (Str $source_name, Maybe[Str] $version? ){
   } else { 
     $version_rs = $self->get_current_version_of_source($source_name);
   }
+  unless ($version_rs) { Bio::EnsEMBL::Mongoose::DBException->throw('Version '.$version.'of source '.$source_name.' is not in the versioning database')}
   return $version_rs->index_uri;
 }
 

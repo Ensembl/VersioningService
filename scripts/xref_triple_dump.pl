@@ -17,8 +17,8 @@ my $extractor = Bio::EnsEMBL::Mongoose::IndexSearch->new(
   handle => $fh, 
   species => $species, 
   output_format => 'RDF', 
-  source => 'UniProtSwissProt'
+  source => 'SwissProt'
 );
 
-$extractor->work_with_index(source =>'UniProtSwissProt');
+# $extractor->work_with_index(source =>'UniProtSwissProt');
 $extractor->get_records;

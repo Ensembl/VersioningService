@@ -29,6 +29,7 @@ requires 'Test::JSON';
 requires 'Test::MockObject';
 requires 'Test::MockObject::Extends';
 requires 'Test::Exception';
+requires 'Test::Exports';
 requires 'Class::Inspector';
 requires 'namespace::sweep';
 requires 'Module::Load::Conditional';

@@ -1,5 +1,6 @@
 use strict;
 use Test::More;
+use Test::Deep;
 
 use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
@@ -73,9 +74,10 @@ $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/', $dummy_conte
 # verify data model
 
 my $prefixes = $rdf_writer->compatible_name_spaces();
-my $sparql = 'select ?hop ?source where {
+my $sparql = 'select ?hop ?source ?label where {
     <http://purl.uniprot.org/uniprot/Testy> term:refers-to+ ?hop .
     ?hop dcterms:source ?source .
+    OPTIONAL { ?hop rdfs:label ?label . }
   }';
 
 my $query = RDF::Query->new($prefixes.$sparql);
@@ -83,7 +85,9 @@ $query->error;
 my $iterator = $query->execute($model);
 my @results = $iterator->get_all;
 note join "\n",@results;
-cmp_ok(scalar @results, '==', 4,'Explore all linked xrefs');
+cmp_ok(scalar @results, '==', 4,'Explore all linked xrefs, cyclic one does not end world');
 
+
+cmp_deeply(['','',qw/"1" "Pwning"/],bag(map { if (defined $_->{label}) {$_->{label}->as_string} } @results), 'Check all xref primary labels');
 
 done_testing();

@@ -66,11 +66,16 @@ has writer => (
     builder => '_select_writer',
 );
 
+# Needed for writers that need additional configuration (eg. RDF writer)
+has writer_conf_file => (
+    isa => 'Str', is => 'rw', lazy => 1
+);
+
 sub _select_writer {
     my $self = shift;
     my $format = $self->output_format;
     my $writer = "Bio::EnsEMBL::Mongoose::Serializer::$format";
-    return $writer->new(handle => $self->handle);
+    return $writer->new(handle => $self->handle, config_file => $self->writer_conf_file);
 }
 
 # Contains information about the index Lucy will use, either by file or hash.
@@ -88,10 +93,11 @@ sub _init_storage {
     my $self = shift;
     my $store;
     if ($self->using_conf_file) {
-        $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config_file => $self->storage_engine_conf_file);
-    } else {
-        $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf);
-    }
+        my $conf = Config::General->new($self->storage_engine_conf_file);
+        my %opts = $conf->getall();
+        $self->storage_engine_conf(\%opts);
+    } 
+    $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf);
     return $store;
 }
 

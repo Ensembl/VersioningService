@@ -10,3 +10,6 @@ host   =
 user   = 
 pass   = 
 port   = 3306
+
+[RDF config]
+LOD_location = "../conf/xref_LOD_mapping.json"

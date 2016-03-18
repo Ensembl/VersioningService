@@ -17,29 +17,10 @@ use Moose::Role;
 
 use Config::General;
 
-
-# Config attributes are for legacy access of individual static indexes. Normally the broker should be consulted for this.
-has config_file => (
-    isa => 'Str',
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        ## TODO FIXME BROKEN BROKEN BROKEN
-        my $path = "$ENV{MONGOOSE}/conf/swissprot.conf";
-        return $path;
-    },
-);
-
 has config => (
     isa => 'HashRef',
     is => 'rw',
     lazy => 1,
-    default => sub {
-        my $self = shift;
-        my $conf = Config::General->new($self->config_file);
-        my %opts = $conf->getall();
-        return \%opts;
-    },
 );
 
 has query_string => (

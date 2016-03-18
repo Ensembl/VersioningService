@@ -258,6 +258,7 @@ method work_with_index ( Str :$source, Str :$version? ) {
   $self->log->debug('Switching to index: '.$path);
   $self->storage_engine_conf({ index_location => $path, source => $source, version => $version});
   $self->storage_engine();
+  $self->source($source);
 }
 
 sub add_isoforms { 

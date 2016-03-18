@@ -86,8 +86,16 @@ my $iterator = $query->execute($model);
 my @results = $iterator->get_all;
 note join "\n",@results;
 cmp_ok(scalar @results, '==', 4,'Explore all linked xrefs, cyclic one does not end world');
-
-
 cmp_deeply(['','',qw/"1" "Pwning"/],bag(map { if (defined $_->{label}) {$_->{label}->as_string} } @results), 'Check all xref primary labels');
+
+$sparql = 'select ?id where {
+    ?node dc:identifier ?id .
+  }';
+
+$query = RDF::Query->new($prefixes.$sparql);
+$query->error;
+$iterator = $query->execute($model);
+@results = $iterator->get_all;
+cmp_deeply([map { $_->{id}->as_string} @results],bag(qw/"Testy" "NM1" "MrCyclic" "NM2" "100"/),'null1 not included in results, and NM1 does not appear twice');
 
 done_testing();

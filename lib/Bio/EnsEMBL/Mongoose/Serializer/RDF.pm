@@ -33,6 +33,7 @@ sub print_record {
   # Attach description and labels to root
 
   print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
   print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('rdfs').'label'), '"'.$record->primary_accession.'"' );
   foreach my $label (@{ $record->accessions }) { 
     print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('skos').'altLabel'),qq/"$label"/);
@@ -57,7 +58,8 @@ sub print_record {
     # Root entity source uses different namespaced source than xref source to prevent confusion between directly asserted sources and 
     # inferred sources from a data providers' xrefs
     print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('dcterms').'source'), $self->u($xref_source));
-
+    # Not all xrefs will get full information from their own source, so we put in what we think is the canonical identifier for the entity
+    print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('dc').'identifier'), '"'.$xref->id.'"');
     # link to xref, 
     print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
     # xref links to target ID

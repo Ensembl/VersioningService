@@ -65,11 +65,11 @@ sub print_record {
     # xref links to target ID
     print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
     # reverse links
-    # from and to links prevent cyclic queries, while still allowing transitive queries across the xrefs
-    unless ( $self->is_unidirectional(lc $xref->source)) {
-      print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-from'),$self->u($base_entity));
-      print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('term').'refers-from'),$self->u($xref_link));
-    }
+    # Enable if it proves difficult to query in the reverse direction to complete the network.
+    # unless ( $self->is_unidirectional(lc $xref->source)) {
+    #   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-from'),$self->u($base_entity));
+    #   print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('term').'refers-from'),$self->u($xref_link));
+    # }
     # xref type
     print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Direct'));
     # if xref assertion came from a secondary/dependent source, mention them.

@@ -96,6 +96,9 @@ sub _init_storage {
         my $conf = Config::General->new($self->storage_engine_conf_file);
         my %opts = $conf->getall();
         $self->storage_engine_conf(\%opts);
+        if (exists $opts{LOD_location}) {
+            $self->writer_conf_file($opts{LOD_location});
+        }
     } 
     $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf);
     return $store;

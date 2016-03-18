@@ -42,7 +42,7 @@ has unidirection_sources => (
 );
 
 has identifier_mapping => (is => 'ro', isa => 'Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings', builder => '_load_mapper');
-has config_file => (is => 'ro', isa =>'Str', required => 1);
+has config_file => (is => 'rw', isa =>'Str');
 has config => (
     isa => 'HashRef',
     is => 'rw',

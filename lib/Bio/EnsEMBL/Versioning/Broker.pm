@@ -126,7 +126,7 @@ sub location {
 
     my $root = $self->config->{home};
     my $path = $root.'/'.$source->source_groups->name.'/'.$source->name().'/'.$revision;
-    make_path($path, { mode => 0774 });
+    make_path($path, { mode => '0774' });
     return $path;
 }
 
@@ -242,7 +242,7 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
   $self->log->info("Moving index from $temp_path to $final_location");
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
-    make_path(File::Spec->catfile($final_location,'index'), { mode => 0774 });
+    make_path(File::Spec->catfile($final_location,'index'), { mode => '0774' });
     move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
       || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'index/  '.$!);
   }

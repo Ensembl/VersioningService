@@ -435,7 +435,7 @@ sub print_exons {
   foreach my $exon (@{ $transcript->{exons} }) {
       # exon type of SO exon, both gene and transcript are linked via has part
       my $id = $self->generate_feature_uri($exon->{id},'exon');
-      my $transcript_id = $self->generate_feature_uri($transcript->{id});
+      my $transcript_id = $self->generate_feature_uri($transcript->{id},'transcript');
       print $fh triple('exon:'.$id,'rdf:type','obo:SO_0000147');
       #triple('exon:'.$exon->stable_id,'rdf:type','term:exon');
       print $fh triple('exon:'.$id, 'rdfs:label', '"'.$id.'"');

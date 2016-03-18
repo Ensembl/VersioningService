@@ -20,7 +20,6 @@ use Config::General;
 has config => (
     isa => 'HashRef',
     is => 'rw',
-    lazy => 1,
 );
 
 has query_string => (

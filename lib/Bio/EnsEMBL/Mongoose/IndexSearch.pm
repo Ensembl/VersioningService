@@ -68,7 +68,7 @@ has writer => (
 
 # Needed for writers that need additional configuration (eg. RDF writer)
 has writer_conf_file => (
-    isa => 'Str', is => 'rw', lazy => 1, default => sub { $self->storage_engine_conf->{LOD_location} }
+    isa => 'Str', is => 'rw', lazy => 1, default => sub { my $self = shift; $self->storage_engine_conf->{LOD_location} }
 );
 
 sub _select_writer {

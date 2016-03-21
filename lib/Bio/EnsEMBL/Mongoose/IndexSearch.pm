@@ -93,13 +93,16 @@ sub _init_storage {
     my $self = shift;
     my $store;
     if ($self->using_conf_file) {
+        $self->log->debug("Reading config file ".$self->storage_engine_conf_file);
         my $conf = Config::General->new($self->storage_engine_conf_file);
         my %opts = $conf->getall();
         $self->storage_engine_conf(\%opts);
         if (exists $opts{LOD_location}) {
             $self->writer_conf_file($opts{LOD_location});
+            $self->log->debug("Getting RDF config from ".$opts{LOD_location});
         }
-    } 
+    }
+    $self->log->debug("Activating Lucy index"); 
     $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf);
     return $store;
 }
@@ -219,6 +222,7 @@ sub get_records {
         }
         $self->writer->print_record($record, $source);
         if ($self->isoforms) {
+            $self->log->debug("Adding isoforms from Uniprot website");
             $self->add_isoforms($record);
         }
         $counter++;
@@ -264,7 +268,7 @@ sub convert_name_to_taxon {
 method work_with_index ( Str :$source, Str :$version? ) {
   # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
   my $path = $self->versioning_service->get_index_by_name_and_version($source,$version);
-  $self->log->debug('Switching to index: '.$path);
+  $self->log->debug('Switching to index: '.$path." from source $source and version $version");
   $self->storage_engine_conf({ index_location => $path, source => $source, version => $version});
   $self->storage_engine();
   $self->source($source);

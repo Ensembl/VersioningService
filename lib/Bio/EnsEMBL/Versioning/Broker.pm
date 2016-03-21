@@ -106,6 +106,7 @@ sub init_broker {
     { %opts },
   );
   $schema->deploy({ add_drop_table => 1}) if ($self->create() == 1);
+  $self->log->debug("Connected to $dsn");
   return $schema;
 }
 
@@ -239,7 +240,7 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
   my $temp_path = $doc_store->index;
   my $temp_location = IO::Dir->new($temp_path);
   my $final_location = $self->location($source,$revision);
-  $self->log->info("Moving index from $temp_path to $final_location");
+  $self->log->debug("Moving index from $temp_path to $final_location");
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
     make_path(File::Spec->catfile($final_location,'index'), { mode => '0774' });
@@ -251,6 +252,7 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
   );
   $version_set->index_uri(File::Spec->catfile($final_location,'index'));
   $version_set->record_count($record_count);
+  $self->log->debug("Saved index to $final_location with $record_count entries");
   $version_set->update;
 
   $source->current_version($version_set);

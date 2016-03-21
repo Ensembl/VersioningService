@@ -1,5 +1,4 @@
 use Modern::Perl;
-use strict;
 use IO::File;
 use Log::Log4perl;
 use Bio::EnsEMBL::Mongoose::IndexSearch;

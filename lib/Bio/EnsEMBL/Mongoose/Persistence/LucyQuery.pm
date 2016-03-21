@@ -26,7 +26,7 @@ use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 
 use Bio::EnsEMBL::Mongoose::SearchEngineException;
 
-use Data::Dump::Color qw/dump/;
+use Data::Dumper;
 use Sereal::Decoder qw/decode_sereal/;
 
 has search_engine => (
@@ -36,6 +36,7 @@ has search_engine => (
     lazy => 1,
     default => sub {
         my $self = shift;
+        $self->log->debug(Dumper $self->config);
         return Lucy::Search::IndexSearcher->new(
             index => $self->config->{index_location},
         );

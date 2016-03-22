@@ -18,13 +18,13 @@ use Moose;
 use Bio::EnsEMBL::Mongoose::IOException;
 extends 'Bio::EnsEMBL::Mongoose::Serializer::RDFLib';
 
-has fh => ('is' => 'ro', required => 1, isa => 'Ref');
+has handle => ('is' => 'ro', required => 1, isa => 'Ref');
 
 sub print_record {
   my $self = shift;
   my $record = shift;
   my $source = shift;
-  my $fh = $self->fh;
+  my $fh = $self->handle;
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $namespace = $self->identifier($source);

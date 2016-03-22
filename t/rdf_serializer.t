@@ -13,7 +13,7 @@ use RDF::Query;
 
 my $dummy_content;
 my $dummy_fh = IO::String->new($dummy_content);
-my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(fh => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
+my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
 
 is($rdf_writer->prefix('taxon'),'http://identifiers.org/taxonomy/', 'Passthrough of RDF writing functions');

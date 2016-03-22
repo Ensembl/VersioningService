@@ -16,6 +16,7 @@ package Bio::EnsEMBL::Mongoose::Serializer::RDF;
 
 use Moose;
 use Bio::EnsEMBL::Mongoose::IOException;
+use URI::Escape;
 extends 'Bio::EnsEMBL::Mongoose::Serializer::RDFLib';
 
 has handle => ('is' => 'ro', required => 1, isa => 'Ref');
@@ -27,10 +28,10 @@ sub print_record {
   my $fh = $self->handle;
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
-  my $base_entity = $namespace.$id;
-  $base_entity = $self->clean_for_uri($base_entity);
+  my $base_entity = $namespace.$clean_id;
   # Attach description and labels to root
 
   print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
@@ -52,9 +53,8 @@ sub print_record {
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     my $xref_source = $self->identifier($xref->source);
-    my $xref_uri = $xref_source.$xref->id;
-    $xref_uri = $self->clean_for_uri($xref_uri);
-    $xref_source = $self->clean_for_uri($xref_source);
+    my $clean_id = uri_escape($xref->id);
+    my $xref_uri = $xref_source.$clean_id;
     my $xref_link = $self->new_xref;
 
     # xref is from data source... but not necessarily asserted by them. See creator below.

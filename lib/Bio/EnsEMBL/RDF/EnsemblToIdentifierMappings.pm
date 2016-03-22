@@ -73,6 +73,7 @@ sub get_mapping {
 }
 
 # Returns an identifiers.org URI for a given ensembl internal name
+my %seen;
 sub identifier_org_translation {
   my $self = shift;
   my $e_name = shift;
@@ -81,10 +82,12 @@ sub identifier_org_translation {
   if (exists $mappings->{$e_name} && $mappings->{$e_name} && exists $mappings->{$e_name}->{id_namespace}) {
     my $id_url = $mappings->{$e_name}->{id_namespace};
     return "http://identifiers.org/".$id_url."/";
-  } else {
+  } elsif (! exists $seen{$e_name}){
     warn "No identifiers.org name for $e_name"; 
-    return; 
+  } else {
+    $seen{$e_name}++;
   }
+  return;
 }
 
 # Returns the abbreviated form of the identifiers.org namespace

@@ -101,6 +101,9 @@ sub _init_storage {
             $self->writer_conf(\%opts);
             $self->log->debug("Getting RDF config from ".$opts{LOD_location});
         }
+        if (exists $opts{index_location}) {
+            $self->index_conf({index_location => $opts{index_location}, data_location => $opts{data_location} });
+        }
     }
     $self->log->debug("Activating Lucy index"); 
     $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config=>$self->index_conf);
@@ -108,7 +111,7 @@ sub _init_storage {
 }
 
 has species => (isa => 'Str', is => 'rw',default => 'human');
-has source => (isa => 'Str', is => 'rw',default => 'UniProtSwissProt');
+has source => (isa => 'Str', is => 'rw',default => 'UniProt/SWISSPROT');
 
 has query_params => (
     isa => 'Object',

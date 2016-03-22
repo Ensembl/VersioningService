@@ -366,8 +366,7 @@ sub print_feature {
   # connect transcripts to translations
   if ($feature_type eq 'transcript' && exists $feature->{translations}) {
     foreach my $translation (@{$feature->{translations}}) {
-      my $id = $self->generate_feature_uri($translation->{id},'translation');
-      my $translation_uri = prefix('protein').$id;
+      my $translation_uri = $self->generate_feature_uri($translation->{id},'translation');
       $self->print_feature($translation,$translation_uri,'translation');
       print $fh triple(u($feature_uri),'obo:SO_translates_to',u($translation_uri));
       print $fh triple(u($translation_uri), 'rdf:type', 'term:protein');
@@ -434,19 +433,19 @@ sub print_exons {
   # Assert Exon bag for a given transcript, exons are ordered by rank of the transcript.
   foreach my $exon (@{ $transcript->{exons} }) {
       # exon type of SO exon, both gene and transcript are linked via has part
-      my $id = $self->generate_feature_uri($exon->{id},'exon');
-      my $transcript_id = $self->generate_feature_uri($transcript->{id},'transcript');
-      print $fh triple('exon:'.$id,'rdf:type','obo:SO_0000147');
+      my $exon_uri = $self->generate_feature_uri($exon->{id},'exon');
+      my $transcript_uri = $self->generate_feature_uri($transcript->{id},'transcript');
+      print $fh triple(u($exon_uri),'rdf:type','obo:SO_0000147');
       #triple('exon:'.$exon->stable_id,'rdf:type','term:exon');
-      print $fh triple('exon:'.$id, 'rdfs:label', '"'.$id.'"');
-      print $fh triple('transcript:'.$transcript_id, 'obo:SO_has_part', 'exon:'.$id);
+      print $fh triple(u($exon_uri), 'rdfs:label', '"'.$exon->{id}.'"');
+      print $fh triple(u($transcript_uri), 'obo:SO_has_part', u($exon_uri));
       
-      $self->print_feature($exon, prefix('exon').$id,'exon');
+      $self->print_feature($exon, $exon_uri,'exon');
       my $rank = $exon->{rank};
-      print $fh triple('transcript:'.$transcript_id, 'sio:SIO_000974',  u(prefix('transcript').$transcript_id.'#Exon_'.$rank));
-      print $fh triple(u(prefix('transcript').$transcript_id.'#Exon_'.$rank),  'rdf:type', 'sio:SIO_001261');
-      print $fh triple(u(prefix('transcript').$transcript_id.'#Exon_'.$rank), 'sio:SIO_000628', 'exon:'.$id);
-      print $fh triple(u(prefix('transcript').$transcript_id.'#Exon_'.$rank), 'sio:SIO_000300', $rank);
+      print $fh triple(u($transcript_uri), 'sio:SIO_000974',  u($transcript_uri.'#Exon_'.$rank));
+      print $fh triple(u($transcript_uri.'#Exon_'.$rank),  'rdf:type', 'sio:SIO_001261');
+      print $fh triple(u($transcript_uri.'#Exon_'.$rank), 'sio:SIO_000628', u($exon_uri));
+      print $fh triple(u($transcript_uri.'#Exon_'.$rank), 'sio:SIO_000300', $rank);
     }
 }
 

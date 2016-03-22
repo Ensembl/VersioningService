@@ -30,6 +30,7 @@ sub print_record {
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$id;
+  $base_entity = $self->clean_for_uri($base_entity);
   # Attach description and labels to root
 
   print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
@@ -52,6 +53,8 @@ sub print_record {
     next unless $xref->active == 1;
     my $xref_source = $self->identifier($xref->source);
     my $xref_uri = $xref_source.$xref->id;
+    $xref_uri = $self->clean_for_uri($xref_uri);
+    $xref_source = $self->clean_for_uri($xref_source);
     my $xref_link = $self->new_xref;
 
     # xref is from data source... but not necessarily asserted by them. See creator below.

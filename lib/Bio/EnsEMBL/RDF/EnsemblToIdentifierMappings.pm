@@ -47,7 +47,7 @@ sub new {
   my $json = <$fh>;
   my $doc = decode_json($json);
   my %xref_mapping;
-  map { $xref_mapping{ $_->{db_name} } = $_ } @{ $doc->{mappings} };
+  map { $xref_mapping{ lc $_->{db_name} } = $_ } @{ $doc->{mappings} };
   bless({ xref_mapping => \%xref_mapping },$class);
 }
 # For a given Ensembl ExternalDB name, gives a hash containing any of:
@@ -64,6 +64,7 @@ sub new {
 sub get_mapping {
   my $self = shift;
   my $e_name = shift;
+  $e_name = lc($e_name);
   my $mappings = $self->{xref_mapping};
   if (exists $mappings->{$e_name}) {
     return $mappings->{$e_name};
@@ -78,6 +79,7 @@ sub identifier_org_translation {
   my $self = shift;
   my $e_name = shift;
   return unless $e_name;
+  $e_name = lc($e_name);
   my $mappings = $self->{xref_mapping};
   if (exists $mappings->{$e_name} && $mappings->{$e_name} && exists $mappings->{$e_name}->{id_namespace}) {
     my $id_url = $mappings->{$e_name}->{id_namespace};
@@ -94,6 +96,7 @@ sub identifier_org_translation {
 sub identifier_org_short {
   my $self = shift;
   my $e_name = shift;
+  $e_name = lc($e_name);
   my $mappings = $self->{xref_mapping};
   if (exists $mappings->{$e_name}) {
     my $id = $mappings->{$e_name}->{id_namespace};
@@ -109,6 +112,7 @@ sub identifier_org_short {
 sub LOD_uri {
   my $self = shift;
   my $e_name = shift;
+  $e_name = lc($e_name);
   my $mappings = $self->{xref_mapping};
   my $lod;
   if (exists $mappings->{$e_name}->{canonical_LOD}) {

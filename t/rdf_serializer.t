@@ -19,7 +19,7 @@ my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_f
 is($rdf_writer->prefix('taxon'),'http://identifiers.org/taxonomy/', 'Passthrough of RDF writing functions');
 is($rdf_writer->prefix('dcterms'),'http://purl.org/dc/terms/', 'ditto');
 
-is($rdf_writer->identifier('Uniprot/SPTREMBL'), 'http://purl.uniprot.org/uniprot/', 'Source name resolution');
+is($rdf_writer->identifier('UniProt/SPTREMBL'), 'http://purl.uniprot.org/uniprot/', 'Source name resolution');
 is($rdf_writer->identifier('derp'),'http://rdf.ebi.ac.uk/resource/ensembl/xref/derp/','Unresolved identifier gives back safe answer');
 is($rdf_writer->identifier('EMBL_predicted'),'http://identifiers.org/ena.embl/','Identifier without LOD entry still gets an identifiers.org prefix');
 

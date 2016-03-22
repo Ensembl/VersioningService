@@ -77,9 +77,9 @@ LOCK TABLES `source` WRITE;
 
 INSERT INTO `source` (`source_id`, `name`, `source_group_id`, `active`, `created_date`, `downloader`, `parser`, `current_version`)
 VALUES
-	(1,'UniProtSwissProt',1,1,'2014-04-03 17:07:47','Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt','Bio::EnsEMBL::Mongoose::Parser::Swissprot',5),
-	(2,'UniProtUniParc',1,1,'2014-04-03 17:08:52','Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtUniParc','Bio::EnsEMBL::Mongoose::Parser::Uniparc',NULL),
-	(3,'UniProtTrembl',1,0,'2014-04-03 17:09:53','Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtTrembl','Bio::EnsEMBL::Mongoose::Parser::Swissprot',NULL),
+	(1,'UniProt/SWISSPROT',1,1,'2014-04-03 17:07:47','Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt','Bio::EnsEMBL::Mongoose::Parser::Swissprot',5),
+	(2,'UniParc',1,1,'2014-04-03 17:08:52','Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtUniParc','Bio::EnsEMBL::Mongoose::Parser::Uniparc',NULL),
+	(3,'UniProt/SPTREMBL',1,0,'2014-04-03 17:09:53','Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtTrembl','Bio::EnsEMBL::Mongoose::Parser::Swissprot',NULL),
 	(4,'RefSeq',2,1,'2014-04-03 17:09:57','Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq','Bio::EnsEMBL::Mongoose::Parser::Refseq',NULL),
 	(5,'MIM',3,1,'2015-01-21 14:14:20','Bio::EnsEMBL::Versioning::Pipeline::Downloader::MIM','Bio::EnsEMBL::Mongoose::Parser::MIM',NULL),
 	(6,'mim2gene',3,1,'2015-01-21 14:14:20','Bio::EnsEMBL::Versioning::Pipeline::Downloader::MIM2Gene','Bio::EnsEMBL::Mongoose::Parser::MIM2Gene',NULL),

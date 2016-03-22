@@ -30,7 +30,7 @@ my $broker = broker();
 my $uniprot_version = $broker->schema->resultset('Version')->create({revision => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/Uniprot/203_12/uniprot.txt', count_seen => 1});
 
 my $uniprot_group = $broker->schema->resultset('SourceGroup')->create({ name => 'UniProtGroup' });
-my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProtSwissprot', parser => 'UniProtParser', current_version => $uniprot_version, active => 1, downloader => 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'});
+my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProt/SWISSPROT', parser => 'UniProtParser', current_version => $uniprot_version, active => 1, downloader => 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'});
 
 # Connect version to source now that it exists
 $uniprot_version->sources($uniprot_source);
@@ -68,19 +68,19 @@ $broker->mock( 'location', sub { return tempdir() });
 
 my $new_path = $broker->finalise_download($uniprot_source,'2015_06',$dir);
 ok($new_path,'Broker able to move new files into versioning');
-is_deeply( $broker->list_versions_by_source('UniProtSwissprot'), ['2013_12','2015_06'],'Versioning DB updated' );
+is_deeply( $broker->list_versions_by_source('UniProt/SWISSPROT'), ['2013_12','2015_06'],'Versioning DB updated' );
 
 # Create a fake document store to bypass onerous configuration
 my $docstore = Test::MockObject->new();
 $docstore->mock( 'index', sub { return tempdir() });
 
 $broker->finalise_index($uniprot_source, '2015_06', $docstore, 666);
-is($broker->get_current_version_of_source('UniProtSwissprot')->revision, '2015_06', 'finalise_index() sets new current version');
+is($broker->get_current_version_of_source('UniProt/SWISSPROT')->revision, '2015_06', 'finalise_index() sets new current version');
 
 # Fetch the location of the index we've just 'created'
 
-my $index_uri = $broker->get_index_by_name_and_version('UniProtSwissprot','2015_06');
-my $other_index_uri = $broker->get_index_by_name_and_version('UniProtSwissprot');
+my $index_uri = $broker->get_index_by_name_and_version('UniProt/SWISSPROT','2015_06');
+my $other_index_uri = $broker->get_index_by_name_and_version('UniProt/SWISSPROT');
 ok($index_uri,'Index URI returned');
 ok($other_index_uri,'Index returned via current');
 is($index_uri,$other_index_uri,'Same URI retrieved by different routes');
@@ -88,11 +88,11 @@ is($index_uri,$other_index_uri,'Same URI retrieved by different routes');
 my @sources = @{ $broker->get_active_sources };
 ok(scalar @sources == 2, 'Found two active sources');
 
-ok($broker->add_new_source('UniProtUniParc','UniProtGroup',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtUniParc','Bio::EnsEMBL::Mongoose::Parser::Uniparc'),'Try to create a new source');
+ok($broker->add_new_source('UniParc','UniProtGroup',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtUniParc','Bio::EnsEMBL::Mongoose::Parser::Uniparc'),'Try to create a new source');
 throws_ok( sub { $broker->add_new_source('UniPurple','UniProtGroup',1,'Bio::Pish::Purple','Bilge::Pish::Purple') }, qr/is not of type PackageName/,'Source add fails on untestable downloader/parser code');
 
 my $downloader;
-ok( $downloader = $broker->get_downloader('UniProtSwissprot'), "Loading downloader module proceeds successfully" );
+ok( $downloader = $broker->get_downloader('UniProt/SWISSPROT'), "Loading downloader module proceeds successfully" );
 is($downloader,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt','Test correct download module name returned');
 my $module = $broker->get_module($downloader);
 ok($module->isa('Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'),'Check module can be loaded successfully');

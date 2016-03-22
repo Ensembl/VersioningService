@@ -68,7 +68,7 @@ has writer => (
 
 # Needed for writers that need additional configuration (eg. RDF writer)
 has writer_conf_file => (
-    isa => 'Str', is => 'rw', lazy => 1, default => sub { my $self = shift; $self->storage_engine_conf->{LOD_location} }
+    isa => 'Str', is => 'rw', lazy => 1, default => sub { my $self = shift; $self->storage_engine_conf }
 );
 
 sub _select_writer {
@@ -268,7 +268,7 @@ sub convert_name_to_taxon {
 method work_with_index ( Str :$source, Str :$version? ) {
   # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
   my $path = $self->versioning_service->get_index_by_name_and_version($source,$version);
-  $self->log->debug('Switching to index: '.$path." from source $source and version $version");
+  $self->log->debug("Switching to index: $path from source $source and version $version");
   $self->storage_engine_conf({ index_location => $path, source => $source, version => $version});
   $self->storage_engine();
   $self->source($source);

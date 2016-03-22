@@ -75,7 +75,7 @@ sub _select_writer {
     my $self = shift;
     my $format = $self->output_format;
     my $writer = "Bio::EnsEMBL::Mongoose::Serializer::$format";
-    return $writer->new(handle => $self->handle, config_file => $self->writer_conf);
+    return $writer->new(handle => $self->handle, config => $self->writer_conf);
 }
 
 # Contains information about the index Lucy will use, either by file or hash.

@@ -81,7 +81,7 @@ sub _select_writer {
 # Contains information about the index Lucy will use, either by file or hash.
 has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file');
 has storage_engine_conf => (isa => 'HashRef', is => 'rw');
-
+has index_conf => ( isa => 'HashRef', is => 'rw');
 has storage_engine => (
     isa => 'Bio::EnsEMBL::Mongoose::Persistence::LucyQuery',
     is => 'ro',
@@ -103,7 +103,7 @@ sub _init_storage {
         }
     }
     $self->log->debug("Activating Lucy index"); 
-    $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => $self->storage_engine_conf);
+    $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config=>$self->index_conf);
     return $store;
 }
 
@@ -269,7 +269,7 @@ method work_with_index ( Str :$source, Str :$version? ) {
   # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
   my $path = $self->versioning_service->get_index_by_name_and_version($source,$version);
   $self->log->debug("Switching to index: $path from source $source and version $version");
-  $self->storage_engine_conf({ index_location => $path, source => $source, version => $version});
+  $self->index_conf({ index_location => $path, source => $source, version => $version});
   $self->storage_engine();
   $self->source($source);
 }

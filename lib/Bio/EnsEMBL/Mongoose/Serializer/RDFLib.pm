@@ -70,7 +70,8 @@ sub _load_mapper {
   my $self = shift;
   my $path_to_lod_file = $self->config->{LOD_location};
   unless (defined $path_to_lod_file) { 
-    Bio::EnsEMBL::Mongoose::UsageException->throw('Identifiers.org mappings require config file '.$self->config_file.' to link to a JSON mappings file with key LOD_location');
+    $self->log->debug("Missing LOD location in config: ".$self->config);
+    Bio::EnsEMBL::Mongoose::UsageException->throw('Identifiers.org mappings require config or config file '.$self->config_file.' to link to a JSON mappings file with key LOD_location');
   }
   return Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings->new($path_to_lod_file);
 }

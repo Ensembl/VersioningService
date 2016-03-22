@@ -67,15 +67,15 @@ has writer => (
 );
 
 # Needed for writers that need additional configuration (eg. RDF writer)
-has writer_conf_file => (
-    isa => 'Str', is => 'rw', lazy => 1, default => sub { my $self = shift; $self->storage_engine_conf }
+has writer_conf => (
+    isa => 'HashRef', is => 'rw', lazy => 1, default => sub { my $self = shift; $self->storage_engine_conf }
 );
 
 sub _select_writer {
     my $self = shift;
     my $format = $self->output_format;
     my $writer = "Bio::EnsEMBL::Mongoose::Serializer::$format";
-    return $writer->new(handle => $self->handle, config_file => $self->writer_conf_file);
+    return $writer->new(handle => $self->handle, config_file => $self->writer_conf);
 }
 
 # Contains information about the index Lucy will use, either by file or hash.
@@ -98,7 +98,7 @@ sub _init_storage {
         my %opts = $conf->getall();
         $self->storage_engine_conf(\%opts);
         if (exists $opts{LOD_location}) {
-            $self->writer_conf_file($opts{LOD_location});
+            $self->writer_conf($opts{LOD_location});
             $self->log->debug("Getting RDF config from ".$opts{LOD_location});
         }
     }

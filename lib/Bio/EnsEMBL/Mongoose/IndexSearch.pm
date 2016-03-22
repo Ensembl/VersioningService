@@ -98,7 +98,7 @@ sub _init_storage {
         my %opts = $conf->getall();
         $self->storage_engine_conf(\%opts);
         if (exists $opts{LOD_location}) {
-            $self->writer_conf($opts{LOD_location});
+            $self->writer_conf(\%opts);
             $self->log->debug("Getting RDF config from ".$opts{LOD_location});
         }
     }

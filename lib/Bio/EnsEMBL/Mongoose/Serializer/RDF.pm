@@ -47,7 +47,7 @@ sub print_record {
     print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('term').'display_label'),'"'.$record->display_label.'"');
   }
   if ($record->description) {
-    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'description'),'"'.$record->description.'"');
+    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'description'),'"'.$self->escape($record->description).'"');
   }
 
   foreach my $xref (@{$record->xref}) {

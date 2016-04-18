@@ -94,6 +94,10 @@
       "EDAM_term": "EC number"
     },
     {
+      "db_name": "eggNOG",
+      "id_namespace": "eggnog"
+    },
+    {
       "db_name": "EMBL",
       "example_id": "AABR06092040",
       "id_namespace": "ena.embl"
@@ -138,6 +142,10 @@
       "db_name": "EPD",
       "example_id": "11050",
       "id_namespace": "epd"
+    },
+    {
+      "db_name": "ExpressionAtlas",
+      "id_namespace": "gxa.gene"
     },
     {
       "db_name": "Fantom",
@@ -389,6 +397,10 @@
       "ignore": true
     },
     {
+      "db_name": "nextProt",
+      "id_namespace": "nextprot"
+    },
+    {
       "db_name": "OMA",
       "Description": "OMA Group collection",
       "example_id": "ICHKMQS",
@@ -427,6 +439,10 @@
       "db_name": "PHI",
       "example_id": "PHI:2322",
       "ignore": true
+    },
+    {
+      "db_name": "PhylomeDB",
+      "id_namespace": "phylomedb"
     },
     {
       "db_name": "PIRSF",

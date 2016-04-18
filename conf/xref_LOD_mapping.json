@@ -255,6 +255,11 @@
       "ignore": true
     },
     {
+      "db_name": "HAMAP",
+      "example_id": "MF_00367",
+      "id_namespace": "hamap"
+      },
+    {
       "db_name": "HGNC",
       "example_id": "HGNC:13598",
       "id_namespace": "hgnc"
@@ -409,6 +414,11 @@
       "id_namespace": "pdb"
     },
     {
+      "db_name":"PANTHER",
+      "example_id":"PTHR12929",
+      "id_namespace":"panther.family"
+      },
+    {
       "db_name": "PFam",
       "example_id": "PF01040",
       "id_namespace": "pfam"
@@ -434,6 +444,16 @@
       "id_namespace": "po",
       "canonical_LOD": "http://purl.obolibrary.org/obo/",
       "regex": "/PO:/PO_/"
+    },
+    {
+      "db_name": "PRIDE",
+      "example_id": "Q7M3C1",
+      "id_namespace": "pride"
+    },
+    {
+      "db_name": "PROSITE",
+      "example_id": "PS00107",
+      "id_namespace": "prosite"
     },
     {
       "db_name": "protein_id",
@@ -567,6 +587,12 @@
       "id_namespace": "sgd"
     },
     {
+      "db_name": "SMART",
+      "description": "The Simple Modular Architecture Research Tool",
+      "example_id": "SM00990",
+      "id_namespace": "smart"
+      },
+    {
       "db_name": "STRING",
       "description": "Search Tool for Retrieval of Interacting Genes/Proteins",
       "example_id": "9646.ENSAMEP00000015321",
@@ -579,6 +605,12 @@
     {
       "db_name": "shares_CDS_with_OTTT",
       "ignore": true
+    },
+    {
+      "db_name": "SUPFAM",
+      "description": "Superfamily provides structural, functional and evolutionary information for proteins from all completely sequenced genomes, and large sequence collections such as UniProt.",
+      "example_id":"SSF53335",
+      "id_namespace":"supfam"
     },
     {
       "db_name": "TAIR_LOCUS",
@@ -600,6 +632,11 @@
       "example_id": "AT3G18710",
       "ignore": true
     },
+    {
+      "db_name": "TIGRFAMS",
+      "example_id": "TIGR02866",
+      "id_namespace": "tigrfam"
+      },
     {
       "db_name": "TIGR_GeneIndex",
       "example_id": "TC60870",

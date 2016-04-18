@@ -59,7 +59,7 @@ sub print_record {
 
     # xref is from data source... but not necessarily asserted by them. See creator below.
     # Root entity source uses different namespaced source than xref source to prevent confusion between directly asserted sources and 
-    # inferred sources from a data providers' xrefs
+    # inferred sources from a data providers' xrefs. e.g. A reactome link from Uniprot should not be namespaced from Uniprot.
     print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('dcterms').'source'), $self->u($xref_source));
     # Not all xrefs will get full information from their own source, so we put in what we think is the canonical identifier for the entity
     print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('dc').'identifier'), '"'.$xref->id.'"');
@@ -75,10 +75,11 @@ sub print_record {
     # }
     # xref type
     print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Direct'));
-    # if xref assertion came from a secondary/dependent source, mention them.
-    if ($xref->creator) {
-      print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('dcterms').'creator'),$self->u($self->identifier($xref->creator)));
-    }
+    # Scope here to describe evidence codes and such (associated xrefs indeed) to qualify the xref itself.
+    # if xref assertion came from a secondary/dependent source, mention that the link was created by the source of this record.
+    # if ($xref->creator) {
+    #   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('dcterms').'creator'),$self->u($self->identifier($xref->creator)));
+    # }
   }
 }
 

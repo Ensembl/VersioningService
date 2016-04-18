@@ -50,6 +50,11 @@
       "ignore":true
     },
     {
+      "db_name": "CTD",
+      "description": "Gene part of the Comparative Toxicogenomics Database",
+      "id_namespace": "ctd.gene"
+    },
+    {
       "db_name": "DBASS3",
       "example_id": "80",
       "ignore": true
@@ -73,7 +78,16 @@
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl.protein/"
     },
     {
+      "db_name": "EC",
+      "Decription": "Enzyme nomenclature",
+      "example_id": "2.7.11.23",
+      "id_namespace": "ec-code",
+      "EDAM_type": "data_1011",
+      "EDAM_term": "EC number"
+    },
+    {
       "db_name": "EC_NUMBER",
+      "Decription": "Enzyme nomenclature, long form",
       "example_id": "2.7.11.23",
       "id_namespace": "ec-code",
       "EDAM_type": "data_1011",
@@ -185,6 +199,11 @@
       "ignore": true
     },
     {
+      "db_name": "GeneTree",
+      "example_id": "ENSGT00800000124088",
+      "id_namespace": "genetree"
+    },
+    {
       "db_name": "GenomeRNAi",
       "example_id": "33155",
       "ignore": true
@@ -246,6 +265,11 @@
       "ignore": true
     },
     {
+      "db_name": "HOGENOM",
+      "example_id": "HOG000113686",
+      "id_namespace": "hogenom"
+    },
+    {
       "db_name": "HPA",
       "example_id": "50817",
       "ignore": true
@@ -298,7 +322,8 @@
     {
       "db_name": "KEGG",
       "example_id": "00450+2.1.1.-",
-      "ignore": true
+      "ignore": true,
+      "id_namespace": "kegg.genes"
     },
     {
       "db_name": "MEROPS",
@@ -359,6 +384,17 @@
       "ignore": true
     },
     {
+      "db_name": "OMA",
+      "Description": "OMA Group collection",
+      "example_id": "ICHKMQS",
+      "id_namespace": "oma.grp",
+    },
+    {
+      "db_name": "OrthoDB",
+      "example_id": "EOG7N63M9",
+      "id_namespace": "orthodb"
+    },
+    {
       "db_name": "OTTG",
       "example_id": "OTTDARG00000029138",
       "ignore": true
@@ -373,9 +409,19 @@
       "id_namespace": "pdb"
     },
     {
+      "db_name": "PFam",
+      "example_id": "PF01040",
+      "id_namespace": "pfam"
+    },
+    {
       "db_name": "PHI",
       "example_id": "PHI:2322",
       "ignore": true
+    },
+    {
+      "db_name": "PIRSF",
+      "example_id": "PIRSF005355",
+      "id_namespace": "pirsf"
     },
     {
       "db_name": "PlantGDB_PUT",
@@ -410,6 +456,11 @@
       "db_name": "Reactome",
       "example_id": "REACT_71",
       "id_namespace": "reactome"
+    },
+    { 
+      "db_name": "RefSeq",
+      "example_id": "XP_002919412.1",
+      "id_namespace": "refseq"
     },
     {
       "db_name": "RefSeq_dna",
@@ -516,6 +567,12 @@
       "id_namespace": "sgd"
     },
     {
+      "db_name": "STRING",
+      "description": "Search Tool for Retrieval of Interacting Genes/Proteins",
+      "example_id": "9646.ENSAMEP00000015321",
+      "id_namespace": "string"
+    },
+    {
       "db_name": "shares_CDS_and_UTR_with_OTTT",
       "ignore": true
     },
@@ -557,6 +614,11 @@
       "db_name": "TransFac",
       "example_id": "T01396",
       "ignore": true
+    },
+    {
+      "db_name": "TreeFam",
+      "example_id": "TF101088",
+      "id_namespace": "treefam"
     },
     {
       "db_name": "UCSC",

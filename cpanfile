@@ -5,6 +5,7 @@ requires 'PerlIO::gzip';
 requires 'Modern::Perl';
 
 requires 'REST::Client';
+requires 'Crypt::SSLeay';
 requires 'JSON::XS';
 requires 'JSON::Any';
 requires 'JSON::SL';

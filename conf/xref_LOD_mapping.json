@@ -387,7 +387,7 @@
       "db_name": "OMA",
       "Description": "OMA Group collection",
       "example_id": "ICHKMQS",
-      "id_namespace": "oma.grp",
+      "id_namespace": "oma.grp"
     },
     {
       "db_name": "OrthoDB",

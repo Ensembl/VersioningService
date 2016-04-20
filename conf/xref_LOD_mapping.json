@@ -484,6 +484,10 @@
       "URI_type": "http://rdf.ebi.ac.uk/resource/ensembl/NucleotideSequenceDatabase"
     },
     {
+      "db_name": "proteinmodelportal",
+      "id_namespace": "pmp"
+    },
+    {
       "db_name": "PUBMED",
       "example_id": "10366627",
       "id_namespace": "pubmed"
@@ -627,6 +631,14 @@
       "description": "Superfamily provides structural, functional and evolutionary information for proteins from all completely sequenced genomes, and large sequence collections such as UniProt.",
       "example_id":"SSF53335",
       "id_namespace":"supfam"
+    },
+    {
+      "db_name": "swissprot",
+      "example_id": "A0MH06",
+      "description": "Unfussy version of Uniprot/SWISSPROT below",
+      "id_namespace": "uniprot",
+      "canonical_LOD": "http://purl.uniprot.org/uniprot/",
+      "URI_type": "http://purl.uniprot.org/core/Reviewed_Protein"
     },
     {
       "db_name": "TAIR_LOCUS",

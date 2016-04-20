@@ -8,8 +8,10 @@ use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 my $species = 'ailuropoda melanoleuca';
 
-my $base_path = '/nfs/nobackup/ensembl/ktaylor//';
-my $fh = IO::File->new("$base_path/$species_triples.ttl",'w');
+my $base_path = '/nfs/nobackup/ensembl/ktaylor/';
+my $neat_species = $species;
+$neat_species =~ s/\s+/_/g;
+my $fh = IO::File->new("$base_path/${species}_triples.ttl",'w');
 
 
 my $extractor = Bio::EnsEMBL::Mongoose::IndexSearch->new(
@@ -19,5 +21,9 @@ my $extractor = Bio::EnsEMBL::Mongoose::IndexSearch->new(
   storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf'
 );
 
-$extractor->work_with_index(source =>'Swissprot');
-$extractor->get_records;
+
+my @source_list = qw/Swissprot MIM mim2gene HGNC/;
+for my $source (@source_list) {
+  $extractor->work_with_index(source =>$source);
+  $extractor->get_records;
+}

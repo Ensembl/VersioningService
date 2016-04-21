@@ -1,5 +1,6 @@
 use Test::More;
 use Test::Differences;
+use Test::Exception;
 
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
@@ -102,5 +103,16 @@ FLPLLFGAISHLL
 ";
 
 eq_or_diff($out,$desired,'Isoform fetched from Uniprot');
+
+# Test what happens when bad user data is supplied
+
+$mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+    storage_engine_conf_file => "$Bin/../conf/test.conf",
+    species => 'Morlock',
+    handle => $fh,
+    output_format => 'JSON',
+);
+
+throws_ok( sub { $mfetcher->get_records() }, 'Bio::EnsEMBL::Mongoose::SearchEngineException', 'Bad species name causes an exception explaining why');
 
 done_testing;

@@ -123,6 +123,7 @@ has query_params => (
 sub _populate_query_object {
     my $self = shift;
     my $taxon = $self->taxonomizer->fetch_taxon_id_by_name($self->species);
+    unless ($taxon) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw("Search for ".$self->species." didn't return any taxa, no query can be made without a taxon") }
     my $query = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
         taxons => [$taxon],
         format => $self->output_format,

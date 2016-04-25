@@ -360,12 +360,22 @@
     {
       "db_name": "MIM_GENE",
       "example_id": "602349",
-      "ignore": true
+      "id_namespace": "omim"
     },
     {
       "db_name": "MIM_MORBID",
       "example_id": "615122",
-      "ignore": true
+      "id_namespace": "omim"
+    },
+    {
+      "db_name": "mim",
+      "example_id": "615122",
+      "id_namespace": "omim"
+    },
+    {
+      "db_name": "mim2gene",
+      "example_id": "615122",
+      "id_namespace": "omim"
     },
     {
       "db_name": "miRBase",

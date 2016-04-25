@@ -3,8 +3,7 @@ use Test::More;
 use Test::Exports;
 use Bio::EnsEMBL::RDF::RDFlib qw/triple prefix name_spaces/;
 
-import_ok('Bio::EnsEMBL::RDF::RDFlib', [qw/prefix name_spaces u triple escape/],'RDFlib imports correctly');
-
+import_ok('Bio::EnsEMBL::RDF::RDFlib', [qw/prefix name_spaces u triple escape compatible_name_spaces clean_for_uri taxon_triple/],'RDFlib imports correctly');
 ok(name_spaces(),'Check there name spaces available');
 
 is(prefix('faldo'),'http://biohackathon.org/resource/faldo#','Fetch prefix');

@@ -11,19 +11,22 @@ my $species = 'ailuropoda melanoleuca';
 my $base_path = '/nfs/nobackup/ensembl/ktaylor/';
 my $neat_species = $species;
 $neat_species =~ s/\s+/_/g;
-my $fh = IO::File->new("$base_path/${species}_triples.ttl",'w');
 
 
-my $extractor = Bio::EnsEMBL::Mongoose::IndexSearch->new(
-  handle => $fh, 
-  species => $species, 
-  output_format => 'RDF', 
-  storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf'
-);
+
 
 
 my @source_list = qw/Swissprot MIM mim2gene HGNC/;
 for my $source (@source_list) {
+
+  my $fh = IO::File->new("$base_path/${species}_${source}_triples.ttl",'w');
+  my $extractor = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+    handle => $fh, 
+    species => $species, 
+    output_format => 'RDF', 
+    storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf'
+  );
+
   $extractor->work_with_index(source =>$source);
   $extractor->get_records;
 }

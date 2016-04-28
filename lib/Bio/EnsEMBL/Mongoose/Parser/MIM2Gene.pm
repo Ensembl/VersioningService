@@ -42,6 +42,7 @@ sub read_record {
   my ($id,$type,$gene_id,$symbols) = split "\t",$content; # symbol currently ignored
   Bio::EnsEMBL::Mongoose::IOException->throw ('Insufficient data in line of mim2gene:'.$content) unless ($id && $gene_id);
   $self->record->id($id);
+  $self->record->accessions([$id]);
   $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'MIM',creator => 'MIM',id => $gene_id));
   
   return 1;

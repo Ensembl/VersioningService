@@ -174,15 +174,25 @@ sub evidence_level {
     my $level = 0;
     my $evidence = $self->xpath_to_value('/uni:uniprot/uni:entry/uni:proteinExistence/@type');
     $self->log->debug("Evidence code: $evidence");
-    
-    $level = 1 if $evidence =~ /evidence at protein level/;
-    $level = 2 if $evidence =~ /evidence at transcript level/;
-    $level = 3 if $evidence =~ /inferred from homology/;
-    $level = 4 if $evidence =~ /predicted/;
-    $level = 5 if $evidence =~ /uncertain/;
-    
+    my $record = $self->record;
+
+    if ($evidence =~ /evidence at protein level/) { 
+        $level = 1; $record->tag(['protein']); 
+    } 
+    elsif ($evidence =~ /evidence at transcript level/) {
+        $level = 2; $record->tag(['transcript']);
+    }
+    elsif ($evidence =~ /inferred from homology/) {
+        $level = 3; $record->tag(['homology']);
+    }
+    elsif ($evidence =~ /predicted/) {
+        $level = 4; $record->tag(['predicted']);
+    }
+    elsif ($evidence =~ /uncertain/) {
+        $level = 5;
+    }
     $self->log->debug("Coded to level $level");
-    $self->record->evidence_level($level);
+    $record->evidence_level($level);
 }
 # Used for finding comments that indicate a reference is unreliable
 sub suspicious {

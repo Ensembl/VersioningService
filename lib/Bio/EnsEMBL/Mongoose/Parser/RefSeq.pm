@@ -22,7 +22,6 @@ use Bio::EnsEMBL::IO::Parser::GenbankParser;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 
 
-
 # Requires access to compara taxonomy database, due to lack of taxon ID in Refseq files
 
 has 'genbank_parser' => (
@@ -41,44 +40,76 @@ has 'taxonomizer' => (
     }
 );
 
+has 'types' => (
+    traits => ['Hash'],
+    isa => 'HashRef[ArrayRef]',
+    is => 'ro',
+    default => sub {
+        {
+            AC => ['alternate assembly','genomic'],
+            AP => ['alternate assembly','protein'],
+            NC => ['genomic'],
+            NG => ['genomic'],
+            NM => ['mRNA'],
+            NP => ['protein'],
+            NR => ['RNA'],
+            NT => ['genomic'],
+            NW => ['genomic'],
+            NS => ['genomic'],
+            NZ => ['genomic'],
+            XM => ['predicted','mRNA'],
+            XR => ['predicted','RNA'],
+            XP => ['predicted','protein'],
+            YP => ['protein'],
+            ZP => ['protein']
+        }
+    },
+    handles => {
+        type_known => 'exists',
+        get_type_attributes => 'get'
+    }
+);
+
 # Consumes Refseq files and emits Mongoose::Persistence::Records
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser','MooseX::Log::Log4perl';
 
 sub read_record {
     my $self = shift;
     $self->clear_record;
-    
+    my $record = $self->record;
     my $parser = $self->genbank_parser;
     my $read_state = $parser->next;
     if ($read_state == 0) {return 0}
     my $taxon = $self->determine_taxon;
-    $self->record->taxon_id($taxon) if ($taxon);
+    $record->taxon_id($taxon) if ($taxon);
     my $id = $parser->get_locus_id;
-    $self->record->id($id) if ($id);
+    $record->id($id) if ($id);
     my $accession = $parser->get_accession;
-    $self->record->accessions([$accession]) if ($accession);
+    $record->accessions([$accession]) if ($accession);
+    my $evidence = $self->determine_evidence($accession);
+    $record->tag($evidence);
     my $sequence = $parser->get_sequence();
     if ($sequence) {
-        $self->record->sequence( $sequence );
-        $self->record->sequence_length(length($sequence));
+        $record->sequence( $sequence );
+        $record->sequence_length(length($sequence));
     }
     my $description = $parser->get_description();
     if ($description) {
-        $self->record->description( $description );
+        $record->description( $description );
         $self->chew_description;
     }
     my $comment = join("\n",$parser->get_raw_comment);
     if ($comment) {
-        $self->record->comment( $comment );
+        $record->comment( $comment );
     }
     my $seq_version = $parser->get_sequence_version;
     if ($seq_version) {
-        $self->record->version($seq_version);
+        $record->version($seq_version);
     }
     my $db_links = $parser->get_raw_dblinks;
     if ($db_links) {
         my $xrefs = $self->chew_dblinks($db_links);
-        $self->record->xref($xrefs);
+        $record->xref($xrefs);
     }
 
     if (!($id || $taxon || $accession)) {
@@ -127,4 +158,18 @@ sub chew_dblinks {
         }
     }
     return \@xrefs;
+}
+
+# official regex for RefSeq IDs: /^((AC|AP|NC|NG|NM|NP|NR|NT|NW|XM|XP|XR|YP|ZP)_\d+|(NZ\_[A-Z]{4}\d+))(\.\d+)?$/
+
+sub determine_evidence {
+    my $self = shift;
+    my $id = shift;
+
+    my ($prefix) = $id =~ /(\w\w)_.+/;
+    if ($self->type_known($prefix)) {
+        return $self->get_type_attributes($prefix);
+    } else {
+        Bio::EnsEMBL::Mongoose::DBException->throw("Missing RefSeq record type: $prefix from record $id");
+    }
 }

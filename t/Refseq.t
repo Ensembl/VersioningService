@@ -42,5 +42,8 @@ $accessions = $record->accessions;
 # No accession found in certain micro-organisms
 # is($record->accessions->[0], 'YP_001693987','Testing Refseq GPFF file');
 
-
+my $evidence = $ref_seq_reader->determine_evidence('XM_005579308');
+is_deeply($evidence, ['predicted','mRNA'], 'Evidence extraction from accession');
+$evidence = $ref_seq_reader->determine_evidence('XP_005579308');
+is_deeply($evidence, ['predicted','protein'], 'Evidence extraction from accession');
 done_testing;

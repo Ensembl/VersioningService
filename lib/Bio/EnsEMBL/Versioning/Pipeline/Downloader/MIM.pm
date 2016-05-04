@@ -33,52 +33,43 @@ use Try::Tiny;
 
 extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
 
-has uri => (
+has host => (
+  isa => 'Str',
+  is => 'ro',
+  default => 'http://data.omim.org/'
+);
+
+has remote_path => (
   isa => 'Str', 
   is => 'ro',
-  default => 'ftp://ftp.omim.org/OMIM/',
+  default => 'downloads/s4mpHKpNRgugjDKWuUAJMw/',
 );
 
 has file_pattern => (
   isa => 'Str',
   is => 'rw', # to allow test runs
-  default => 'omim.txt.Z',
+  default => 'omim.txt.gz',
 );
 
-has version_uri => ( 
-  isa => 'Str', 
-  is => 'ro', 
-  default => 'ftp://ftp.omim.org/OMIM/',
-);
-
-has password => (
-  isa => 'Str',
-  is => 'rw',
-  default => 'anonymous'
-);
-
-has user => (
-  isa => 'Str',
-  is => 'rw',
-  default => 'anonymous',
-);
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
+with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient','MooseX::Log::Log4perl';
 
 sub get_version
 {
   my $self = shift;
-  my $time = $self->get_timestamp($self->version_uri,'omim.txt.Z',$self->user,$self->password);
-  $self->log->debug('Checked OMIM modification date, found '.$time);
-  return $time if $time;
-  Bio::EnsEMBL::Mongoose::NetException->throw("OMIM modification date not found");
+  return $self->timestamp; # MIM updates daily
 }
 
 sub _get_remote {
   my $self = shift;
   my $path = shift; # path is already checked as valid.
 
-  my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path,$self->user,$self->password);
+  my $result = $self->call(
+    host => $self->host,
+    path => $self->remote_path.$self->file_pattern,
+    file_path => $path,
+    accepts => 'application/octet-stream',
+    file_name => $self->file_pattern
+  );
   $self->log->debug('Downloaded MIM FTP files: '.join("\n",@$result));
   return $result if (scalar @$result > 0);
   Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from MIM site");

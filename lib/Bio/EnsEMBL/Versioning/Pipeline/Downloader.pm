@@ -19,6 +19,7 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader;
 
 use Moose;
 use Bio::EnsEMBL::Mongoose::IOException;
+use Time::gmtime;
 
 =head2 get_version
 
@@ -53,6 +54,13 @@ sub download_to {
         Bio::EnsEMBL::Mongoose::IOException->throw("Cannot write to download destination: $path");
     }
     $self->_get_remote($path);
+}
+
+sub timestamp {
+  my $self = shift;
+  my $gmt = gmtime();
+  my $time = sprintf "%04u%02s%02s",$gmt->year + 1900,$gmt->mon,$gmt->mday;
+  return $time;
 }
 
 

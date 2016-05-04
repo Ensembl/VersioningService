@@ -37,7 +37,7 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader::HGNC;
 
 use Moose;
 use Try::Tiny;
-use Time::gmtime;
+
 extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
 
 has uri => (
@@ -52,8 +52,7 @@ with 'MooseX::Log::Log4perl', 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::R
 sub get_version
 {
   my $self = shift;
-  my $gmt = gmtime();
-  my $time = sprintf "%04u%02s%02s",$gmt->year + 1900,$gmt->mon,$gmt->mday;
+  return $self->timestamp;
 }
 
 sub _get_remote {

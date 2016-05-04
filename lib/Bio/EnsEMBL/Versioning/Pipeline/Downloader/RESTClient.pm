@@ -63,11 +63,12 @@ method call (
   my $rest = REST::Client->new;
   $rest->setHost($host);
   $rest->setTimeout(30); # default medium-long for response
-  $rest->addHeader('Content-Type', $content_type);
+  $rest->addHeader('Content-Type', $content_type) if $method ne 'GET';
   if ($bodge) { $rest->addHeader('Accept',$content_type)}
   $rest->addHeader('Accept',$accepts);
   my $response;
   retry_sleep( sub {
+    # print "Trying $host $path";
     $rest->$method($path, $body);
     if ($rest->responseCode eq '200') {
       $response = $rest->responseContent;
@@ -82,7 +83,8 @@ method call (
     my $extension;
     # crudely limited to json vs xml at the mo.
     # print $accepts."\n";
-    $extension = ($accepts =~ /json/) ? '.json' : '.xml';
+    $extension = '.json' if $accepts =~ /json/;
+    $extension = '.xml' if $accepts =~ /xml/;
     # print $extension."\n";
     my $canonical_file = File::Spec->catfile($file_path,$file_name.$extension);
     my $fh = IO::File->new($canonical_file, 'w') || Bio::EnsEMBL::Mongoose::IOException->throw($@);

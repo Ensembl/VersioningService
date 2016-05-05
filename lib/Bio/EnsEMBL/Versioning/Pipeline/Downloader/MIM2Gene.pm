@@ -41,6 +41,7 @@ has host => (
 
 has remote_path => (
   isa => 'Str',
+  is => 'ro',
   default => 'static/omim/data/'
 );
 

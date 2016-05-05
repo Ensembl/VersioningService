@@ -17,10 +17,10 @@ use Moose;
 use Moose::Util::TypeConstraints;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
-
+use Bio::EnsEMBL::Mongoose::IOException;
 use Bio::EnsEMBL::IO::Parser::GenbankParser;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
-
+use Try::Tiny;
 
 # Requires access to compara taxonomy database, due to lack of taxon ID in Refseq files
 
@@ -78,7 +78,12 @@ sub read_record {
     $self->clear_record;
     my $record = $self->record;
     my $parser = $self->genbank_parser;
-    my $read_state = $parser->next;
+    my $read_state;
+    try {
+      $read_state = $parser->next;
+    } catch {
+      Bio::EnsEMBL::Mongoose::IOException->throw('Parsing error '.$_.' in file '.$self->genbank_parser->{filename});
+    };
     if ($read_state == 0) {return 0}
     my $taxon = $self->determine_taxon;
     $record->taxon_id($taxon) if ($taxon);

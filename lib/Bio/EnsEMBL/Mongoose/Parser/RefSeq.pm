@@ -18,14 +18,14 @@ use Moose::Util::TypeConstraints;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 use Bio::EnsEMBL::Mongoose::IOException;
-use Bio::EnsEMBL::IO::Parser::GenbankParser;
+use Bio::EnsEMBL::IO::Parser::Genbank;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Try::Tiny;
 
 # Requires access to compara taxonomy database, due to lack of taxon ID in Refseq files
 
 has 'genbank_parser' => (
-    isa => 'Bio::EnsEMBL::IO::Parser::GenbankParser',
+    isa => 'Bio::EnsEMBL::IO::Parser::Genbank',
     is => 'ro',
     builder => '_ready_parser',
     lazy => 1,
@@ -125,7 +125,7 @@ sub read_record {
 
 sub _ready_parser {
     my $self = shift;
-    return Bio::EnsEMBL::IO::Parser::GenbankParser->open($self->source_handle);
+    return Bio::EnsEMBL::IO::Parser::Genbank->open($self->source_handle);
 }
 
 # Pulls gene name from the lines of DEFINITION

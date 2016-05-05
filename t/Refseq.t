@@ -4,7 +4,7 @@ use Test::Differences;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 # use Data::Dump::Color qw/dump/;
-use Bio::EnsEMBL::Mongoose::Parser::Refseq;
+use Bio::EnsEMBL::Mongoose::Parser::RefSeq;
 
 
 my $source = $ENV{MONGOOSE}."/t/data/XM_005579308.gbff";

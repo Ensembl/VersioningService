@@ -135,7 +135,7 @@ sub location {
 method finalise_download ($source, Str $revision, Str $temp_location){
     my $final_location = $self->location($source,$revision);
     for my $file (glob $temp_location."/*") {
-        move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location.' to '.$final_location.'. '.$@);
+        move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location.' to '.$final_location.'. '.$!);
     }
     
     my $version = $self->schema->resultset('Version')->create( {

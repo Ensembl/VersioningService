@@ -19,7 +19,7 @@ use Moose::Util::TypeConstraints;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
-# Consumes HGNC file and emits Mongoose::Persistence::Records
+# Consumes text file and emits Mongoose::Persistence::Records
 with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Mongoose::Parser::Parser';
 
 # 'uni','http://uniprot.org/uniprot'

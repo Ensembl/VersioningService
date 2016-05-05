@@ -35,15 +35,25 @@ sub read_record {
   
   my $fh = $self->source_handle;
   my $content = <$fh>;
-  if ($content =~ /^#/) {$content = <$fh>} # crudely skip over comment lines
+  return unless $content;
+  until ($content !~ /^#/) { $content = <$fh> }
+  # crudely skip over comment lines
   return unless $content;
   chomp($content);
   # MIM id, gene/phenotype/both, EntrezGene ID, gene symbol like ACR or ALDH2
-  my ($id,$type,$gene_id,$symbols) = split "\t",$content; # symbol currently ignored
-  Bio::EnsEMBL::Mongoose::IOException->throw ('Insufficient data in line of mim2gene:'.$content) unless ($id && $gene_id);
+  my ($id,$type,$entrezgene,$hgnc,$ensembl) = split "\t",$content; # trailing tabs mean all variables get set with '' at minimum
+  Bio::EnsEMBL::Mongoose::IOException->throw ('Insufficient data in line of mim2gene:'.$content) unless ($id);
   $self->record->id($id);
   $self->record->accessions([$id]);
-  $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'MIM',creator => 'MIM',id => $gene_id));
+  if ($entrezgene) {
+    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'EntrezGene',creator => 'MIM',id => $entrezgene));
+  }
+  if ($hgnc) {
+    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'HGNC',creator => 'MIM',id => $hgnc));
+  }
+  if ($ensembl) {
+    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'Ensembl',creator => 'MIM',id => $ensembl));
+  }
   
   return 1;
 }

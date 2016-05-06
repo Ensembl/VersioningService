@@ -245,7 +245,7 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
     next if $file =~ /^\.+$/;
     make_path(File::Spec->catfile($final_location,'index'), { mode => '0774' });
     move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
-      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'index/  '.$!);
+      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'/index/  '.$!);
   }
   my $version_set = $self->schema->resultset('Version')->find(
       { revision => $revision }

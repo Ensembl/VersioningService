@@ -172,7 +172,7 @@ sub determine_evidence {
     my $id = shift;
 
     my ($prefix) = $id =~ /(\w\w)_.+/;
-    if ($self->type_known($prefix)) {
+    if ($prefix && $self->type_known($prefix)) {
         return $self->get_type_attributes($prefix);
     } else {
         Bio::EnsEMBL::Mongoose::DBException->throw("Missing RefSeq record type: $prefix from record $id");

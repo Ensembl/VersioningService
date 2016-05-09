@@ -58,6 +58,10 @@ cmp_ok($version->revision,'==',60,'Check release revision is correct');
 $version = $broker->get_version_of_source('RefSeq',61);
 cmp_ok($version->revision,'==',61,'Source fetching by specific version');
 
+$broker->already_seen($version);
+$version = $broker->get_version_of_source('RefSeq',61);
+cmp_ok( $version->count_seen, '==', 2, 'Times this revision has been seen can be incremented if a source is not receiving an update' );
+
 # Test finalise methods
 
 my $dir = tempdir();

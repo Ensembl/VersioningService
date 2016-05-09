@@ -277,6 +277,13 @@ sub get_downloader {
   return $source_rs->downloader;
 }
 
+# Increment count seen for a specific revision of a source
+sub already_seen {
+  my $self = shift;
+  my $revision = shift;
+  $revision->count_seen($revision->count_seen + 1);
+  $revision->update()->discard_changes();
+}
 
 # imports modules required for accessing the document store of choice, e.g. Lucy
 sub get_module {

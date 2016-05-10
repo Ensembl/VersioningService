@@ -90,9 +90,13 @@ sub read_record {
     my $id = $parser->get_locus_id;
     $record->id($id) if ($id);
     my $accession = $parser->get_accession;
-    $record->accessions([$accession]) if ($accession);
-    my $evidence = $self->determine_evidence($accession);
-    $record->tag($evidence);
+    if ($accession) {
+        $record->accessions([$accession]);
+        my $evidence = $self->determine_evidence($accession);
+        $record->tag($evidence);
+    } else {
+        $self->log->info("RefSeq record $id has no accessible accession");
+    }
     my $sequence = $parser->get_sequence();
     if ($sequence) {
         $record->sequence( $sequence );

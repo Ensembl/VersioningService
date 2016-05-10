@@ -33,16 +33,7 @@ around BUILDARGS => sub {
     $class->$orig(%args);
 };
 
-sub read_record {
-    my $self = shift;
-    $self->flush_document;
-    my $slurp = $self->slurp_content;
-    if (!$slurp) {return;}
-    $self->clear_record;
-    $self->log->debug('Record blanked');
-    my $read_state = $self->node_sieve();
-    return $read_state;
-}
+
 
 sub node_sieve {
     my $self = shift;

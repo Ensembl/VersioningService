@@ -30,17 +30,6 @@ around BUILDARGS => sub {
     $class->$orig(%args);    
 };
 
-sub read_record {
-    my $self = shift;
-    $self->flush_document;
-    my $slurp = $self->slurp_content;
-    if (!$slurp) {return;}
-    #my $doc = $self->xml_document;
-    $self->clear_record;
-    my $read_state = $self->node_sieve();
-    return $read_state;
-}
-
 sub node_sieve {
     my $self = shift;
     $self->log->debug('Parsing XML subtree.');

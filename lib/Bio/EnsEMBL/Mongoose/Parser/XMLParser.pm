@@ -25,6 +25,7 @@ use Bio::EnsEMBL::Mongoose::IOException;
 use Try::Tiny;
 
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
+# Should be generic with an override of slurp_content() to suit wrapping tags
 
 subtype 'XML::LibXML::DOM' => as 'Object';
 
@@ -103,21 +104,45 @@ has xml_footer => (
 
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser', 'MooseX::Log::Log4perl';
 
+sub read_record {
+    my $self = shift;
+    my $slurp;
+    try {
+        $slurp = $self->slurp_content;
+    } catch {
+        Bio::EnsEMBL::Mongoose::IOException->throw(
+            sprintf "Parsing failed fatally: %s\n Current block: %s\n File position: %s\n",
+                $_, $self->content, tell $self->source_handle);
+    };
+    if (!$slurp) {
+        $self->log->debug("EOF reached.");
+        $self->flush_document; 
+        return; 
+    }
+    $self->clear_record;
+    $self->log->debug("Reading XML section");
+    my $read_state = $self->node_sieve();
+    $self->flush_document; # Make sure XML does not pollute next iteration
+    return $read_state;
+}
+
 
 sub slurp_content {
     my $self = shift;
     my $handle = $self->source_handle;
     local $/ = '</entry>';
     my $content = <$handle>;
-    
+    $self->log->debug($content);
     unless ($self->xml_header) {
         $content =~ s/(.*)(?=<entry[^>]*?>)//s;
         $self->xml_header($1);
-    } 
+    }
+    $self->log->debug($self->xml_header); 
     my $tag = $self->top_tag;
     # Beyond the last </entry> is a </uniprot> or a </uniparc>
     # We can skip this safely
     if ($content =~ /<\/$tag>$/) {
+        $self->log->debug("Found end of XML file");
         return;
     }
     $self->content($self->xml_header.$content.$self->xml_footer);

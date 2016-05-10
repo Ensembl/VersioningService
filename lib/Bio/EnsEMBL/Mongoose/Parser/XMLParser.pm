@@ -111,8 +111,8 @@ sub read_record {
         $slurp = $self->slurp_content;
     } catch {
         Bio::EnsEMBL::Mongoose::IOException->throw(
-            sprintf "Parsing failed fatally: %s\n Current block: %s\n File position: %s\n",
-                $_, $self->content, tell $self->source_handle);
+            sprintf "Parsing failed fatally: %s\n Current block: %s\nfrom file: %s\n File position: %s\n",
+                $_, $self->content, $self->source_file, tell $self->source_handle);
     };
     if (!$slurp) {
         $self->log->debug("EOF reached.");

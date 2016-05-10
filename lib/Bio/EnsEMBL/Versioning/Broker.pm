@@ -27,7 +27,7 @@ use Module::Load::Conditional qw/can_load/;
 use Env;
 use Config::General;
 use File::Temp qw/tempdir/;
-use File::Path qw/make_path/;
+use File::Path qw/make_path remove_tree/;
 use File::Copy;
 use File::Spec;
 use IO::Dir;
@@ -218,7 +218,8 @@ sub get_file_list_for_version {
   my $version = shift;
   my $dir = $version->uri;
   my @files = glob($dir.'/*');
-  # print "Found files: ".join(',',@files);
+  @files = grep { $_ !~ /index$/ } @files; # Remove any possible overlap with output of a previous parsing attempt
+  $self->log->debug("Parsing files: ".join(',',@files));
   return \@files;
 }
 
@@ -240,11 +241,15 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
   my $temp_path = $doc_store->index;
   my $temp_location = IO::Dir->new($temp_path);
   my $final_location = $self->location($source,$revision);
+  my $index_location = File::Spec->catfile($final_location,'index');
   $self->log->debug("Moving index from $temp_path to $final_location");
+  if (-e $index_location) {
+    remove_tree($index_location);
+  }
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
-    make_path(File::Spec->catfile($final_location,'index'), { mode => 0774 });
-    move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($final_location,'index',$file) )
+    make_path($index_location, { mode => 0774 });
+    move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($index_location,$file) )
       || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'/index/  '.$!);
   }
   my $version_set = $self->schema->resultset('Version')->find(

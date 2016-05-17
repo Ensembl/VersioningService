@@ -65,7 +65,15 @@ cmp_ok( $version->count_seen, '==', 2, 'Times this revision has been seen can be
 # Test finalise methods
 
 my $dir = tempdir();
-my $temp_source = tempfile(DIR => $dir);
+my ($fh,$temp_source) = tempfile('sourceXXXX',DIR => $dir);
+my $dh = IO::File->new($dir.'/index','w');
+$dh->close;
+$version->uri($dir);
+$version->index_uri($dir.'/index');
+
+my $file_list = $broker->get_file_list_for_version($version);
+is_deeply($file_list, [$temp_source],'File list does not contain index, even if an index already exists');
+unlink $dir.'/index';
 
 $broker = Test::MockObject::Extends->new($broker);
 $broker->mock( 'location', sub { return tempdir() });

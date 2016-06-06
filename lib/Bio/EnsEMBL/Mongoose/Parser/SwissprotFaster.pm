@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package Bio::EnsEMBL::Mongoose::Parser::Swossprit;
+package Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster;
 use Moose;
 use Moose::Util::TypeConstraints;
 

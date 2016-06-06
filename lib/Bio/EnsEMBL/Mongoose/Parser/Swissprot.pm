@@ -59,7 +59,7 @@ sub node_sieve {
 
 sub accession {
     my $self = shift;
-    my $node_list = $self->xpath_context->findnodes('//uni:accession',$self->xml_document);
+    my $node_list = $self->xpath_context->findnodes('/uni:uniprot/uni:entry/uni:accession',$self->xml_document);
     
     # First node is "primary accession"
     my (@accessions) = $node_list->map(sub {$_->textContent});
@@ -146,7 +146,7 @@ sub xrefs {
         my $code; # evidence code
         my $creator; #dependent xref source
         if ($node->hasChildNodes) {
-            my @evidence_list = $self->xpath_context->findnodes('//uni:property[@type="evidence"]/@value',$node)->get_nodelist;
+            my @evidence_list = $self->xpath_context->findnodes('/uni:uniprot/uni:entry/uni:dbReference/uni:property[@type="evidence"]/@value',$node)->get_nodelist;
             if ( scalar @evidence_list > 1) {
                 $creator = $evidence_list[0]->getValue;
                 ($code,$creator) = $creator =~ /(\w+:)(.*)/; # remove evidence code for potential reuse/turning to ECO.

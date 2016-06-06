@@ -38,7 +38,6 @@ is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');
 $xml_reader->read_record;
 $iso_list = $xml_reader->record->isoforms;
 ok(!$iso_list,'No Isoform in second record, no problem');
-$xml_reader->read_record;
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
 
 

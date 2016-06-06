@@ -70,7 +70,8 @@ has accessions => (
     traits => ['Array'],
     predicate => 'has_accessions',
     handles => {
-        'get_accession' => 'get'
+        get_accession => 'get',
+        new_accession => 'push'
     }
 );
 

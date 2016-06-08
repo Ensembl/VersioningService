@@ -276,8 +276,10 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
     make_path($index_location, { mode => 0774 });
-    move(File::Spec->catfile($temp_path,$file), File::Spec->catfile($index_location,$file) )
-      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$temp_path.'/'.$file.' to '.$final_location.'/index/  '.$!);
+    my $source = File::Spec->catfile($temp_path,$file);
+    my $target = File::Spec->catfile($index_location,$file);
+    move($source, $target )
+      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$source.' to '.$target.'  '.$!);
   }
   my $version_set = $self->schema->resultset('Version')->find(
       { revision => $revision }

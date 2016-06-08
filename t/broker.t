@@ -74,6 +74,12 @@ $version->index_uri($dir.'/index');
 my $file_list = $broker->get_file_list_for_version($version);
 is_deeply($file_list, [$temp_source],'File list does not contain index, even if an index already exists');
 unlink $dir.'/index';
+note @$file_list;
+my $moved_file_list = $broker->shunt_to_fast_disk($file_list);
+note @$moved_file_list;
+
+ok(scalar @$moved_file_list > 0, 'Files were moved');
+cmp_ok(scalar @$moved_file_list, '==', scalar @$file_list, 'Equal number of files before and after copy');
 
 $broker = Test::MockObject::Extends->new($broker);
 $broker->mock( 'location', sub { return tempdir() });
@@ -108,5 +114,10 @@ ok( $downloader = $broker->get_downloader('UniProt/SWISSPROT'), "Loading downloa
 is($downloader,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt','Test correct download module name returned');
 my $module = $broker->get_module($downloader);
 ok($module->isa('Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'),'Check module can be loaded successfully');
+
+
+
+
+
 
 done_testing;

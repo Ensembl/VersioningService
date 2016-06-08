@@ -89,7 +89,8 @@ with 'MooseX::Log::Log4perl';
 sub init_broker {
   my $self = shift;
   my %conf = %{ $self->config };
-  my %opts; 
+  my %opts;
+  unless (defined $ENV{MONGOOSE}) { die 'Versioning Service must have environment variable $MONGOOSE set to root of code' }
   $opts{mysql_enable_utf8} = 1 if ($conf{driver} eq 'mysql');
   $opts{pg_enable_utf8 } = 1 if ($conf{driver} eq 'Pg');
   $opts{sqlite_unicode} = 1 if($conf{driver} eq 'SQLite');
@@ -129,6 +130,32 @@ sub location {
     my $path = $root.'/'.$source->source_groups->name.'/'.$source->name().'/'.$revision;
     make_path($path, { mode => 0774 });
     return $path;
+}
+
+# returns a list of paths to files that have been copied to scratch space. By default the copies
+# will be cleaned up after the process terminates.
+sub shunt_to_fast_disk {
+  my ($self,$file_list,$do_not_delete) = @_;
+  my $conf = $self->config;
+  if (exists $conf->{scratch_space}) {
+    my $scratch = $conf->{scratch_space};
+    my @copies;
+    if (-d $scratch && -w $scratch) {
+      my $tmp_dir = tempdir(DIR => $scratch, CLEANUP => !$do_not_delete);
+      foreach my $file (@$file_list) {
+        my ($vol,$dir,$filename) = File::Spec->splitpath($file);
+        my $copy_name = File::Spec->catfile($tmp_dir,$filename);
+        copy($file,$copy_name) || Bio::EnsEMBL::Mongoose::IOException->throw("Unable to copy to scratch space for parsing $!");
+        push @copies, $copy_name;
+      }
+      return \@copies;
+    } else {
+      Bio::EnsEMBL::Mongoose::IOException->throw("Scratch space defined as $scratch but not writeable");
+    }
+  } else {
+    $self->log->warning('No configuration for fast disk, leaving files where they are');
+    return $file_list;
+  }
 }
 
 # Move downloaded files from temp folder to a more permanent location, and update the versioning service to match.

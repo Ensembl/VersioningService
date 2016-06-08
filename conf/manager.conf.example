@@ -11,5 +11,7 @@ user   =
 pass   = 
 port   = 3306
 
+scratch_space = # Fast disk for obnoxiously huge files or expensive parsing
+
 [RDF config]
 LOD_location = "../conf/xref_LOD_mapping.json"

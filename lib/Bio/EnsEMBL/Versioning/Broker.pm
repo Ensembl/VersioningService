@@ -162,7 +162,8 @@ sub shunt_to_fast_disk {
 method finalise_download ($source, Str $revision, Str $temp_location){
     my $final_location = $self->location($source,$revision);
     for my $file (glob $temp_location."/*") {
-        move($file, $final_location.'/') || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location.' to '.$final_location.'. '.$!);
+      `mv $file $final_location/`;
+      if ($? >> 8 != 0) {Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location.' to '.$final_location.'. '.$!)};
     }
     
     my $version = $self->schema->resultset('Version')->create( {
@@ -271,15 +272,17 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
   my $index_location = File::Spec->catfile($final_location,'index');
   $self->log->debug("Moving index from $temp_path to $final_location");
   if (-e $index_location) {
-    remove_tree($index_location);
+    remove_tree($index_location); # delete any existing attempts
   }
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
     make_path($index_location, { mode => 0774 });
     my $source = File::Spec->catfile($temp_path,$file);
     my $target = File::Spec->catfile($index_location,$file);
-    move($source, $target )
-      || Bio::EnsEMBL::Mongoose::IOException->throw('Error moving index files from temp space:'.$source.' to '.$target.'  '.$!);
+    my $result = `mv $source $target`; # File::Copy cannot move folders between file systems
+    if ($? >> 8 != 0) {
+      Bio::EnsEMBL::Mongoose::IOException->throw("File moving failed: ".$!);
+    } 
   }
   my $version_set = $self->schema->resultset('Version')->find(
       { revision => $revision }

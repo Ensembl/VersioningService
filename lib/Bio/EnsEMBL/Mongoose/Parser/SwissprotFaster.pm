@@ -37,15 +37,6 @@ has reader => (
     lazy => 1
 );
 
-around BUILDARGS => sub {
-    my ($orig, $class, %args) = @_;
-    # Add some default parameters to the parser
-    $args{short_namespace} = 'uni';
-    $args{namespace} = 'http://uniprot.org/uniprot';
-    $args{top_tag} = 'uniprot';
-    $class->$orig(%args);
-};
-
 sub _prep_reader {
     my $self = shift;
     my $reader = XML::LibXML::Reader->new( IO => $self->source_handle ) || die "Nuh uh. Reader stillborn";
@@ -301,17 +292,6 @@ sub sequence {
     $self->record->sequence($sequence);
     $self->record->sequence_length(length($sequence));
 }
-
-
-
-
-
-
-
-
-
-
-
 
 __PACKAGE__->meta->make_immutable;
 

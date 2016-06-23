@@ -291,7 +291,10 @@ sub sequence {
     $reader->nextElement('sequence');
     my $version = $reader->getAttribute('version');
     $self->record->sequence_version($version);
-
+    my $checksum = $reader->getAttribute('checksum');
+    if ($checksum) {
+        $self->record->checksum($checksum);
+    }
     $reader->read;
     my $sequence = $reader->value;
     $sequence =~ s/\s+//g;

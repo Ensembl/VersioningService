@@ -4,10 +4,10 @@ use Test::Differences;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
-use Bio::EnsEMBL::Mongoose::Parser::Swissprot;
+use Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster;
 
 # Uses uniprot BRAF record (P15056) to validate the Swissprot parser.
-my $xml_reader = new Bio::EnsEMBL::Mongoose::Parser::Swissprot(
+my $xml_reader = new Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster(
     source_file => "data/braf.xml"
 );
 
@@ -23,6 +23,7 @@ is($record->primary_accession, "P15056", 'primary_accession check');
 cmp_ok($record->taxon_id, '==', 9606, 'taxon_id check');
 cmp_ok($record->sequence_length, '==', 766, 'sequence_length check');
 is($record->sequence,$seq, 'Make sure sequence regex-trimming does no harm, but removes white space');
+is($record->checksum,'0798C2AAB487E813','Verify checksum extraction');
 
 cmp_ok($record->evidence_level, '==', 1, 'evidence level correctly extracted');
 ok(!$record->suspicion, 'record should not be suspicious');
@@ -38,6 +39,9 @@ is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');
 $xml_reader->read_record;
 $iso_list = $xml_reader->record->isoforms;
 ok(!$iso_list,'No Isoform in second record, no problem');
+is($xml_reader->record->checksum, 'D70518BB9A83D879', 'Checksums still being caught');
+
+
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
 
 

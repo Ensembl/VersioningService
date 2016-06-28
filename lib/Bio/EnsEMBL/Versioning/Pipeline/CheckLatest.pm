@@ -79,7 +79,7 @@ sub run {
     $self->warning(sprintf('Flowing %s with %s to %d for %s', $source_name, $remote_version, 2, 'updater pipeline'));
     $self->dataflow_output_id($input_id, 2);
   } else {
-    $broker->alread_seen($local_version);
+    $broker->already_seen($local_version);
     $self->warning(sprintf('Source %s left at version %s', $source_name, $local_revision));
   }
 }

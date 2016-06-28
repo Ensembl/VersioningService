@@ -18,86 +18,53 @@ use Moose::Util::TypeConstraints;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
+extends 'Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster';
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
-with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Mongoose::Parser::XMLParser';
+with 'MooseX::Log::Log4perl';
 
-around BUILDARGS => sub {
-    my ($orig, $class, %args) = @_;
-    # Add some default parameters to the parser
-    $args{short_namespace} = 'uni';
-    $args{namespace} = 'http://uniprot.org/uniparc';
-    $args{top_tag} = 'uniparc';
-    $class->$orig(%args);    
-};
-
-sub node_sieve {
+# Replace Swissprot read_record with a shorter version suitable for Uniparc's limited fields
+sub read_record {
     my $self = shift;
-    $self->log->debug('Parsing XML subtree.');
-    
-    my $state = $self->accession();
-    $self->sequence();
-    $self->xrefs();
-    return 1 if $state >0;
+    $self->clear_record;
+    my $reader = $self->reader;
+    my $health = $reader->nextElement('entry');
+    return 0 if $health < 1;
+
+    $self->accession;
+    $self->xrefs;
+    $self->sequence;
 }
 
-
-# Filtering out only Ensembl Xrefs for the purposes of the old xref pipeline.
-sub xrefs {
-    my $self = shift;
-    # /uni:uniparc/uni:entry/uni:dbReference[@type="ENSEMBL"]
-    my $node_list = $self->xpath_context->findnodes('/uni:uniparc/uni:entry/uni:dbReference[@type="ENSEMBL"]',$self->xml_document);
+# # Filtering out only Ensembl Xrefs for the purposes of the old xref pipeline.
+# sub xrefs {
+#     my $self = shift;
+#     # /uni:uniparc/uni:entry/uni:dbReference[@type="ENSEMBL"]
+#     my $node_list = $self->xpath_context->findnodes('/uni:uniparc/uni:entry/uni:dbReference[@type="ENSEMBL"]',$self->xml_document);
     
-    my $record = $self->record;
-    $node_list->foreach( sub {
-        my $node = shift;
-        my @attributes = $node->attributes();
-        my ($source,$id,$active,$last);
-        foreach my $attr (@attributes) {
-            if ($attr->nodeName eq 'type') {$source = $attr->value}
-            elsif ($attr->nodeName eq 'id') {$id = $attr->value}
-            elsif ($attr->nodeName eq 'active') {
-                $active = ($attr->value eq 'Y') ? 1 : 0;
-            }
-            elsif ($attr->nodeName eq 'last' && !$active) {
-                # Only really interested in last seen in the event that an ID has been retired.
-                $last = $attr->value;
-            }
-        }
-        unless (defined($source) && defined($id) && defined($active)) { $self->log->debug(sprintf 'Faulty xref: %s,%s,%s,%s',$source,$id,$active,$last); return; }
-        my %attribs = (source => $source, id => $id, active => $active);
-        if ($last) { $attribs{version} = $last }
-        my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(%attribs);
+#     my $record = $self->record;
+#     $node_list->foreach( sub {
+#         my $node = shift;
+#         my @attributes = $node->attributes();
+#         my ($source,$id,$active,$last);
+#         foreach my $attr (@attributes) {
+#             if ($attr->nodeName eq 'type') {$source = $attr->value}
+#             elsif ($attr->nodeName eq 'id') {$id = $attr->value}
+#             elsif ($attr->nodeName eq 'active') {
+#                 $active = ($attr->value eq 'Y') ? 1 : 0;
+#             }
+#             elsif ($attr->nodeName eq 'last' && !$active) {
+#                 # Only really interested in last seen in the event that an ID has been retired.
+#                 $last = $attr->value;
+#             }
+#         }
+#         unless (defined($source) && defined($id) && defined($active)) { $self->log->debug(sprintf 'Faulty xref: %s,%s,%s,%s',$source,$id,$active,$last); return; }
+#         my %attribs = (source => $source, id => $id, active => $active);
+#         if ($last) { $attribs{version} = $last }
+#         my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(%attribs);
         
-        $record->add_xref($xref);
-    });
-}
+#         $record->add_xref($xref);
+#     });
+# }
 
-sub accession {
-    my $self = shift;
-    my $node_list = $self->xpath_context->findnodes('/uni:uniparc/uni:entry/uni:accession',$self->xml_document);
-    
-    # Uniparc has no primary accession, so we store them all equally.
-    my @accessions = $node_list->map(sub {$_->textContent});
-    $self->record->accessions(\@accessions);
-    $self->log->debug('Primary Accesion: '.$accessions[0]. ' and '.scalar(@accessions).' in total');
-    return scalar(@accessions);
-}
-
-sub sequence {
-    my $self = shift;
-    my $node_list = $self->xpath_context->findnodes('/uni:uniparc/uni:entry/uni:sequence',$self->xml_document);
-    my $seq_node = $node_list->shift;
-#    my $sequence = $seq_node->textContent;
-#    $sequence =~ s/\s+//g;
-#    $self->record->sequence($sequence);
-    # Want checksum in the attribute
-    my @attributes = $seq_node->attributes();
-    
-    foreach my $attr (@attributes) {
-        if ($attr->nodeName eq 'checksum') {$self->record->checksum($attr->value)}
-        elsif ($attr->nodeName eq 'length') {$self->record->sequence_length($attr->value)}
-    }
-    
-}
 
 1;

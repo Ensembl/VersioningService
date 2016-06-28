@@ -223,7 +223,7 @@ sub xrefs {
         my $active = 1;
         my $xref_state = $reader->getAttribute('active');
         if ( $xref_state && $xref_state eq 'N') { $active = 0 };
-        my $last = $reader->getAttribute('last');
+        # my $last = $reader->getAttribute('last');
         my ($code,$creator,$evidence);
         if ($active == 1) {
             until ($reader->localName eq 'dbReference' && ($reader->nodeType == XML_READER_TYPE_END_ELEMENT || $reader->isEmptyElement)) {
@@ -237,12 +237,19 @@ sub xrefs {
             my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);
             $xref->creator($creator) if ($creator);
             $self->record->add_xref($xref);
-        } else {
-            if ($last) {
-                $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'SwissProtTrembl', id => $last));
-            }
+
+            $reader->read; $reader->read;# reset to next record
         }
-        $reader->read; $reader->read;
+        else {
+            $reader->read;
+            $reader->read until $reader->depth <= $depth; # escape from whatever hell this is
+        } 
+        # else {
+        #     if ($last) {
+        #         $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'SwissProtTrembl', id => $last));
+        #     }
+        # }
+        
         # printf "%s:%s:%s:%s\n",$reader->localName,$reader->nodeType,$reader->readState,$reader->value;
     }
 }
@@ -281,7 +288,7 @@ sub sequence {
     my $reader = $self->reader;
     $reader->nextElement('sequence');
     my $version = $reader->getAttribute('version');
-    $self->record->sequence_version($version);
+    $self->record->sequence_version($version) if $version;
     my $checksum = $reader->getAttribute('checksum');
     if ($checksum) {
         $self->record->checksum($checksum);

@@ -78,7 +78,7 @@ sub run {
         $doc_store->store_record($record);
         $buffer++;
       }
-      if ($buffer % 100000 == 0) {
+      if ($buffer % 10000 == 0) {
           $doc_store->commit;
           $doc_store = $broker->document_store($temp);
       }

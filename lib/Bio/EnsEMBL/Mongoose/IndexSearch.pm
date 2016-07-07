@@ -33,7 +33,7 @@ use Bio::EnsEMBL::Mongoose::IOException;
 
 has handle => (
     isa => 'Maybe[Ref]',
-    is => 'ro',
+    is => 'rw',
     lazy => 1,
     default => sub {
         my $self = shift;

@@ -36,8 +36,8 @@ foreach my $source (@$source_list) {
   my $fh = IO::File->new($source->name . '.ttl', 'w');
   try {
       $mfetcher->handle($fh);
-      $mfetcher->_select_writer;
       $mfetcher->work_with_index(source => $source->name);
+      $mfetcher->_select_writer;
       my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
          taxons => [9606],
       );

@@ -22,6 +22,7 @@ use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use IO::File;
+use Try::Tiny;
 use Log::Log4perl;
 
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
@@ -33,13 +34,19 @@ my $source_list = $mfetcher->versioning_service->get_active_sources;
 
 foreach my $source (@$source_list) {
   my $fh = IO::File->new($source->name . '.ttl', 'w');
-  $mfetcher->handle($fh);
-  $mfetcher->_select_writer;
-  $mfetcher->work_with_index(source => $source->name);
-  my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
-     taxons => [9606],
-  );
-  $mfetcher->query_params($params);
+  try {
+      $mfetcher->handle($fh);
+      $mfetcher->_select_writer;
+      $mfetcher->work_with_index(source => $source->name);
+      my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
+         taxons => [9606],
+      );
+      $mfetcher->query_params($params);
 
-  $mfetcher->get_records();
+      $mfetcher->get_records();      
+    } catch {
+      warn $_;
+      $fh->close;
+    };
+  
 }

@@ -100,6 +100,8 @@ sub init_broker {
   } else {
     $dsn = sprintf("dbi:%s:database=%s;host=%s;port=%s",$conf{driver},$conf{db},$conf{host},$conf{port}); 
   }
+  $self->log->debug("Connecting to $dsn");
+
   my $schema = Bio::EnsEMBL::Versioning::ORM::Schema->connect(
     $dsn, 
     $conf{user}, 
@@ -107,7 +109,6 @@ sub init_broker {
     { %opts },
   );
   $schema->deploy({ add_drop_table => 1}) if ($self->create() == 1);
-  $self->log->debug("Connected to $dsn");
   return $schema;
 }
 

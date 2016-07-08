@@ -21,7 +21,6 @@ use warnings;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
-use Data::Dump::Color qw/dump/;
 use Log::Log4perl;
 
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");

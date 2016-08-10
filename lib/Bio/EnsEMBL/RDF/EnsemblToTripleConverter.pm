@@ -17,7 +17,7 @@ limitations under the License.
 
 =cut
 
-    EnsemblToTripleConverter - Module to help convert Ensembl data to RDF turtle
+#    EnsemblToTripleConverter - Module to help convert Ensembl data to RDF turtle
 
 =head1 SYNOPSIS
   my $params = { ontology_adaptor => ...,xref_mapping_file => ..., main_fh => ..., production_name=> ... }

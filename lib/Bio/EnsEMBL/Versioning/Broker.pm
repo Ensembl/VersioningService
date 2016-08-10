@@ -173,7 +173,7 @@ sub shunt_to_fast_disk {
       Bio::EnsEMBL::Mongoose::IOException->throw("Scratch space defined as $scratch but not writeable");
     }
   } else {
-    $self->log->warning('No configuration for fast disk, leaving files where they are');
+    $self->log->warn('No configuration for fast disk, leaving files where they are');
     return $file_list;
   }
 }

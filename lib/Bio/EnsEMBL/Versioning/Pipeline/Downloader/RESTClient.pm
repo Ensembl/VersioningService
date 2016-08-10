@@ -17,8 +17,6 @@ limitations under the License.
 
 =cut
 
-'rdf:type'
-
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient;
 
 use Moose::Role;

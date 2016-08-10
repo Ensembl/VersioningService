@@ -29,7 +29,7 @@ use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 
-my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(output_format => 'RDF', storage_engine_conf_file => '../conf/manager.conf');
+my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(output_format => 'RDF', storage_engine_conf_file => $ENV{MONGOOSE}.'./conf/manager.conf');
 
 my $source_list = $mfetcher->versioning_service->get_active_sources;
 

@@ -2,7 +2,6 @@ use Test::More;
 use Test::Differences;
 use Test::Deep;
 
-use Data::Dump::Color qw/dump/;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 
 my $taxi = Bio::EnsEMBL::Mongoose::Taxonomizer->new;

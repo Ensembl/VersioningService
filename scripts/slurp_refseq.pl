@@ -17,7 +17,6 @@ use strict;
 use warnings;
 
 use Log::Log4perl;
-use Data::Dump::Color qw/dump/;
 # use Devel::Size qw/total_size/;
 
 use Config::General;

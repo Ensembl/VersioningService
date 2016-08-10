@@ -18,7 +18,6 @@ use warnings;
 
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Serializer::FASTA;
-use Data::Dump::Color qw/dump/;
 use Log::Log4perl;
 use IO::File;
 

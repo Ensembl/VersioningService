@@ -17,7 +17,7 @@ use strict;
 use warnings;
 
 use Log::Log4perl;
-use Data::Dump::Color qw/dump/;
+
 
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 

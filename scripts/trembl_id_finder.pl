@@ -36,7 +36,6 @@ close $fh;
 package ADHDHandler;
 
 use base qw/XML::LibXML::SAX/;
-use Data::Dump::Color qw/dump/;
 
 our $texting = 0;
 our $depth = 0;

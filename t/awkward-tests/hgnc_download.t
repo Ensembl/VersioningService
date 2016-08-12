@@ -17,3 +17,4 @@ ok ($result,'Got HGNC data');
 is ($result->[0],cwd().'/hgnc.json', 'File named correctly');
 ok (-e cwd().'/hgnc.json', 'File also in filesystem');
 unlink cwd().'/hgnc.json';
+done_testing;

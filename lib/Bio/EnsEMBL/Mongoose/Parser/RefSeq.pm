@@ -112,9 +112,12 @@ sub read_record {
         $record->description( $description );
         $self->chew_description;
     }
-    my $comment = join("\n",$parser->get_raw_comment);
-    if ($comment) {
-        $record->comment( $comment );
+    my $raw_comment = $parser->get_raw_comment;
+    if ($raw_comment) {
+        my $comment = join("\n",@$raw_comment);
+        if ($comment) {
+            $record->comment( $comment );
+        }
     }
     my $seq_version = $parser->get_sequence_version;
     if ($seq_version) {

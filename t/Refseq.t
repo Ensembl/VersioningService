@@ -22,6 +22,9 @@ cmp_ok($record->sequence_length, '==', 6102, 'sequence_length check');
 is($record->taxon_id, '9541','Taxon correctly extracted');
 is($record->id, 'XM_005579308','ID correctly extracted');
 is($record->gene_name, 'CTSC','Gene name correctly extracted');
+cmp_ok(length($record->comment), '==', 665, 'Check comment block extracted whole as an array');
+
+# Next record
 $ref_seq_reader->read_record;
 $record = $ref_seq_reader->record;
 #print ref($record->xref)."\n";
@@ -35,7 +38,7 @@ $source = $ENV{MONGOOSE}."/t/data/YP_001693987.gpff";
 $ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::RefSeq->new(
     source_file => $source,
 );
-
+# Third record
 $ref_seq_reader->read_record;
 $accessions = $record->accessions;
 # No accession found in certain micro-organisms

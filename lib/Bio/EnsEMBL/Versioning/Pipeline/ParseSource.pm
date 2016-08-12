@@ -59,7 +59,7 @@ sub run {
   } else {
     $version = $broker->get_current_version_of_source($source_name);
   }
-
+  # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($broker->get_source($source_name)->parser);
   my $files = $broker->get_file_list_for_version($version);
   $files = $broker->shunt_to_fast_disk($files);
@@ -74,7 +74,7 @@ sub run {
 
     while($parser->read_record) {
       my $record = $parser->record;
-      # validate record for key fields.
+      # validate record for key fields. No accession or ID makes it pretty useless to us
       if ($record->has_taxon_id && ($record->has_accessions || defined $record->id)) {
         $doc_store->store_record($record);
         $buffer++;
@@ -87,6 +87,8 @@ sub run {
     $total_records += $buffer;
     $doc_store->commit;
   }
+  $self->warning(sprintf "Source %s,%s parsed with %d records and %d from the last loop",$source_name,$specific_version,$total_records,$buffer);
+  # Copy finished index to desired location managed by Broker
   my $source = $broker->get_source($source_name);
   $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
 }

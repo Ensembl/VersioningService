@@ -15,6 +15,8 @@ my $state = $hgnc_reader->read_record;
 
 ok ($state, 'First record read correctly');
 my $record = $hgnc_reader->record;
+ok ($record->has_taxon_id, 'All HGNC imports have taxon');
+is ($record->taxon_id, '9606', 'Hooman');
 is($record->display_label, 'A1BG', 'Test ID extraction');
 my @ens_ids = ();
 @ens_ids = $record->grep_xrefs(sub{ $_->source eq /Ensembl/; $_});

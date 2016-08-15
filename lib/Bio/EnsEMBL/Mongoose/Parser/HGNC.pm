@@ -78,6 +78,7 @@ sub read_record {
     my $match = $self->get_data;
     return unless $match; # no match, end of file.
     my %doc = %{$match->{Value} };
+    $self->record->taxon_id(9606);
     $self->record->id($doc{hgnc_id});
     $self->record->accessions([$doc{hgnc_id}]) if exists $doc{hgnc_id};
     $self->record->display_label($doc{symbol}) if exists $doc{symbol};

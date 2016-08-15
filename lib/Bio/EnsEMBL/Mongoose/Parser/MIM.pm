@@ -74,6 +74,7 @@ sub NO {
   my $field = shift;
   my ($accession) = $field->[1] =~ /(\d+)/;
   if ($accession) {
+    $self->record->new_accession($accession);
     $self->record->id($accession) ;
     return 1;
   } else {

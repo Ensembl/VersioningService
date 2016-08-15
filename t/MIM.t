@@ -16,7 +16,7 @@ my $record = $reader->record;
 
 is($record->id,'100050','ID extraction from TI field');
 is($record->display_label, 'AARSKOG SYNDROME, AUTOSOMAL DOMINANT', 'extraction of name from TI field');
-ok(!defined($record->accessions),'No accessions in first record');
+is($record->primary_accession,'100050','Accessions in first record same as ID');
 
 $reader->read_record;
 $record = $reader->record;
@@ -25,6 +25,7 @@ $record = $reader->record;
 #;;ANEURYSM, ABDOMINAL AORTIC; AAA;;
 
 is($record->id,'100070','ID of second record');
+is($record->primary_accession, '100070', 'ID also assigned to accession');
 is($record->display_label, 'AORTIC ANEURYSM, FAMILIAL ABDOMINAL, 1','second record display_label');
 my $tags = $record->tag;
 is($tags->[0],'phenotype','magic % symbol identified from second record');

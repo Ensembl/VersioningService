@@ -24,49 +24,56 @@ use Moose::Util::TypeConstraints;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
-# Consumes text file and emits Mongoose::Persistence::Records
+# Consumes text file and emits
 with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Mongoose::Parser::Parser';
-
-# 'uni','http://uniprot.org/uniprot'
 
 has content => (
     is => 'rw',
-    isa => 'Str'
+    isa => 'Str',
+    default => ''
 );
 
 has header => (
     is => 'rw',
-    isa => 'Str'
+    isa => 'Str',
+    clearer => 'empty_header'
 );
 
 has delimiter => (
-    is => 'ro',
+    is => 'rw',
     isa => 'Str',
-    default => "\t",
-    lazy => 1,
+    default => "\n",
+
 );
 
-sub slurp_content {
-    my $self = shift;
-    my $handle = $self->source_handle;
-    if (!$handle) { return; }
-    my $content = <$handle>;
-    if (!$content) { return; }
+has peek_buffer => (
+    is => 'rw',
+    isa => 'Str',
+    predicate => 'stuff_in_buffer',
+    clearer => 'empty_buffer'
+);
 
-    unless ($self->header) {
-        my $header = $self->check_header($content);
-        $self->header($header);
-        $content = <$handle>;
-    }
-    $self->{'current_block'} = [ split($self->delimiter, $content) ];
-    $self->content($self->header.$content);
-    return 1;
+has current_line => (
+    is => 'rw', isa => 'Str'
+);
+
+# peek buffer not implemented.
+
+sub is_comment {
+  my $self = shift;
+  my $line = shift;
+  return 1 if $line =~ /^#/;
+  return;
 }
 
-sub check_header {
+sub slurp_it_all {
   my $self = shift;
-  my $content = shift;
-  return $content;
+  my $fh = $self->source_handle;
+  my @content = ();
+  while (my $line = <$fh>) {
+    unless ($self->is_comment($line)) { push @content, $line }
+  }
+  return \@content;
 }
 
 1;

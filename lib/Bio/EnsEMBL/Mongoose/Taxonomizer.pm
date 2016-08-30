@@ -17,7 +17,8 @@ limitations under the License.
 
 =cut
 
-# Translate taxons into species names, and to get multiple taxons from child branches.
+# Translate taxons into species names, and to get multiple taxa from child branches.
+# Automatically tries to connect to a Compara database to facilitate taxon resolution
 
 package Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Moose;

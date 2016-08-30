@@ -15,6 +15,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+=head1 DESCRIPTION
+
+A query template in object form. 
+Specify: source, a list of ids, an evidence level, maximum returned results (when you want more than 10),
+or a list of taxon IDs to specify species. Species name is also valid, but will be checked against
+the NCBI taxonomy, and hence is not a solution for speciues that share taxa.
+
 =cut
 
 package Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
@@ -65,6 +72,7 @@ has result_size => (
     default => 10,
 );
 
+# Revision required when species collections are an issue.
 has taxons => (
     isa => 'ArrayRef[Int]',
     is => 'rw',

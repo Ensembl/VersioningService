@@ -17,6 +17,8 @@ limitations under the License.
 
 =cut
 
+# A simple command line parameter checker for scripts.
+
 package MongooseHelper;
 
 use Modern::Perl;

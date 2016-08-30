@@ -15,6 +15,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+=head1 DESCRIPTION
+
+A "record" representing one entity in a database. This format can be stored in a
+Lucene-like document store, and dumped. It acts as the single unifying format for 
+the multitude of different formats of data Ensembl imports. As such the record 
+contains a number of fields that do not always make sense in particular contexts.
+
+We leave it to the serializers to decide what to do the record when it is dumped out.
+
+External references are handled by the RecordXref object type and are attached to
+the record. The record is transformed into JSON for storage and transformed back again
+into this object type during queries.
+
 =cut
 
 package Bio::EnsEMBL::Mongoose::Persistence::Record;

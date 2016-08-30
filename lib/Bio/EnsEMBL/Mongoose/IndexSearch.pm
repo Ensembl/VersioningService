@@ -15,6 +15,39 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+=head1 DESCRIPTION
+
+IndexSearch provides a targetted interface to Lucy indexes for extracting records and dumping them.
+It is intended to replicate some functionality that was previously provided by mfetch and pfetch utilities.
+
+It needs access to the Versioning Service database, and the corresponding file system to access the data.
+Tne serialisation format as specified at initialisation is then used to dump subsets of records. Valid 
+formats include FASTA, JSON, and (Ensembl-specific) RDF. The resulting records, usually limited to a 
+single species are then dumped in that format.
+
+Note that to use the RDF serialiser, more configuration is required.
+
+=head1 SYNOPSIS
+
+# Unless a filehandle or path is specified, the output will go to STDOUT
+my $search = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+  output_format => 'FASTA', 
+  storage_engine_conf_file => $ENV{MONGOOSE}.'./conf/manager.conf'
+);
+
+my $source_list = $mfetcher->versioning_service->get_active_sources;
+
+my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
+    taxons => [9606]
+);
+
+foreach my $source (@$source_list) {
+  $search->work_with_index(source => $source->name);
+  $search->query_params($params);
+  $search->get_records();
+}
+# See also Bio::EnsEMBL::Mongoose::Persistence::QueryParameters for other kinds of filtering
+
 =cut
 
 package Bio::EnsEMBL::Mongoose::IndexSearch;
@@ -28,6 +61,8 @@ use Bio::EnsEMBL::Mongoose::Serializer::JSON;
 use Bio::EnsEMBL::Mongoose::Serializer::ID;
 use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 
+# In future this module should not be tightly tied to Apache Lucy, but allow
+# any document store to queried in this fashion, at least within the Lucene family.
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Bio::EnsEMBL::Versioning::Broker;

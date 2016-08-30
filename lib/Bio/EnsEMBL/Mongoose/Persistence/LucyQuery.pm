@@ -15,6 +15,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+=head1 DESCRIPTION
+
+A Apache Lucy wrapper to allow querying of indexes. Results are presented via
+an iterator, and are buffered to assist in rapid dumping of data.
+
 =cut
 
 package Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;

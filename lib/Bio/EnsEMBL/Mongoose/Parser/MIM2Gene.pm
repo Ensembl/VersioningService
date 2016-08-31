@@ -27,10 +27,13 @@ use Try::Tiny;
 use Bio::EnsEMBL::Mongoose::IOException;
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser','MooseX::Log::Log4perl';
 
-# consumes the mim2gene.txt file
+# consumes the mim2genefile.txt
 # see also primary parser consuming omim.txt file
 # MIM provides two different datasets in one download; morbidities and gene data
+# This parser consumes the mim2gene file and extracts a few xrefs from it. 
+# This file is superceded by mim2gene_medgen which restores the EntrezGene xrefs that disappeared from the main file
 # Variation requires the disease information later on, but it does not play a part in Xrefs
+
 
 sub read_record { 
   my $self = shift;

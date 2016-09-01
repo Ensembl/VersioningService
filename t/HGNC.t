@@ -1,10 +1,12 @@
 use Test::More;
 use Test::Differences;
+use File::Path 'remove_tree';
 use Data::Dumper;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Bio::EnsEMBL::Mongoose::Parser::HGNC;
-
+use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
+use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 
 my $source = $ENV{MONGOOSE}."/t/data/hgnc.json";
 my $hgnc_reader = new Bio::EnsEMBL::Mongoose::Parser::HGNC(
@@ -33,4 +35,40 @@ $record = $hgnc_reader->record;
 is($record->display_label, 'CCCC', 'Test ID extraction');
 $state = $hgnc_reader->read_record;
 ok(!$state, 'No further record, exit with negative state');
+undef($hgnc_reader);
+
+# now test the result of indexing
+$hgnc_reader = Bio::EnsEMBL::Mongoose::Parser::HGNC->new(
+    source_file => $source,
+);
+my $index_path = $ENV{MONGOOSE}.'/t/data/test_index';
+my $indexer = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new(
+  index => $index_path,
+);
+
+while ( $hgnc_reader->read_record ) {
+  $record = $hgnc_reader->record;
+  if ($record->has_taxon_id && ($record->has_accessions || defined $record->id)) {
+    $indexer->store_record($record);
+  }
+}
+
+$indexer->commit;
+my $interlocutor = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => { index_location => $index_path });
+
+my $query = 'taxon_id:9606';
+$interlocutor->query($query);
+my @results;
+while (my $hit = $interlocutor->next_result) {
+  my $record = $interlocutor->convert_result_to_record($hit);
+  push @results,$record;
+}
+
+cmp_ok(scalar @results, '==', 4, 'All four records made it to the index');
+is_deeply([map { $_->id } @results], [qw/HGNC:5 Cave Johnson Lemons/], 'IDs come back out of index intact');
+
+#print Dumper @results;
+# Delete index
+remove_tree($index_path);
+
 done_testing;

@@ -100,7 +100,7 @@ sub init_broker {
   my %opts;
   unless (defined $ENV{MONGOOSE}) { die 'Versioning Service must have environment variable $MONGOOSE set to root of code' }
   $opts{mysql_enable_utf8} = 1 if ($conf{driver} eq 'mysql');
-  $opts{pg_enable_utf8 } = 1 if ($conf{driver} eq 'Pg');
+  $opts{pg_enable_utf8} = 1 if ($conf{driver} eq 'Pg');
   $opts{sqlite_unicode} = 1 if($conf{driver} eq 'SQLite');
   my $dsn; 
   if ($conf{driver} eq 'SQLite') { 
@@ -155,6 +155,7 @@ sub shunt_to_fast_disk {
         my ($vol,$dir,$filename) = File::Spec->splitpath($file);
         my $copy_name = File::Spec->catfile($tmp_dir,$filename);
         copy($file,$copy_name) || Bio::EnsEMBL::Mongoose::IOException->throw("Unable to copy to scratch space for parsing $!");
+        $self->log->debug("Copying $filename to scratch space: $copy_name");
         push @copies, $copy_name;
       }
       return \@copies;
@@ -170,6 +171,7 @@ sub shunt_to_fast_disk {
 # Move downloaded files from temp folder to a more permanent location, and update the versioning service to match.
 method finalise_download ($source, Str $revision, Str $temp_location){
     my $final_location = $self->location($source,$revision);
+    $self->log->debug(sprintf "Moving new %s index from %s to %s",$temp_location,$final_location);
     for my $file (glob $temp_location."/*") {
       `mv $file $final_location/`;
       if ($? >> 8 != 0) {Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location.' to '.$final_location.'. '.$!)};

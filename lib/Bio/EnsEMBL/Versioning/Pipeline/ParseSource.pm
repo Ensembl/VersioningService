@@ -66,8 +66,8 @@ sub run {
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
   my $doc_store;
-  foreach (@$files) {
-    my $parser = $parser_name->new(source_file => $_);
+  foreach my $file (@$files) {
+    my $parser = $parser_name->new(source_file => $files);
     
     $doc_store = $broker->document_store($temp);
     my $buffer = 0; 

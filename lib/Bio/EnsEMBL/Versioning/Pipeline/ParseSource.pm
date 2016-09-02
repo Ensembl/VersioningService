@@ -67,7 +67,7 @@ sub run {
   my $total_records = 0;
   my $doc_store;
   foreach my $file (@$files) {
-    my $parser = $parser_name->new(source_file => $files);
+    my $parser = $parser_name->new(source_file => $file);
     
     $doc_store = $broker->document_store($temp);
     my $buffer = 0; 

@@ -197,9 +197,10 @@ method get_current_version_of_source ( Str $source_name ) {
     my $version;
     if ($source_rs) {
       $version = $source_rs->current_version;
+      $self->log->debug("Latest version of source $source_name is ".$version->revision);
+      return $version;
     }
-    $self->log->debug("Latest version of source $source_name is ".$version->revision);
-    return $version;
+    return;
 }
 
 sub list_versions_by_source {

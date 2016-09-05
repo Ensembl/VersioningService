@@ -44,7 +44,8 @@ use warnings;
 
 use Bio::EnsEMBL::Versioning::Broker;
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
-
+use Log::Log4perl;
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Try::Tiny;
 
 sub run {

@@ -58,8 +58,8 @@ sub run {
   if (defined $specific_version) {
     $version = $broker->get_version_of_source($source_name,$specific_version);
   } else {
-    # Not clear that we should ever be parsing a source without knowing the version
-    $version = $broker->get_current_version_of_source($source_name);
+    $self->warning("ParseSource attempted to run without knowing which version of a $source_name to parse");
+    return;
   }
   # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($source->parser);

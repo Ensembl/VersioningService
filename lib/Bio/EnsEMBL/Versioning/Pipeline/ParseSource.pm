@@ -53,14 +53,16 @@ sub run {
   my $specific_version = $self->param('version');
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
 
+  my $source = $broker->get_source($source_name);
   my $version;
   if (defined $specific_version) {
     $version = $broker->get_version_of_source($source_name,$specific_version);
   } else {
+    # Not clear that we should ever be parsing a source without knowing the version
     $version = $broker->get_current_version_of_source($source_name);
   }
   # Choose parser from DB entry for this source
-  my $parser_name = $broker->get_module($broker->get_source($source_name)->parser);
+  my $parser_name = $broker->get_module($source->parser);
   my $files = $broker->get_file_list_for_version($version);
   $files = $broker->shunt_to_fast_disk($files);
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
@@ -89,7 +91,6 @@ sub run {
   }
   $self->warning(sprintf "Source %s,%s parsed with %d records",$source_name,$specific_version,$total_records);
   # Copy finished index to desired location managed by Broker
-  my $source = $broker->get_source($source_name);
   $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
 }
 

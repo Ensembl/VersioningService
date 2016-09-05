@@ -61,7 +61,9 @@ cmp_ok($version->revision,'==',61,'Source fetching by specific version');
 $broker->already_seen($version);
 $version = $broker->get_version_of_source('RefSeq',61);
 cmp_ok( $version->count_seen, '==', 2, 'Times this revision has been seen can be incremented if a source is not receiving an update' );
-
+$broker->already_seen($version);
+$version = $broker->get_version_of_source('RefSeq',61);
+cmp_ok( $version->count_seen, '==', 3, 'More times this revision has been seen can be incremented if a source is not receiving an update' );
 # Test finalise methods
 
 my $dir = tempdir();
@@ -78,8 +80,16 @@ note @$file_list;
 my $moved_file_list = $broker->shunt_to_fast_disk($file_list);
 note @$moved_file_list;
 
+
 ok(scalar @$moved_file_list > 0, 'Files were moved');
 cmp_ok(scalar @$moved_file_list, '==', scalar @$file_list, 'Equal number of files before and after copy');
+
+my @temp_paths = ($broker->temp_location,$broker->temp_location,$broker->temp_location);
+note "Threaded paths:".join ',',@temp_paths;
+foreach my $path (@temp_paths) {
+  print "Yay $path\n" if -w $path
+}
+
 
 $broker = Test::MockObject::Extends->new($broker);
 $broker->mock( 'location', sub { return tempdir() });

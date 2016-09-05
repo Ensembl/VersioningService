@@ -125,6 +125,7 @@ sub temp_location {
     my $self = shift;
     my $root = $self->config->{temp};
     my $dir = tempdir(DIR => $root, CLEANUP => 0);
+    $self->log->debug("New download folder: $dir");
     return $dir;
 }
 
@@ -138,6 +139,7 @@ sub location {
     my $root = $self->config->{home};
     my $path = $root.'/'.$source->source_groups->name.'/'.$source->name().'/'.$revision;
     make_path($path, { mode => 0774 });
+    $self->log->debug("New final storage location for ".$source->name.":$revision at $path");
     return $path;
 }
 
@@ -196,6 +198,7 @@ method get_current_version_of_source ( Str $source_name ) {
     if ($source_rs) {
       $version = $source_rs->current_version;
     }
+    $self->log->debug("Latest version of source $source_name is ".$version->revision);
     return $version;
 }
 
@@ -207,6 +210,7 @@ sub list_versions_by_source {
     my @versions = $result->all;
     if (scalar(@versions) == 0) { Bio::EnsEMBL::Mongoose::DBException->throw('No versions found for source: '.$source_name.'. Possible integrity issue')};
     my $revisions = [ map {$_->revision} @versions ];
+    $self->log->debug("$source_name has the following versions: ".join ',',@$revisions);
     return $revisions;
 }
 
@@ -281,6 +285,7 @@ method finalise_index ($source, $revision, $doc_store, Int $record_count){
   my $temp_location = IO::Dir->new($temp_path);
   my $final_location = $self->location($source,$revision);
   my $index_location = File::Spec->catfile($final_location,'index');
+  $self->log->debug("Somehow indexing of ".$source->name.":$revision finished without parsing any records: $record_count") if $record_count < 1;
   $self->log->debug("Moving index from $temp_path to $final_location");
   if (-e $index_location) {
     remove_tree($index_location); # delete any existing attempts

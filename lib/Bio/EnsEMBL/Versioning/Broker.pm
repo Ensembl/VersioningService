@@ -88,6 +88,11 @@ subtype 'PackageName',
   message { "Provided package name does not resolve to a valid package in PERL5LIB" },
   where { can_load(modules => ({$_ => undef})) };
 
+# Subtype used to validate source arguments to certain methods where the ORM object is required
+subtype Source => as 'Object'
+  => message { 'This method requires a Source object from the ORM' }
+  => where { $_->isa('Bio::EnsEMBL::Versioning::ORM::Schema::Result::Source') };
+
 
 with 'MooseX::Log::Log4perl';
 
@@ -171,7 +176,7 @@ sub shunt_to_fast_disk {
 }
 
 # Move downloaded files from temp folder to a more permanent location, and update the versioning service to match.
-method finalise_download ($source, Str $revision, Str $temp_location){
+method finalise_download (Source $source, Str $revision, Str $temp_location){
     my $final_location = $self->location($source,$revision);
     $self->log->debug(sprintf "Moving new %s index from %s to %s",$temp_location,$final_location);
     for my $file (glob $temp_location."/*") {
@@ -281,7 +286,7 @@ sub document_store {
 }
 
 # finalise_index moves the index out of temp and into a permanent location
-method finalise_index ($source, $revision, $doc_store, Int $record_count){
+method finalise_index (Source $source, Str $revision, $doc_store, Int $record_count){
   my $temp_path = $doc_store->index;
   my $temp_location = IO::Dir->new($temp_path);
   my $final_location = $self->location($source,$revision);

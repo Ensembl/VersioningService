@@ -85,7 +85,7 @@ sub run {
     $broker->already_seen($local_version);
     # This source may not have an index, but the download already took place and there is no newer file to download
     # Therefore skip download and try again to parse the existing download
-    if (! defined $local_version->index) {
+    if (! defined $local_version->index_uri) {
       $self->dataflow_output_id({ source_name => $source_name, version => $local_version }  ,3);
     }
     $self->warning(sprintf('Source %s left at version %s', $source_name, $local_revision));

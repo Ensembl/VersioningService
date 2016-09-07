@@ -125,9 +125,22 @@ is($downloader,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt
 my $module = $broker->get_module($downloader);
 ok($module->isa('Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'),'Check module can be loaded successfully');
 
+# Bug test for multiple versions of any source with the same release causing new indexes to be stored incorrectly
 
+my $hgnc_group = $broker->schema->resultset('SourceGroup')->create({ name => 'HGNCGroup' });
+my $hgnc_source = $hgnc_group->create_related('sources', {name => 'HGNC', parser => 'HGNCParser', active=> 1});
 
+my $mim_group = $broker->schema->resultset('SourceGroup')->create({ name => 'MIMGroup' });
+my $mim_source = $mim_group->create_related('sources', {name => 'MIM', parser => 'MIMParser', active=> 1});
 
+my $third_version = $hgnc_source->create_related('versions', {revision => '07092016', uri => '/HGNC/hgnc.json', count_seen => 1, record_count => 1});
+my $fourth_version = $mim_source->create_related('versions', {revision => '07092016', uri => '/MIM/MIM.txt',count_seen => 1});
 
+$hgnc_source->update( {current_version => $third_version});
+$mim_source->update( {current_version => $fourth_version});
+
+$broker->finalise_index($mim_source, '07092016', $docstore, 100); # if bug present, this should modify the HGNC version instead of the MIM version
+is($broker->get_current_version_of_source('MIM')->record_count, '100', 'Correct source gets updated with ambiguous revision number');
+is($broker->get_current_version_of_source('HGNC')->record_count, '1', 'Other source does not get updated');
 
 done_testing;

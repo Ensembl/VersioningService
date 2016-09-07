@@ -307,7 +307,10 @@ method finalise_index (Source $source, Str $revision, $doc_store, Int $record_co
     } 
   }
   my $version_set = $self->schema->resultset('Version')->find(
-      { revision => $revision }
+      { revision => $revision,
+        'sources.name' => $source->name 
+      },
+      { join => 'sources' }
   );
   $version_set->index_uri(File::Spec->catfile($final_location,'index'));
   $version_set->record_count($record_count);

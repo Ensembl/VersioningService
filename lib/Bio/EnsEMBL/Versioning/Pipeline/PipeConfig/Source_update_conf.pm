@@ -81,6 +81,7 @@ sub pipeline_analyses {
         -rc_name          => 'normal',
         -flow_into  => {
           2 => ['DownloadSource'],
+          3 => ['ParseSource'],
           4 => ['ErrorLog'],
         },
       },

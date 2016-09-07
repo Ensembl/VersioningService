@@ -35,7 +35,7 @@ Bio::EnsEMBL::Versioning::Pipeline::CheckLatest
 =head1 DESCRIPTION
 
 A module which checks what the latest version of a source is on the server, and if it is the same as the one locally held
-
+Can bypass the download stage if there is nothing to download and we already have a version that isn't parsed.
 
 =cut
 
@@ -83,6 +83,11 @@ sub run {
     $self->dataflow_output_id($input_id, 2);
   } else {
     $broker->already_seen($local_version);
+    # This source may not have an index, but the download already took place and there is no newer file to download
+    # Therefore skip download and try again to parse the existing download
+    if (! defined $local_version->index) {
+      $self->dataflow_output_id({ source_name => $source_name, version => $local_version }  ,3);
+    }
     $self->warning(sprintf('Source %s left at version %s', $source_name, $local_revision));
   }
 }

@@ -79,13 +79,14 @@ sub run {
       source_name => $source_name,
       version => $remote_version,
     };
-    $self->warning(sprintf('Flowing %s with %s to %d for %s', $source_name, $remote_version, 2, 'updater pipeline'));
+    $self->warning(sprintf('Flowing %s with %s to %s for %s', $source_name, $remote_version, 'downloading', 'updater pipeline'));
     $self->dataflow_output_id($input_id, 2);
   } else {
     $broker->already_seen($local_version);
     # This source may not have an index, but the download already took place and there is no newer file to download
     # Therefore skip download and try again to parse the existing download
     if (! defined $local_version->index_uri) {
+      $self->warning(sprintf('Flowing %s with %s to %s for %s. No download required', $source_name, $local_version, 'parsing', 'updater pipeline'));
       $self->dataflow_output_id({ source_name => $source_name, version => $local_version }  ,3);
     }
     $self->warning(sprintf('Source %s left at version %s', $source_name, $local_revision));

@@ -58,7 +58,7 @@ sub fetch_input {
   my ($self) = @_;
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
   my $sources = $broker->get_active_sources;
-  $self->warning(sprintf 'Found %d sources(s) to process', scalar(@{$sources}));
+  $self->warning(sprintf 'Found %d active sources(s) to process', scalar(@{$sources}));
   $self->param('sources', $sources);
   return;
 }

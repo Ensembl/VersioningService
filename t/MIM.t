@@ -7,7 +7,7 @@ Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Bio::EnsEMBL::Mongoose::Parser::MIM;
 
 my $reader = new Bio::EnsEMBL::Mongoose::Parser::MIM(
-    source_file => "data/omim.txt",
+    source_file => "$ENV{MONGOOSE}/t/data/omim.txt",
 );
 
 $reader->read_record;

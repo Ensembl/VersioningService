@@ -6,7 +6,7 @@ Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Bio::EnsEMBL::Mongoose::Parser::Uniparc;
 
 my $xml_reader = new Bio::EnsEMBL::Mongoose::Parser::Uniparc(
-    source_file => "data/UPI0000000001.xml",
+    source_file => "$ENV{MONGOOSE}/t/data/UPI0000000001.xml",
     top_tag => 'uniparc',
 );
 

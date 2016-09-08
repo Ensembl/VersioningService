@@ -7,7 +7,7 @@ Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Bio::EnsEMBL::Mongoose::Parser::MIM2Gene;
 
 my $reader = new Bio::EnsEMBL::Mongoose::Parser::MIM2Gene(
-    source_file => "data/mim2gene.txt",
+    source_file => "$ENV{MONGOOSE}/t/data/mim2gene.txt",
 );
 
 $reader->read_record; #first one is empty...

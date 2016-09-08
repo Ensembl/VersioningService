@@ -7,7 +7,7 @@ use Data::Dumper;
 use Bio::EnsEMBL::Mongoose::Parser::MIM2GeneMedGen;
 
 my $reader = Bio::EnsEMBL::Mongoose::Parser::MIM2GeneMedGen->new(
-    source_file => "data/mim2gene_medshort",
+    source_file => "$ENV{MONGOOSE}/t/data/mim2gene_medshort",
 );
 
 

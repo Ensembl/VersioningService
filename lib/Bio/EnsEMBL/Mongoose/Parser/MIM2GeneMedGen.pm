@@ -45,7 +45,9 @@ has content_as_record => (
 
 sub read_record {
   my $self = shift;
-  return $self->one_record;
+  return if ($self->has_records < 1 );
+  $self->record($self->one_record);
+  return $self->record;
 }
 
 sub _digest_content {

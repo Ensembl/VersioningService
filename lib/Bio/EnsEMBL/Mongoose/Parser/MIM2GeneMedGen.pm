@@ -62,7 +62,7 @@ sub _digest_content {
     push @{ $records{$id} },{ entrezgene => $entrezgene, type => $type, medgen => $medgen};
   }
   foreach my $id (keys %records) {
-    my $record = Bio::EnsEMBL::Mongoose::Persistence::Record->new(id => $id, accessions => [$id]);
+    my $record = Bio::EnsEMBL::Mongoose::Persistence::Record->new(id => $id, accessions => [$id], taxon_id => 9606);
     foreach my $xref (@{ $records{$id} }) {
       if (exists $xref->{medgen} and $xref->{medgen} ne '-') {
         $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'MedGen',creator => 'MIM',id => $xref->{medgen}));

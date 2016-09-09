@@ -64,7 +64,7 @@ sub _get_remote {
   my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path);
   $self->log->debug('Downloaded EntrezGene FTP files: '.join("\n",@$result));
   return $result if (scalar @$result > 0);
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from RefSeq source");
+  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from EntrezGene source");
 }
 
 __PACKAGE__->meta->make_immutable;

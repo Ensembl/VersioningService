@@ -39,100 +39,97 @@ with 'Bio::EnsEMBL::Mongoose::Parser::Parser', 'MooseX::Log::Log4perl';
 has 'fields' => ( is => 'ro', isa => 'HashRef[Str]', default => sub { {} }, );
 
 sub read_record {
-	my $self = shift;
-	$self->clear_record;
-	my $record  = $self->record;
-	my $fh      = $self->source_handle;
-	my $content = <$fh>;
-	return unless $content;
+  my $self = shift;
+  $self->clear_record;
+  my $record  = $self->record;
+  my $fh      = $self->source_handle;
+  my $content = <$fh>;
+  return unless $content;
 	
-	#check if the line is a header line
-	if ( $content =~ /^#/ ) {
-			$self->log->info("Processing gene_info header");
-			chomp($content);
+  #check if the line is a header line
+  if ( $content =~ /^#/ ) {
+    $self->log->info("Processing gene_info header");
+    chomp($content);
 
-			#remove the first character '#'
-			$content = substr $content, 1;
-			$self->set_fields($content);
-			
-			do{
-			    $content = <$fh>;
-			} until($content !~ /^#/ );
-		return unless $content;
-	}
+    #remove the first character '#'
+    $content = substr $content, 1;
+    $self->set_fields($content);
 	
+    do{
+      $content = <$fh>;
+    } until($content !~ /^#/ );
+    
+    return unless $content;
+    }
 
-	if ( defined $self->fields && scalar( keys $self->fields ) > 0 ) {
-		chomp($content);
+  if ( defined $self->fields && scalar( keys $self->fields ) > 0 ) {
+    chomp($content);
+    my $fields = $self->fields;
+    my @linecolumns = split( /\t/, $content );
+    $record->id( $linecolumns[ $fields->{"GeneID"} ] );
+    $record->gene_name( $linecolumns[ $fields->{"Symbol"} ] );
+    $record->display_label($linecolumns[ $fields->{"Symbol"} ] );
+    $record->description($linecolumns[ $fields->{"description"} ] );
+    $record->taxon_id($linecolumns[ $fields->{"tax_id"} ] );
 		
-		my @linecolumns = split( /\t/, $content );
-		$self->record->id( $linecolumns[ $self->fields->{"GeneID"} ] );
-		$self->record->gene_name( $linecolumns[ $self->fields->{"Symbol"} ] );
-		$self->record->display_label($linecolumns[ $self->fields->{"Symbol"} ] );
-		$self->record->description($linecolumns[ $self->fields->{"description"} ] );
-		$self->record->taxon_id($linecolumns[ $self->fields->{"tax_id"} ] );
-		
-		#xref format MIM:600950|HGNC:HGNC:19|Ensembl:ENSG00000129673|HPRD:02974|Vega:OTTHUMG00000180179
-		#Please note that HGNC is different from others
-		my $xrefs = $linecolumns[ $self->fields->{"dbXrefs"} ];
-		unless ($xrefs eq "-"){
+    #xref format MIM:600950|HGNC:HGNC:19|Ensembl:ENSG00000129673|HPRD:02974|Vega:OTTHUMG00000180179
+    #Please note that HGNC is different from others
+    my $xrefs = $linecolumns[ $fields->{"dbXrefs"} ];
+    unless ($xrefs eq "-"){
 			
-			if(defined $xrefs && index($xrefs, '|') > 0 ){
-				my @all_xrefs = split(/\|/,  $xrefs);
+    if(defined $xrefs && index($xrefs, '|') > 0 ){
+      my @all_xrefs = split(/\|/,  $xrefs);
 
-				foreach my $xref (@all_xrefs){
-					my ($source,$id);
-						if($xref =~/HGNC/g){
-							($source,$id) = split(/:HGNC:/, $xref);
-							$id = 'HGNC:'.$id;
-						}else{
-							($source,$id) = split(/:/, $xref);
-						}
+      foreach my $xref (@all_xrefs){
+        my ($source,$id);
+        if($xref =~/HGNC/g){
+          ($source,$id) = split(/:HGNC:/, $xref);
+          $id = 'HGNC:'.$id;
+        }else{
+          ($source,$id) = split(/:/, $xref);
+        }
+        $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source,creator => 'EntrezGene',id => $id));
+      }
+    }
+  }
 
-					$self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source,creator => 'EntrezGene',id => $id));
-				}
-			}
-		}
+  #synonym format one string (eg: DSPSI) or multipe with '|' token seperated (eg: DSPS|SNAT)
+  my $synonyms = $linecolumns[ $fields->{"Synonyms"} ];
+  unless ($synonyms eq "-"){
+    if(defined $synonyms && index($synonyms, '|') > 0 ){
+      my @all_synonyms = split(/\|/,  $synonyms);
 
-		#synonym format one string (eg: DSPSI) or multipe with '|' token seperated (eg: DSPS|SNAT)
-		my $synonyms = $linecolumns[ $self->fields->{"Synonyms"} ];
-		unless ($synonyms eq "-"){
-			
-			if(defined $synonyms && index($synonyms, '|') > 0 ){
-				my @all_synonyms = split(/\|/,  $synonyms);
-				foreach my $synonym (@all_synonyms){
-					$self->record->add_synonym($synonym);
-				}
-			}else{
-				$self->record->add_synonym($synonyms);
-			}
-		}
-	return 1;	
-	}
+      foreach my $synonym (@all_synonyms){
+        $record->add_synonym($synonym);
+      }
+    }else{
+      $record->add_synonym($synonyms);
+    }
+  }
+  return 1;
+  }
 	
 }
 
 
 
 =head2 set_fields
-
-    Arg [1]     : String $header - gene_info file header line as string
-    Example     : $self>set_fiels($header_string);
-    Description : Setter for headers used in this file format
-    Returntype  : Void
+  
+  Arg [1]     : String $header - gene_info file header line as string
+  Example     : $self>set_fiels($header_string);
+  Description : Setter for headers used in this file format
+  Returntype  : Void
 
 =cut
 
 sub set_fields {
-	my ( $self, $header ) = @_;
+  my ( $self, $header ) = @_;
+  my @actual_fields = split( /\t/, $header );
+  my $index = 0;
 
-	my @actual_fields = split( /\t/, $header );
-
-	my $index = 0;
-	foreach my $field (@actual_fields) {
-		$self->fields->{$field} = $index++;
-	}
-
+  foreach my $field (@actual_fields) {
+    $self->fields->{$field} = $index++;
+  }
 }
 
 1;

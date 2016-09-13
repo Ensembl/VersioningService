@@ -115,7 +115,7 @@ sub read_record {
     my $raw_comment = $parser->get_raw_comment;
     if ($raw_comment) {
         my $comment = join("\n",@$raw_comment);
-        if ($comment) {
+        if ($comment ne '') {
             $record->comment( $comment );
         }
     }

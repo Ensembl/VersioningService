@@ -79,7 +79,7 @@ has handle => (
         my $self = shift;
         # no file handle, let the handle point to a copy of STDOUT instead
         my $handle;
-        $self->log->debug("Making handle");
+        $self->log->trace("Making handle");
         open $handle, ">&STDOUT";
         return $handle;
     },
@@ -88,7 +88,7 @@ has handle => (
 sub DEMOLISH {
     my $self = shift;
     close $self->handle;
-    $self->log->debug("File handle released");
+    $self->log->trace("File handle released");
 }
 
 enum 'Formats', [qw(FASTA JSON ID RDF)];

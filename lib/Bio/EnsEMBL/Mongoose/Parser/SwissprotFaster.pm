@@ -283,7 +283,7 @@ sub evidence_level {
     elsif ($evidence =~ /uncertain/) {
         $level = 5;
     }
-    $self->log->debug("Coded to level $level");
+    $self->log->trace("Coded to level $level");
     $record->evidence_level($level);
 }
 

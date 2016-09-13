@@ -166,8 +166,8 @@ sub query {
 sub next_result {
     my $self = shift;
     if ($self->cursor % $self->buffer_size == 0) {
-        $self->log->debug('Iterator position: '.$self->cursor);
-        $self->log->debug('Result buffer dry, fetch more');
+        $self->log->trace('Iterator position: '.$self->cursor);
+        $self->log->trace('Result buffer dry, fetch more');
         $self->result_set($self->search_engine->hits(
             query => $self->parsed_query,
             num_wanted => $self->buffer_size, 

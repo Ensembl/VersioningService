@@ -47,7 +47,7 @@ sub print_record {
     my $encoder = $self->encoder;
     my $handle = $self->handle;
     my $json = $self->encoder->encode($record);
-    #$self->log->debug($json);
+    #$self->log->trace($json);
     print $handle $json;
 }
 

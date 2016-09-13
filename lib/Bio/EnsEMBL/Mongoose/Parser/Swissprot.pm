@@ -43,7 +43,7 @@ around BUILDARGS => sub {
 sub node_sieve {
     my $self = shift;
 
-    $self->log->debug('Parsing XML subtree.');
+    $self->log->trace('Parsing XML subtree.');
     my $state = $self->accession();
     $self->synonyms();
     $self->gene_name();
@@ -56,7 +56,7 @@ sub node_sieve {
     $self->taxon();
     $self->evidence_level();
     $self->isoform();
-    if ($self->suspicious()) {$self->log->debug("Found an untrustworthy Xref, ".$self->record->primary_accession)}
+    if ($self->suspicious()) {$self->log->trace("Found an untrustworthy Xref, ".$self->record->primary_accession)}
     # note: can always fetch child nodes with $node->getElementsByTagName
     return 1 if $state >0;
 }
@@ -69,7 +69,7 @@ sub accession {
     # First node is "primary accession"
     my (@accessions) = $node_list->map(sub {$_->textContent});
     $self->record->accessions(\@accessions);
-    $self->log->debug('Primary Accesion: '.$accessions[0]. ' and '.scalar(@accessions).' total accessions');
+    $self->log->trace('Primary Accesion: '.$accessions[0]. ' and '.scalar(@accessions).' total accessions');
     return scalar(@accessions);
 }
 
@@ -169,7 +169,7 @@ sub evidence_level {
     my $self = shift;
     my $level = 0;
     my $evidence = $self->xpath_to_value('/uni:uniprot/uni:entry/uni:proteinExistence/@type');
-    $self->log->debug("Evidence code: $evidence");
+    $self->log->trace("Evidence code: $evidence");
     my $record = $self->record;
 
     if ($evidence =~ /evidence at protein level/) { 
@@ -187,7 +187,7 @@ sub evidence_level {
     elsif ($evidence =~ /uncertain/) {
         $level = 5;
     }
-    $self->log->debug("Coded to level $level");
+    $self->log->trace("Coded to level $level");
     $record->evidence_level($level);
 }
 # Used for finding comments that indicate a reference is unreliable

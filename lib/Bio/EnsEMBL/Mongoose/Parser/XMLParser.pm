@@ -125,7 +125,7 @@ sub read_record {
         return; 
     }
     $self->clear_record;
-    $self->log->debug("Reading XML section");
+    $self->log->trace("Reading XML section");
     my $read_state = $self->node_sieve();
     $self->flush_document; # Make sure XML does not pollute next iteration
     return $read_state;
@@ -137,17 +137,17 @@ sub slurp_content {
     my $handle = $self->source_handle;
     local $/ = '</entry>';
     my $content = <$handle>;
-    $self->log->debug($content);
+    $self->log->trace($content);
     unless ($self->xml_header) {
         $content =~ s/(.*)(?=<entry[^>]*?>)//s;
         $self->xml_header($1);
     }
-    $self->log->debug($self->xml_header); 
+    $self->log->trace($self->xml_header); 
     my $tag = $self->top_tag;
     # Beyond the last </entry> is a </uniprot> or a </uniparc>
     # We can skip this safely
     if ($content =~ /<\/$tag>$/) {
-        $self->log->debug("Found end of XML file");
+        $self->log->trace("Found end of XML file");
         return;
     }
     $self->content($self->xml_header.$content.$self->xml_footer);
@@ -164,7 +164,7 @@ sub xpath_to_value {
     if ($node_list->size > 0) {
         return $node_list->shift->textContent;
     } else {
-        $self->log->debug("Xpath returned nowt, ".$xpath);
+        $self->log->trace("Xpath returned nowt, ".$xpath);
         return;
     }
 }

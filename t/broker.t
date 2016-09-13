@@ -84,13 +84,6 @@ note @$moved_file_list;
 ok(scalar @$moved_file_list > 0, 'Files were moved');
 cmp_ok(scalar @$moved_file_list, '==', scalar @$file_list, 'Equal number of files before and after copy');
 
-my @temp_paths = ($broker->temp_location,$broker->temp_location,$broker->temp_location);
-note "Threaded paths:".join ',',@temp_paths;
-foreach my $path (@temp_paths) {
-  print "Yay $path\n" if -w $path
-}
-
-
 $broker = Test::MockObject::Extends->new($broker);
 $broker->mock( 'location', sub { return tempdir() });
 

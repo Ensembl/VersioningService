@@ -68,7 +68,6 @@ sub run {
       source_name => $source_name
     };
     $self->warning(sprintf 'Download failed for %s for %s', $source_name, 'update_pipeline');
-    $self->dataflow_output_id($input_id, 4);
     return;
   };
   $broker->finalise_download($source,$latest_version,$temp_location);

@@ -71,7 +71,7 @@ sub run {
       error => "Version could not be found for $source_name",
       source_name => $source_name
     };
-    $self->dataflow_output_id($input_id, 4);
+    $self->warn("Version could not be found for $source_name");
     return;
   }
   if ($remote_version ne $local_revision) {

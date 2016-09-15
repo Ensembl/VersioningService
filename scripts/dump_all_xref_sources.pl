@@ -52,21 +52,26 @@ my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 );
 my $base_path = $opts->dump_path;
 $base_path ||= '';
+my $fh;
 foreach my $source (@final_source_list) {
-  my $fh = IO::File->new(File::Spec->catfile($base_path,$source.'.ttl'), 'w');
+  $fh = IO::File->new(File::Spec->catfile($base_path,$source.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
   try {
-      $searcher->handle($fh);
-      $searcher->work_with_index(source => $source);
-      $searcher->_select_writer;
+    my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+      output_format => 'RDF',
+      storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf',
+      species => $opts->species,
+      handle => $fh,
+    );
+    $searcher->work_with_index(source => $source);
       # my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
       #    taxons => [9606],
       # );
       # $searcher->query_params($params);
 
-      $searcher->get_records();      
-    } catch {
-      warn $_;
-      $fh->close;
-    };
-  
+    $searcher->get_records();
+    $fh->close;    
+  } catch {
+    warn $_;
+    $fh->close;
+  };
 }

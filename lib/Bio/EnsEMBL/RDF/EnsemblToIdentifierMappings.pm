@@ -85,6 +85,7 @@ sub identifier_org_translation {
     return "http://identifiers.org/".$id_url."/";
   } elsif (! exists $seen{$e_name}){
     warn "No identifiers.org name for $e_name"; 
+    $seen{$e_name} = 1;
   } else {
     $seen{$e_name}++;
   }

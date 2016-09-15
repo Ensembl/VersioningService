@@ -42,7 +42,7 @@ my $proposed_sources = $opts->source_list;
 
 die "No source provided" unless $opts->source_list;
 my $comp = List::Compare->new($opts->source_list,\@source_names);
-my @final_source_list = $comp->get_union();
+my @final_source_list = $comp->get_intersection();
 print "Selected sources: ".join(',',@final_source_list)."\n";
 
 my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(

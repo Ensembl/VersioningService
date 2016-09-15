@@ -21,30 +21,49 @@ use warnings;
 
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
+use Bio::EnsEMBL::Versioning::Broker;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use IO::File;
+use File::Spec;
 use Try::Tiny;
 use Log::Log4perl;
-
+use MongooseHelper;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
+use List::Compare;
 
+my $opts = MongooseHelper->new_with_options();
 
-my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(output_format => 'RDF', storage_engine_conf_file => $ENV{MONGOOSE}.'./conf/manager.conf');
+my $broker = Bio::EnsEMBL::Versioning::Broker->new();
 
-my $source_list = $mfetcher->versioning_service->get_active_sources;
+my $valid_source_list = $broker->get_active_sources;
+my @source_names = map { $_->name } @$valid_source_list;
+print "Sources available: ".join(',',@source_names)."\n";
+my $proposed_sources = $opts->source_list;
 
-foreach my $source (@$source_list) {
-  my $fh = IO::File->new($source->name . '.ttl', 'w');
+die "No source provided" unless $opts->source_list;
+my $comp = List::Compare->new($opts->source_list,\@source_names);
+my @final_source_list = $comp->get_union();
+print "Selected sources: ".join(',',@final_source_list)."\n";
+
+my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+  output_format => 'RDF',
+  storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf',
+  species => $opts->species,
+);
+my $base_path = $opts->dump_path;
+$base_path ||= '';
+foreach my $source (@final_source_list) {
+  my $fh = IO::File->new(File::Spec->catfile($base_path,$source.'.ttl'), 'w');
   try {
-      $mfetcher->handle($fh);
-      $mfetcher->work_with_index(source => $source->name);
-      $mfetcher->_select_writer;
-      my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
-         taxons => [9606],
-      );
-      $mfetcher->query_params($params);
+      $searcher->handle($fh);
+      $searcher->work_with_index(source => $source);
+      $searcher->_select_writer;
+      # my $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
+      #    taxons => [9606],
+      # );
+      # $searcher->query_params($params);
 
-      $mfetcher->get_records();      
+      $searcher->get_records();      
     } catch {
       warn $_;
       $fh->close;

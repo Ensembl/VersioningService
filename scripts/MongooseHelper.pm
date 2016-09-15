@@ -26,9 +26,29 @@ use Moose;
 
 with 'MooseX::Getopt';
 
-has species => (is => 'rw', isa => 'Str', default => 'homo sapiens');
-has dump_path => (is => 'rw', isa => 'Str', default => '/nfs/nobackup/ensembl/ktaylor');
-has source_list => (is => 'rw', isa => 'ArrayRef', default => sub { [qw/Swissprot Trembl MIM mim2gene HGNC EntrezGene Uniparc RefSeq/]} );
-has format => (is => 'rw', isa => 'Str', default => 'RDF');
+has species => (
+  is => 'rw', 
+  isa => 'Str', 
+  default => 'homo sapiens', 
+  documentation => 'Common name of species to dump. Will be transformed into a taxon ID for the query'
+);
+has dump_path => (
+  is => 'rw', 
+  isa => 'Str', 
+  default => '/nfs/nobackup/ensembl/ktaylor', 
+  documentation => 'A root path into which the produced ttl files will be written'
+);
+has source_list => (
+  is => 'rw', 
+  isa => 'ArrayRef', 
+  default => sub { [qw/Swissprot Trembl MIM mim2gene HGNC EntrezGene Uniparc RefSeq/]}, 
+  documentation => 'Name a source to dump, or several by repeating the option. Defaults to all known sources'
+);
+has format => (
+  is => 'rw', 
+  isa => 'Str', 
+  default => 'RDF', 
+  documentation => 'Decide which format to dump the data as. Examples: RDF, JSON, FASTA'
+);
 
 1;

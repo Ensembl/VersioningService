@@ -6,9 +6,23 @@
       "ignore": true
     },
     {
+      "db_name": "Allergome",
+      "id_namespace": "allergome",
+      "description": "Repository of data related to all IgE-binding compounds"
+    },
+    {
       "db_name": "BaylorCollege",
       "example_id": "NCRNA_8378",
       "ignore": true
+    },
+    {
+      "db_name": "BindingDB",
+      "id_namespace": "bindindDB"
+    },
+    {
+      "db_name": "BioCyc",
+      "id_namespace": "biocyc",
+      "description": "Collection of pathway/genome databases"
     },
     {
       "db_name": "BioGRID",
@@ -16,14 +30,42 @@
       "id_namespace": "biogrid"
     },
     {
+      "db_name": "BRENDA",
+      "id_namespace":"brenda",
+      "description": "Enzyme functional data collection"
+    },
+    {
       "db_name": "CADRE",
       "example_id": "AFUA_3G01196",
       "ignore": true
     },
     {
+      "db_name": "CAZy",
+      "example_id": "GT10",
+      "id_namespace": "cazy",
+      "description": "Carbohydrate enzyme database"
+    },
+    {
+      "db_name": "cda",
+      "description": "Candida Genome Database",
+      "example_id": "CAL0000001",
+      "id_namespace": "cgd"
+    },
+    {
+      "db_name": "cdd",
+      "description": "Conserved Domain Database",
+      "id_namespace": "cdd"
+    },
+    {
       "db_name": "CCDS",
       "example_id": "CCDS10469",
       "id_namespace": "ccds"
+    },
+    {
+      "db_name": "ChEBI",
+      "id_namespace": "chebi",
+      "canonical_LOD": "http://purl.obolibrary.org/obo/CHEBI",
+      "description": "Chemical Entities of Biological Interest ontology"
     },
     {
       "db_name": "ChEMBL",
@@ -50,14 +92,47 @@
       "ignore":true
     },
     {
+      "db_name": "Conoserver",
+      "id_namespace": "conoserver",
+      "description": "Conopeptide resource"
+    },
+    {
       "db_name": "CTD",
       "description": "Gene part of the Comparative Toxicogenomics Database",
       "id_namespace": "ctd.gene"
     },
     {
+      "db_name": "DisProt",
+      "id_namespace": "disprot",
+      "description": "Database of protein disorder"
+    },
+    {
       "db_name": "DBASS3",
       "example_id": "80",
       "ignore": true
+    },
+    {
+      "db_name": "Drugbank",
+      "description": "DrugBank database",
+      "id_namespace": "drugbank"
+    },
+    {
+      "db_name": "dictybase",
+      "id_namespace": "dictybase",
+      "description": "Dicybase Gene, see dictybase.org",
+      "example_id": "DDB_G0267522"
+    },
+    {
+      "db_name": "DIP",
+      "description": "Database of Interacting Proteins",
+      "id_namespace": "dip"
+    },
+    {
+      "db_name": "doi",
+      "description": "Digital Object Identifier System",
+      "example_id": "doi:10.1038/nbt1156",
+      "id_namespace": "doi",
+      "canonical_LOD": "https://dx.doi.org/"
     },
     {
       "db_name": "ensembl",
@@ -76,6 +151,31 @@
       "example_id": "ENSP00000014214",
       "id_namespace": "ensembl",
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl.protein/"
+    },
+    {
+      "db_name": "ensemblbacteria",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
+      "id_namespace": "ensembl.bacteria"
+    },
+    {
+      "db_name": "ensemblmetazoa",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
+      "id_namespace": "ensembl.metazoa"
+    },
+    {
+      "db_name": "ensemblplants",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
+      "id_namespace": "ensembl.plants"
+    },
+    {
+      "db_name": "ensemblprotists",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
+      "id_namespace": "ensembl.protists"
+    },
+    {
+      "db_name": "ensemblfungi",
+      "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
+      "id_namespace": "ensembl.fungi"
     },
     {
       "db_name": "EC",
@@ -128,6 +228,11 @@
       "id_namespace": "lrg"
     },
     {
+      "db_name": "lrg",
+      "example_id": "LRG_357",
+      "id_namespace": "lrg"
+    },
+    {
       "db_name": "EntrezGene",
       "example_id": "100125760",
       "id_namespace": "ncbigene",
@@ -154,7 +259,12 @@
     {
       "db_name": "flybase_annotation_id",
       "example_id": "FBan0011023",
-      "ignore": true
+      "ignore": true,
+      "id_namespace": "flybase"
+    },
+    {
+      "db_name": "flybase",
+      "id_namespace": "flybase"
     },
     {
       "db_name": "flybase_gene_id",
@@ -174,16 +284,19 @@
     {
       "db_name": "FlyBaseCGID_gene",
       "example_id": "CG11023",
+      "id_namespace": "flybase",
       "ignore": true
     },
     {
       "db_name": "FlyBaseCGID_transcript",
       "example_id": "CG11023-RB",
+      "id_namespace": "flybase",
       "ignore": true
     },
     {
       "db_name": "FlyBaseCGID_translation",
       "example_id": "CG11023-PB",
+      "id_namespace": "flybase",
       "ignore": true
     },
     {
@@ -207,9 +320,24 @@
       "ignore": true
     },
     {
+      "db_name": "GeneCards",
+      "id_namespace": "genecards",
+      "description": "Human gene database of related transcriptomic, genetic, proteomic, functional and disease information"
+    },
+    {
+      "db_name": "GeneDB",
+      "id_namespace": "genedb",
+      "example_id": "Cj1536c"
+    },
+    {
       "db_name": "GeneTree",
       "example_id": "ENSGT00800000124088",
       "id_namespace": "genetree"
+    },
+    {
+      "db_name": "GeneWiki",
+      "description": "Gene Wiki is different to WikiGene",
+      "id_namespace": "genewiki"
     },
     {
       "db_name": "GenomeRNAi",
@@ -250,7 +378,8 @@
     {
       "db_name": "Gramene_MarkersDB_EST",
       "example_id": "DT479660",
-      "ignore": true
+      "ignore": true,
+      "description": "While several identifiers.org paths are possible for Gramene, external sources are not sufficiently explicit to choose the right one"
     },
     {
       "db_name": "Gramene_MarkersDB_mRNA",
@@ -283,14 +412,16 @@
       "id_namespace": "hogenom"
     },
     {
-      "db_name": "HPA",
-      "example_id": "50817",
-      "ignore": true
+      "db_name": "HOVERGEN",
+      "id_namespace":"hovergen",
+      "description":"Database of homologous vertebrate genes"
     },
     {
       "db_name": "HPA",
-      "example_id": "HPA050817",
-      "ignore": true
+      "example_id": "CD36",
+      "ignore": true,
+      "description" : "Human Protein Atlas. IDs can be Ensembl-like",
+      "id_namespace": "hpa"
     },
     {
       "db_name": "IKMCs_ES_cells_available",
@@ -307,6 +438,11 @@
     {
       "db_name": "IKMCs_Vector_available",
       "ignore": true
+    },
+    {
+      "db_name": "IntAct",
+      "id_namespace": "intact",
+      "example_id": "EBI-2307691"
     },
     {
       "db_name": "InteractiveFly",
@@ -339,6 +475,12 @@
       "id_namespace": "kegg.genes"
     },
     {
+      "db_name": "leproma",
+      "example_id": "ML",
+      "id_namespace": "myco.lepra",
+      "description": "MycoBrowser leprae"
+    },
+    {
       "db_name": "MEROPS",
       "example_id": "C12.001",
       "id_namespace": "merops"
@@ -360,12 +502,27 @@
     {
       "db_name": "MIM_GENE",
       "example_id": "602349",
-      "ignore": true
+      "ignore": true,
+      "id_namespace": "omim"
     },
     {
       "db_name": "MIM_MORBID",
       "example_id": "615122",
+      "ignore": true,
+      "id_namespace": "omim"
+    },
+    {
+      "db_name": "mim2gene",
+      "description": "MIM sources do not ",
+      "example_id": "615122",
+      "id_namespace": "omim",
       "ignore": true
+    },
+    {
+      "db_name": "mint",
+      "id_namespace": "mint",
+      "description": "Molecular INTeraction database",
+      "example_id": "MINT-79"
     },
     {
       "db_name": "miRBase",
@@ -397,6 +554,10 @@
       "ignore": true
     },
     {
+      "db_name": "ncbi taxonomy",
+      "canonical_LOD": "http://purl.obolibrary.org/obo/NCBITaxon/"
+    },
+    {
       "db_name": "nextProt",
       "id_namespace": "nextprot"
     },
@@ -412,6 +573,11 @@
       "id_namespace": "orthodb"
     },
     {
+      "db_name": "Orphanet",
+      "id_namespace": "orphanet",
+      "description": "Reference portal for rare diseases and orphan drugs"
+    },
+    {
       "db_name": "OTTG",
       "example_id": "OTTDARG00000029138",
       "ignore": true
@@ -421,7 +587,17 @@
       "ignore": true
     },
     {
+      "db_name": "PaxDB",
+      "id_namespace": "paxdb.protein",
+      "description": "Absolute protein abundance levels across different organisms"
+    },
+    {
       "db_name": "PDB",
+      "example_id": "1AU7",
+      "id_namespace": "pdb"
+    },
+    {
+      "db_name": "PDBsum",
       "example_id": "1AU7",
       "id_namespace": "pdb"
     },
@@ -429,7 +605,16 @@
       "db_name":"PANTHER",
       "example_id":"PTHR12929",
       "id_namespace":"panther.family"
-      },
+    },
+    {
+      "db_name": "PeptideAtlas",
+      "id_namespace":"peptideatlas",
+      "description": "Publicy accessible peptides identified in tandem mass spectrometry proteomics"
+    },
+    {
+      "db_name": "Peroxibase",
+      "id_namespace": "peroxibase"
+    },
     {
       "db_name": "PFam",
       "example_id": "PF01040",
@@ -439,6 +624,11 @@
       "db_name": "PHI",
       "example_id": "PHI:2322",
       "ignore": true
+    },
+    {
+      "db_name": "PhosphoSite",
+      "id_namespace": "phosphosite.protein",
+      "description": "Phosphorylation sites"
     },
     {
       "db_name": "PhylomeDB",
@@ -462,9 +652,19 @@
       "regex": "/PO:/PO_/"
     },
     {
+      "db_name": "pombase",
+      "id_namespace": "pombase"
+    },
+    {
       "db_name": "PRIDE",
       "example_id": "Q7M3C1",
       "id_namespace": "pride"
+    },
+    {
+      "db_name": "ProDom",
+      "id_namespace": "prodom",
+      "example_id": "PD10000",
+      "description": "Protein Domain families database"
     },
     {
       "db_name": "PROSITE",
@@ -496,6 +696,11 @@
       "db_name": "Reactome",
       "example_id": "REACT_71",
       "id_namespace": "reactome"
+    },
+    {
+      "db_name": "Rebase",
+      "description": "Restriction enzyme database",
+      "id_namespace": "rebase"
     },
     { 
       "db_name": "RefSeq",
@@ -633,6 +838,10 @@
       "id_namespace":"supfam"
     },
     {
+      "db_name": "SwissLipids",
+      "id_namespace": "swisslipid"
+    },
+    {
       "db_name": "swissprot",
       "example_id": "A0MH06",
       "description": "Unfussy version of Uniprot/SWISSPROT below",
@@ -661,6 +870,11 @@
       "ignore": true
     },
     {
+      "db_name": "TCDB",
+      "description": "Transport Classification Database",
+      "id_namespace": "tcdb" 
+    },
+    {
       "db_name": "TIGRFAMS",
       "example_id": "TIGR02866",
       "id_namespace": "tigrfam"
@@ -684,6 +898,11 @@
       "db_name": "TreeFam",
       "example_id": "TF101088",
       "id_namespace": "treefam"
+    },
+    {
+      "db_name": "Tuberculist",
+      "description" : "MycoBrowser tuberculosis",
+      "id_namespace" : "myco.tuber"
     },
     {
       "db_name": "UCSC",
@@ -716,6 +935,13 @@
     {
       "db_name": "Uniprot/SPTREMBL_predicted",
       "example_id": "Q4T6H2",
+      "id_namespace": "uniprot",
+      "canonical_LOD": "http://purl.uniprot.org/uniprot/",
+      "URI_type": "http://purl.uniprot.org/core/Protein"
+    },
+    {
+      "db_name": "Trembl",
+      "example_id": "A4D9Z1",
       "id_namespace": "uniprot",
       "canonical_LOD": "http://purl.uniprot.org/uniprot/",
       "URI_type": "http://purl.uniprot.org/core/Protein"
@@ -763,6 +989,11 @@
       "id_namespace": "wikigenes"
     },
     {
+      "db_name": "wormbase",
+      "example_id": "WBGene00022613",
+      "id_namespace": "wormbase"
+    },
+    {
       "db_name": "wormbase_gene",
       "example_id": "WBGene00022613",
       "id_namespace": "wormbase"
@@ -800,6 +1031,10 @@
     {
       "db_name": "ZFIN_ID",
       "example_id": "ZDB-GENE-040718-36",
+      "id_namespace": "zfin"
+    },
+    {
+      "db_name": "zfin",
       "id_namespace": "zfin"
     },
     {

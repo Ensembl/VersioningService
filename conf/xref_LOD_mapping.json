@@ -64,7 +64,7 @@
     {
       "db_name": "ChEBI",
       "id_namespace": "chebi",
-      "canonical_LOD": "http://purl.obolibrary.org/obo/CHEBI",
+      "canonical_LOD": "http://purl.obolibrary.org/obo/CHEBI/",
       "description": "Chemical Entities of Biological Interest ontology"
     },
     {

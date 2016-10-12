@@ -110,6 +110,7 @@ sub triple {
 
 sub escape {
   my $string = shift;
+  $string =~s/\n//g; # Newlines do not belong in dumped data.
   $string =~s/(["])/\\$1/g;
   return $string;
 }

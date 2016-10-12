@@ -83,8 +83,9 @@ sub _load_mapper {
 
 sub new_xref {
   my $self = shift;
+  my $source = shift;
   $self->another_xref;
-  return $self->prefix('ensembl').'xref/connection/'.$self->xref_id();
+  return $self->prefix('ensembl').'xref/connection/'.$source.'/'.$self->xref_id();
 }
 
 

@@ -23,8 +23,8 @@ is($rdf_writer->identifier('UniProt/SPTREMBL'), 'http://purl.uniprot.org/uniprot
 is($rdf_writer->identifier('derp'),'http://rdf.ebi.ac.uk/resource/ensembl/xref/derp/','Unresolved identifier gives back safe answer');
 is($rdf_writer->identifier('EMBL_predicted'),'http://identifiers.org/ena.embl/','Identifier without LOD entry still gets an identifiers.org prefix');
 
-is($rdf_writer->new_xref,'http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/1','Get an xref URI');
-is($rdf_writer->new_xref,'http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/2','xref id iterator increments');
+is($rdf_writer->new_xref('test'),'http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/test/1','Get an xref URI');
+is($rdf_writer->new_xref('test'),'http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/test/2','xref id iterator increments');
 
 # Test record-writing powers
 

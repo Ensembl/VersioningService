@@ -169,6 +169,7 @@ sub chew_dblinks {
     my @xrefs;
     foreach (@lines) {
         my ($label, $value) = ($_ =~ /\s*(.+)?:\s*(\w+)/);
+        next if ($label eq 'BioProject'); # These links don't help anyone. They're very general descriptive links.
         if ($label && $value) {
             my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $label, id => $value);
             push @xrefs,$xref;

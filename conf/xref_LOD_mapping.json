@@ -500,6 +500,12 @@
       "ignore": true
     },
     {
+      "db_name": "MIM",
+      "example_id": "602349",
+      "ignore": true,
+      "id_namespace": "omim"
+    },
+    {
       "db_name": "MIM_GENE",
       "example_id": "602349",
       "ignore": true,

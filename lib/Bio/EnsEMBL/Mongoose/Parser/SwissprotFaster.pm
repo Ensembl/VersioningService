@@ -301,8 +301,10 @@ sub sequence {
     $reader->read;
     my $sequence = $reader->value;
     $sequence =~ s/\s+//g;
-    $self->record->sequence($sequence);
-    $self->record->sequence_length(length($sequence));
+    if (defined $sequence) {
+        $self->record->sequence($sequence);
+        $self->record->sequence_length(length($sequence));
+    }
 }
 
 __PACKAGE__->meta->make_immutable;

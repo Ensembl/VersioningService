@@ -1,0 +1,84 @@
+<h2>Display direct from triplestore</h2>
+
+<div id="query" 
+     data-sgvizler-endpoint="http://127.0.0.1:8890/sparql"
+     data-sgvizler-query="PREFIX dc: <http://purl.org/dc/elements/1.1/>
+                          PREFIX dcterms: <http://purl.org/dc/terms/>
+                          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                          PREFIX ensembl: <http://rdf.ebi.ac.uk/resource/ensembl/>
+                          PREFIX terms: <http://rdf.ebi.ac.uk/terms/ensembl/>
+                          SELECT DISTINCT ?source_a ?source_b (COUNT(?xref) ) as ?count WHERE {
+                            ?entity terms:refers-to ?xref .
+                            ?entity dcterms:source ?source_a .
+                            ?other dcterms:source ?source_b .
+                            ?xref terms:refers-to ?other .
+                          } ORDER BY ?source_a
+                          "
+     data-sgvizler-chart="sgvizler.visualization.D3ForceGraph"
+     data-sgvizler-chart-options="is3D=true|title=Total connections between sources|maxnodesize=80"
+     
+>
+</div>
+<div id="view"> 
+
+</div>
+<button type="button" id="forceButton" onclick="renderForce()">Balls 'n' sticks</button>
+<button type="button" id="graphButton" onclick="renderGraph()">Annotated edges</button>
+
+<script>
+  
+  sgvizler.defaultEndpointURL("http://127.0.0.1:8890/sparql");
+
+  const shortSummary = "PREFIX dc: <http://purl.org/dc/elements/1.1/> \
+                        PREFIX dcterms: <http://purl.org/dc/terms/> \
+                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
+                        PREFIX ensembl: <http://rdf.ebi.ac.uk/resource/ensembl/> \
+                        PREFIX terms: <http://rdf.ebi.ac.uk/terms/ensembl/> \
+                        SELECT DISTINCT ?source_a ?source_b (COUNT(?xref) ) as ?count WHERE { \
+                          ?entity terms:refers-to ?xref . \
+                          ?entity dcterms:source ?source_a . \
+                          ?other dcterms:source ?source_b . \
+                          ?xref terms:refers-to ?other . \
+                        } ORDER BY ?source_a \
+                        ";
+
+  function renderForce() {
+    var Q = new sgvizler.Query();
+    Q.query(shortSummary)
+     .chartFunction("sgvizler.visualization.D3ForceGraph")
+     .chartWidth(2000)
+     .chartHeight(1200)
+     .draw("view");
+  };
+  const detailedSummary =  "PREFIX dc: <http://purl.org/dc/elements/1.1/> \
+                            PREFIX dcterms: <http://purl.org/dc/terms/> \
+                            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
+                            PREFIX ensembl: <http://rdf.ebi.ac.uk/resource/ensembl/> \
+                            PREFIX terms: <http://rdf.ebi.ac.uk/terms/ensembl/> \
+                            SELECT ?source_a ?source_name ?source_b ?sourceb_name (COUNT(?xref)) AS ?count WHERE { \
+                              ?entity terms:refers-to ?xref . \
+                              ?entity dcterms:source ?source_a . \
+                              ?other dcterms:source ?source_b . \
+                              ?xref terms:refers-to ?other . \
+                              BIND(?source_a AS ?source_name) \
+                              BIND(?source_b AS ?sourceb_name) \
+                            }";
+
+  const options = {
+      directed: true,
+      noderadius: 4,
+      nodefontsize: "8px",
+      edgestrokewidth: 2,
+      nodecolor: "red"
+    };
+
+  function renderGraph() {
+    var Q = new sgvizler.Query();
+    Q.query(detailedSummary, options)
+     .chartFunction("sgvizler.visualization.DraculaGraph")
+     .chartWidth(2500)
+     .chartHeight(1200)
+     .draw("view");
+  };
+  
+</script>

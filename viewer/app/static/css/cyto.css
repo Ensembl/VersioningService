@@ -1,0 +1,19 @@
+node {
+  color: white;
+  background-color: darkblue;
+  border-color: black;
+  font-size: 18;
+  text-outline-color: #FFFFFF;
+  content: data(caption);
+}
+
+edge {
+  color: white;
+  font-size: 14;
+  text-rotation: autorotate;
+  width: 5px;
+  line-color: blue;
+  target-arrow-shape: triangle;
+  /*content: mapData(load, 0, 1000000, yellow,red);*/
+  content: data(load);
+}

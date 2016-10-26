@@ -1,0 +1,1896 @@
+{
+   "elements" : {
+      "edges" : [
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "NCBITaxon",
+               "load" : "1"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "mycoCLAP",
+               "load" : "1"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "CGD",
+               "load" : "1"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "euHCVdb",
+               "load" : "2"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "dictybase",
+               "load" : "2"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "genedb",
+               "load" : "3"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "flybase",
+               "load" : "4"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "pombase",
+               "load" : "5"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "wormbase",
+               "load" : "7"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "TAIR",
+               "load" : "8"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "rgd",
+               "load" : "8"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "zfin",
+               "load" : "8"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "xenbase",
+               "load" : "9"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "rebase",
+               "load" : "12"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "EuPathDB",
+               "load" : "14"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "MoonProt",
+               "load" : "15"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "Gramene",
+               "load" : "16"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "sgd",
+               "load" : "17"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "conoserver",
+               "load" : "17"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "mgi",
+               "load" : "34"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "peroxibase",
+               "load" : "34"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "allergome",
+               "load" : "96"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "disprot",
+               "load" : "210"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "UniCarbKB",
+               "load" : "213"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "DEPOD",
+               "load" : "214"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "hgnc",
+               "target" : "lrg",
+               "load" : "223"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "ESTHER",
+               "load" : "318"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "cazy",
+               "load" : "331"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "OGP",
+               "load" : "337"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "swisslipid",
+               "load" : "486"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "CHEBI",
+               "load" : "842"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "merops",
+               "load" : "981"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "GeneReviews",
+               "load" : "1042"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "tcdb",
+               "load" : "1104"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "GuidetoPHARMACOLOGY",
+               "load" : "1326"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "biocyc",
+               "load" : "1579"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "TopDownProteomics",
+               "load" : "1806"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "brenda",
+               "load" : "1864"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "PATRIC",
+               "load" : "2027"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "prodom",
+               "load" : "2129"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "bindindDB",
+               "load" : "2166"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "SwissPalm",
+               "load" : "2538"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "SIGNOR",
+               "load" : "2729"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "target",
+               "load" : "2817"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "dip",
+               "load" : "3167"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "MalaCards",
+               "load" : "3387"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "SignaLink",
+               "load" : "3539"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "EvolutionaryTrace",
+               "load" : "3749"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "unipathway",
+               "load" : "3833"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "hamap",
+               "load" : "4765"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "orphanet",
+               "load" : "5612"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "pirsf",
+               "load" : "6093"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "cdd",
+               "load" : "6142"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "PIR",
+               "load" : "6966"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "mint",
+               "load" : "7367"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "hgnc",
+               "target" : "ccds",
+               "load" : "8511"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "omim",
+               "target" : "MedGen",
+               "load" : "9138"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "genewiki",
+               "load" : "9170"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "DNASU",
+               "load" : "10138"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "tigrfam",
+               "load" : "10536"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "drugbank",
+               "load" : "10919"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "epd",
+               "load" : "11075"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "MaxQB",
+               "load" : "11400"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "intact",
+               "load" : "13055"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "KO",
+               "load" : "13434"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "biogrid",
+               "load" : "13914"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "DMDM",
+               "load" : "14184"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "pubmed",
+               "load" : "14334"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "BioMuta",
+               "load" : "14993"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "iPTMnet",
+               "load" : "15517"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "CleanEx",
+               "load" : "15706"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "treefam",
+               "load" : "15752"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "ncbigene",
+               "target" : "MIM",
+               "load" : "15960"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "Genevisible",
+               "load" : "16191"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "PharmGKB",
+               "load" : "16745"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "PRO",
+               "load" : "16775"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "InParanoid",
+               "load" : "17102"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "nextprot",
+               "load" : "17372"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "genecards",
+               "load" : "17397"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "MIM",
+               "load" : "17849"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "ncbigene",
+               "target" : "HPRD",
+               "load" : "17966"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "phylomedb",
+               "load" : "18396"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "ncbigene",
+               "target" : "Vega",
+               "load" : "19211"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "hgnc",
+               "target" : "refseq",
+               "load" : "19977"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "GenomeRNAi",
+               "load" : "20311"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "orthodb",
+               "load" : "20853"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "omim",
+               "target" : "ncbigene",
+               "load" : "20978"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "SMR",
+               "load" : "21178"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "hogenom",
+               "load" : "22010"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "hgnc",
+               "target" : "ensembl",
+               "load" : "22063"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "GeneID",
+               "load" : "22422"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "hpa",
+               "load" : "23240"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "ccds",
+               "load" : "25452"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "ncbigene",
+               "target" : "hgnc",
+               "load" : "26111"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "ncbigene",
+               "target" : "ensembl",
+               "load" : "28595"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "hovergen",
+               "load" : "28891"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "reactome",
+               "load" : "28914"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "pride",
+               "load" : "37067"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "unigene",
+               "load" : "41646"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "PRINTS",
+               "load" : "45446"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "Bgee",
+               "load" : "51762"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "smart",
+               "load" : "53535"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "ChiTaRS",
+               "load" : "54823"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "UCSC",
+               "load" : "59370"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "genetree",
+               "load" : "60464"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "pmp",
+               "load" : "61291"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "hgnc",
+               "load" : "63804"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "string",
+               "load" : "64826"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "refseq",
+               "load" : "65457"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "peptideatlas",
+               "load" : "67883"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "pdb",
+               "load" : "69297"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "Gene3D",
+               "load" : "86636"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "Proteomes",
+               "load" : "88490"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "supfam",
+               "load" : "93369"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "prosite",
+               "load" : "96385"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "ensembl",
+               "load" : "123625"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "eggnog",
+               "load" : "135761"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "pfam",
+               "load" : "136674"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "refseq",
+               "target" : "BioProject",
+               "load" : "168085"
+            },
+            "selected" : "false"
+         },
+         {
+            "data" : {
+               "source" : "uniprot",
+               "target" : "interpro",
+               "load" : "365034"
+            },
+            "selected" : "false"
+         }
+      ],
+      "nodes" : [
+         {
+            "data" : {
+               "caption" : "uniprot",
+               "id" : "uniprot",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "NCBITaxon",
+               "id" : "NCBITaxon",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "mycoCLAP",
+               "id" : "mycoCLAP",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "CGD",
+               "id" : "CGD",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "euHCVdb",
+               "id" : "euHCVdb",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "dictybase",
+               "id" : "dictybase",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "genedb",
+               "id" : "genedb",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "flybase",
+               "id" : "flybase",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "pombase",
+               "id" : "pombase",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "wormbase",
+               "id" : "wormbase",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "TAIR",
+               "id" : "TAIR",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "rgd",
+               "id" : "rgd",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "zfin",
+               "id" : "zfin",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "xenbase",
+               "id" : "xenbase",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "rebase",
+               "id" : "rebase",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "EuPathDB",
+               "id" : "EuPathDB",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "MoonProt",
+               "id" : "MoonProt",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "Gramene",
+               "id" : "Gramene",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "sgd",
+               "id" : "sgd",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "conoserver",
+               "id" : "conoserver",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "mgi",
+               "id" : "mgi",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "peroxibase",
+               "id" : "peroxibase",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "allergome",
+               "id" : "allergome",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "disprot",
+               "id" : "disprot",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "UniCarbKB",
+               "id" : "UniCarbKB",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "DEPOD",
+               "id" : "DEPOD",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "hgnc",
+               "id" : "hgnc",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "lrg",
+               "id" : "lrg",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "ESTHER",
+               "id" : "ESTHER",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "cazy",
+               "id" : "cazy",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "OGP",
+               "id" : "OGP",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "swisslipid",
+               "id" : "swisslipid",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "CHEBI",
+               "id" : "CHEBI",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "merops",
+               "id" : "merops",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "GeneReviews",
+               "id" : "GeneReviews",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "tcdb",
+               "id" : "tcdb",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "GuidetoPHARMACOLOGY",
+               "id" : "GuidetoPHARMACOLOGY",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "biocyc",
+               "id" : "biocyc",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "TopDownProteomics",
+               "id" : "TopDownProteomics",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "brenda",
+               "id" : "brenda",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "PATRIC",
+               "id" : "PATRIC",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "prodom",
+               "id" : "prodom",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "bindindDB",
+               "id" : "bindindDB",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "SwissPalm",
+               "id" : "SwissPalm",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "SIGNOR",
+               "id" : "SIGNOR",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "target",
+               "id" : "target",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "dip",
+               "id" : "dip",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "MalaCards",
+               "id" : "MalaCards",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "SignaLink",
+               "id" : "SignaLink",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "EvolutionaryTrace",
+               "id" : "EvolutionaryTrace",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "unipathway",
+               "id" : "unipathway",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "hamap",
+               "id" : "hamap",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "orphanet",
+               "id" : "orphanet",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "pirsf",
+               "id" : "pirsf",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "cdd",
+               "id" : "cdd",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "PIR",
+               "id" : "PIR",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "mint",
+               "id" : "mint",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "ccds",
+               "id" : "ccds",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "omim",
+               "id" : "omim",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "MedGen",
+               "id" : "MedGen",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "genewiki",
+               "id" : "genewiki",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "DNASU",
+               "id" : "DNASU",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "tigrfam",
+               "id" : "tigrfam",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "drugbank",
+               "id" : "drugbank",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "epd",
+               "id" : "epd",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "MaxQB",
+               "id" : "MaxQB",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "intact",
+               "id" : "intact",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "KO",
+               "id" : "KO",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "biogrid",
+               "id" : "biogrid",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "DMDM",
+               "id" : "DMDM",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "pubmed",
+               "id" : "pubmed",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "BioMuta",
+               "id" : "BioMuta",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "iPTMnet",
+               "id" : "iPTMnet",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "CleanEx",
+               "id" : "CleanEx",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "treefam",
+               "id" : "treefam",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "ncbigene",
+               "id" : "ncbigene",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "MIM",
+               "id" : "MIM",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "Genevisible",
+               "id" : "Genevisible",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "PharmGKB",
+               "id" : "PharmGKB",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "PRO",
+               "id" : "PRO",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "InParanoid",
+               "id" : "InParanoid",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "nextprot",
+               "id" : "nextprot",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "genecards",
+               "id" : "genecards",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "HPRD",
+               "id" : "HPRD",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "phylomedb",
+               "id" : "phylomedb",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "Vega",
+               "id" : "Vega",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "refseq",
+               "id" : "refseq",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "GenomeRNAi",
+               "id" : "GenomeRNAi",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "orthodb",
+               "id" : "orthodb",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "SMR",
+               "id" : "SMR",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "hogenom",
+               "id" : "hogenom",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "ensembl",
+               "id" : "ensembl",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "GeneID",
+               "id" : "GeneID",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "hpa",
+               "id" : "hpa",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "hovergen",
+               "id" : "hovergen",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "reactome",
+               "id" : "reactome",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "pride",
+               "id" : "pride",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "unigene",
+               "id" : "unigene",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "PRINTS",
+               "id" : "PRINTS",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "Bgee",
+               "id" : "Bgee",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "smart",
+               "id" : "smart",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "ChiTaRS",
+               "id" : "ChiTaRS",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "UCSC",
+               "id" : "UCSC",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "genetree",
+               "id" : "genetree",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "pmp",
+               "id" : "pmp",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "string",
+               "id" : "string",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "peptideatlas",
+               "id" : "peptideatlas",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "pdb",
+               "id" : "pdb",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "Gene3D",
+               "id" : "Gene3D",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "Proteomes",
+               "id" : "Proteomes",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "supfam",
+               "id" : "supfam",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "prosite",
+               "id" : "prosite",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "eggnog",
+               "id" : "eggnog",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "pfam",
+               "id" : "pfam",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "BioProject",
+               "id" : "BioProject",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         },
+         {
+            "data" : {
+               "caption" : "interpro",
+               "id" : "interpro",
+               "root" : 1,
+               "role" : "http_server"
+            }
+         }
+      ]
+   }
+}

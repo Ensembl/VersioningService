@@ -1,0 +1,4950 @@
+{
+  "format_version" : "1.0",
+  "generated_by" : "cytoscape-3.1.1",
+  "target_cytoscapejs_version" : "~2.1",
+   "comment" : "Xref Graph summary",
+  "data" : {
+    "selected" : true,
+    "__Annotations" : [ "" ],
+    "shared_name" : "ensembl_xrefs",
+    "SUID" : 20760,
+    "name" : "ensembl_xrefs"
+  },
+   "elements": {
+   "edges" : [
+      {
+         "source" : "MIM",
+         "target" : "flybase",
+         "load" : "1"
+      },
+      {
+         "source" : "refseq",
+         "target" : "dictybase",
+         "load" : "1"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "conoserver",
+         "load" : "1"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "mgi",
+         "load" : "1"
+      },
+      {
+         "source" : "MIM",
+         "target" : "tcdb",
+         "load" : "1"
+      },
+      {
+         "source" : "omim",
+         "target" : "mgi",
+         "load" : "1"
+      },
+      {
+         "source" : "omim",
+         "target" : "cazy",
+         "load" : "1"
+      },
+      {
+         "source" : "MIM",
+         "target" : "dip",
+         "load" : "1"
+      },
+      {
+         "source" : "MIM",
+         "target" : "drugbank",
+         "load" : "1"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "euHCVdb",
+         "load" : "1"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "genedb",
+         "load" : "1"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "dictybase",
+         "load" : "1"
+      },
+      {
+         "source" : "MIM",
+         "target" : "SIGNOR",
+         "load" : "1"
+      },
+      {
+         "source" : "refseq",
+         "target" : "genedb",
+         "load" : "1"
+      },
+      {
+         "source" : "omim",
+         "target" : "euHCVdb",
+         "load" : "1"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "genedb",
+         "load" : "1"
+      },
+      {
+         "source" : "refseq",
+         "target" : "xenbase",
+         "load" : "1"
+      },
+      {
+         "source" : "MIM",
+         "target" : "rebase",
+         "load" : "2"
+      },
+      {
+         "source" : "refseq",
+         "target" : "euHCVdb",
+         "load" : "2"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Gramene",
+         "load" : "2"
+      },
+      {
+         "source" : "omim",
+         "target" : "allergome",
+         "load" : "2"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "mgi",
+         "load" : "2"
+      },
+      {
+         "source" : "refseq",
+         "target" : "conoserver",
+         "load" : "2"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Gramene",
+         "load" : "2"
+      },
+      {
+         "source" : "MIM",
+         "target" : "MalaCards",
+         "load" : "2"
+      },
+      {
+         "source" : "MIM",
+         "target" : "Gramene",
+         "load" : "2"
+      },
+      {
+         "source" : "MIM",
+         "target" : "bindindDB",
+         "load" : "2"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Allergome",
+         "load" : "2"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "peroxibase",
+         "load" : "2"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "dictybase",
+         "load" : "2"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "euHCVdb",
+         "load" : "2"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "cazy",
+         "load" : "2"
+      },
+      {
+         "source" : "refseq",
+         "target" : "mgi",
+         "load" : "2"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "MoonProt",
+         "load" : "2"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Allergome",
+         "load" : "3"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "NCBITaxon",
+         "load" : "3"
+      },
+      {
+         "source" : "MIM",
+         "target" : "SwissPalm",
+         "load" : "3"
+      },
+      {
+         "source" : "refseq",
+         "target" : "MoonProt",
+         "load" : "3"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "mycoCLAP",
+         "load" : "3"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PeroxiBase",
+         "load" : "3"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "REBASE",
+         "load" : "4"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PeroxiBase",
+         "load" : "4"
+      },
+      {
+         "source" : "omim",
+         "target" : "swisslipid",
+         "load" : "4"
+      },
+      {
+         "source" : "omim",
+         "target" : "DisProt",
+         "load" : "4"
+      },
+      {
+         "source" : "MIM",
+         "target" : "brenda",
+         "load" : "4"
+      },
+      {
+         "source" : "MIM",
+         "target" : "REBASE",
+         "load" : "4"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "REBASE",
+         "load" : "4"
+      },
+      {
+         "source" : "refseq",
+         "target" : "peroxibase",
+         "load" : "4"
+      },
+      {
+         "source" : "omim",
+         "target" : "disprot",
+         "load" : "4"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "CGD",
+         "load" : "5"
+      },
+      {
+         "source" : "MIM",
+         "target" : "allergome",
+         "load" : "6"
+      },
+      {
+         "source" : "omim",
+         "target" : "UniCarbKB",
+         "load" : "6"
+      },
+      {
+         "source" : "omim",
+         "target" : "CAZy",
+         "load" : "6"
+      },
+      {
+         "source" : "MIM",
+         "target" : "cazy",
+         "load" : "7"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "disprot",
+         "load" : "8"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "euHCVdb",
+         "load" : "8"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "allergome",
+         "load" : "8"
+      },
+      {
+         "source" : "omim",
+         "target" : "ProDom",
+         "load" : "8"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "dictybase",
+         "load" : "9"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "allergome",
+         "load" : "11"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "swisslipid",
+         "load" : "11"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "disprot",
+         "load" : "12"
+      },
+      {
+         "source" : "omim",
+         "target" : "ESTHER",
+         "load" : "12"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "flybase",
+         "load" : "13"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "cazy",
+         "load" : "14"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "genedb",
+         "load" : "15"
+      },
+      {
+         "source" : "omim",
+         "target" : "TCDB",
+         "load" : "15"
+      },
+      {
+         "source" : "refseq",
+         "target" : "allergome",
+         "load" : "15"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "ProDom",
+         "load" : "15"
+      },
+      {
+         "source" : "omim",
+         "target" : "BioCyc",
+         "load" : "16"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "DisProt",
+         "load" : "18"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "REBASE",
+         "load" : "18"
+      },
+      {
+         "source" : "MIM",
+         "target" : "iPTMnet",
+         "load" : "20"
+      },
+      {
+         "source" : "omim",
+         "target" : "DEPOD",
+         "load" : "20"
+      },
+      {
+         "source" : "refseq",
+         "target" : "ProDom",
+         "load" : "23"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "pombase",
+         "load" : "23"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "CAZy",
+         "load" : "23"
+      },
+      {
+         "source" : "omim",
+         "target" : "tcdb",
+         "load" : "24"
+      },
+      {
+         "source" : "refseq",
+         "target" : "disprot",
+         "load" : "24"
+      },
+      {
+         "source" : "omim",
+         "target" : "TopDownProteomics",
+         "load" : "25"
+      },
+      {
+         "source" : "refseq",
+         "target" : "DisProt",
+         "load" : "26"
+      },
+      {
+         "source" : "omim",
+         "target" : "biocyc",
+         "load" : "26"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PeroxiBase",
+         "load" : "28"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PeroxiBase",
+         "load" : "28"
+      },
+      {
+         "source" : "omim",
+         "target" : "OGP",
+         "load" : "28"
+      },
+      {
+         "source" : "omim",
+         "target" : "PATRIC",
+         "load" : "29"
+      },
+      {
+         "source" : "refseq",
+         "target" : "cazy",
+         "load" : "29"
+      },
+      {
+         "source" : "MIM",
+         "target" : "MoonProt",
+         "load" : "29"
+      },
+      {
+         "source" : "refseq",
+         "target" : "CAZy",
+         "load" : "30"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PeroxiBase",
+         "load" : "30"
+      },
+      {
+         "source" : "omim",
+         "target" : "prodom",
+         "load" : "30"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "swisslipid",
+         "load" : "31"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "MoonProt",
+         "load" : "31"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "zfin",
+         "load" : "32"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "wormbase",
+         "load" : "32"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "rgd",
+         "load" : "33"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "MoonProt",
+         "load" : "33"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "UniCarbKB",
+         "load" : "33"
+      },
+      {
+         "source" : "omim",
+         "target" : "bindindDB",
+         "load" : "35"
+      },
+      {
+         "source" : "omim",
+         "target" : "brenda",
+         "load" : "38"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "TAIR",
+         "load" : "40"
+      },
+      {
+         "source" : "omim",
+         "target" : "BRENDA",
+         "load" : "42"
+      },
+      {
+         "source" : "omim",
+         "target" : "BindingDB",
+         "load" : "43"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "xenbase",
+         "load" : "44"
+      },
+      {
+         "source" : "omim",
+         "target" : "PeptideAtlas",
+         "load" : "44"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "rebase",
+         "load" : "44"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "tcdb",
+         "load" : "45"
+      },
+      {
+         "source" : "MIM",
+         "target" : "mint",
+         "load" : "45"
+      },
+      {
+         "source" : "refseq",
+         "target" : "swisslipid",
+         "load" : "46"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "ESTHER",
+         "load" : "46"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "BioCyc",
+         "load" : "47"
+      },
+      {
+         "source" : "omim",
+         "target" : "SwissPalm",
+         "load" : "47"
+      },
+      {
+         "source" : "MIM",
+         "target" : "Allergome",
+         "load" : "49"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "Allergome",
+         "load" : "50"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "Allergome",
+         "load" : "50"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "TopDownProteomics",
+         "load" : "53"
+      },
+      {
+         "source" : "refseq",
+         "target" : "UniCarbKB",
+         "load" : "53"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PATRIC",
+         "load" : "53"
+      },
+      {
+         "source" : "omim",
+         "target" : "MalaCards",
+         "load" : "53"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "biocyc",
+         "load" : "53"
+      },
+      {
+         "source" : "omim",
+         "target" : "merops",
+         "load" : "57"
+      },
+      {
+         "source" : "omim",
+         "target" : "DIP",
+         "load" : "57"
+      },
+      {
+         "source" : "omim",
+         "target" : "dip",
+         "load" : "60"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "EuPathDB",
+         "load" : "63"
+      },
+      {
+         "source" : "omim",
+         "target" : "SIGNOR",
+         "load" : "65"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Gramene",
+         "load" : "67"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "DEPOD",
+         "load" : "67"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "prodom",
+         "load" : "71"
+      },
+      {
+         "source" : "refseq",
+         "target" : "BioCyc",
+         "load" : "74"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "sgd",
+         "load" : "76"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "TCDB",
+         "load" : "77"
+      },
+      {
+         "source" : "refseq",
+         "target" : "ESTHER",
+         "load" : "77"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "conoserver",
+         "load" : "80"
+      },
+      {
+         "source" : "omim",
+         "target" : "GuidetoPHARMACOLOGY",
+         "load" : "81"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "tcdb",
+         "load" : "83"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "brenda",
+         "load" : "87"
+      },
+      {
+         "source" : "omim",
+         "target" : "pubmed",
+         "load" : "87"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "biocyc",
+         "load" : "89"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "bindindDB",
+         "load" : "90"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "OGP",
+         "load" : "91"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "TopDownProteomics",
+         "load" : "92"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PATRIC",
+         "load" : "94"
+      },
+      {
+         "source" : "omim",
+         "target" : "GeneReviews",
+         "load" : "95"
+      },
+      {
+         "source" : "omim",
+         "target" : "cdd",
+         "load" : "96"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "SwissPalm",
+         "load" : "97"
+      },
+      {
+         "source" : "refseq",
+         "target" : "DEPOD",
+         "load" : "97"
+      },
+      {
+         "source" : "omim",
+         "target" : "orphanet",
+         "load" : "98"
+      },
+      {
+         "source" : "omim",
+         "target" : "hamap",
+         "load" : "107"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PeroxiBase",
+         "load" : "112"
+      },
+      {
+         "source" : "refseq",
+         "target" : "TCDB",
+         "load" : "114"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "prodom",
+         "load" : "118"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "MalaCards",
+         "load" : "119"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "brenda",
+         "load" : "124"
+      },
+      {
+         "source" : "omim",
+         "target" : "unipathway",
+         "load" : "129"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "BRENDA",
+         "load" : "130"
+      },
+      {
+         "source" : "refseq",
+         "target" : "tcdb",
+         "load" : "132"
+      },
+      {
+         "source" : "omim",
+         "target" : "MINT",
+         "load" : "133"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "SIGNOR",
+         "load" : "135"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "peroxibase",
+         "load" : "137"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "dip",
+         "load" : "140"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "mgi",
+         "load" : "142"
+      },
+      {
+         "source" : "refseq",
+         "target" : "OGP",
+         "load" : "143"
+      },
+      {
+         "source" : "refseq",
+         "target" : "biocyc",
+         "load" : "146"
+      },
+      {
+         "source" : "MIM",
+         "target" : "intact",
+         "load" : "148"
+      },
+      {
+         "source" : "omim",
+         "target" : "Orphanet",
+         "load" : "150"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PeptideAtlas",
+         "load" : "152"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "bindindDB",
+         "load" : "152"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "BindingDB",
+         "load" : "153"
+      },
+      {
+         "source" : "omim",
+         "target" : "mint",
+         "load" : "155"
+      },
+      {
+         "source" : "refseq",
+         "target" : "TopDownProteomics",
+         "load" : "168"
+      },
+      {
+         "source" : "MIM",
+         "target" : "biocyc",
+         "load" : "168"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PATRIC",
+         "load" : "169"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "cdd",
+         "load" : "173"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "SwissPalm",
+         "load" : "176"
+      },
+      {
+         "source" : "omim",
+         "target" : "lrg",
+         "load" : "178"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "merops",
+         "load" : "182"
+      },
+      {
+         "source" : "refseq",
+         "target" : "prodom",
+         "load" : "185"
+      },
+      {
+         "source" : "omim",
+         "target" : "genewiki",
+         "load" : "185"
+      },
+      {
+         "source" : "omim",
+         "target" : "GeneWiki",
+         "load" : "187"
+      },
+      {
+         "source" : "omim",
+         "target" : "target",
+         "load" : "188"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Allergome",
+         "load" : "192"
+      },
+      {
+         "source" : "MIM",
+         "target" : "DisProt",
+         "load" : "193"
+      },
+      {
+         "source" : "refseq",
+         "target" : "brenda",
+         "load" : "195"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "DisProt",
+         "load" : "197"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "pubmed",
+         "load" : "202"
+      },
+      {
+         "source" : "MIM",
+         "target" : "UniCarbKB",
+         "load" : "203"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "UniCarbKB",
+         "load" : "205"
+      },
+      {
+         "source" : "omim",
+         "target" : "SignaLink",
+         "load" : "205"
+      },
+      {
+         "source" : "omim",
+         "target" : "epd",
+         "load" : "206"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "SIGNOR",
+         "load" : "208"
+      },
+      {
+         "source" : "omim",
+         "target" : "pirsf",
+         "load" : "208"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "DisProt",
+         "load" : "209"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "ESTHER",
+         "load" : "211"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "MalaCards",
+         "load" : "215"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "DIP",
+         "load" : "215"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "UniCarbKB",
+         "load" : "221"
+      },
+      {
+         "source" : "refseq",
+         "target" : "lrg",
+         "load" : "223"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "lrg",
+         "load" : "223"
+      },
+      {
+         "source" : "refseq",
+         "target" : "BRENDA",
+         "load" : "225"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "dip",
+         "load" : "227"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "orphanet",
+         "load" : "227"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PeptideAtlas",
+         "load" : "233"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "ESTHER",
+         "load" : "235"
+      },
+      {
+         "source" : "omim",
+         "target" : "IntAct",
+         "load" : "237"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "MoonProt",
+         "load" : "239"
+      },
+      {
+         "source" : "refseq",
+         "target" : "BindingDB",
+         "load" : "243"
+      },
+      {
+         "source" : "MIM",
+         "target" : "epd",
+         "load" : "250"
+      },
+      {
+         "source" : "omim",
+         "target" : "tigrfam",
+         "load" : "251"
+      },
+      {
+         "source" : "refseq",
+         "target" : "bindindDB",
+         "load" : "259"
+      },
+      {
+         "source" : "omim",
+         "target" : "intact",
+         "load" : "264"
+      },
+      {
+         "source" : "MIM",
+         "target" : "ESTHER",
+         "load" : "270"
+      },
+      {
+         "source" : "MIM",
+         "target" : "ProDom",
+         "load" : "272"
+      },
+      {
+         "source" : "omim",
+         "target" : "drugbank",
+         "load" : "273"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "GeneReviews",
+         "load" : "276"
+      },
+      {
+         "source" : "omim",
+         "target" : "PhosphoSite",
+         "load" : "278"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "ProDom",
+         "load" : "279"
+      },
+      {
+         "source" : "refseq",
+         "target" : "SwissPalm",
+         "load" : "280"
+      },
+      {
+         "source" : "omim",
+         "target" : "EvolutionaryTrace",
+         "load" : "291"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "ProDom",
+         "load" : "298"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "cdd",
+         "load" : "306"
+      },
+      {
+         "source" : "omim",
+         "target" : "iPTMnet",
+         "load" : "312"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "GuidetoPHARMACOLOGY",
+         "load" : "313"
+      },
+      {
+         "source" : "MIM",
+         "target" : "CAZy",
+         "load" : "315"
+      },
+      {
+         "source" : "refseq",
+         "target" : "merops",
+         "load" : "318"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "CAZy",
+         "load" : "320"
+      },
+      {
+         "source" : "omim",
+         "target" : "HOVERGEN",
+         "load" : "324"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "mint",
+         "load" : "325"
+      },
+      {
+         "source" : "omim",
+         "target" : "PaxDb",
+         "load" : "327"
+      },
+      {
+         "source" : "refseq",
+         "target" : "SIGNOR",
+         "load" : "329"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "CAZy",
+         "load" : "334"
+      },
+      {
+         "source" : "omim",
+         "target" : "NextBio",
+         "load" : "339"
+      },
+      {
+         "source" : "omim",
+         "target" : "DrugBank",
+         "load" : "345"
+      },
+      {
+         "source" : "MIM",
+         "target" : "prodom",
+         "load" : "350"
+      },
+      {
+         "source" : "refseq",
+         "target" : "DIP",
+         "load" : "350"
+      },
+      {
+         "source" : "refseq",
+         "target" : "MalaCards",
+         "load" : "351"
+      },
+      {
+         "source" : "omim",
+         "target" : "genecards",
+         "load" : "354"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "pubmed",
+         "load" : "354"
+      },
+      {
+         "source" : "omim",
+         "target" : "GeneCards",
+         "load" : "354"
+      },
+      {
+         "source" : "refseq",
+         "target" : "dip",
+         "load" : "356"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "genewiki",
+         "load" : "374"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PATRIC",
+         "load" : "387"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Orphanet",
+         "load" : "387"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "hamap",
+         "load" : "393"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "orphanet",
+         "load" : "397"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "lrg",
+         "load" : "401"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "allergome",
+         "load" : "405"
+      },
+      {
+         "source" : "MIM",
+         "target" : "DEPOD",
+         "load" : "410"
+      },
+      {
+         "source" : "refseq",
+         "target" : "GeneReviews",
+         "load" : "416"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "DEPOD",
+         "load" : "416"
+      },
+      {
+         "source" : "omim",
+         "target" : "HPA",
+         "load" : "432"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "epd",
+         "load" : "434"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "drugbank",
+         "load" : "439"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "DEPOD",
+         "load" : "457"
+      },
+      {
+         "source" : "omim",
+         "target" : "hpa",
+         "load" : "476"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "MINT",
+         "load" : "481"
+      },
+      {
+         "source" : "omim",
+         "target" : "PIR",
+         "load" : "484"
+      },
+      {
+         "source" : "refseq",
+         "target" : "cdd",
+         "load" : "487"
+      },
+      {
+         "source" : "omim",
+         "target" : "hovergen",
+         "load" : "521"
+      },
+      {
+         "source" : "refseq",
+         "target" : "GuidetoPHARMACOLOGY",
+         "load" : "532"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "unipathway",
+         "load" : "538"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "mint",
+         "load" : "540"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "intact",
+         "load" : "559"
+      },
+      {
+         "source" : "refseq",
+         "target" : "pubmed",
+         "load" : "563"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Orphanet",
+         "load" : "599"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "genewiki",
+         "load" : "638"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "iPTMnet",
+         "load" : "650"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "DrugBank",
+         "load" : "652"
+      },
+      {
+         "source" : "MIM",
+         "target" : "OGP",
+         "load" : "658"
+      },
+      {
+         "source" : "refseq",
+         "target" : "orphanet",
+         "load" : "659"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "SignaLink",
+         "load" : "663"
+      },
+      {
+         "source" : "MIM",
+         "target" : "BioCyc",
+         "load" : "665"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "target",
+         "load" : "667"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "GeneWiki",
+         "load" : "668"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "OGP",
+         "load" : "669"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "BioCyc",
+         "load" : "672"
+      },
+      {
+         "source" : "omim",
+         "target" : "orthodb",
+         "load" : "680"
+      },
+      {
+         "source" : "refseq",
+         "target" : "hamap",
+         "load" : "685"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "drugbank",
+         "load" : "687"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "BioCyc",
+         "load" : "700"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "genecards",
+         "load" : "729"
+      },
+      {
+         "source" : "omim",
+         "target" : "DNASU",
+         "load" : "740"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "OGP",
+         "load" : "741"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "epd",
+         "load" : "747"
+      },
+      {
+         "source" : "omim",
+         "target" : "MaxQB",
+         "load" : "753"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "pirsf",
+         "load" : "761"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "hamap",
+         "load" : "773"
+      },
+      {
+         "source" : "refseq",
+         "target" : "MINT",
+         "load" : "789"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "IntAct",
+         "load" : "817"
+      },
+      {
+         "source" : "refseq",
+         "target" : "mint",
+         "load" : "843"
+      },
+      {
+         "source" : "omim",
+         "target" : "KO",
+         "load" : "845"
+      },
+      {
+         "source" : "MIM",
+         "target" : "cdd",
+         "load" : "883"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "DisProt",
+         "load" : "884"
+      },
+      {
+         "source" : "refseq",
+         "target" : "unipathway",
+         "load" : "898"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "intact",
+         "load" : "905"
+      },
+      {
+         "source" : "omim",
+         "target" : "PDBsum",
+         "load" : "910"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "disprot",
+         "load" : "920"
+      },
+      {
+         "source" : "MIM",
+         "target" : "TCDB",
+         "load" : "927"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "TCDB",
+         "load" : "942"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "tigrfam",
+         "load" : "972"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "EvolutionaryTrace",
+         "load" : "975"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "TCDB",
+         "load" : "978"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "hpa",
+         "load" : "999"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "lrg",
+         "load" : "1005"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "hamap",
+         "load" : "1027"
+      },
+      {
+         "source" : "omim",
+         "target" : "phylomedb",
+         "load" : "1032"
+      },
+      {
+         "source" : "refseq",
+         "target" : "genewiki",
+         "load" : "1043"
+      },
+      {
+         "source" : "omim",
+         "target" : "nextprot",
+         "load" : "1045"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PhosphoSite",
+         "load" : "1051"
+      },
+      {
+         "source" : "omim",
+         "target" : "biogrid",
+         "load" : "1061"
+      },
+      {
+         "source" : "refseq",
+         "target" : "GeneWiki",
+         "load" : "1063"
+      },
+      {
+         "source" : "omim",
+         "target" : "SMR",
+         "load" : "1063"
+      },
+      {
+         "source" : "refseq",
+         "target" : "SignaLink",
+         "load" : "1075"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "iPTMnet",
+         "load" : "1082"
+      },
+      {
+         "source" : "omim",
+         "target" : "DMDM",
+         "load" : "1109"
+      },
+      {
+         "source" : "omim",
+         "target" : "peptideatlas",
+         "load" : "1111"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "hovergen",
+         "load" : "1121"
+      },
+      {
+         "source" : "refseq",
+         "target" : "target",
+         "load" : "1131"
+      },
+      {
+         "source" : "refseq",
+         "target" : "drugbank",
+         "load" : "1151"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PaxDb",
+         "load" : "1157"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "ProDom",
+         "load" : "1157"
+      },
+      {
+         "source" : "omim",
+         "target" : "BioMuta",
+         "load" : "1163"
+      },
+      {
+         "source" : "omim",
+         "target" : "Genevisible",
+         "load" : "1169"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "HOVERGEN",
+         "load" : "1170"
+      },
+      {
+         "source" : "omim",
+         "target" : "CleanEx",
+         "load" : "1183"
+      },
+      {
+         "source" : "refseq",
+         "target" : "epd",
+         "load" : "1202"
+      },
+      {
+         "source" : "omim",
+         "target" : "Bgee",
+         "load" : "1205"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "genecards",
+         "load" : "1208"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "NextBio",
+         "load" : "1213"
+      },
+      {
+         "source" : "omim",
+         "target" : "treefam",
+         "load" : "1223"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "CAZy",
+         "load" : "1231"
+      },
+      {
+         "source" : "omim",
+         "target" : "PharmGKB",
+         "load" : "1232"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "GeneCards",
+         "load" : "1256"
+      },
+      {
+         "source" : "omim",
+         "target" : "PRO",
+         "load" : "1265"
+      },
+      {
+         "source" : "refseq",
+         "target" : "pirsf",
+         "load" : "1265"
+      },
+      {
+         "source" : "omim",
+         "target" : "hogenom",
+         "load" : "1267"
+      },
+      {
+         "source" : "omim",
+         "target" : "InParanoid",
+         "load" : "1282"
+      },
+      {
+         "source" : "refseq",
+         "target" : "IntAct",
+         "load" : "1325"
+      },
+      {
+         "source" : "omim",
+         "target" : "GenomeRNAi",
+         "load" : "1347"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "merops",
+         "load" : "1411"
+      },
+      {
+         "source" : "omim",
+         "target" : "GeneID",
+         "load" : "1427"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "cazy",
+         "load" : "1428"
+      },
+      {
+         "source" : "refseq",
+         "target" : "intact",
+         "load" : "1446"
+      },
+      {
+         "source" : "MIM",
+         "target" : "merops",
+         "load" : "1455"
+      },
+      {
+         "source" : "refseq",
+         "target" : "DrugBank",
+         "load" : "1466"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "merops",
+         "load" : "1528"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "HPA",
+         "load" : "1550"
+      },
+      {
+         "source" : "refseq",
+         "target" : "EvolutionaryTrace",
+         "load" : "1580"
+      },
+      {
+         "source" : "omim",
+         "target" : "UCSC",
+         "load" : "1605"
+      },
+      {
+         "source" : "refseq",
+         "target" : "tigrfam",
+         "load" : "1635"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "hpa",
+         "load" : "1642"
+      },
+      {
+         "source" : "omim",
+         "target" : "pride",
+         "load" : "1650"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PIR",
+         "load" : "1699"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PhosphoSite",
+         "load" : "1714"
+      },
+      {
+         "source" : "refseq",
+         "target" : "iPTMnet",
+         "load" : "1738"
+      },
+      {
+         "source" : "omim",
+         "target" : "PRINTS",
+         "load" : "1779"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "hovergen",
+         "load" : "1831"
+      },
+      {
+         "source" : "MIM",
+         "target" : "pubmed",
+         "load" : "1835"
+      },
+      {
+         "source" : "MIM",
+         "target" : "hamap",
+         "load" : "1857"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PaxDb",
+         "load" : "1873"
+      },
+      {
+         "source" : "MIM",
+         "target" : "BindingDB",
+         "load" : "1889"
+      },
+      {
+         "source" : "refseq",
+         "target" : "HOVERGEN",
+         "load" : "1897"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "BindingDB",
+         "load" : "1922"
+      },
+      {
+         "source" : "refseq",
+         "target" : "genecards",
+         "load" : "1934"
+      },
+      {
+         "source" : "MIM",
+         "target" : "BRENDA",
+         "load" : "1935"
+      },
+      {
+         "source" : "omim",
+         "target" : "unigene",
+         "load" : "1963"
+      },
+      {
+         "source" : "refseq",
+         "target" : "NextBio",
+         "load" : "1966"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "BRENDA",
+         "load" : "1970"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PeptideAtlas",
+         "load" : "1985"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "BindingDB",
+         "load" : "2007"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PeptideAtlas",
+         "load" : "2021"
+      },
+      {
+         "source" : "omim",
+         "target" : "pmp",
+         "load" : "2021"
+      },
+      {
+         "source" : "MIM",
+         "target" : "GeneReviews",
+         "load" : "2022"
+      },
+      {
+         "source" : "omim",
+         "target" : "reactome",
+         "load" : "2029"
+      },
+      {
+         "source" : "refseq",
+         "target" : "GeneCards",
+         "load" : "2042"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "GeneReviews",
+         "load" : "2047"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "BRENDA",
+         "load" : "2055"
+      },
+      {
+         "source" : "omim",
+         "target" : "ChiTaRS",
+         "load" : "2082"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "swisslipid",
+         "load" : "2098"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PeptideAtlas",
+         "load" : "2129"
+      },
+      {
+         "source" : "MIM",
+         "target" : "hovergen",
+         "load" : "2175"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "UniCarbKB",
+         "load" : "2184"
+      },
+      {
+         "source" : "MIM",
+         "target" : "GuidetoPHARMACOLOGY",
+         "load" : "2215"
+      },
+      {
+         "source" : "omim",
+         "target" : "smart",
+         "load" : "2219"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "GeneReviews",
+         "load" : "2230"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "GuidetoPHARMACOLOGY",
+         "load" : "2251"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "peptideatlas",
+         "load" : "2256"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "orthodb",
+         "load" : "2302"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PDBsum",
+         "load" : "2321"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "unipathway",
+         "load" : "2351"
+      },
+      {
+         "source" : "omim",
+         "target" : "genetree",
+         "load" : "2360"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "GuidetoPHARMACOLOGY",
+         "load" : "2426"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "tigrfam",
+         "load" : "2437"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "DNASU",
+         "load" : "2528"
+      },
+      {
+         "source" : "refseq",
+         "target" : "HPA",
+         "load" : "2541"
+      },
+      {
+         "source" : "refseq",
+         "target" : "hpa",
+         "load" : "2596"
+      },
+      {
+         "source" : "omim",
+         "target" : "string",
+         "load" : "2652"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "unipathway",
+         "load" : "2683"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PIR",
+         "load" : "2684"
+      },
+      {
+         "source" : "omim",
+         "target" : "eggnog",
+         "load" : "2718"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "MaxQB",
+         "load" : "2742"
+      },
+      {
+         "source" : "MIM",
+         "target" : "DIP",
+         "load" : "2802"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "DIP",
+         "load" : "2843"
+      },
+      {
+         "source" : "refseq",
+         "target" : "hovergen",
+         "load" : "2909"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "DIP",
+         "load" : "2973"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "KO",
+         "load" : "3016"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "BioCyc",
+         "load" : "3023"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "tigrfam",
+         "load" : "3062"
+      },
+      {
+         "source" : "omim",
+         "target" : "Proteomes",
+         "load" : "3087"
+      },
+      {
+         "source" : "omim",
+         "target" : "Gene3D",
+         "load" : "3111"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "ESTHER",
+         "load" : "3116"
+      },
+      {
+         "source" : "MIM",
+         "target" : "unipathway",
+         "load" : "3243"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "pirsf",
+         "load" : "3253"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PDBsum",
+         "load" : "3314"
+      },
+      {
+         "source" : "omim",
+         "target" : "supfam",
+         "load" : "3356"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "DEPOD",
+         "load" : "3454"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "biogrid",
+         "load" : "3623"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "SMR",
+         "load" : "3707"
+      },
+      {
+         "source" : "refseq",
+         "target" : "orthodb",
+         "load" : "3739"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "pirsf",
+         "load" : "3741"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "DMDM",
+         "load" : "3800"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "peptideatlas",
+         "load" : "3868"
+      },
+      {
+         "source" : "omim",
+         "target" : "prosite",
+         "load" : "3905"
+      },
+      {
+         "source" : "omim",
+         "target" : "pdb",
+         "load" : "3986"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Bgee",
+         "load" : "4023"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "SignaLink",
+         "load" : "4032"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Genevisible",
+         "load" : "4056"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "BioMuta",
+         "load" : "4071"
+      },
+      {
+         "source" : "refseq",
+         "target" : "DNASU",
+         "load" : "4097"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "CleanEx",
+         "load" : "4149"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "TCDB",
+         "load" : "4209"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "phylomedb",
+         "load" : "4227"
+      },
+      {
+         "source" : "MIM",
+         "target" : "SignaLink",
+         "load" : "4235"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "treefam",
+         "load" : "4290"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PharmGKB",
+         "load" : "4307"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "nextprot",
+         "load" : "4312"
+      },
+      {
+         "source" : "refseq",
+         "target" : "MaxQB",
+         "load" : "4420"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PRO",
+         "load" : "4436"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "SignaLink",
+         "load" : "4467"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "InParanoid",
+         "load" : "4493"
+      },
+      {
+         "source" : "MIM",
+         "target" : "pirsf",
+         "load" : "4494"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "hogenom",
+         "load" : "4545"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "GenomeRNAi",
+         "load" : "4687"
+      },
+      {
+         "source" : "MIM",
+         "target" : "target",
+         "load" : "4810"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "tcdb",
+         "load" : "4814"
+      },
+      {
+         "source" : "MIM",
+         "target" : "tigrfam",
+         "load" : "4824"
+      },
+      {
+         "source" : "refseq",
+         "target" : "KO",
+         "load" : "4875"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "target",
+         "load" : "4877"
+      },
+      {
+         "source" : "omim",
+         "target" : "pfam",
+         "load" : "4883"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "GeneID",
+         "load" : "4918"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "target",
+         "load" : "5266"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "UCSC",
+         "load" : "5531"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "OGP",
+         "load" : "5619"
+      },
+      {
+         "source" : "MIM",
+         "target" : "Orphanet",
+         "load" : "5660"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "pride",
+         "load" : "5687"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "Orphanet",
+         "load" : "5715"
+      },
+      {
+         "source" : "omim",
+         "target" : "HPRD",
+         "load" : "5729"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "PRINTS",
+         "load" : "5760"
+      },
+      {
+         "source" : "refseq",
+         "target" : "biogrid",
+         "load" : "5845"
+      },
+      {
+         "source" : "omim",
+         "target" : "Vega",
+         "load" : "5850"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "Orphanet",
+         "load" : "5979"
+      },
+      {
+         "source" : "refseq",
+         "target" : "SMR",
+         "load" : "6008"
+      },
+      {
+         "source" : "refseq",
+         "target" : "DMDM",
+         "load" : "6119"
+      },
+      {
+         "source" : "refseq",
+         "target" : "peptideatlas",
+         "load" : "6184"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "biocyc",
+         "load" : "6220"
+      },
+      {
+         "source" : "refseq",
+         "target" : "BioMuta",
+         "load" : "6522"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Bgee",
+         "load" : "6534"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Genevisible",
+         "load" : "6537"
+      },
+      {
+         "source" : "refseq",
+         "target" : "CleanEx",
+         "load" : "6675"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "reactome",
+         "load" : "6813"
+      },
+      {
+         "source" : "MIM",
+         "target" : "MINT",
+         "load" : "6854"
+      },
+      {
+         "source" : "refseq",
+         "target" : "treefam",
+         "load" : "6922"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PharmGKB",
+         "load" : "6934"
+      },
+      {
+         "source" : "refseq",
+         "target" : "phylomedb",
+         "load" : "6943"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "pmp",
+         "load" : "6944"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "MINT",
+         "load" : "6963"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "ChiTaRS",
+         "load" : "7070"
+      },
+      {
+         "source" : "refseq",
+         "target" : "nextprot",
+         "load" : "7126"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "unigene",
+         "load" : "7142"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PRO",
+         "load" : "7157"
+      },
+      {
+         "source" : "MIM",
+         "target" : "EvolutionaryTrace",
+         "load" : "7186"
+      },
+      {
+         "source" : "refseq",
+         "target" : "InParanoid",
+         "load" : "7211"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PATRIC",
+         "load" : "7251"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "MINT",
+         "load" : "7253"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "EvolutionaryTrace",
+         "load" : "7286"
+      },
+      {
+         "source" : "refseq",
+         "target" : "hogenom",
+         "load" : "7331"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "smart",
+         "load" : "7550"
+      },
+      {
+         "source" : "refseq",
+         "target" : "GenomeRNAi",
+         "load" : "7556"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "prodom",
+         "load" : "7804"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "EvolutionaryTrace",
+         "load" : "7885"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "TopDownProteomics",
+         "load" : "7944"
+      },
+      {
+         "source" : "refseq",
+         "target" : "GeneID",
+         "load" : "7951"
+      },
+      {
+         "source" : "omim",
+         "target" : "ccds",
+         "load" : "7953"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "brenda",
+         "load" : "8085"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "BRENDA",
+         "load" : "8120"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "genetree",
+         "load" : "8217"
+      },
+      {
+         "source" : "MIM",
+         "target" : "GeneWiki",
+         "load" : "8742"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "BindingDB",
+         "load" : "8748"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "GeneWiki",
+         "load" : "8870"
+      },
+      {
+         "source" : "refseq",
+         "target" : "UCSC",
+         "load" : "8901"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "string",
+         "load" : "9038"
+      },
+      {
+         "source" : "refseq",
+         "target" : "pride",
+         "load" : "9122"
+      },
+      {
+         "source" : "omim",
+         "target" : "MedGen",
+         "load" : "9138"
+      },
+      {
+         "source" : "refseq",
+         "target" : "MedGen",
+         "load" : "9138"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "MedGen",
+         "load" : "9138"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PeptideAtlas",
+         "load" : "9169"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "GeneWiki",
+         "load" : "9289"
+      },
+      {
+         "source" : "MIM",
+         "target" : "peptideatlas",
+         "load" : "9300"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "bindindDB",
+         "load" : "9449"
+      },
+      {
+         "source" : "refseq",
+         "target" : "PRINTS",
+         "load" : "9480"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "eggnog",
+         "load" : "9803"
+      },
+      {
+         "source" : "MIM",
+         "target" : "DrugBank",
+         "load" : "10598"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "DrugBank",
+         "load" : "10729"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Proteomes",
+         "load" : "10885"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Gene3D",
+         "load" : "10914"
+      },
+      {
+         "source" : "refseq",
+         "target" : "reactome",
+         "load" : "11034"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "SwissPalm",
+         "load" : "11115"
+      },
+      {
+         "source" : "MIM",
+         "target" : "IntAct",
+         "load" : "11137"
+      },
+      {
+         "source" : "refseq",
+         "target" : "pmp",
+         "load" : "11172"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "DrugBank",
+         "load" : "11284"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "IntAct",
+         "load" : "11335"
+      },
+      {
+         "source" : "refseq",
+         "target" : "ChiTaRS",
+         "load" : "11437"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "supfam",
+         "load" : "11469"
+      },
+      {
+         "source" : "refseq",
+         "target" : "unigene",
+         "load" : "11503"
+      },
+      {
+         "source" : "omim",
+         "target" : "MIM",
+         "load" : "11652"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "IntAct",
+         "load" : "11827"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "SIGNOR",
+         "load" : "11870"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "HPRD",
+         "load" : "12083"
+      },
+      {
+         "source" : "refseq",
+         "target" : "smart",
+         "load" : "12226"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PIR",
+         "load" : "12379"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "Vega",
+         "load" : "12412"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PIR",
+         "load" : "12418"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "pdb",
+         "load" : "12601"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "DIP",
+         "load" : "12859"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "merops",
+         "load" : "12876"
+      },
+      {
+         "source" : "omim",
+         "target" : "interpro",
+         "load" : "12980"
+      },
+      {
+         "source" : "refseq",
+         "target" : "genetree",
+         "load" : "13189"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "MedGen",
+         "load" : "13404"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PIR",
+         "load" : "13482"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "prosite",
+         "load" : "13522"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PRINTS",
+         "load" : "13524"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PhosphoSite",
+         "load" : "13927"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "dip",
+         "load" : "13947"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PhosphoSite",
+         "load" : "14157"
+      },
+      {
+         "source" : "omim",
+         "target" : "hgnc",
+         "load" : "14182"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "orthodb",
+         "load" : "14199"
+      },
+      {
+         "source" : "refseq",
+         "target" : "string",
+         "load" : "14525"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PhosphoSite",
+         "load" : "14762"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "MalaCards",
+         "load" : "14854"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "ccds",
+         "load" : "15041"
+      },
+      {
+         "source" : "MIM",
+         "target" : "orthodb",
+         "load" : "15056"
+      },
+      {
+         "source" : "omim",
+         "target" : "refseq",
+         "load" : "15446"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PaxDb",
+         "load" : "15468"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "orthodb",
+         "load" : "15564"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PaxDb",
+         "load" : "15732"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "Bgee",
+         "load" : "15802"
+      },
+      {
+         "source" : "refseq",
+         "target" : "eggnog",
+         "load" : "15867"
+      },
+      {
+         "source" : "MIM",
+         "target" : "NextBio",
+         "load" : "16217"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PaxDb",
+         "load" : "16435"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "NextBio",
+         "load" : "16480"
+      },
+      {
+         "source" : "MIM",
+         "target" : "HOVERGEN",
+         "load" : "16674"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "HOVERGEN",
+         "load" : "16927"
+      },
+      {
+         "source" : "MIM",
+         "target" : "GeneCards",
+         "load" : "16968"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "GeneReviews",
+         "load" : "16990"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "pfam",
+         "load" : "17018"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PRINTS",
+         "load" : "17026"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "NextBio",
+         "load" : "17171"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "GeneCards",
+         "load" : "17239"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Proteomes",
+         "load" : "17549"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "HOVERGEN",
+         "load" : "17615"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Gene3D",
+         "load" : "17618"
+      },
+      {
+         "source" : "refseq",
+         "target" : "HPRD",
+         "load" : "17966"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "HPRD",
+         "load" : "17966"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "GeneCards",
+         "load" : "17987"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "Bgee",
+         "load" : "18103"
+      },
+      {
+         "source" : "refseq",
+         "target" : "supfam",
+         "load" : "18330"
+      },
+      {
+         "source" : "MIM",
+         "target" : "DNASU",
+         "load" : "18907"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "DNASU",
+         "load" : "18926"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "ChiTaRS",
+         "load" : "18992"
+      },
+      {
+         "source" : "refseq",
+         "target" : "pdb",
+         "load" : "19078"
+      },
+      {
+         "source" : "refseq",
+         "target" : "ccds",
+         "load" : "19173"
+      },
+      {
+         "source" : "refseq",
+         "target" : "Vega",
+         "load" : "19211"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "Vega",
+         "load" : "19211"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "GuidetoPHARMACOLOGY",
+         "load" : "19404"
+      },
+      {
+         "source" : "MIM",
+         "target" : "MaxQB",
+         "load" : "20285"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "eggnog",
+         "load" : "20360"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "MaxQB",
+         "load" : "20395"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "DNASU",
+         "load" : "20487"
+      },
+      {
+         "source" : "omim",
+         "target" : "ncbigene",
+         "load" : "20978"
+      },
+      {
+         "source" : "refseq",
+         "target" : "ncbigene",
+         "load" : "20978"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "ncbigene",
+         "load" : "20978"
+      },
+      {
+         "source" : "MIM",
+         "target" : "HPA",
+         "load" : "21071"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "KO",
+         "load" : "21250"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "HPA",
+         "load" : "21417"
+      },
+      {
+         "source" : "MIM",
+         "target" : "KO",
+         "load" : "21511"
+      },
+      {
+         "source" : "omim",
+         "target" : "ensembl",
+         "load" : "21543"
+      },
+      {
+         "source" : "MIM",
+         "target" : "Bgee",
+         "load" : "21713"
+      },
+      {
+         "source" : "refseq",
+         "target" : "prosite",
+         "load" : "21837"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "MaxQB",
+         "load" : "22035"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "HPA",
+         "load" : "22316"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "ChiTaRS",
+         "load" : "23006"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "KO",
+         "load" : "23075"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "cdd",
+         "load" : "23107"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Orphanet",
+         "load" : "23430"
+      },
+      {
+         "source" : "omim",
+         "target" : "go",
+         "load" : "23680"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "orphanet",
+         "load" : "24482"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "SMR",
+         "load" : "25286"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "eggnog",
+         "load" : "26133"
+      },
+      {
+         "source" : "MIM",
+         "target" : "SMR",
+         "load" : "26290"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PRINTS",
+         "load" : "26679"
+      },
+      {
+         "source" : "MIM",
+         "target" : "biogrid",
+         "load" : "26723"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "Gene3D",
+         "load" : "26728"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "biogrid",
+         "load" : "27150"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "supfam",
+         "load" : "27407"
+      },
+      {
+         "source" : "refseq",
+         "target" : "pfam",
+         "load" : "27461"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "SMR",
+         "load" : "27514"
+      },
+      {
+         "source" : "MIM",
+         "target" : "DMDM",
+         "load" : "27824"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "hamap",
+         "load" : "27892"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "DMDM",
+         "load" : "28250"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "UCSC",
+         "load" : "28270"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "smart",
+         "load" : "29166"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "biogrid",
+         "load" : "29366"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PDBsum",
+         "load" : "29377"
+      },
+      {
+         "source" : "MIM",
+         "target" : "BioMuta",
+         "load" : "29410"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "ncbigene",
+         "load" : "29418"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "hogenom",
+         "load" : "29653"
+      },
+      {
+         "source" : "MIM",
+         "target" : "Genevisible",
+         "load" : "29728"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "BioMuta",
+         "load" : "29847"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "Genevisible",
+         "load" : "29984"
+      },
+      {
+         "source" : "omim",
+         "target" : "BioProject",
+         "load" : "30116"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PDBsum",
+         "load" : "30217"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "DMDM",
+         "load" : "30573"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "genetree",
+         "load" : "30603"
+      },
+      {
+         "source" : "MIM",
+         "target" : "CleanEx",
+         "load" : "30816"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "CleanEx",
+         "load" : "31299"
+      },
+      {
+         "source" : "MIM",
+         "target" : "hogenom",
+         "load" : "31315"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "refseq",
+         "load" : "31336"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "MINT",
+         "load" : "31447"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "UCSC",
+         "load" : "31519"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PharmGKB",
+         "load" : "31625"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PDBsum",
+         "load" : "31749"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PharmGKB",
+         "load" : "31803"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "mint",
+         "load" : "32039"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "BioMuta",
+         "load" : "32279"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "hogenom",
+         "load" : "32324"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "GenomeRNAi",
+         "load" : "32333"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "Genevisible",
+         "load" : "32431"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "string",
+         "load" : "32508"
+      },
+      {
+         "source" : "MIM",
+         "target" : "treefam",
+         "load" : "32645"
+      },
+      {
+         "source" : "MIM",
+         "target" : "phylomedb",
+         "load" : "32670"
+      },
+      {
+         "source" : "MIM",
+         "target" : "PRO",
+         "load" : "32725"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "MIM",
+         "load" : "32806"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "phylomedb",
+         "load" : "32864"
+      },
+      {
+         "source" : "MIM",
+         "target" : "InParanoid",
+         "load" : "32999"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "treefam",
+         "load" : "33054"
+      },
+      {
+         "source" : "MIM",
+         "target" : "GenomeRNAi",
+         "load" : "33170"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "PRO",
+         "load" : "33215"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "Gene3D",
+         "load" : "33260"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "InParanoid",
+         "load" : "33461"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "GeneID",
+         "load" : "33580"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "CleanEx",
+         "load" : "33808"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "pmp",
+         "load" : "33815"
+      },
+      {
+         "source" : "MIM",
+         "target" : "nextprot",
+         "load" : "33841"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "smart",
+         "load" : "33894"
+      },
+      {
+         "source" : "MIM",
+         "target" : "ChiTaRS",
+         "load" : "34148"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "supfam",
+         "load" : "34295"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "nextprot",
+         "load" : "34355"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PharmGKB",
+         "load" : "34405"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "pride",
+         "load" : "34449"
+      },
+      {
+         "source" : "MIM",
+         "target" : "GeneID",
+         "load" : "34719"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "GenomeRNAi",
+         "load" : "35134"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "phylomedb",
+         "load" : "35183"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "genetree",
+         "load" : "35437"
+      },
+      {
+         "source" : "MIM",
+         "target" : "UCSC",
+         "load" : "35439"
+      },
+      {
+         "source" : "MIM",
+         "target" : "MIM",
+         "load" : "35512"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "treefam",
+         "load" : "35594"
+      },
+      {
+         "source" : "refseq",
+         "target" : "MIM",
+         "load" : "35640"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "PRO",
+         "load" : "35828"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "unipathway",
+         "load" : "35888"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "MIM",
+         "load" : "35987"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "InParanoid",
+         "load" : "36146"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "GeneID",
+         "load" : "36538"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "nextprot",
+         "load" : "36683"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "hgnc",
+         "load" : "37194"
+      },
+      {
+         "source" : "MIM",
+         "target" : "pride",
+         "load" : "37418"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "pride",
+         "load" : "37862"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "pmp",
+         "load" : "37878"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "string",
+         "load" : "37997"
+      },
+      {
+         "source" : "refseq",
+         "target" : "refseq",
+         "load" : "38914"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "SignaLink",
+         "load" : "39089"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "unigene",
+         "load" : "39720"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "GeneWiki",
+         "load" : "40157"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "genewiki",
+         "load" : "40180"
+      },
+      {
+         "source" : "MIM",
+         "target" : "eggnog",
+         "load" : "40250"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "MedGen",
+         "load" : "40346"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "Proteomes",
+         "load" : "40504"
+      },
+      {
+         "source" : "MIM",
+         "target" : "pmp",
+         "load" : "41181"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "target",
+         "load" : "41896"
+      },
+      {
+         "source" : "MIM",
+         "target" : "smart",
+         "load" : "41959"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "unigene",
+         "load" : "43945"
+      },
+      {
+         "source" : "MIM",
+         "target" : "genetree",
+         "load" : "44345"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "DrugBank",
+         "load" : "44493"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "interpro",
+         "load" : "45302"
+      },
+      {
+         "source" : "MIM",
+         "target" : "unigene",
+         "load" : "45848"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "Proteomes",
+         "load" : "47023"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "epd",
+         "load" : "47317"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "drugbank",
+         "load" : "47624"
+      },
+      {
+         "source" : "MIM",
+         "target" : "string",
+         "load" : "47823"
+      },
+      {
+         "source" : "MIM",
+         "target" : "ccds",
+         "load" : "49611"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "prosite",
+         "load" : "49776"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "ccds",
+         "load" : "50355"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "hgnc",
+         "load" : "51111"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "pfam",
+         "load" : "51125"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "IntAct",
+         "load" : "51248"
+      },
+      {
+         "source" : "MIM",
+         "target" : "hgnc",
+         "load" : "51485"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "pirsf",
+         "load" : "51499"
+      },
+      {
+         "source" : "MIM",
+         "target" : "Gene3D",
+         "load" : "51770"
+      },
+      {
+         "source" : "MIM",
+         "target" : "supfam",
+         "load" : "53330"
+      },
+      {
+         "source" : "MIM",
+         "target" : "reactome",
+         "load" : "53872"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "reactome",
+         "load" : "54463"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "ensembl",
+         "load" : "55188"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "pubmed",
+         "load" : "55412"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "intact",
+         "load" : "56488"
+      },
+      {
+         "source" : "refseq",
+         "target" : "hgnc",
+         "load" : "56658"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "prosite",
+         "load" : "58086"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "reactome",
+         "load" : "58953"
+      },
+      {
+         "source" : "MIM",
+         "target" : "pdb",
+         "load" : "59669"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "MIM",
+         "load" : "59713"
+      },
+      {
+         "source" : "MIM",
+         "target" : "Proteomes",
+         "load" : "60466"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "EvolutionaryTrace",
+         "load" : "60966"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "pdb",
+         "load" : "61184"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "pfam",
+         "load" : "61499"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "BioProject",
+         "load" : "62967"
+      },
+      {
+         "source" : "refseq",
+         "target" : "ensembl",
+         "load" : "63455"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PhosphoSite",
+         "load" : "64042"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "hgnc",
+         "load" : "66782"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "iPTMnet",
+         "load" : "67911"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "tigrfam",
+         "load" : "68233"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "pdb",
+         "load" : "68512"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "ccds",
+         "load" : "69925"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PaxDb",
+         "load" : "71198"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "HOVERGEN",
+         "load" : "71293"
+      },
+      {
+         "source" : "refseq",
+         "target" : "interpro",
+         "load" : "72828"
+      },
+      {
+         "source" : "MIM",
+         "target" : "prosite",
+         "load" : "73614"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "NextBio",
+         "load" : "74455"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "genecards",
+         "load" : "76166"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "ensembl",
+         "load" : "77926"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "GeneCards",
+         "load" : "77965"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "HPRD",
+         "load" : "79561"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "refseq",
+         "load" : "84213"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Vega",
+         "load" : "85048"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "go",
+         "load" : "85125"
+      },
+      {
+         "source" : "MIM",
+         "target" : "pfam",
+         "load" : "86080"
+      },
+      {
+         "source" : "MIM",
+         "target" : "refseq",
+         "load" : "87281"
+      },
+      {
+         "source" : "MIM",
+         "target" : "ensembl",
+         "load" : "90229"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "ncbigene",
+         "load" : "93386"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "HPA",
+         "load" : "95773"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "hpa",
+         "load" : "101750"
+      },
+      {
+         "source" : "ncbigene",
+         "target" : "BioProject",
+         "load" : "104718"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PIR",
+         "load" : "107016"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "refseq",
+         "load" : "115518"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "hovergen",
+         "load" : "116597"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "ensembl",
+         "load" : "121519"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "interpro",
+         "load" : "128912"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PDBsum",
+         "load" : "135360"
+      },
+      {
+         "source" : "refseq",
+         "target" : "go",
+         "load" : "135716"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "orthodb",
+         "load" : "146063"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "interpro",
+         "load" : "156262"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "DNASU",
+         "load" : "161064"
+      },
+      {
+         "source" : "refseq",
+         "target" : "BioProject",
+         "load" : "168085"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "MaxQB",
+         "load" : "172332"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "KO",
+         "load" : "189796"
+      },
+      {
+         "source" : "MIM",
+         "target" : "interpro",
+         "load" : "223163"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "biogrid",
+         "load" : "226573"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "DMDM",
+         "load" : "234192"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "SMR",
+         "load" : "240674"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "BioMuta",
+         "load" : "247863"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Genevisible",
+         "load" : "252244"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "peptideatlas",
+         "load" : "254879"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "CleanEx",
+         "load" : "259165"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "treefam",
+         "load" : "265031"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PharmGKB",
+         "load" : "268685"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Bgee",
+         "load" : "269199"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PRO",
+         "load" : "276050"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "phylomedb",
+         "load" : "278690"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "InParanoid",
+         "load" : "279051"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "hogenom",
+         "load" : "284033"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "nextprot",
+         "load" : "284932"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "GenomeRNAi",
+         "load" : "294404"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "GeneID",
+         "load" : "311865"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "pride",
+         "load" : "356372"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "UCSC",
+         "load" : "359408"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "PRINTS",
+         "load" : "380516"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "MIM",
+         "load" : "417178"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "pmp",
+         "load" : "424989"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "reactome",
+         "load" : "447211"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "ccds",
+         "load" : "455062"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "unigene",
+         "load" : "461801"
+      },
+      {
+         "source" : "mim2gene",
+         "target" : "go",
+         "load" : "465908"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "ChiTaRS",
+         "load" : "466865"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "smart",
+         "load" : "499065"
+      },
+      {
+         "source" : "hgnc",
+         "target" : "go",
+         "load" : "517071"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "genetree",
+         "load" : "536542"
+      },
+      {
+         "source" : "MIM",
+         "target" : "go",
+         "load" : "545723"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "string",
+         "load" : "582808"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "eggnog",
+         "load" : "655095"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Gene3D",
+         "load" : "724386"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "Proteomes",
+         "load" : "729566"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "BioProject",
+         "load" : "739244"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "supfam",
+         "load" : "753668"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "hgnc",
+         "load" : "783572"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "pdb",
+         "load" : "798900"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "refseq",
+         "load" : "864967"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "prosite",
+         "load" : "897807"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "pfam",
+         "load" : "1126987"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "ensembl",
+         "load" : "1128675"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "interpro",
+         "load" : "2978945"
+      },
+      {
+         "source" : "uniprot",
+         "target" : "go",
+         "load" : "5362335"
+      }
+   ],
+   "nodes" : [
+      {
+         "caption" : "MIM",
+         "root" : 1,
+         "id" : "MIM",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "flybase",
+         "root" : 1,
+         "id" : "flybase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "refseq",
+         "root" : 1,
+         "id" : "refseq",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "dictybase",
+         "root" : 1,
+         "id" : "dictybase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "ncbigene",
+         "root" : 1,
+         "id" : "ncbigene",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "conoserver",
+         "root" : 1,
+         "id" : "conoserver",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "mgi",
+         "root" : 1,
+         "id" : "mgi",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "tcdb",
+         "root" : 1,
+         "id" : "tcdb",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "omim",
+         "root" : 1,
+         "id" : "omim",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "cazy",
+         "root" : 1,
+         "id" : "cazy",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "dip",
+         "root" : 1,
+         "id" : "dip",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "drugbank",
+         "root" : 1,
+         "id" : "drugbank",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "euHCVdb",
+         "root" : 1,
+         "id" : "euHCVdb",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "genedb",
+         "root" : 1,
+         "id" : "genedb",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "SIGNOR",
+         "root" : 1,
+         "id" : "SIGNOR",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "hgnc",
+         "root" : 1,
+         "id" : "hgnc",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "xenbase",
+         "root" : 1,
+         "id" : "xenbase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "rebase",
+         "root" : 1,
+         "id" : "rebase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Gramene",
+         "root" : 1,
+         "id" : "Gramene",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "allergome",
+         "root" : 1,
+         "id" : "allergome",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "MalaCards",
+         "root" : 1,
+         "id" : "MalaCards",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "bindindDB",
+         "root" : 1,
+         "id" : "bindindDB",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Allergome",
+         "root" : 1,
+         "id" : "Allergome",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "peroxibase",
+         "root" : 1,
+         "id" : "peroxibase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "MoonProt",
+         "root" : 1,
+         "id" : "MoonProt",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "uniprot",
+         "root" : 1,
+         "id" : "uniprot",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "NCBITaxon",
+         "root" : 1,
+         "id" : "NCBITaxon",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "SwissPalm",
+         "root" : 1,
+         "id" : "SwissPalm",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "mycoCLAP",
+         "root" : 1,
+         "id" : "mycoCLAP",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PeroxiBase",
+         "root" : 1,
+         "id" : "PeroxiBase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "mim2gene",
+         "root" : 1,
+         "id" : "mim2gene",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "REBASE",
+         "root" : 1,
+         "id" : "REBASE",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "swisslipid",
+         "root" : 1,
+         "id" : "swisslipid",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "DisProt",
+         "root" : 1,
+         "id" : "DisProt",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "brenda",
+         "root" : 1,
+         "id" : "brenda",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "disprot",
+         "root" : 1,
+         "id" : "disprot",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "CGD",
+         "root" : 1,
+         "id" : "CGD",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "UniCarbKB",
+         "root" : 1,
+         "id" : "UniCarbKB",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "CAZy",
+         "root" : 1,
+         "id" : "CAZy",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "ProDom",
+         "root" : 1,
+         "id" : "ProDom",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "ESTHER",
+         "root" : 1,
+         "id" : "ESTHER",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "TCDB",
+         "root" : 1,
+         "id" : "TCDB",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "BioCyc",
+         "root" : 1,
+         "id" : "BioCyc",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "iPTMnet",
+         "root" : 1,
+         "id" : "iPTMnet",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "DEPOD",
+         "root" : 1,
+         "id" : "DEPOD",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "pombase",
+         "root" : 1,
+         "id" : "pombase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "TopDownProteomics",
+         "root" : 1,
+         "id" : "TopDownProteomics",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "biocyc",
+         "root" : 1,
+         "id" : "biocyc",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "OGP",
+         "root" : 1,
+         "id" : "OGP",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PATRIC",
+         "root" : 1,
+         "id" : "PATRIC",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "prodom",
+         "root" : 1,
+         "id" : "prodom",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "zfin",
+         "root" : 1,
+         "id" : "zfin",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "wormbase",
+         "root" : 1,
+         "id" : "wormbase",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "rgd",
+         "root" : 1,
+         "id" : "rgd",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "TAIR",
+         "root" : 1,
+         "id" : "TAIR",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "BRENDA",
+         "root" : 1,
+         "id" : "BRENDA",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "BindingDB",
+         "root" : 1,
+         "id" : "BindingDB",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PeptideAtlas",
+         "root" : 1,
+         "id" : "PeptideAtlas",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "mint",
+         "root" : 1,
+         "id" : "mint",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "merops",
+         "root" : 1,
+         "id" : "merops",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "DIP",
+         "root" : 1,
+         "id" : "DIP",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "EuPathDB",
+         "root" : 1,
+         "id" : "EuPathDB",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "sgd",
+         "root" : 1,
+         "id" : "sgd",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "GuidetoPHARMACOLOGY",
+         "root" : 1,
+         "id" : "GuidetoPHARMACOLOGY",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "pubmed",
+         "root" : 1,
+         "id" : "pubmed",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "GeneReviews",
+         "root" : 1,
+         "id" : "GeneReviews",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "cdd",
+         "root" : 1,
+         "id" : "cdd",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "orphanet",
+         "root" : 1,
+         "id" : "orphanet",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "hamap",
+         "root" : 1,
+         "id" : "hamap",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "unipathway",
+         "root" : 1,
+         "id" : "unipathway",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "MINT",
+         "root" : 1,
+         "id" : "MINT",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "intact",
+         "root" : 1,
+         "id" : "intact",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Orphanet",
+         "root" : 1,
+         "id" : "Orphanet",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "lrg",
+         "root" : 1,
+         "id" : "lrg",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "genewiki",
+         "root" : 1,
+         "id" : "genewiki",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "GeneWiki",
+         "root" : 1,
+         "id" : "GeneWiki",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "target",
+         "root" : 1,
+         "id" : "target",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "SignaLink",
+         "root" : 1,
+         "id" : "SignaLink",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "epd",
+         "root" : 1,
+         "id" : "epd",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "pirsf",
+         "root" : 1,
+         "id" : "pirsf",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "IntAct",
+         "root" : 1,
+         "id" : "IntAct",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "tigrfam",
+         "root" : 1,
+         "id" : "tigrfam",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PhosphoSite",
+         "root" : 1,
+         "id" : "PhosphoSite",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "EvolutionaryTrace",
+         "root" : 1,
+         "id" : "EvolutionaryTrace",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "HOVERGEN",
+         "root" : 1,
+         "id" : "HOVERGEN",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PaxDb",
+         "root" : 1,
+         "id" : "PaxDb",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "NextBio",
+         "root" : 1,
+         "id" : "NextBio",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "DrugBank",
+         "root" : 1,
+         "id" : "DrugBank",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "genecards",
+         "root" : 1,
+         "id" : "genecards",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "GeneCards",
+         "root" : 1,
+         "id" : "GeneCards",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "HPA",
+         "root" : 1,
+         "id" : "HPA",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "hpa",
+         "root" : 1,
+         "id" : "hpa",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PIR",
+         "root" : 1,
+         "id" : "PIR",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "hovergen",
+         "root" : 1,
+         "id" : "hovergen",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "orthodb",
+         "root" : 1,
+         "id" : "orthodb",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "DNASU",
+         "root" : 1,
+         "id" : "DNASU",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "MaxQB",
+         "root" : 1,
+         "id" : "MaxQB",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "KO",
+         "root" : 1,
+         "id" : "KO",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PDBsum",
+         "root" : 1,
+         "id" : "PDBsum",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "phylomedb",
+         "root" : 1,
+         "id" : "phylomedb",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "nextprot",
+         "root" : 1,
+         "id" : "nextprot",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "biogrid",
+         "root" : 1,
+         "id" : "biogrid",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "SMR",
+         "root" : 1,
+         "id" : "SMR",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "DMDM",
+         "root" : 1,
+         "id" : "DMDM",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "peptideatlas",
+         "root" : 1,
+         "id" : "peptideatlas",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "BioMuta",
+         "root" : 1,
+         "id" : "BioMuta",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Genevisible",
+         "root" : 1,
+         "id" : "Genevisible",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "CleanEx",
+         "root" : 1,
+         "id" : "CleanEx",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Bgee",
+         "root" : 1,
+         "id" : "Bgee",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "treefam",
+         "root" : 1,
+         "id" : "treefam",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PharmGKB",
+         "root" : 1,
+         "id" : "PharmGKB",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PRO",
+         "root" : 1,
+         "id" : "PRO",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "hogenom",
+         "root" : 1,
+         "id" : "hogenom",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "InParanoid",
+         "root" : 1,
+         "id" : "InParanoid",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "GenomeRNAi",
+         "root" : 1,
+         "id" : "GenomeRNAi",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "GeneID",
+         "root" : 1,
+         "id" : "GeneID",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "UCSC",
+         "root" : 1,
+         "id" : "UCSC",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "pride",
+         "root" : 1,
+         "id" : "pride",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "PRINTS",
+         "root" : 1,
+         "id" : "PRINTS",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "unigene",
+         "root" : 1,
+         "id" : "unigene",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "pmp",
+         "root" : 1,
+         "id" : "pmp",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "reactome",
+         "root" : 1,
+         "id" : "reactome",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "ChiTaRS",
+         "root" : 1,
+         "id" : "ChiTaRS",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "smart",
+         "root" : 1,
+         "id" : "smart",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "genetree",
+         "root" : 1,
+         "id" : "genetree",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "string",
+         "root" : 1,
+         "id" : "string",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "eggnog",
+         "root" : 1,
+         "id" : "eggnog",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Proteomes",
+         "root" : 1,
+         "id" : "Proteomes",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Gene3D",
+         "root" : 1,
+         "id" : "Gene3D",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "supfam",
+         "root" : 1,
+         "id" : "supfam",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "prosite",
+         "root" : 1,
+         "id" : "prosite",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "pdb",
+         "root" : 1,
+         "id" : "pdb",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "pfam",
+         "root" : 1,
+         "id" : "pfam",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "HPRD",
+         "root" : 1,
+         "id" : "HPRD",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "Vega",
+         "root" : 1,
+         "id" : "Vega",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "ccds",
+         "root" : 1,
+         "id" : "ccds",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "MedGen",
+         "root" : 1,
+         "id" : "MedGen",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "interpro",
+         "root" : 1,
+         "id" : "interpro",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "ensembl",
+         "root" : 1,
+         "id" : "ensembl",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "go",
+         "root" : 1,
+         "id" : "go",
+         "role" : "http_server"
+      },
+      {
+         "caption" : "BioProject",
+         "root" : 1,
+         "id" : "BioProject",
+         "role" : "http_server"
+      }
+   ]
+  }
+}

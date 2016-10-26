@@ -1,0 +1,129 @@
+<div id="cyto">Cytoscape render</div>
+
+<script>
+  const shortSummary = "PREFIX dc: <http://purl.org/dc/elements/1.1/> \
+                        PREFIX dcterms: <http://purl.org/dc/terms/> \
+                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
+                        PREFIX ensembl: <http://rdf.ebi.ac.uk/resource/ensembl/> \
+                        PREFIX terms: <http://rdf.ebi.ac.uk/terms/ensembl/> \
+                        SELECT DISTINCT ?source_a ?source_b (COUNT(?xref) ) as ?count WHERE { \
+                          ?entity terms:refers-to ?xref . \
+                          ?entity dcterms:source ?source_a . \
+                          ?other dcterms:source ?source_b . \
+                          ?xref terms:refers-to ?other . \
+                        } ORDER BY ?source_a \
+                        ";
+
+  const detailedSummary =  "PREFIX dc: <http://purl.org/dc/elements/1.1/> \
+                            PREFIX dcterms: <http://purl.org/dc/terms/> \
+                            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
+                            PREFIX ensembl: <http://rdf.ebi.ac.uk/resource/ensembl/> \
+                            PREFIX terms: <http://rdf.ebi.ac.uk/terms/ensembl/> \
+                            SELECT ?source_a ?source_name ?source_b ?sourceb_name (COUNT(?xref)) AS ?count WHERE { \
+                              ?entity terms:refers-to ?xref . \
+                              ?entity dcterms:source ?source_a . \
+                              ?other dcterms:source ?source_b . \
+                              ?xref terms:refers-to ?other . \
+                              BIND(?source_a AS ?source_name) \
+                              BIND(?source_b AS ?sourceb_name) \
+                            }";
+  function convertSPARQLtoGraph(dataTable){
+    var numberOfRows = dataTable.getNumberOfRows();
+    var numberOfColumns = dataTable.getNumberOfColumns();
+    var nodesAndEdges = { nodes: [], edges: []};
+    // Establish node list and edge list respectively, starting from a Google dataTable type object
+    for (row = 0; row < numberOfRows; row += 1) {
+      source = dataTable.getValue(row,0);
+      target = dataTable.getValue(row,2);
+      nodesAndEdges.nodes.push(
+        {id:source, caption:source},
+        {id:target, caption:target}
+      );
+
+      edge_label = dataTable.getValue(row,1);
+      if (nodesAndEdges.edges[source + target] !== undefined) {
+
+      } else {
+        nodesAndEdges.edges[source+target] = {from:source, to:target, caption:edge_label};
+      }
+
+    }
+    return nodesAndEdges;
+  };
+
+  function exec() {
+    var endpoint = d3.select("#endpoint").property("value");
+    var sparql = shortSummary;
+    d3sparql.query(endpoint, sparql, render);
+  }
+  function trimURI(uri) {
+    // console.log(uri);
+    uri = uri.substring(0, uri.length -1); // trim final "/"
+    return lastSegment = uri.split('/').pop();
+  }
+  var nodeGenerator = (function (){
+    var nodes = 0;
+    return function () {return nodes +=1;}
+  })();
+
+  function render(queryResult) {
+
+    var hits = queryResult.results.bindings;
+    var graphBits = {nodes: [], edges: []};
+    var unique_nodes = {};
+    for (var i = hits.length - 1; i >= 0; i--) {
+      if (! unique_nodes.hasOwnProperty(hits[i].source_a.value)) {
+        // console.log("New node: " + i + " "+ hits[i].source_a.value);
+        unique_nodes[hits[i].source_a.value] = "v"+nodeGenerator();
+        graphBits.nodes.push( {
+          data: {
+            caption: trimURI(hits[i].source_a.value),
+            id: unique_nodes[hits[i].source_a.value].toString(),
+            root: 1,
+            role: "bilge"
+          }
+        });
+      } else {
+        // console.log("Seen " + i + " "+ hits[i].source_a.value);
+      }
+      if (! unique_nodes.hasOwnProperty(hits[i].source_b.value)) {
+        // console.log("New node: " + i + " "+ hits[i].source_b.value);
+        unique_nodes[hits[i].source_b.value] = "v"+nodeGenerator();
+        graphBits.nodes.push({
+          data: {
+            caption: trimURI(hits[i].source_b.value),
+            id: unique_nodes[hits[i].source_b.value].toString(),
+            root: 1,
+            role: "bilge"
+          }
+        });
+      }
+      graphBits.edges.push({
+        data: {
+          source: unique_nodes[hits[i].source_a.value].toString(),
+          target: unique_nodes[hits[i].source_b.value].toString(), 
+          load: parseInt(hits[i].count.value)
+        }
+      });
+    }
+    console.log(graphBits);
+    var styleP = $.ajax({
+        url: 'static/css/cyto.css', 
+        type: 'GET',
+        dataType: 'text'
+      });
+
+    var cyto = cytoscape(
+      {
+          layout: { name: 'spread'},
+          container: document.getElementById('cyto'),
+          elements: graphBits,
+          style: styleP
+      } 
+      
+    );
+  }
+
+</script>
+
+<input id="endpoint" value="http://localhost:8890/sparql" type="text">

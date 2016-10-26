@@ -1,0 +1,59 @@
+
+  
+<h2>Cytoscape XREF viewer</h2>
+<div id="cyto">Cytoscape render</div>
+
+<script>
+
+  function convertSPARQLtoGraph(dataTable){
+    var numberOfRows = dataTable.getNumberOfRows();
+    var numberOfColumns = dataTable.getNumberOfColumns();
+    var nodesAndEdges = { nodes: [], edges: []};
+    // Establish node list and edge list respectively, starting from a Google dataTable type object
+    for (row = 0; row < numberOfRows; row += 1) {
+      source = dataTable.getValue(row,0);
+      target = dataTable.getValue(row,2);
+      nodesAndEdges.nodes.push(
+        {id:source, caption:source},
+        {id:target, caption:target}
+      );
+
+      edge_label = dataTable.getValue(row,1);
+      if (nodesAndEdges.edges[source + target] !== undefined) {
+
+      } else {
+        nodesAndEdges.edges[source+target] = {from:source, to:target, caption:edge_label};
+      }
+
+    }
+    return nodesAndEdges;
+  };
+
+  function exec() {
+    var endpoint = d3.select("#endpoint").property("value")
+    d3sparql.query(endpoint, sparql, render)
+  }
+
+
+  $.getJSON("static/data/cyto_xrefs.json",function(data) {
+    console.log(data);
+    
+    var styleP = $.ajax({
+      url: 'static/css/cyto.css', 
+      type: 'GET',
+      dataType: 'text'
+    });
+
+    var cyto = cytoscape(
+      {
+          layout: { name: 'spread'},
+          container: document.getElementById('cyto'),
+          elements: data.elements,
+          style: styleP
+      } 
+      
+    );
+  });
+
+  $( document ).ready(exec);
+</script>

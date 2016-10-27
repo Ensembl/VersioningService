@@ -7,7 +7,7 @@
     "cytoscape": "^2.7.10",
     "express": "^4.14.0",
     "express-handlebars": "",
-    "handlebars": "",
+    "handlebars": ""
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

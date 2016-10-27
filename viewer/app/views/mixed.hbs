@@ -1,6 +1,9 @@
+<div id="controls"><button type="button" id="shownetwork" onclick="exec()">Show overall xref network</button></div>
+
 <div id="cyto">Cytoscape render</div>
 
 <script>
+// Summary of all connections between sources
   const shortSummary = "PREFIX dc: <http://purl.org/dc/elements/1.1/> \
                         PREFIX dcterms: <http://purl.org/dc/terms/> \
                         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
@@ -13,7 +16,7 @@
                           ?xref terms:refers-to ?other . \
                         } ORDER BY ?source_a \
                         ";
-
+// For a five-column config. When more labels are present in the graph.
   const detailedSummary =  "PREFIX dc: <http://purl.org/dc/elements/1.1/> \
                             PREFIX dcterms: <http://purl.org/dc/terms/> \
                             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
@@ -27,85 +30,80 @@
                               BIND(?source_a AS ?source_name) \
                               BIND(?source_b AS ?sourceb_name) \
                             }";
-  function convertSPARQLtoGraph(dataTable){
-    var numberOfRows = dataTable.getNumberOfRows();
-    var numberOfColumns = dataTable.getNumberOfColumns();
-    var nodesAndEdges = { nodes: [], edges: []};
-    // Establish node list and edge list respectively, starting from a Google dataTable type object
-    for (row = 0; row < numberOfRows; row += 1) {
-      source = dataTable.getValue(row,0);
-      target = dataTable.getValue(row,2);
-      nodesAndEdges.nodes.push(
-        {id:source, caption:source},
-        {id:target, caption:target}
-      );
-
-      edge_label = dataTable.getValue(row,1);
-      if (nodesAndEdges.edges[source + target] !== undefined) {
-
-      } else {
-        nodesAndEdges.edges[source+target] = {from:source, to:target, caption:edge_label};
-      }
-
-    }
-    return nodesAndEdges;
-  };
-
+  // kickstart the visualisation
   function exec() {
     var endpoint = d3.select("#endpoint").property("value");
     var sparql = shortSummary;
     d3sparql.query(endpoint, sparql, render);
   }
+
   function trimURI(uri) {
     // console.log(uri);
     uri = uri.substring(0, uri.length -1); // trim final "/"
     return lastSegment = uri.split('/').pop();
   }
+
+  function assignRole(name) {
+    var role;
+    switch(name) {
+      case "ensembl": role = "green"; break;
+      case "uniprot": role = "blue"; break;
+      case "omim": role = "yellow"; break;
+      default: role = "default"; break;
+    }
+  };
+
+  // uniqueify node ids so we can point to them in the edges
   var nodeGenerator = (function (){
     var nodes = 0;
     return function () {return nodes +=1;}
   })();
 
   function render(queryResult) {
-
+    // returned document has a header with column names and such, which we ignore here
     var hits = queryResult.results.bindings;
+    // Transform the query data into a form Cytoscape expects
     var graphBits = {nodes: [], edges: []};
     var unique_nodes = {};
     for (var i = hits.length - 1; i >= 0; i--) {
-      if (! unique_nodes.hasOwnProperty(hits[i].source_a.value)) {
+
+      var source = hits[i].source_a.value;
+      var target = hits[i].source_b.value
+      if (! unique_nodes.hasOwnProperty(source)) {
         // console.log("New node: " + i + " "+ hits[i].source_a.value);
-        unique_nodes[hits[i].source_a.value] = "v"+nodeGenerator();
+        unique_nodes[source] = "v"+nodeGenerator();
         graphBits.nodes.push( {
           data: {
-            caption: trimURI(hits[i].source_a.value),
-            id: unique_nodes[hits[i].source_a.value].toString(),
+            caption: trimURI(source),
+            id: unique_nodes[source].toString(),
             root: 1,
-            role: "bilge"
+            role: assignRole(source)
           }
         });
       } else {
         // console.log("Seen " + i + " "+ hits[i].source_a.value);
       }
-      if (! unique_nodes.hasOwnProperty(hits[i].source_b.value)) {
+      if (! unique_nodes.hasOwnProperty(target)) {
         // console.log("New node: " + i + " "+ hits[i].source_b.value);
-        unique_nodes[hits[i].source_b.value] = "v"+nodeGenerator();
+        unique_nodes[target] = "v"+nodeGenerator();
         graphBits.nodes.push({
           data: {
-            caption: trimURI(hits[i].source_b.value),
-            id: unique_nodes[hits[i].source_b.value].toString(),
+            caption: trimURI(target),
+            id: unique_nodes[target].toString(),
             root: 1,
-            role: "bilge"
+            role: assignRole(target)
           }
         });
       }
       graphBits.edges.push({
         data: {
-          source: unique_nodes[hits[i].source_a.value].toString(),
-          target: unique_nodes[hits[i].source_b.value].toString(), 
+          source: unique_nodes[source].toString(),
+          target: unique_nodes[target].toString(), 
           load: parseInt(hits[i].count.value)
         }
       });
     }
+
     console.log(graphBits);
     var styleP = $.ajax({
         url: 'static/css/cyto.css', 
@@ -115,13 +113,15 @@
 
     var cyto = cytoscape(
       {
-          layout: { name: 'spread'},
+          layout: { name: 'spread', randomize: true, animate:true, boxSelectionEnabled:true},
           container: document.getElementById('cyto'),
           elements: graphBits,
           style: styleP
-      } 
+      }
       
     );
+
+    // cyto.one("load",exec());
   }
 
 </script>

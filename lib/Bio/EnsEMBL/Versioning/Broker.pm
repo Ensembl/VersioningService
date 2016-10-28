@@ -129,7 +129,7 @@ sub init_broker {
 sub temp_location {
     my $self = shift;
     my $root = $self->config->{temp};
-    my $dir = tempdir(DIR => $root, CLEANUP => 0);
+    my $dir = tempdir(DIR => $root, CLEANUP => 1);
     $self->log->debug("New download folder: $dir");
     return $dir;
 }

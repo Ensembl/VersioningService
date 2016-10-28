@@ -10,3 +10,4 @@ target/
 .idea
 *~
 *.conf
+/viewer/node_modules

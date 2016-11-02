@@ -128,11 +128,11 @@ sub identifier {
   my $self = shift;
   my $source = shift;
   Bio::EnsEMBL::Mongoose::UsageException->throw('No argument to RDFLib::identifier()') unless defined $source;
-  my $id_org = $self->identifier_mapping->LOD_uri($source);
+  my $id_org = $self->LOD_uri($source);
   if ($id_org) {
     return $id_org;
   } else {
-    $id_org = $self->identifier_mapping->identifier_org_translation($source);
+    $id_org = $self->identifier_org_translation($source);
     unless ($id_org) { $id_org = $self->prefix('ensembl').'xref/'.$source.'/'}
     return $id_org;
   }

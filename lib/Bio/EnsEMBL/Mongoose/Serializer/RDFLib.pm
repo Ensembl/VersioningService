@@ -88,21 +88,13 @@ sub new_xref {
   return $self->prefix('ensembl').'xref/connection/'.$source.'/'.$self->xref_id();
 }
 
-
-# Requires $source argument to be an Ensembl name for an external source
-sub identifier {
+# Delegate URI generating to the mapping object
+sub identifier { 
   my $self = shift;
   my $source = shift;
-  Bio::EnsEMBL::Mongoose::UsageException->throw('No argument to RDFLib::identifier()') unless defined $source;
-  my $id_org = $self->identifier_mapping->LOD_uri($source);
-  if ($id_org) {
-    return $id_org;
-  } else {
-    $id_org = $self->identifier_mapping->identifier_org_translation($source);
-    unless ($id_org) { $id_org = $self->prefix('ensembl').'xref/'.$source.'/'}
-    return $id_org;
-  }
+  return $self->identifier_mapping->identifier($source);
 }
+
 
 # Bunch of accessors for subroutines provided by non-object-based library 
 sub prefix {

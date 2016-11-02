@@ -23,6 +23,7 @@ use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Versioning::Broker;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
+use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use IO::File;
 use File::Spec;
 use Try::Tiny;
@@ -53,6 +54,7 @@ my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 my $base_path = $opts->dump_path;
 $base_path ||= '';
 my $fh;
+
 foreach my $source (@final_source_list) {
   $fh = IO::File->new(File::Spec->catfile($base_path,$source.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
   try {
@@ -75,3 +77,9 @@ foreach my $source (@final_source_list) {
     $fh->close;
   };
 }
+
+# Dump generic labels to attach to all possible sources for presentation. e.g. purl.uniprot.org/uniprot rdfs:label "Uniprot"
+my $source_fh = IO::File->new(File::Spec->catfile($base_path,'sources'.'.ttl'), 'w');
+my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $source_fh, config_file => "$ENV{MONGOOSE}/conf/manager.conf");
+$writer->print_source_meta;
+$source_fh->close;

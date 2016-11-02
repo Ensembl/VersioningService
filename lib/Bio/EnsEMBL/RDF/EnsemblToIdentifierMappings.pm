@@ -107,7 +107,7 @@ sub identifier_org_short {
 }
 
 # Returns Linked Open Data URIs instead of identifiers.org ones. This is useful for resources that
-# have well defined URIs that we can formulate locallym hence allowing federation/merging without
+# have well defined URIs that we can formulate locally hence allowing federation/merging without
 # querying identifiers.org to find equivalence.
 sub LOD_uri {
   my $self = shift;
@@ -122,5 +122,33 @@ sub LOD_uri {
   }
   return $lod;
 }
+
+# Requires $source argument to be an Ensembl name for an external source
+sub identifier {
+  my $self = shift;
+  my $source = shift;
+  Bio::EnsEMBL::Mongoose::UsageException->throw('No argument to RDFLib::identifier()') unless defined $source;
+  my $id_org = $self->identifier_mapping->LOD_uri($source);
+  if ($id_org) {
+    return $id_org;
+  } else {
+    $id_org = $self->identifier_mapping->identifier_org_translation($source);
+    unless ($id_org) { $id_org = $self->prefix('ensembl').'xref/'.$source.'/'}
+    return $id_org;
+  }
+}
+
+
+# Return all entries available with either a LOD link or a more generic one
+sub get_all_name_mapping {
+  my $self = shift;
+  my %mappings;
+  my $map = $self->{xref_mapping};
+  foreach my $short_name(keys %$map) {
+    $mappings{$short_name} = $self->identifier($short_name);
+  }
+  return \%mappings;
+}
+
 
 1;

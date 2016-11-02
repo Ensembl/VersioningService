@@ -88,6 +88,18 @@ sub print_record {
   }
 }
 
+# Write triples which attach source labels to sources, handy for pretty printing or maybe text search
+sub print_source_meta {
+  my $self = shift;
+  my $fh = $self->handle;
+  my $mappings = $self->identifier_mapping->get_all_name_mapping;
+  foreach my $source (keys %$mappings) {
+    print $fh $self->triple( 
+      $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), '"'.$source.'"'
+    );
+  }
+}
+
 
 __PACKAGE__->meta->make_immutable;
 

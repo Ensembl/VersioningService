@@ -133,7 +133,7 @@ sub identifier {
     return $id_org;
   } else {
     $id_org = $self->identifier_org_translation($source);
-    unless ($id_org) { $id_org = $self->prefix('ensembl').'xref/'.$source.'/'}
+    unless ($id_org) { $id_org = 'http://rdf.ebi.ac.uk/resource/ensembl/xref/'.$source.'/'}
     return $id_org;
   }
 }

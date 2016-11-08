@@ -116,6 +116,7 @@ sub pipeline_analyses {
       {
         -logic_name => 'Notify',
         -module     => 'Bio::EnsEMBL::Versioning::Pipeline::EmailSummary',
+        -input_ids  => [ {} ],
         -parameters => {
           email   => $self->o('email'),
           subject => $self->o('pipeline_name').' has finished',

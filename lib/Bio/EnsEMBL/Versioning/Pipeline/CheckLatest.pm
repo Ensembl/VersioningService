@@ -65,9 +65,9 @@ sub run {
   my $local_revision;
   if (defined $local_version) {$local_revision = $local_version->revision}
   else {$local_revision = ''}
-  my $input_id;
+  my $flow_data;
   if (!defined $remote_version) {
-    $input_id = {
+    $flow_data = {
       error => "Version could not be found for $source_name",
       source_name => $source_name
     };
@@ -75,12 +75,12 @@ sub run {
     return;
   }
   if ($remote_version ne $local_revision) {
-    $input_id = {
+    $flow_data = {
       source_name => $source_name,
       version => $remote_version,
     };
     $self->warning(sprintf('Flowing %s with %s to %s for %s', $source_name, $remote_version, 'downloading', 'updater pipeline'));
-    $self->dataflow_output_id($input_id, 2);
+    $self->dataflow_output_id($flow_data, 2);
   } else {
     $broker->already_seen($local_version);
     # This source may not have an index, but the download already took place and there is no newer file to download

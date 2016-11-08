@@ -142,7 +142,7 @@ sub resource_classes {
 # sanger farm suggested config      # 'mem'     => { 'LSF' => '-q normal -M 1500 -R"select[myens_stag1tok>800 && myens_stag2tok>800 && mem>1500] rusage[myens_stag1tok=10:myens_stag2tok=10:duration=10, mem=1500]"'},
       # EBI farm config
       'normal'  => { 'LSF' => '-q production-rh7 -M 500 -R"select[mem>500] rusage[mem=500]"'},
-      'mem'  => { 'LSF' => '-q production-rh7 -M 8000 -R"select[mem>8000] rusage[mem=8000]"'},
+      'mem'  => { 'LSF' => '-q production-rh7 -M 8000 -R"select[mem>8000] rusage[mem=8000,fasttmp=90000]"'},
     }
 }
 

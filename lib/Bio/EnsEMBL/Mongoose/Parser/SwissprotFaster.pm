@@ -230,7 +230,7 @@ sub xrefs {
         if ( $xref_state && $xref_state eq 'N') { $active = 0 };
         # my $last = $reader->getAttribute('last');
         my ($code,$creator,$evidence);
-        if ($active == 1) {
+        if ($active == 1 && $source ne "GO") {
             until ($reader->localName eq 'dbReference' && ($reader->nodeType == XML_READER_TYPE_END_ELEMENT || $reader->isEmptyElement)) {
                 $reader->read;
                 # printf "%s:%s:%s:%s\n",$reader->localName,$reader->nodeType,$reader->readState,$reader->value;

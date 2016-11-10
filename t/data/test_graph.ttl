@@ -1,0 +1,16 @@
+@prefix : <http://test/> .
+@prefix xref: <http://xref/> .
+@prefix vocab: <http://rdf.ebi.ac.uk/terms/ensembl/> .
+@prefix resource: <http://rdf.ebi.ac.uk/resource/ensembl/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+:a       vocab:refers-to     xref:x1 .
+:a       dc:identifier       "Subject a" . 
+xref:x1  rdf:type            resource:Direct .
+xref:x1  vocab:refers-to     :b .
+:b       dc:identifier       "Subject b" .
+:b       vocab:refers-to     xref:x2 .
+xref:x2  rdf:type            resource:Direct .
+xref:x2  vocab:refers-to     :c .
+:c       dc:identifier       "Subject c" .

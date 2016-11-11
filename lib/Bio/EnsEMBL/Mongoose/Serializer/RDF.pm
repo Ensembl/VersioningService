@@ -60,7 +60,7 @@ sub print_record {
     my $xref_source = $self->identifier($xref->source);
     my $clean_id = uri_escape($xref->id);
     my $xref_uri = $xref_source.$clean_id;
-    my $xref_link = $self->new_xref($xref->source);
+    my $xref_link = $self->new_xref($source,$xref->source);
 
     # xref is from data source... but not necessarily asserted by them. See creator below.
     # Root entity source uses different namespaced source than xref source to prevent confusion between directly asserted sources and 

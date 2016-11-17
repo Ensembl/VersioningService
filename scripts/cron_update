@@ -1,15 +1,22 @@
 #!/bin/bash
 # Script to launch an LSF-based beekeeper to run the update pipeline
-
+if [ -e ${HOME}/cronjob-running ]
+then
+  echo "Versioning update pipeline still running somehow. Aborting";
+fi
+source /etc/profile.d/lsf.sh
 source /nfs/software/ensembl/RHEL7/envs/basic.sh
-PERL5LIB=$PERL5LIB:${HOME}/src/ensembl/modules:${HOME}/src/ensembl-compara/modules:${HOME}/src/VersioningService/lib/:${HOME}/src/ensembl-io/modules/:${HOME}/src/ensembl-hive/modules/
-MONGOOSE=${HOME}/src/VersioningService
-BIN=$BIN:${HOME}/src/ensembl-hive/scripts/
-
+export PERL5LIB=$PERL5LIB:${HOME}/src/ensembl/modules:${HOME}/src/ensembl-compara/modules:${HOME}/src/VersioningService/lib/:${HOME}/src/ensembl-io/modules/:${HOME}/src/ensembl-hive/modules/
+export MONGOOSE=${HOME}/src/VersioningService
+export BIN=$BIN:${HOME}/src/ensembl-hive/scripts/
+[ -e bsub ] && { echo "Failed to find LSF components"; exit 1; }
 [ -z "$DB_USER" ] && { echo "Environment variable DB_USER required for Versioning DB"; exit 1; }
 [ -z "$DB_PASS" ] && { echo "Environment variable DB_PASS required for Versioning DB"; exit 1; }
+cat "Versioning pipeline began at $(date +%y%m%dT%H%M%S)" > ${HOME}/cronjob-running
 
 URL=mysql://${DB_USER}:${DB_PASS}@mysql-gti-xref-prod:4481/version_update_$(date +%y%m%dT%H%M%S)
 ${HOME}/src/ensembl-hive/scripts/init_pipeline.pl Bio::EnsEMBL::Versioning::Pipeline::PipeConfig::Source_update_conf -pipeline_url $URL
 
 ${HOME}/src/ensembl-hive/scripts/beekeeper.pl -url $URL -loop >> ${HOME}/versioning_logs/beekeeper_$(date +%y%m%dT%H%M%S).out
+
+rm ${HOME}/cronjob-running

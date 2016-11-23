@@ -24,9 +24,11 @@ is($record->id, 'XM_005579308','ID correctly extracted');
 is($record->gene_name, 'CTSC','Gene name correctly extracted');
 cmp_ok(length($record->comment), '==', 665, 'Check comment block extracted whole as an array');
 
-# Next record
+# Feature extraction
+
+is_deeply([map { $_->id } @{$ref_seq_reader->record->xref}],['GeneID:102137896'] , 'Entrezgene/NCBIGene ID extracted from feature block');
+# Next/last record
 $ref_seq_reader->read_record;
-$record = $ref_seq_reader->record;
 #print ref($record->xref)."\n";
 #print dump($record);
 #print "Xrefs ".scalar(@{$record->xref})."\n";
@@ -48,4 +50,8 @@ my $evidence = $ref_seq_reader->determine_evidence('XM_005579308');
 is_deeply($evidence, ['predicted','mRNA'], 'Evidence extraction from accession');
 $evidence = $ref_seq_reader->determine_evidence('XP_005579308');
 is_deeply($evidence, ['predicted','protein'], 'Evidence extraction from accession');
+
+
+
+
 done_testing;

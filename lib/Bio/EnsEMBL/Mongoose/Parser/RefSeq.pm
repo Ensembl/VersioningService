@@ -129,6 +129,24 @@ sub read_record {
         $record->xref($xrefs);
     }
 
+    my $features = $parser->get_features;
+    foreach my $feat (@$features) {
+        if ($feat->{header} eq 'gene') {
+            if (exists $feat->{db_xref}) {
+                my $source;
+                my @xrefs = @{ $feat->{db_xref} };
+                foreach my $xref (@xrefs) {
+                    if ($xref =~ /^GeneID/) {
+                        $source = 'NCBIgene';
+                        $record->add_xref(
+                            Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $xref)
+                        );
+                    } 
+                }
+            } 
+        }
+    }
+
     if (!($id || $taxon || $accession)) {
         $self->log->info('Partial record. $id,$taxon, from '.$self->genbank_parser->{filename});
     }

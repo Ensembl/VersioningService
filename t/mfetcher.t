@@ -84,7 +84,7 @@ $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 );
 
 $mfetcher->get_records;
-is($out,'{"evidence_level":1,"xref":[{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0005576"},{"source":"GO","creator":"UniProtKB-SubCell","active":1,"id":"GO:0042742"}],"sequence":"FLPLLFGAISHLL","taxon_id":"110109","sequence_length":13,"protein_name":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1"}','JSON output plus evidence level filter');
+is($out,'{"evidence_level":1,"xref":[],"sequence":"FLPLLFGAISHLL","sequence_length":13,"taxon_id":"110109","checksum":"D70518BB9A83D879","protein_name":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1","tag":["protein"]}','JSON output plus evidence level filter');
 
 $out = '';
 $fh = IO::String->new($out);
@@ -114,5 +114,24 @@ $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 );
 
 throws_ok( sub { $mfetcher->get_records() }, 'Bio::EnsEMBL::Mongoose::SearchEngineException', 'Bad species name causes an exception explaining why');
+
+# Test for checksums via accessors
+
+$params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
+    checksum => "0798C2AAB487E813"
+);
+$out = '';
+$fh = IO::String->new($out);
+$fh->setpos(0);
+
+$mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+    storage_engine_conf_file => "$Bin/../conf/test.conf",
+    query_params => $params,
+    handle => $fh,
+    output_format => 'JSON',
+);
+
+$mfetcher->get_records;
+ok($out =~ /BRAF_HUMAN/, 'Output contains the desired gene with checksum');
 
 done_testing;

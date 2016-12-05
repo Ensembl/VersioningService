@@ -134,6 +134,9 @@ sub build_query {
         if ($query_params->has_taxons) {
             $query .= ' taxon_id:('.join(' | ',$query_params->constrain_to_taxons).')';
         }
+        if ($query_params->checksum) {
+            $query .= ' checksum:'.$query_params->checksum;
+        }
         unless (length($query) > 0) {
             Bio::EnsEMBL::Mongoose::SearchEngineException->throw(
                 message => 'Lucy requires one of accession, evidence level or taxon id to make a query',

@@ -20,7 +20,7 @@ limitations under the License.
 A query template in object form. 
 Specify: source, a list of ids, an evidence level, maximum returned results (when you want more than 10),
 or a list of taxon IDs to specify species. Species name is also valid, but will be checked against
-the NCBI taxonomy, and hence is not a solution for speciues that share taxa.
+the NCBI taxonomy, and hence is not a solution for species that share taxa.
 
 =cut
 
@@ -88,6 +88,11 @@ has species_name => (
     isa => 'Str',
     is => 'rw',
     clearer => 'clear_species_name',
+);
+
+has checksum => (
+    isa =>'Str',
+    is => 'rw',
 );
 
 1;

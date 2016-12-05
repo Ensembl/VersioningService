@@ -2155,7 +2155,6 @@
 				<fullName>Brevinin-2PTe</fullName>
 			</recommendedName>
 		</protein>
-		<proteinExistence type="evidence at protein level"/>
 		<organism>
 			<name type="scientific">Rana picturata</name>
 			<name type="common">Malaysian fire frog</name>
@@ -2193,6 +2192,7 @@
 			<property type="entry name" value="Antimicrobial_2"/>
 			<property type="match status" value="1"/>
 		</dbReference>
+		<proteinExistence type="evidence at protein level"/>
 		<sequence length="33" mass="3405" checksum="AFF71E7E3DF6883D" modified="2009-03-03" version="1">GFLDSFKNAMIGVAKSVGKTALSTLACKIDKSC</sequence>
 	</entry>
 	<entry dataset="Swiss-Prot" created="2007-01-09" modified="2012-10-03" version="13">

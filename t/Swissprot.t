@@ -13,7 +13,7 @@ my $xml_reader = new Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster(
 
 my $seq = "MAALSGGGGGGAEPGQALFNGDMEPEAGAGAGAAASSAADPAIPEEVWNIKQMIKLTQEHIEALLDKFGGEHNPPSIYLEAYEEYTSKLDALQQREQQLLESLGNGTDFSVSSSASMDTVTSSSSSSLSVLPSSLSVFQNPTDVARSNPKSPQKPIVRVFLPNKQRTVVPARCGVTVRDSLKKALMMRGLIPECCAVYRIQDGEKKPIGWDTDISWLTGEELHVEVLENVPLTTHNFVRKTFFTLAFCDFCRKLLFQGFRCQTCGYKFHQRCSTEVPLMCVNYDQLDLLFVSKFFEHHPIPQEEASLAETALTSGSSPSAPASDSIGPQILTSPSPSKSIPIPQPFRPADEDHRNQFGQRDRSSSAPNVHINTIEPVNIDDLIRDQGFRGDGGSTTGLSATPPASLPGSLTNVKALQKSPGPQRERKSSSSSEDRNRMKTLGRRDSSDDWEIPDGQITVGQRIGSGSFGTVYKGKWHGDVAVKMLNVTAPTPQQLQAFKNEVGVLRKTRHVNILLFMGYSTKPQLAIVTQWCEGSSLYHHLHIIETKFEMIKLIDIARQTAQGMDYLHAKSIIHRDLKSNNIFLHEDLTVKIGDFGLATVKSRWSGSHQFEQLSGSILWMAPEVIRMQDKNPYSFQSDVYAFGIVLYELMTGQLPYSNINNRDQIIFMVGRGYLSPDLSKVRSNCPKAMKRLMAECLKKKRDERPLFPQILASIELLARSLPKIHRSASEPSLNRAGFQTEDFSLYACASPKTPIQAGGYGAFPVH";
 
-
+# read first record from XML
 $xml_reader->read_record;
 
 my $record = $xml_reader->record;
@@ -36,12 +36,17 @@ cmp_ok(scalar @go_xref, '==', 0, 'GO xrefs purposefully ignored');
 my $iso_list = $record->isoforms;
 is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');
 
+# Read second record from XML, this should be P0C8T7, with checksum AFF71E7E3DF6883D
 $xml_reader->read_record;
 $iso_list = $xml_reader->record->isoforms;
 ok(!$iso_list,'No Isoform in second record, no problem');
-is($xml_reader->record->checksum, 'D70518BB9A83D879', 'Checksums still being caught');
 
+is($xml_reader->record->checksum, 'AFF71E7E3DF6883D', 'Checksums still being caught');
 
+# Read third record P84858
+$xml_reader->read_record;
+
+# Verify what happens when EOF is reached
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
 
 

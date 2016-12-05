@@ -48,6 +48,10 @@
       "sortable": true,
       "type": "string"
     },
+    "isoforms": {
+      "sortable": true,
+      "type": "string"
+    },
     "protein_name": {
       "sortable": true,
       "type": "string"

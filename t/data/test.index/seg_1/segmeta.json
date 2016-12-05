@@ -8,6 +8,7 @@
   "lexicon": {
     "counts": {
       "accessions": "14",
+      "checksum": "3",
       "description": "1",
       "entry_name": "3",
       "evidence_level": "1",
@@ -16,11 +17,13 @@
       "sequence_length": "3",
       "sequence_version": "2",
       "synonyms": "1",
+      "tag": "3",
       "taxon_id": "3"
     },
     "format": "3",
     "index_counts": {
       "accessions": "1",
+      "checksum": "1",
       "description": "1",
       "entry_name": "1",
       "evidence_level": "1",
@@ -29,6 +32,7 @@
       "sequence_length": "1",
       "sequence_version": "1",
       "synonyms": "1",
+      "tag": "1",
       "taxon_id": "1"
     }
   },
@@ -47,6 +51,7 @@
       "display_label",
       "entry_name",
       "gene_name",
+      "isoforms",
       "comment",
       "sequence_length",
       "sequence",
@@ -68,6 +73,7 @@
   "sort": {
     "counts": {
       "accessions": "3",
+      "checksum": "3",
       "description": "2",
       "entry_name": "3",
       "evidence_level": "1",
@@ -76,6 +82,7 @@
       "sequence_length": "3",
       "sequence_version": "2",
       "synonyms": "2",
+      "tag": "3",
       "taxon_id": "3"
     },
     "format": "3",
@@ -86,6 +93,7 @@
     },
     "ord_widths": {
       "accessions": "2",
+      "checksum": "2",
       "description": "1",
       "entry_name": "2",
       "evidence_level": "1",
@@ -94,6 +102,7 @@
       "sequence_length": "2",
       "sequence_version": "1",
       "synonyms": "1",
+      "tag": "2",
       "taxon_id": "2"
     }
   }

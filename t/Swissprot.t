@@ -30,8 +30,8 @@ ok(!$record->suspicion, 'record should not be suspicious');
 
 my @xrefs = @{ $record->xref };
 my @go_xref = grep {$_->id eq 'GO:0005829'} @xrefs;
-cmp_ok(scalar @go_xref, '==', 1, 'GO xref found');
-is($go_xref[0]->source,'GO','Check correct extraction of author of xref');
+cmp_ok(scalar @go_xref, '==', 0, 'GO xrefs purposefully ignored');
+# is($go_xref[0]->source,'GO','Check correct extraction of author of xref');
 
 my $iso_list = $record->isoforms;
 is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');

@@ -22,16 +22,21 @@ use Digest::MD5 qw(md5);
 
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
-use Bio::EnsEMBL::Versioning::Broker;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use MongooseHelper;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Bio::EnsEMBL::Registry;
+use IO::File;
 
 my $opts = MongooseHelper->new_with_options();
-
-my $broker = Bio::EnsEMBL::Versioning::Broker->new();
+my $base_path;
+if (defined $opts->{dump_path}) {
+  $base_path = $opts->{dump_path};
+} else {
+  $base_path = '.';
+}
+my $fh = IO::File->new($base_path.'/SwissprotIDs.txt','w');
 
 my $ens_host = 'mysql-ensembl-mirror.ebi.ac.uk';
 my $ens_port = 4240;
@@ -43,12 +48,11 @@ my $translation_adaptor = Bio::EnsEMBL::Registry->get_adaptor('human','core','tr
 my $trans_list = $translation_adaptor->fetch_all();
 
 my $search = Bio::EnsEMBL::Mongoose::IndexSearch->new(
+  handle => $fh,
   output_format => 'ID',
-  storage_engine_conf_file => $ENV{MONGOOSE}.'./conf/manager.conf'
+  storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf'
 );
 $search->work_with_index(source => 'Swissprot');
-
-
 
 while (my $trans = shift @$trans_list) {
   my $id = $trans->stable_id;
@@ -60,3 +64,5 @@ while (my $trans = shift @$trans_list) {
   ));
   $search->get_records;
 }
+
+$fh->close;

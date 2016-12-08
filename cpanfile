@@ -13,6 +13,7 @@ requires 'XML::LibXML';
 requires 'Log::Log4perl';
 requires 'Compress::Snappy';
 requires 'Sereal';
+requires 'Digest::CRC';
 
 # Moose dependencies
 

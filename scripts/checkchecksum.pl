@@ -18,7 +18,7 @@
 use strict;
 use warnings;
 
-use Digest::MD5 qw(md5);
+use Digest::CRC;
 
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
@@ -28,7 +28,6 @@ use MongooseHelper;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use Bio::EnsEMBL::Registry;
 use IO::File;
-
 my $opts = MongooseHelper->new_with_options();
 my $base_path;
 if (defined $opts->{dump_path}) {
@@ -37,6 +36,8 @@ if (defined $opts->{dump_path}) {
   $base_path = '.';
 }
 my $fh = IO::File->new($base_path.'/SwissprotIDs.txt','w');
+
+print "Dumping IDs to $base_path/SwissprotIDs.txt\n";
 
 my $ens_host = 'mysql-ensembl-mirror.ebi.ac.uk';
 my $ens_port = 4240;
@@ -53,15 +54,18 @@ my $search = Bio::EnsEMBL::Mongoose::IndexSearch->new(
   storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf'
 );
 $search->work_with_index(source => 'Swissprot');
-
+printf "Iterating over %s translations\n",scalar @$trans_list;
 while (my $trans = shift @$trans_list) {
   my $id = $trans->stable_id;
   my $seq = $trans->seq;
-  my $digest = md5($seq);
+  my $checksummer = Digest::CRC->new(type => 'crc64');
+  $checksummer->add($seq);
+  my $digest = uc(sprintf "%016s",uc( $checksummer->hexdigest ));
   $search->query_params(Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
     taxons => [9606],
     checksum => $digest
   ));
+  print $trans->stable_id."\n";
   $search->get_records;
 }
 

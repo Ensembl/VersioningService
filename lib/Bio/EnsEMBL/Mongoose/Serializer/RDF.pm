@@ -88,6 +88,33 @@ sub print_record {
   }
 }
 
+# Create a transitive network of simple xrefs and resources. No annotated middle node, no labels, just URIs and more URIs
+# This will be much more efficient to traverse in all directions so that we can find the entire set of interlinked URIs
+sub print_slimline_record {
+  my $self = shift;
+  my $record = shift;
+  my $source = shift;
+  # gratuitous copy paste from print_record()
+  my $fh = $self->handle;
+  my $id = $record->id;
+  unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
+  my $namespace = $self->identifier($source);
+  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
+  my $base_entity = $namespace.$clean_id;
+
+  foreach my $xref (@{$record->xref}) {
+    next unless $xref->active == 1;
+    my $xref_source = $self->identifier($xref->source);
+    my $clean_id = uri_escape($xref->id);
+    my $xref_uri = $xref_source.$clean_id;
+
+    print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
+    print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
+  }
+}
+
+
 # Write triples which attach source labels to sources, handy for pretty printing or maybe text search
 sub print_source_meta {
   my $self = shift;

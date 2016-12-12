@@ -28,8 +28,9 @@ use Bio::EnsEMBL::RDF::RDFlib;
 use Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings;
 use Bio::EnsEMBL::Mongoose::UsageException;
 use Config::General;
-# lookup for IDs that classify annotation, rather than assert identity between genomic resources
+# lookup for IDs that classify annotation or many-to-one relationships, rather than assert identity between genomic resources
 # If listed here, the relationship between two IDs should be unidirectional to prevent logical armageddon
+# Note they all have to be lower case to give us hope of matching externally generated strings
 has unidirection_sources => (
   traits => ['Hash'],
   is => 'ro',
@@ -39,7 +40,16 @@ has unidirection_sources => (
     interpro => 1,
     rfam => 1,
     treefam => 1,
-    mim_morbid => 1
+    mim_morbid => 1,
+    proteomes => 1,
+    reactome => 1,
+    orthodb => 1,
+    drugbank => 1,
+    chembl => 1,
+    genetree => 1,
+    hogenom => 1,
+    treefam => 1,
+    eggnog => 1,
   }},
   handles => { 
     is_unidirectional => 'exists'

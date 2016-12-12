@@ -110,7 +110,9 @@ sub print_slimline_record {
     my $xref_uri = $xref_source.$clean_id;
 
     print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
-    print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
+    unless ( $self->is_unidirectional(lc $xref->source)) {
+      print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
+    }
   }
 }
 

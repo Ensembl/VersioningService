@@ -50,6 +50,8 @@ has unidirection_sources => (
     hogenom => 1,
     treefam => 1,
     eggnog => 1,
+    ko => 1,
+    embl => 1,
   }},
   handles => { 
     is_unidirectional => 'exists'

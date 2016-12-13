@@ -52,6 +52,8 @@ has unidirection_sources => (
     eggnog => 1,
     ko => 1,
     embl => 1,
+    'ena.embl' => 1,
+    embl_predicted => 1,
     doi => 1,
     gene3d => 1,
     pfam => 1,
@@ -61,7 +63,12 @@ has unidirection_sources => (
     unigene => 1,
     prosite => 1,
     hovergen => 1,
-    
+    ec => 1,
+    smart => 1,
+    pubmed => 1,
+    unipathway => 1,
+    genetree => 1,
+    chebi => 1,
   }},
   handles => { 
     is_unidirectional => 'exists'

@@ -42,6 +42,17 @@ has reader => (
     lazy => 1
 );
 
+# List of uniprot xref sources which are undesirable for computing xrefs
+has bad_list => (
+    isa => 'HashRef',
+    is => 'ro',
+    default => sub{ {genetree => 1, go => 1, ensembl => 1 } },
+    traits => ['Hash'],
+    handles => {
+        exclude => 'exists'
+    }
+);
+
 sub _prep_reader {
     my $self = shift;
     my $reader = XML::LibXML::Reader->new( IO => $self->source_handle ) || die "Nuh uh. Reader stillborn";
@@ -230,7 +241,7 @@ sub xrefs {
         if ( $xref_state && $xref_state eq 'N') { $active = 0 };
         # my $last = $reader->getAttribute('last');
         my ($code,$creator,$evidence);
-        if ($active == 1 && $source ne "GO") {
+        if ($active == 1 && !$self->exclude(lc $source)) {
             until ($reader->localName eq 'dbReference' && ($reader->nodeType == XML_READER_TYPE_END_ELEMENT || $reader->isEmptyElement)) {
                 $reader->read;
                 # printf "%s:%s:%s:%s\n",$reader->localName,$reader->nodeType,$reader->readState,$reader->value;

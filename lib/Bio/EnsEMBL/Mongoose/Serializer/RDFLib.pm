@@ -52,6 +52,16 @@ has unidirection_sources => (
     eggnog => 1,
     ko => 1,
     embl => 1,
+    doi => 1,
+    gene3d => 1,
+    pfam => 1,
+    prints => 1,
+    supfam => 1,
+    chitars => 1,
+    unigene => 1,
+    prosite => 1,
+    hovergen => 1,
+    
   }},
   handles => { 
     is_unidirectional => 'exists'

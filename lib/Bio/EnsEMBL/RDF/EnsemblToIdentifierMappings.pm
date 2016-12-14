@@ -60,6 +60,8 @@ sub new {
 # EDAM_type
 # EDAM_term
 # regex - used to transform a textual ID into a URI
+# bidirectional (boolean) - expresses whether links should be considered symmetric or not.
+# Enables us to have xrefs to gene trees without inferring links to all genes in that tree
 sub get_mapping {
   my $self = shift;
   my $e_name = shift;
@@ -149,6 +151,21 @@ sub get_all_name_mapping {
   }
   return \%mappings;
 }
+
+# Given an source name (from Ensembl or xref sources), determines if an xref should be bidirectional/transitive
+# Used by the Xref RDF code to generate reversible links for ID equivalence, and one-way links for many-to-one IDs
+sub is_bidirectional {
+  my $self = shift;
+  my $source = shift;
+  $source = lc $source;
+  my $map = $self->{xref_mapping};
+  if (exists $map->{$source} && $map->{$source}->{bidirectional} == 1) {
+    return 1;
+  }
+  return;
+}
+
+
 
 
 1;

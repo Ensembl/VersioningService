@@ -18,4 +18,8 @@ is($mapping->{canonical_LOD},"http://purl.uniprot.org/uniprot/","Test full mappi
 is($converter->LOD_uri('UniProt/SWISSPROT'),"http://purl.uniprot.org/uniprot/","Check LOD_uri() functions");
 is($converter->LOD_uri('durpadurp'),undef,'Check results of a missing LOD mapping');
 
+ok($converter->is_bidirectional('UniProt/SWISSPROT'),'Swissprot IDs are first class citizens');
+ok(!$converter->is_bidirectional('eggNOG'),'eggNOG may not have reversible xref links');
+ok(!$converter->is_bidirectional('DrStrangelove','Unfamiliar sources do not create reversible links'));
+
 done_testing;

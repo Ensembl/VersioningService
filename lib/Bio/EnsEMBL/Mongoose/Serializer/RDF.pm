@@ -74,7 +74,7 @@ sub print_record {
     print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
     # reverse links
     # Enable if it proves necessary to have reverse links for sources
-    # if ( $self->is_bidirectional($xref->source)) {
+    # if ( $self->identifier_mapping->is_bidirectional($xref->source)) {
     #   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-from'),$self->u($base_entity));
     #   print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('term').'refers-from'),$self->u($xref_link));
     # }
@@ -110,7 +110,7 @@ sub print_slimline_record {
     my $xref_uri = $xref_source.$clean_id;
 
     print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
-    if ( $self->is_bidirectional($xref->source)) {
+    if ( $self->identifier_mapping->is_bidirectional($xref->source)) {
       print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
     }
   }

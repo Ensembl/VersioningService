@@ -239,6 +239,12 @@
       "URI_type": "http://purl.obolibrary.org/obo/SO_0000704"
     },
     {
+      "db_name": "GeneID",
+      "example_id": "100125760",
+      "id_namespace": "ncbigene",
+      "URI_type": "http://purl.obolibrary.org/obo/SO_0000704"
+    },
+    {
       "db_name": "EntrezGene_trans_name",
       "example_id": "CTD-2297D10.2-001",
       "ignore": true

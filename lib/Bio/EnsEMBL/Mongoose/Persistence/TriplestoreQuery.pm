@@ -24,7 +24,7 @@ TriplestoreQuery - a query object to run general and pre-cooked SPARQL queries a
 package Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery;
 use Moose;
 use RDF::Query::Client;
-use Bio::EnsEMBL::RDF::RDFlib qw/compatible_name_spaces/;
+use Bio::EnsEMBL::RDF::RDFlib qw/compatible_name_spaces prefix u/;
 use Bio::EnsEMBL::Mongoose::DBException;
 
 has triplestore_url => (
@@ -88,6 +88,29 @@ sub recurse_xrefs {
     # print Dumper $result_iterator;
     my $string = $result->{xref_label}->as_string;
     $string =~ s/"//g;
+    push @xrefs,$string;
+  }
+  return \@xrefs;
+}
+
+sub recurse_mini_graph {
+  my $self = shift;
+  my $id = shift;
+  my $result_hash = {};
+  my $graph_name = $self->generate_graph_name;
+  my $query = sprintf qq(%s\nSELECT DISTINCT ?xref_label %s {
+    ?xref_label term:refers-to+ ensembl:%s .
+    }), compatible_name_spaces(),$graph_name,$id;
+  # print $query."\n";
+  $self->query($query);
+
+  my @xrefs = ();
+  return unless defined $self->result_set;
+  # map result objects into array of xref labels
+  while (my $result = $self->next_result) {
+    # print Dumper $result_iterator;
+    my $string = $result->{xref_label}->as_string;
+    # $string =~ s/"//g;
     push @xrefs,$string;
   }
   return \@xrefs;

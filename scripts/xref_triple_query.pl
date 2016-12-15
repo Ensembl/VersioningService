@@ -19,29 +19,32 @@ use Modern::Perl;
 use Bio::EnsEMBL::Registry;
 use Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery;
 use Try::Tiny;
-
+use Time::HiRes qw(gettimeofday tv_interval);
 my $ens_host = 'mysql-ensembl-mirror.ebi.ac.uk';
 my $ens_port = 4240;
 my $ens_user = 'anonymous';
 
-Bio::EnsEMBL::Registry->load_registry_from_db( -host => $ens_host, -port => $ens_port, -user => $ens_user, -db_version => 86);
+Bio::EnsEMBL::Registry->load_registry_from_db( -host => $ens_host, -port => $ens_port, -user => $ens_user, -db_version => 87);
 
 my $triplestore = 'http://127.0.0.1:8890/sparql';
-my $sparqler = Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery->new(triplestore_url => $triplestore, graph => 'http://xref/');
+my $sparqler = Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery->new(triplestore_url => $triplestore, graph => 'http://minixrefs/');
 
 my $transcript_adaptor = Bio::EnsEMBL::Registry->get_adaptor('human','core','transcript');
 my $transcripts = $transcript_adaptor->fetch_all();
 
+my $time;
 foreach my $transcript (@$transcripts) {
   my $id = $transcript->stable_id;
   my $id_list;
   try {
-    $id_list = $sparqler->get_all_linking_xrefs($id);
+    my $before = [gettimeofday];
+    $id_list = $sparqler->recurse_mini_graph($id);
+    $time = tv_interval($before, [gettimeofday]);
   } catch {
     print "$id not found\n";      
   };
   if ($id_list) {
-    print "$id: ".join(',',@$id_list)."\n";
+    printf "%s: %s hits in %s seconds: %s\n",$id,scalar @$id_list, $time, join(',',@$id_list);
   }
   # last;
 }

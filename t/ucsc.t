@@ -34,11 +34,29 @@ Log::Log4perl::init(\$log_conf);
 use_ok 'Bio::EnsEMBL::Mongoose::Parser::UCSC';
 
 my $reader =
-  Bio::EnsEMBL::Mongoose::Parser::UCSC->new(source_file => "$ENV{MONGOOSE}/t/data/knownGene.txt.gz");
+  Bio::EnsEMBL::Mongoose::Parser::UCSC->new(source_file => "$ENV{MONGOOSE}/t/data/ucsc/hg38/knownGene.txt.gz");
 isa_ok($reader, 'Bio::EnsEMBL::Mongoose::Parser::UCSC');
 
+my $num_of_records = 0;
+
+# check first record
+$reader->read_record;
 my $record = $reader->record;
-print Dumper $record;
+++$num_of_records;
+is($record->id, 'uc031tla.1', 'First record ID');
+is($record->gene_name, 'uc031tla', 'First record gene name');
+is($record->display_label, 'uc031tla', 'First record display label');
+# is($record->taxon_id, 9606, 'Correct tax id');
+my $xrefs = $record->xref;
+my $expected_xrefs = [ bless( {
+			       'source' => 'Ensembl',
+			       'creator' => 'UCSC',
+			       'active' => 1,
+			       'id' => 'ENST00000619216.1'
+			      }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
+cmp_deeply($xrefs, $expected_xrefs, "First record xrefs");
+my $xref = shift $xrefs;
+isa_ok($xref, "Bio::EnsEMBL::Mongoose::Persistence::RecordXref");
 
 unlink $log_file;
 

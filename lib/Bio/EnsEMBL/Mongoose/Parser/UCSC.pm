@@ -32,6 +32,22 @@ use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser', 'MooseX::Log::Log4perl';
 
+has 'synonyms_to_taxons' => (
+    traits => ['Hash'],
+    isa => 'HashRef[Int]',
+    is => 'ro',
+    default => sub {
+        {
+            hg38 => 9606,
+            mm10 => 10090
+        }
+    },
+    handles => {
+        type_known => 'exists',
+        get_type_attributes => 'get'
+    }
+);
+
 #
 # TODO
 # - taxon ID?

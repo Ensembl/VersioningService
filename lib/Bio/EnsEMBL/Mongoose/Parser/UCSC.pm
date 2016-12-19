@@ -32,7 +32,7 @@ use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser', 'MooseX::Log::Log4perl';
 
-has 'synonyms_to_taxons' => (
+has 'synonyms_to_taxon' => (
     traits => ['Hash'],
     isa => 'HashRef[Int]',
     is => 'ro',
@@ -43,8 +43,7 @@ has 'synonyms_to_taxons' => (
         }
     },
     handles => {
-        type_known => 'exists',
-        get_type_attributes => 'get'
+        synonym_known => 'exists',
     }
 );
 
@@ -126,6 +125,15 @@ sub read_record {
   # need to determine taxon ID and possibly extend Record class
   # to include additional attributes which are parsed here
   #
+  # Taxon ID is derived by:
+  # - splitting up the source path into different components
+  # - determine whether one of the path components is a mapped UCSC synonym
+  #   and retrieve the value
+  #
+  # This is because, to the best of my knowledge, there's no taxon info in UCSC
+  # and the only place where the synonym (which can be mapped to a taxon ID) is
+  # indicated is the path to the source file
+  #
   $record->id($name);
   $name =~ s/\.\d$//;
   $record->gene_name($name);
@@ -143,10 +151,11 @@ sub read_record {
 
   # add xrefs to protein IDs
   foreach my $protein_id (@protein_ids) {
+    next unless $protein_id;
     my $source;
-    if ($source =~ /^[A-Z0-9]{6}$/) {
+    if ($protein_id =~ /^[A-Z0-9]{6}$/) {
       $source = 'UniProt';
-    } elsif ($source =~ /^ENS/) {
+    } elsif ($protein_id =~ /^ENS/) {
       $source = 'Ensembl';
     } else {
       Bio::EnsEMBL::Mongoose::IOException->throw ("Unknown source for protein ID: $protein_id")

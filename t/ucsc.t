@@ -44,6 +44,7 @@ $reader->read_record;
 my $record = $reader->record;
 ++$num_of_records;
 is($record->id, 'uc031tla.1', 'First record ID');
+is($record->taxon_id, 9606, 'First record tax ID');
 is($record->gene_name, 'uc031tla', 'First record gene name');
 is($record->display_label, 'uc031tla', 'First record display label');
 is($record->chromosome, 1, 'Correct first record chromosome');
@@ -154,6 +155,8 @@ while ($num_of_records < 122) {
   my $got = $reader->record;
   ++$num_of_records;
 
+  is($got->taxon_id, 9606, 'Correct record tax ID');
+  
   my $expected = shift @expected_records;
   is($got->id, $expected->{id}, 'Correct record id');
   is($got->gene_name, $expected->{gene_name}, 'Correct record gene name');

@@ -58,6 +58,16 @@ has sequence_version => (
     is => 'rw',
 );
 
+has chromosome => (
+    isa => 'Str',
+    is => 'rw',		   
+);
+
+has strand => (
+    isa => 'Int',
+    is => 'rw',
+);
+
 # A genomic location string, such as 6:1000-1010
 has region => (
     isa => 'Str',
@@ -68,6 +78,40 @@ has region => (
 has gene_name => (
     isa => 'Str',
     is => 'rw',
+);
+
+has transcript_start => (
+    isa => 'Int',
+    is => 'rw',
+);
+
+has transcript_end => (
+    isa => 'Int',
+    is => 'rw',
+);
+
+has cds_start => (
+    isa => 'Int',
+    is => 'rw',
+    default => 0
+);
+
+has cds_end => (
+    isa => 'Int',
+    is => 'rw',
+    default => 0
+);
+
+has exon_starts => (
+    isa => 'ArrayRef[Int]',
+    is => 'rw',
+    traits => ['Array']
+);
+
+has exon_ends => (
+    isa => 'ArrayRef[Int]',
+    is => 'rw',
+    traits => ['Array']
 );
 
 # Name of the protein this record refers to

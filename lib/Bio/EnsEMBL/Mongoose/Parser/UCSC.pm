@@ -153,8 +153,8 @@ sub read_record {
   foreach my $protein_id (@protein_ids) {
     next unless $protein_id;
     my $source;
-    if ($protein_id =~ /^[A-Z0-9]{6}$/) {
-      $source = 'UniProt';
+    if ($protein_id =~ /^[A-Z0-9]{6,10}$/) {
+      $source = 'UniProtKB';
     } elsif ($protein_id =~ /^ENS/) {
       $source = 'Ensembl';
     } else {

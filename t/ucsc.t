@@ -46,6 +46,15 @@ my $record = $reader->record;
 is($record->id, 'uc031tla.1', 'First record ID');
 is($record->gene_name, 'uc031tla', 'First record gene name');
 is($record->display_label, 'uc031tla', 'First record display label');
+is($record->chromosome, 1, 'Correct first record chromosome');
+is($record->strand, -1, 'Correct first record strand');
+is($record->transcript_start, 17369, 'Correct first record transcript start');
+is($record->transcript_end, 17436, 'Correct first record transcript end');
+is($record->cds_start, 0, 'Correct first record cds start');
+is($record->cds_end, 0, 'Correct first record cds end');
+cmp_deeply($record->exon_starts, [17369], 'Correct first record exon starts');
+cmp_deeply($record->exon_ends, [17436], 'Correct first record exon ends');
+
 # is($record->taxon_id, 9606, 'Correct tax id');
 my $xrefs = $record->xref;
 my $expected_xrefs = [ bless( {
@@ -73,13 +82,13 @@ my @expected_records = (
 		 id => 'uc057axr.1',
 		 gene_name => 'uc057axr',
 		 display_label => 'uc057axr',
-		 chromosome => 1,
-		 strand => 0,
-		 trascript_start => 917369,
+		 chromosome => '1',
+		 strand => -1,
+		 transcript_start => 917370,
 		 transcript_end => 918534,
-		 cds_start => undef, # non coding transcripts have cds_start == cds_end and are set to null
-		 cds_end => undef,   #
-		 exon_starts => [917369, 918021],
+		 cds_start => 0, # non coding transcripts have cds_start == cds_end and are set to null
+		 cds_end => 0,   #
+		 exon_starts => [917370, 918022],
 		 exon_ends => [917486, 918534],
 		 xrefs => [ bless( {
 				   'source' => 'Ensembl',
@@ -92,13 +101,13 @@ my @expected_records = (
 		 id => 'uc057axs.1',
 		 gene_name => 'uc057axs',
 		 display_label => 'uc057axs',
-		 chromosome => 1,
+		 chromosome => '1',
 		 strand => 1,
-		 trascript_start => 924879,
+		 transcript_start => 924880,
 		 transcript_end => 939291,
-		 cds_start => 925941, 
+		 cds_start => 925942,
 		 cds_end => 939291, 
-		 exon_starts => [924879, 925921, 930154, 931038, 935771, 939039, 939274],
+		 exon_starts => [924880, 925922, 930155, 931039, 935772, 939040, 939275],
 		 exon_ends => [924948, 926013, 930336, 931089, 935896, 939129, 939291],
 		 xrefs => [ bless( {
 				   'source' => 'UniProtKB',
@@ -117,13 +126,13 @@ my @expected_records = (
 		 id => 'uc057axt.1',
 		 gene_name => 'uc057axt',
 		 display_label => 'uc057axt',
-		 chromosome => 1,
+		 chromosome => '1',
 		 strand => 1,
-		 trascript_start => 925149,
+		 transcript_start => 925150,
 		 transcript_end => 935793,
-		 cds_start => 925941, 
+		 cds_start => 925942, 
 		 cds_end => 935793, 
-		 exon_starts => [925149, 925921, 930154, 931038, 935771],
+		 exon_starts => [925150, 925922, 930155, 931039, 935772],
 		 exon_ends => [925189, 926013, 930336, 931089, 935793],
 		 xrefs => [ bless( {
 				   'source' => 'UniProtKB',
@@ -147,7 +156,16 @@ while ($num_of_records < 122) {
 
   my $expected = shift @expected_records;
   is($got->id, $expected->{id}, 'Correct record id');
-  is($got->display_label, $expected->{display_label}, 'First record display label');
+  is($got->gene_name, $expected->{gene_name}, 'Correct record gene name');
+  is($got->display_label, $expected->{display_label}, 'Correct record display label');
+  is($got->chromosome, $expected->{chromosome}, 'Correct record chromosome');
+  is($got->strand, $expected->{strand}, 'Correct record strand');
+  is($got->transcript_start, $expected->{transcript_start}, 'Correct record transcript start');
+  is($got->transcript_end, $expected->{transcript_end}, 'Correct record transcript end');
+  is($got->cds_start, $expected->{cds_start}, 'Correct record cds start');
+  is($got->cds_end, $expected->{cds_end}, 'Correct record cds end');
+  cmp_deeply($got->exon_starts, $expected->{exon_starts}, 'Correct record exon starts');
+  cmp_deeply($got->exon_ends, $expected->{exon_ends}, 'Correct record exon ends');
   my $xrefs = $got->xref;
   cmp_deeply($got->xref, $expected->{xrefs}, "Correct xrefs");
 }

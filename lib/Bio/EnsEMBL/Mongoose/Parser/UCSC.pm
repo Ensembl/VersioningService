@@ -138,6 +138,14 @@ sub read_record {
   $name =~ s/\.\d$//;
   $record->gene_name($name);
   $record->display_label($name);
+  $record->chromosome($chrom);
+  $record->strand($strand);
+  $record->transcript_start($txStart);
+  $record->transcript_end($txEnd);
+  $record->cds_start($cdsStart) if $cdsStart;
+  $record->cds_end($cdsEnd) if $cdsEnd;
+  $record->exon_starts([ split /,/, $exonStarts ]);
+  $record->exon_ends([ split /,/, $exonEnds ]);
   
   # my %xref = ( 'accession'  => $name,
   # 	       'chromosome' => $chrom,

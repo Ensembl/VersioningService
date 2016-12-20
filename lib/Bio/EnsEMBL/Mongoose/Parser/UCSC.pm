@@ -66,20 +66,20 @@ sub read_record {
   chomp($content);
   $content =~ s/\s*$//;
 
-    # Each line will have the following tab-delimited fields:
-    # 0.    name        (UCSC stable ID)
-    # 1.    chrom       (chromosome name, a la UCSC)
-    # 2.    strand      (plus or minus)
-    # 3.    txStart     (transcript start)
-    # 4.    txEnd       (transcript end)
-    # 5.    cdsStart    (CDS start)
-    # 6.    cdsEnd      (CDS end)
-    # 7.    exonCount   (number of exons in transcript)
-    # 8.    exonStarts  (comma-separated list of exon start positions)
-    # 9.    exonEnds    (comma-separated list of exon end positions)
-    # 10.   proteinID   (cross reference to a protein ID, e.g. UniProt)
-    # 11.   alignID     (not sure what this is right now)
-
+  # Each line will have the following tab-delimited fields:
+  # 0.    name        (UCSC stable ID)
+  # 1.    chrom       (chromosome name, a la UCSC)
+  # 2.    strand      (plus or minus)
+  # 3.    txStart     (transcript start)
+  # 4.    txEnd       (transcript end)
+  # 5.    cdsStart    (CDS start)
+  # 6.    cdsEnd      (CDS end)
+  # 7.    exonCount   (number of exons in transcript)
+  # 8.    exonStarts  (comma-separated list of exon start positions)
+  # 9.    exonEnds    (comma-separated list of exon end positions)
+  # 10.   proteinID   (cross reference to a protein ID, e.g. UniProt)
+  # 11.   alignID     (not sure what this is right now)
+  
   my @fields = split( /\t/, $content );
   my ( $name,
        $chrom,
@@ -120,21 +120,9 @@ sub read_record {
   # for $exonStarts already (above).
   if ( substr( $exonEnds, -1, 1 ) eq ',' ) { chop($exonEnds) }
 
-  # TODO
-  # set various record fields
-  # need to determine taxon ID and possibly extend Record class
-  # to include additional attributes which are parsed here
-  #
-  # Taxon ID is derived by:
-  # - splitting up the source path into different components
-  # - determine whether one of the path components is a mapped UCSC synonym
-  #   and retrieve the value
-  #
-  # This is because, to the best of my knowledge, there's no taxon info in UCSC
-  # and the only place where the synonym (which can be mapped to a taxon ID) is
-  # indicated is the path to the source file
-  #
+  # set all relevant attributes to compose a coordinate xref like record  
   $record->id($name);
+  $record->taxon_id($self->{taxon_id}) if $self->{taxon_id};
   $name =~ s/\.\d$//;
   $record->gene_name($name);
   $record->display_label($name);
@@ -147,16 +135,6 @@ sub read_record {
   $record->exon_starts([ split /,/, $exonStarts ]);
   $record->exon_ends([ split /,/, $exonEnds ]);
   
-  # my %xref = ( 'accession'  => $name,
-  # 	       'chromosome' => $chrom,
-  # 	       'strand'     => $strand,
-  # 	       'txStart'    => $txStart,
-  # 	       'txEnd'      => $txEnd,
-  # 	       'cdsStart'   => $cdsStart,
-  # 	       'cdsEnd'     => $cdsEnd,
-  # 	       'exonStarts' => $exonStarts,
-  # 	       'exonEnds'   => $exonEnds );
-
   # add xrefs to protein IDs
   foreach my $protein_id (@protein_ids) {
     next unless $protein_id;
@@ -173,5 +151,30 @@ sub read_record {
   
   return 1;
 }
+
+#
+# Determine taxon ID, which derived by: 
+# - splitting up the source path into different components
+# - determine whether one of the path components is a mapped UCSC synonym
+#   and that as the key to retrieve the value of the mapping as taxon
+#
+# This is because, to the best of my knowledge, there's no taxon info in UCSC
+# and the only place where the synonym (which can be mapped to a taxon ID) is
+# indicated is the path to the source file
+#
+sub BUILD {
+  my $self = shift;
+
+  if ($self->source_file) {
+    my $source_file = $self->source_file;
+    my @path_components = split /\//, $source_file;
+    my @synonyms = grep { $self->synonym_known($_) } @path_components;
+    Bio::EnsEMBL::Mongoose::IOException->throw ("Could not determine taxon from source file path")
+	if scalar @synonyms > 1;
+    $self->{taxon_id} = $self->{synonyms_to_taxon}{$synonyms[0]} if scalar @synonyms;
+  } else {
+    Bio::EnsEMBL::Mongoose::IOException->throw ("Must supply source_file argument")
+  }
+};
 
 __PACKAGE__->meta->make_immutable;

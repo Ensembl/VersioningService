@@ -71,7 +71,16 @@ for (1 .. 118) {
 my @expected_records = (
 		{
 		 id => 'uc057axr.1',
+		 gene_name => 'uc057axr',
 		 display_label => 'uc057axr',
+		 chromosome => 1,
+		 strand => 0,
+		 trascript_start => 917369,
+		 transcript_end => 918534,
+		 cds_start => undef, # non coding transcripts have cds_start == cds_end and are set to null
+		 cds_end => undef,   #
+		 exon_starts => [917369, 918021],
+		 exon_ends => [917486, 918534],
 		 xrefs => [ bless( {
 				   'source' => 'Ensembl',
 				   'creator' => 'UCSC',
@@ -81,7 +90,16 @@ my @expected_records = (
 		},
 		{
 		 id => 'uc057axs.1',
+		 gene_name => 'uc057axs',
 		 display_label => 'uc057axs',
+		 chromosome => 1,
+		 strand => 1,
+		 trascript_start => 924879,
+		 transcript_end => 939291,
+		 cds_start => 925941, 
+		 cds_end => 939291, 
+		 exon_starts => [924879, 925921, 930154, 931038, 935771, 939039, 939274],
+		 exon_ends => [924948, 926013, 930336, 931089, 935896, 939129, 939291],
 		 xrefs => [ bless( {
 				   'source' => 'UniProtKB',
 				   'creator' => 'UCSC',
@@ -97,7 +115,16 @@ my @expected_records = (
 		},
 		{
 		 id => 'uc057axt.1',
+		 gene_name => 'uc057axt',
 		 display_label => 'uc057axt',
+		 chromosome => 1,
+		 strand => 1,
+		 trascript_start => 925149,
+		 transcript_end => 935793,
+		 cds_start => 925941, 
+		 cds_end => 935793, 
+		 exon_starts => [925149, 925921, 930154, 931038, 935771],
+		 exon_ends => [925189, 926013, 930336, 931089, 935793],
 		 xrefs => [ bless( {
 				   'source' => 'UniProtKB',
 				   'creator' => 'UCSC',

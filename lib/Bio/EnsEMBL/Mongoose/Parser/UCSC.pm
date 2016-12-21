@@ -26,6 +26,7 @@ package Bio::EnsEMBL::Mongoose::Parser::UCSC;
 
 use Moose;
 
+use File::Basename;
 use Bio::EnsEMBL::Mongoose::IOException;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
@@ -153,25 +154,24 @@ sub read_record {
 }
 
 #
-# Determine taxon ID, which derived by: 
-# - splitting up the source path into different components
-# - determine whether one of the path components is a mapped UCSC synonym
-#   and that as the key to retrieve the value of the mapping as taxon
+# Determine taxon ID, which is derived by looking at the source file name
+# for a component of it (the prefix) which is assumed to be the UCSC official
+# assembly name.
 #
 # This is because, to the best of my knowledge, there's no taxon info in UCSC
-# and the only place where the synonym (which can be mapped to a taxon ID) is
-# indicated is the path to the source file
+# so the Downloader is forced to download the corresponding file to a target
+# which containts the synonym which can then be mapped to taxon using the
+# synonym_to_taxon member
 #
 sub BUILD {
   my $self = shift;
 
   if ($self->source_file) {
     my $source_file = $self->source_file;
-    my @path_components = split /\//, $source_file;
-    my @synonyms = grep { $self->synonym_known($_) } @path_components;
-    Bio::EnsEMBL::Mongoose::IOException->throw ("Could not determine taxon from source file path")
-	if scalar @synonyms > 1;
-    $self->{taxon_id} = $self->{synonyms_to_taxon}{$synonyms[0]} if scalar @synonyms;
+
+    my ($ucsc_assembly_name, $dirs, $suffix) = fileparse($source_file, qr/\..*/);
+    $self->{taxon_id} = $self->{synonyms_to_taxon}{$ucsc_assembly_name}
+      if $ucsc_assembly_name and $self->synonym_known($ucsc_assembly_name);
   } else {
     Bio::EnsEMBL::Mongoose::IOException->throw ("Must supply source_file argument")
   }

@@ -34,7 +34,7 @@ Log::Log4perl::init(\$log_conf);
 use_ok 'Bio::EnsEMBL::Mongoose::Parser::UCSC';
 
 my $reader =
-  Bio::EnsEMBL::Mongoose::Parser::UCSC->new(source_file => "$ENV{MONGOOSE}/t/data/ucsc/hg38/knownGene.txt.gz");
+  Bio::EnsEMBL::Mongoose::Parser::UCSC->new(source_file => "$ENV{MONGOOSE}/t/data/ucsc/hg38.txt.gz");
 isa_ok($reader, 'Bio::EnsEMBL::Mongoose::Parser::UCSC');
 
 my $num_of_records = 0;

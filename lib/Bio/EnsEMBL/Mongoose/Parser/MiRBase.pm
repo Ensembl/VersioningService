@@ -15,6 +15,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+=head1 NAME
+
+=head1 DESCRIPTION
+
 =cut
 
 package Bio::EnsEMBL::Mongoose::Parser::MiRBase;
@@ -49,6 +53,10 @@ has 'taxonomizer' => (
 # Consumes miRBase files and emits Mongoose::Persistence::Records
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser','MooseX::Log::Log4perl';
 
+#
+# TODO
+# Parse DR fields and create xrefs
+#
 sub read_record {
   my $self = shift;
   $self->clear_record;

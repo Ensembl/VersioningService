@@ -64,7 +64,7 @@ sub download_to {
 sub timestamp {
   my $self = shift;
   my $gmt = gmtime();
-  my $time = sprintf "%04u%02s%02s",$gmt->year + 1900,$gmt->mon,$gmt->mday;
+  my $time = sprintf "%04u%02s%02s",$gmt->year + 1900,$gmt->mon+1,$gmt->mday;
   return $time;
 }
 

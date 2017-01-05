@@ -1,0 +1,33 @@
+ENSG00000000419	R-HSA-162699	http://reactome.org/PathwayBrowser/#/R-HSA-162699	Synthesis of dolichyl-phosphate mannose	TAS	Homo sapiens
+ENSG00000000419	R-HSA-163125	http://reactome.org/PathwayBrowser/#/R-HSA-163125	Post-translational modification: synthesis of GPI-anchored proteins	TAS	Homo sapiens
+ENSG00000000419	R-HSA-392499	http://reactome.org/PathwayBrowser/#/R-HSA-392499	Metabolism of proteins	TAS	Homo sapiens
+ENSG00000000419	R-HSA-446193	http://reactome.org/PathwayBrowser/#/R-HSA-446193	Biosynthesis of the N-glycan precursor (dolichol lipid-linked oligosaccharide, LLO) and transfer to a nascent protein	TAS	Homo sapiens
+ENSG00000000419	R-HSA-446203	http://reactome.org/PathwayBrowser/#/R-HSA-446203	Asparagine N-linked glycosylation	TAS	Homo sapiens
+ENSG00000000419	R-HSA-446219	http://reactome.org/PathwayBrowser/#/R-HSA-446219	Synthesis of substrates in N-glycan biosythesis	TAS	Homo sapiens
+ENSG00000000419	R-HSA-597592	http://reactome.org/PathwayBrowser/#/R-HSA-597592	Post-translational protein modification	TAS	Homo sapiens
+ENSG00000000938	R-HSA-109582	http://reactome.org/PathwayBrowser/#/R-HSA-109582	Hemostasis	TAS	Homo sapiens
+ENSG00000000938	R-HSA-168249	http://reactome.org/PathwayBrowser/#/R-HSA-168249	Innate Immune System	TAS	Homo sapiens
+ENSG00000000938	R-HSA-168256	http://reactome.org/PathwayBrowser/#/R-HSA-168256	Immune System	TAS	Homo sapiens
+ENST00000014914	R-HSA-450520	http://reactome.org/PathwayBrowser/#/R-HSA-450520	HuR (ELAVL1) binds and stabilizes mRNA	TAS	Homo sapiens
+ENST00000014914	R-HSA-450531	http://reactome.org/PathwayBrowser/#/R-HSA-450531	Regulation of mRNA stability by proteins that bind AU-rich elements	TAS	Homo sapiens
+ENST00000014914	R-HSA-74160	http://reactome.org/PathwayBrowser/#/R-HSA-74160	Gene Expression	TAS	Homo sapiens
+ENST00000216037	R-HSA-381070	http://reactome.org/PathwayBrowser/#/R-HSA-381070	IRE1alpha activates chaperones	TAS	Homo sapiens
+ENST00000216037	R-HSA-381119	http://reactome.org/PathwayBrowser/#/R-HSA-381119	Unfolded Protein Response (UPR)	TAS	Homo sapiens
+ENST00000216037	R-HSA-392499	http://reactome.org/PathwayBrowser/#/R-HSA-392499	Metabolism of proteins	TAS	Homo sapiens
+ENST00000219235	R-HSA-168249	http://reactome.org/PathwayBrowser/#/R-HSA-168249	Innate Immune System	TAS	Homo sapiens
+ENST00000219235	R-HSA-168256	http://reactome.org/PathwayBrowser/#/R-HSA-168256	Immune System	TAS	Homo sapiens
+ENST00000219235	R-HSA-5607761	http://reactome.org/PathwayBrowser/#/R-HSA-5607761	Dectin-1 mediated noncanonical NF-kB signaling	TAS	Homo sapiens
+ENST00000219235	R-HSA-5607764	http://reactome.org/PathwayBrowser/#/R-HSA-5607764	CLEC7A (Dectin-1) signaling	TAS	Homo sapiens
+Q70DU8	R-ATH-1430728	http://reactome.org/PathwayBrowser/#/R-ATH-1430728	Metabolism	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-1660661	http://reactome.org/PathwayBrowser/#/R-ATH-1660661	Sphingolipid de novo biosynthesis	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-168249	http://reactome.org/PathwayBrowser/#/R-ATH-168249	Innate Immune System	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-168256	http://reactome.org/PathwayBrowser/#/R-ATH-168256	Immune System	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-211859	http://reactome.org/PathwayBrowser/#/R-ATH-211859	Biological oxidations	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-211945	http://reactome.org/PathwayBrowser/#/R-ATH-211945	Phase 1 - Functionalization of compounds	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-389599	http://reactome.org/PathwayBrowser/#/R-ATH-389599	Alpha-oxidation of phytanate	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-390918	http://reactome.org/PathwayBrowser/#/R-ATH-390918	Peroxisomal lipid metabolism	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-428157	http://reactome.org/PathwayBrowser/#/R-ATH-428157	Sphingolipid metabolism	IEA	Arabidopsis thaliana
+Q70DU8	R-ATH-556833	http://reactome.org/PathwayBrowser/#/R-ATH-556833	Metabolism of lipids and lipoproteins	IEA	Arabidopsis thaliana
+AT1G01210	R-ATH-168249	http://reactome.org/PathwayBrowser/#/R-ATH-168249	Innate Immune System	IEA	Arabidopsis thaliana
+AT1G01210	R-ATH-168256	http://reactome.org/PathwayBrowser/#/R-ATH-168256	Immune System	IEA	Arabidopsis thaliana
+AT1G01210	R-ATH-1834949	http://reactome.org/PathwayBrowser/#/R-ATH-1834949	Cytosolic sensors of pathogen-associated DNA 	IEA	Arabidopsis thaliana

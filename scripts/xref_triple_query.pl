@@ -45,6 +45,12 @@ foreach my $transcript (@$transcripts) {
   };
   if ($id_list) {
     printf "%s: %s hits in %s seconds: %s\n",$id,scalar @$id_list, $time, join(',',@$id_list);
+    # cache Ensembl IDs from results
+    foreach my $uri (@$id_list) {
+      my ($ens_id) = $uri =~ /^<http:\/\/rdf.ebi.ac.uk\/resource\/ensembl\/(ENS.+)>/;
+      # print "Collecting $ens_id for caching\n" if $ens_id;
+      $seen{$ens_id} = 1 if $ens_id;
+    }
   }
   # last;
 }

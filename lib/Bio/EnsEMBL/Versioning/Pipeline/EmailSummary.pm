@@ -26,9 +26,7 @@ use Bio::EnsEMBL::Hive::Utils qw/destringify/;
 
 sub fetch_input {
   my $self = shift;
-  
-  $self->assert_executable('sendmail');
-  
+    
   my $check_latest = $self->jobs('CheckLatest');
   my $download = $self->jobs('DownloadSource');
 

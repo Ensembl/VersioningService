@@ -15,6 +15,7 @@ requires 'Compress::Snappy';
 requires 'Sereal';
 requires 'Digest::CRC';
 requires 'Algorithm::Diff', '>= 1.1903';
+requires 'Proc::Background';
 
 # Moose dependencies
 

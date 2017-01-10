@@ -113,8 +113,8 @@ sub read_record {
     $record = $self->add_ae_xref($record, $uniprots, 'uniprot');
     $record = $self->add_ae_xref($record, $interpros, 'interpro');
     $record = $self->add_ae_xref($record, [$record->id], 'ensembl');
-	
-	if (exists $fields->{"synonym"}){
+
+    if (exists $fields->{"synonym"}){
       my $synonyms = $self->split_value($linecolumns[ $fields->{"synonym"}]) if (exists $fields->{"synonym"} and defined($linecolumns[ $fields->{"synonym"}]) and length($linecolumns[ $fields->{"synonym"}]) > 0);
       foreach my $synonym (@$synonyms){
         $record->add_synonym($synonym);

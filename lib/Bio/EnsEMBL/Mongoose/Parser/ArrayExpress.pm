@@ -19,7 +19,7 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Mongoose::Parser::EntrezGene - A class to parse ArrayExpress's files
+Bio::EnsEMBL::Mongoose::Parser::ArrayExpress - A class to parse ArrayExpress's files
 
 =head1 DESCRIPTION
 

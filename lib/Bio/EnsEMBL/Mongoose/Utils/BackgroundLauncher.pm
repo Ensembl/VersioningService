@@ -39,7 +39,10 @@ has process => (
 
 sub run_command {
   my $self = shift;
-  my @opts = $self->build_command_line;
+  unless ($self->command) { 
+    Bio::EnsEMBL::Mongoose::UsageException->throw( "Cannot build a command line instruction without a base command to run" );
+  }
+  my @opts = $self->unpack_args;
 
   print "Debug: ".$self->command.' '.join(' ',@opts)."\n";
   
@@ -54,12 +57,19 @@ sub run_command {
   $self->process($proc);
 }
 
-sub build_command_line {
+sub unpack_args {
   my $self = shift;
-  unless ($self->command) { 
-    Bio::EnsEMBL::Mongoose::UsageException->throw( "Cannot build a command line instruction without both a base command to run" );
+  my $args = $self->args;
+  my $opt_string;
+  my @opts;
+  foreach my $arg (keys %$args) {
+    $opt_string .= "--$arg";
+    if (defined $args->{$arg}) {
+      $opt_string .= '='.$args->{$arg};
+    }
+    push @opts,$opt_string;
+    $opt_string = '';
   }
-  my @opts = map { '--'.join '=',$_,$self->args->{$_} } keys $self->args;
   return @opts;
 }
 

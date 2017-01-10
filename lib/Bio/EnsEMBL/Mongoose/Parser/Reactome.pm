@@ -41,7 +41,7 @@ use Moose;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 with 'Bio::EnsEMBL::Mongoose::Parser::Parser', 'MooseX::Log::Log4perl';
 
-# Requires access to compara taxonomy database, due to lack of taxon ID in miRBase files
+# Requires access to compara taxonomy database, due to lack of taxon ID in Reactome files
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Try::Tiny;
 

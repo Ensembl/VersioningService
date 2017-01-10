@@ -32,5 +32,6 @@ $broker->add_new_source('mim2gene','MIM',1,'Bio::EnsEMBL::Versioning::Pipeline::
 $broker->add_new_source('HGNC','HGNC',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::HGNC','Bio::EnsEMBL::Mongoose::Parser::HGNC');
 $broker->add_new_source('EntrezGene','EntrezGene',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::EntrezGene','Bio::EnsEMBL::Mongoose::Parser::EntrezGene');
 $broker->add_new_source('Reactome','Reactome',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::Reactome','Bio::EnsEMBL::Mongoose::Parser::Reactome');
+$broker->add_new_source('ArrayExpress','ArrayExpress',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::ArrayExpress','Bio::EnsEMBL::Mongoose::Parser::ArrayExpress');
 
 print "Created basic Xref working set of sources. Now enable the update pipeline to allow it to download the first copy of each source\n";

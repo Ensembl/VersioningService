@@ -6,6 +6,8 @@ use Test::Differences;
 use Test::Deep;
 use Log::Log4perl;
 
+use Data::Dumper;
+
 BEGIN {
   use FindBin qw/$Bin/;
   $ENV{MONGOOSE} = "$Bin/..";
@@ -29,30 +31,45 @@ LOGCONF
 
 Log::Log4perl::init(\$log_conf);
 
-note 'Temporary tests to check whether the ensembl-io EMBL parser can be used';
-use Data::Dumper;
-use Bio::EnsEMBL::IO::Parser::EMBL;
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::MiRBase';
 
-open my $fh, "<:gzip(autopop)", "$ENV{MONGOOSE}/t/data/miRNA.dat.gz" or die "Cannot open file: $!\n";
-my $parser = Bio::EnsEMBL::IO::Parser::EMBL->open($fh);
+my $reader =
+  Bio::EnsEMBL::Mongoose::Parser::MiRBase->new(source_file => "$ENV{MONGOOSE}/t/data/miRNA.dat.gz");
+isa_ok($reader, 'Bio::EnsEMBL::Mongoose::Parser::MiRBase');
+
+my $num_records = 0;
 
 # check first record
-$parser->next;
-cmp_deeply($parser->get_accessions(), ['MI0000001'], 'First record accession');
-is($parser->get_id(), 'cel-let-7', 'First record ID');
-my $species = join(' ', (split /\s/, $parser->get_description())[0,1]);
-is($species, 'Caenorhabditis elegans', 'First record species');
-is($parser->get_sequence(), 'uacacuguggauccggugagguaguagguuguauaguuuggaauauuaccaccggugaacuaugcaauuuucuaccuuaccggagacagaacucuucga', 'First record sequence');
+$reader->read_record && ++$num_records;
+my $record = $reader->record;
+is($record->id, 'cel-let-7', 'First record ID');
+is($record->display_label, 'cel-let-7', 'First record display label');
+cmp_deeply($record->accessions, ['MI0000001'], 'First record accessions');
 
-# seek inside the file
-$parser->next for 1 .. 60;
-cmp_deeply($parser->get_accessions(), ['MI0000063'], 'Record accession');
-is($parser->get_id(), 'hsa-let-7b', 'Record ID');
-$species = join(' ', (split /\s/, $parser->get_description())[0,1]);
-is($species, 'Homo sapiens', 'Record species');
-is($parser->get_sequence(), 'cggggugagguaguagguugugugguuucagggcagugauguugccccucggaagauaacuauacaaccuacugccuucccug', 'Record sequence');
 
-$parser->close;
+# use Data::Dumper;
+# use Bio::EnsEMBL::IO::Parser::EMBL;
+
+# open my $fh, "<:gzip(autopop)", "$ENV{MONGOOSE}/t/data/miRNA.dat.gz" or die "Cannot open file: $!\n";
+# my $parser = Bio::EnsEMBL::IO::Parser::EMBL->open($fh);
+
+# # check first record
+# $parser->next;
+# cmp_deeply($parser->get_accessions(), ['MI0000001'], 'First record accession');
+# is($parser->get_id(), 'cel-let-7', 'First record ID');
+# my $species = join(' ', (split /\s/, $parser->get_description())[0,1]);
+# is($species, 'Caenorhabditis elegans', 'First record species');
+# is($parser->get_sequence(), 'uacacuguggauccggugagguaguagguuguauaguuuggaauauuaccaccggugaacuaugcaauuuucuaccuuaccggagacagaacucuucga', 'First record sequence');
+
+# # seek inside the file
+# $parser->next for 1 .. 60;
+# cmp_deeply($parser->get_accessions(), ['MI0000063'], 'Record accession');
+# is($parser->get_id(), 'hsa-let-7b', 'Record ID');
+# $species = join(' ', (split /\s/, $parser->get_description())[0,1]);
+# is($species, 'Homo sapiens', 'Record species');
+# is($parser->get_sequence(), 'cggggugagguaguagguugugugguuucagggcagugauguugccccucggaagauaacuauacaaccuacugccuucccug', 'Record sequence');
+
+# $parser->close;
 
 unlink $log_file;
 

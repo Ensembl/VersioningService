@@ -45,7 +45,8 @@ my $record = $reader->record;
 is($record->id, 'cel-let-7', 'First record ID');
 is($record->display_label, 'cel-let-7', 'First record display label');
 cmp_deeply($record->accessions, ['MI0000001'], 'First record accessions');
-
+is($record->taxon_id, 6239, 'First record tax id');
+is($record->sequence, 'TACACTGTGGATCCGGTGAGGTAGTAGGTTGTATAGTTTGGAATATTACCACCGGTGAACTATGCAATTTTCTACCTTACCGGAGACAGAACTCTTCGA', 'First record sequence');
 
 # use Data::Dumper;
 # use Bio::EnsEMBL::IO::Parser::EMBL;
@@ -62,6 +63,7 @@ cmp_deeply($record->accessions, ['MI0000001'], 'First record accessions');
 # is($parser->get_sequence(), 'uacacuguggauccggugagguaguagguuguauaguuuggaauauuaccaccggugaacuaugcaauuuucuaccuuaccggagacagaacucuucga', 'First record sequence');
 
 # # seek inside the file
+
 # $parser->next for 1 .. 60;
 # cmp_deeply($parser->get_accessions(), ['MI0000063'], 'Record accession');
 # is($parser->get_id(), 'hsa-let-7b', 'Record ID');
@@ -74,3 +76,5 @@ cmp_deeply($record->accessions, ['MI0000001'], 'First record accessions');
 unlink $log_file;
 
 done_testing();
+
+

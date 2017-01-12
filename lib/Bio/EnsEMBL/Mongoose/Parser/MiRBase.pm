@@ -87,6 +87,15 @@ sub read_record {
     Bio::EnsEMBL::Mongoose::IOException->throw("miRBase record $id has no accessible accession");
   }
 
+  # database cross references
+  my $xrefs = $parser->get_database_cross_references();
+  foreach my $xref (@{$xrefs}) {
+    my ($source, $primary_id) = split /:/, $xref;
+    # skip TARGETS:PICTAR-VERT xrefs
+    next if $source =~ /^TARGETS/;
+    $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, creator => 'MiRBase', id => $primary_id));
+  }
+  
   # get sequence, make uppercase and replace Ts for Us
   my $sequence = $parser->get_sequence();
   $sequence = uc($sequence);

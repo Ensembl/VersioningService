@@ -40,7 +40,7 @@ isa_ok($reader, 'Bio::EnsEMBL::Mongoose::Parser::MiRBase');
 my $num_records = 0;
 
 # check first record
-$reader->read_record && ++$num_records;
+$reader->read_record and ++$num_records;
 my $record = $reader->record;
 is($record->id, 'cel-let-7', 'First record ID');
 is($record->display_label, 'cel-let-7', 'First record display label');
@@ -48,33 +48,27 @@ cmp_deeply($record->accessions, ['MI0000001'], 'First record accessions');
 is($record->taxon_id, 6239, 'First record tax id');
 is($record->sequence, 'TACACTGTGGATCCGGTGAGGTAGTAGGTTGTATAGTTTGGAATATTACCACCGGTGAACTATGCAATTTTCTACCTTACCGGAGACAGAACTCTTCGA', 'First record sequence');
 
-# use Data::Dumper;
-# use Bio::EnsEMBL::IO::Parser::EMBL;
+# seek inside the file
+$reader->read_record() and ++$num_records for 1 .. 60;
+$record = $reader->record;
+is($record->id, 'hsa-let-7b', 'Correct record ID');
+is($record->display_label, 'hsa-let-7b', 'Correct record display label');
+cmp_deeply($record->accessions, ['MI0000063'], 'Correct record accessions');
+is($record->taxon_id, 9606, 'Correct record tax id');
+is($record->sequence, 'CGGGGTGAGGTAGTAGGTTGTGTGGTTTCAGGGCAGTGATGTTGCCCCTCGGAAGATAACTATACAACCTACTGCCTTCCCTG', 'Correct record sequence');
 
-# open my $fh, "<:gzip(autopop)", "$ENV{MONGOOSE}/t/data/miRNA.dat.gz" or die "Cannot open file: $!\n";
-# my $parser = Bio::EnsEMBL::IO::Parser::EMBL->open($fh);
-
-# # check first record
-# $parser->next;
-# cmp_deeply($parser->get_accessions(), ['MI0000001'], 'First record accession');
-# is($parser->get_id(), 'cel-let-7', 'First record ID');
-# my $species = join(' ', (split /\s/, $parser->get_description())[0,1]);
-# is($species, 'Caenorhabditis elegans', 'First record species');
-# is($parser->get_sequence(), 'uacacuguggauccggugagguaguagguuguauaguuuggaauauuaccaccggugaacuaugcaauuuucuaccuuaccggagacagaacucuucga', 'First record sequence');
-
-# # seek inside the file
-
-# $parser->next for 1 .. 60;
-# cmp_deeply($parser->get_accessions(), ['MI0000063'], 'Record accession');
-# is($parser->get_id(), 'hsa-let-7b', 'Record ID');
-# $species = join(' ', (split /\s/, $parser->get_description())[0,1]);
-# is($species, 'Homo sapiens', 'Record species');
-# is($parser->get_sequence(), 'cggggugagguaguagguugugugguuucagggcagugauguugccccucggaagauaacuauacaaccuacugccuucccug', 'Record sequence');
-
-# $parser->close;
+# read all the records until the end of the file
+while ($reader->read_record()) {
+  $record = $reader->record;
+  ++$num_records;
+}
+ok(1, 'Reached end of file without dying');
+is($num_records, 5883, "Successfully read all $num_records records from file");
 
 unlink $log_file;
 
 done_testing();
+
+
 
 

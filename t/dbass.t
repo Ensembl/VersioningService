@@ -6,6 +6,8 @@ use Test::Differences;
 use Test::Deep;
 use Log::Log4perl;
 
+use Data::Dumper;
+
 BEGIN {
   use FindBin qw/$Bin/;
   $ENV{MONGOOSE} = "$Bin/..";
@@ -55,69 +57,65 @@ cmp_deeply($xrefs, $expected_xrefs, "First record xrefs");
 my $xref = shift $xrefs;
 isa_ok($xref, "Bio::EnsEMBL::Mongoose::Persistence::RecordXref");
 
-exit;
-
-# HERE
 # seek to the middle of the file
-for (1 .. 99) {
+for (1 .. 96) {
   $reader->read_record();
   ++$num_of_records;
 }
 
 my @expected_records = (
 		{
-		 id => 13,
-		 display_label => 'CAB000013',
+		 id => 76,
+		 display_label => 'GH-V',
 		 xrefs => [ bless( {
 				   'source' => 'Ensembl',
-				   'creator' => 'HPA',
+				   'creator' => 'DBASS',
 				   'active' => 1,
-				   'id' => 'ENSP00000485791'
+				   'id' => 'ENSG00000136487'
 				  }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
 		},
 		{
-		 id => 14,
-		 display_label => 'CAB000014',
+		 id => 77,
+		 display_label => 'GLA',
 		 xrefs => [ bless( {
 				   'source' => 'Ensembl',
-				   'creator' => 'HPA',
+				   'creator' => 'DBASS',
 				   'active' => 1,
-				   'id' => 'ENSP00000351602'
+				   'id' => 'ENSG00000102393'
 				  }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
 		},
 		{
-		 id => 15,
-		 display_label => 'CAB000015',
+		 id => 174,
+		 display_label => 'GNAT2',
 		 xrefs => [ bless( {
 				   'source' => 'Ensembl',
-				   'creator' => 'HPA',
+				   'creator' => 'DBASS',
 				   'active' => 1,
-				   'id' => 'ENSP00000314620'
+				   'id' => 'ENSG00000134183'
 				  }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
 		}
 	       );
 
-while ($num_of_records < 63) {
+while ($num_of_records < 100) {
   $reader->read_record();
   my $got = $reader->record;
   ++$num_of_records;
 
   my $expected = shift @expected_records;
   is($got->id, $expected->{id}, 'Correct record id');
-  is($got->display_label, $expected->{display_label}, 'First record display label');
+  is($got->display_label, $expected->{display_label}, 'Correct record display label');
   my $xrefs = $got->xref;
   cmp_deeply($got->xref, $expected->{xrefs}, "Correct xrefs");
 }
 
-#read all the records until the end of the file
+note 'read all the records until the end of the file';
 while ($reader->read_record()) {
   $record = $reader->record;
   ++$num_of_records;
- 
 }
 
 ok(1, 'Reached end of file without dying');
-is($num_of_records, 99, "Successfully read all $num_of_records records from file");
+is($num_of_records, 246, "Successfully read all $num_of_records records from file");
 
 unlink $log_file;
 

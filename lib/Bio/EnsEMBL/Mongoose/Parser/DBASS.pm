@@ -70,17 +70,21 @@ sub read_record {
 
   my $first_gene_name = $dbass_gene_name;
   my $second_gene_name;
-  if ($dbass_gene_name =~ /.\/./){
+  if ($dbass_gene_name =~ /.\/./) {
     ($first_gene_name, $second_gene_name) = split( /\//, $dbass_gene_name );
   }
 	
-  if ($dbass_gene_name =~ /(.*)\((.*)\)/){
+  if ($dbass_gene_name =~ /(.*)\((.*)\)/) {
     $first_gene_name = $1;
     $second_gene_name = $2;
   }
-  
+
+  $first_gene_name =~ s/\s//g;
   $record->display_label($first_gene_name);
-  $record->add_synonym($second_gene_name) if $second_gene_name;
+  if ($second_gene_name) {
+    $second_gene_name =~ s/\s//g;
+    $record->add_synonym($second_gene_name);
+  }
   
   $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'Ensembl', creator => 'DBASS', id => $ensembl_id));
 

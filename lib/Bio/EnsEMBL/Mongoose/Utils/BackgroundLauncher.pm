@@ -24,11 +24,20 @@ use Proc::Background;
 use Bio::EnsEMBL::Mongoose::IOException;
 use Bio::EnsEMBL::Mongoose::UsageException;
 
+# key-value pairs of --option => $value, or --option
 has args => (
   isa => 'HashRef',
   is => 'rw',
+  default => sub{{}}
 );
 
+# for arguments that do not conform to --option=value or --option
+has tail_end => (
+  isa => 'Str',
+  is => 'rw'
+);
+
+# the binary name to pass to the shell
 has command => ( isa => 'Str', is => 'rw');
 
 has process => (
@@ -43,15 +52,17 @@ sub run_command {
     Bio::EnsEMBL::Mongoose::UsageException->throw( "Cannot build a command line instruction without a base command to run" );
   }
   my @opts = $self->unpack_args;
+  push @opts,split /\s/,$self->tail_end if $self->tail_end;
 
-  print "Debug: ".$self->command.' '.join(' ',@opts)."\n";
+  # use Data::Dumper;
+  # print Dumper \@opts;
   
   my $proc = Proc::Background->new(
       {die_upon_destroy => 1},
       $self->command,
       @opts
   );
-  unless ($proc->alive) {
+  unless ($proc && $proc->alive) {
     Bio::EnsEMBL::Mongoose::IOException->throw("Unable to launch sub-process ". $self->command.' '.join(' ',@opts)."\n");
   }
   $self->process($proc);
@@ -62,13 +73,10 @@ sub unpack_args {
   my $args = $self->args;
   my $opt_string;
   my @opts;
+  # Note that perl system() calls cannot combine arg names and values in a single string, so we keep them apart
   foreach my $arg (keys %$args) {
-    $opt_string .= "--$arg";
-    if (defined $args->{$arg}) {
-      $opt_string .= '='.$args->{$arg};
-    }
-    push @opts,$opt_string;
-    $opt_string = '';
+    push @opts,$arg;
+    push @opts,$args->{$arg} if defined $args->{$arg};
   }
   return @opts;
 }

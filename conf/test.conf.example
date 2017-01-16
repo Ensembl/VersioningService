@@ -11,6 +11,7 @@ driver = SQLite
 db     = versioning_test
 file   = test.db
 
+scratch_space = "/tmp"
 
 [RDF config]
 # Used to assist linked data generation by RDF code

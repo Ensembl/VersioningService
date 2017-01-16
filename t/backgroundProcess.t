@@ -9,7 +9,7 @@ use strict;
 use Test::More;
 use Test::Differences;
 
-my $runner = Runner->new(command => './bin/fake_server.pl', args => { param => 2 });
+my $runner = Runner->new(command => './bin/fake_server.pl', args => { '--param' => 2 });
 $runner->run_command();
 ok($runner->get_pid(),'Make sure a PID got assigned to a process');
 note $runner->get_pid();

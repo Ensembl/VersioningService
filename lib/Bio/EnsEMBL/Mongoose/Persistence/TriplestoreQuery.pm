@@ -64,7 +64,11 @@ sub query {
 
 sub next_result {
   my $self = shift;
-  $self->result_set->next;
+  if ($self->result_set) {
+    return $self->result_set->next;
+  } else {
+    return;
+  }
 }
 
 # Query graph for an ID and all related xrefs (outbound links), returns a list of names

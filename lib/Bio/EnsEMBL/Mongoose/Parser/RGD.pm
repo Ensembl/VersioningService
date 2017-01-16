@@ -50,6 +50,7 @@ sub read_record {
     while ($content =~ /^#/) {
       $content = <$fh>;
     }
+    $content = <$fh>;
     return unless $content;
   }
 

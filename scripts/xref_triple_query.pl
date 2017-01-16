@@ -31,7 +31,7 @@ my $sparqler = Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery->new(triple
 
 my $transcript_adaptor = Bio::EnsEMBL::Registry->get_adaptor('human','core','transcript');
 my $transcripts = $transcript_adaptor->fetch_all();
-
+my %seen;
 my $time;
 foreach my $transcript (@$transcripts) {
   my $id = $transcript->stable_id;

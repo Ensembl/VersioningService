@@ -11,3 +11,4 @@ target/
 *~
 *.conf
 /viewer/node_modules
+/t/run

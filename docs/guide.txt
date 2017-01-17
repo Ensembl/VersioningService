@@ -42,4 +42,15 @@ To see what has been identified for bulk loading, use `select * from DB.DBA.load
 Determine xref connections
 --------------------------
 
-T.B.A.
+## Installed components required
+1. Java 8 with environment variables JAVA_HOME and PATH updated accordingly
+2. Fuseki
+3. Standalone Jena for validation of RDF
+4. Working Versioning Service as above
+5. Node.js and ideally npm. This is only required for visualisation of graphs
+
+## Useful components for developers
+1. Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery - sends SPARQL queries over HTTP
+2. Bio::EnsEMBL::Versioning::Broker - gives access to indexes of xref sources
+3. /viewer - Node application with SPARQL client for rendering graphs, not well developed
+4. /scripts/dump_all_xref_sources.pl - turns all active indexes into RDF for a single species

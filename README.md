@@ -15,7 +15,7 @@ The Versioning Service is built on a combination of Moose and DBIx::Class, and r
 
 Regular running of the pipeline allows the Versioning service to keep up to date with external data providers. The pipeline inspects all known sources for signs of change, before downloading new copies of the data where appropriate. In this way Ensembl is able to use the latest releases of external data whenever needed.
 
-The Versioning pipeline uses Ensembl eHive.
+The Versioning pipeline uses Ensembl eHive, and operates via cron (see also /scripts/cron_update)
 
 ## "Mongoose" indexing and access
 
@@ -24,3 +24,7 @@ Bioinformatics file formats are too numerous and diverse. For general use of ext
 Mongoose is built with more Moose, Lucy and JSON. The Lucy indexer has been designed to be modular, and should then be interchangeable with most NoSQL solutions, or an RDBMS with additional work.
 
 The only persistent service is the SQL database required for the Broker to manage its file collection. Multiple clients can individually access the same files or index through the API. Should performance become a problem, temporary copies of the archived downloads can be created to help distribute IO.
+
+# Xref Pipeline
+
+Xrefs are computed in RDF space, that is the indexed records stored by the "Mongoose" component above are converted to an RDF graph, which then forms the basis for the Xref pipeline.

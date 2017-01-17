@@ -32,5 +32,11 @@ $broker->add_new_source('mim2gene','MIM',1,'Bio::EnsEMBL::Versioning::Pipeline::
 $broker->add_new_source('HGNC','HGNC',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::HGNC','Bio::EnsEMBL::Mongoose::Parser::HGNC');
 $broker->add_new_source('EntrezGene','EntrezGene',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::EntrezGene','Bio::EnsEMBL::Mongoose::Parser::EntrezGene');
 $broker->add_new_source('Reactome','Reactome',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::Reactome','Bio::EnsEMBL::Mongoose::Parser::Reactome');
+$broker->add_new_source('ArrayExpress','ArrayExpress',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::ArrayExpress','Bio::EnsEMBL::Mongoose::Parser::ArrayExpress');
+$broker->add_new_source('HPA','HPA',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::HPA','Bio::EnsEMBL::Mongoose::Parser::HPA');
+$broker->add_new_source('UCSC','UCSC',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UCSC','Bio::EnsEMBL::Mongoose::Parser::UCSC');
+$broker->add_new_source('MiRBase','MiRBase',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::MiRBase','Bio::EnsEMBL::Mongoose::Parser::MiRBase');
+$broker->add_new_source('DBASS','DBASS',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::DBASS','Bio::EnsEMBL::Mongoose::Parser::DBASS');
+$broker->add_new_source('RGD','RGD',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RGD','Bio::EnsEMBL::Mongoose::Parser::RGD');
 
 print "Created basic Xref working set of sources. Now enable the update pipeline to allow it to download the first copy of each source\n";

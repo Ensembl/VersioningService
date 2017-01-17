@@ -6,6 +6,8 @@ use Test::Differences;
 use Test::Deep;
 use Log::Log4perl;
 
+use Data::Dumper;
+
 BEGIN {
   use FindBin qw/$Bin/;
   $ENV{MONGOOSE} = "$Bin/..";
@@ -29,30 +31,72 @@ LOGCONF
 
 Log::Log4perl::init(\$log_conf);
 
-note 'Temporary tests to check whether the ensembl-io EMBL parser can be used';
-use Data::Dumper;
-use Bio::EnsEMBL::IO::Parser::EMBL;
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::MiRBase';
 
-open my $fh, "<:gzip(autopop)", "$ENV{MONGOOSE}/t/data/miRNA.dat.gz" or die "Cannot open file: $!\n";
-my $parser = Bio::EnsEMBL::IO::Parser::EMBL->open($fh);
+my $reader =
+  Bio::EnsEMBL::Mongoose::Parser::MiRBase->new(source_file => "$ENV{MONGOOSE}/t/data/miRNA.dat.gz");
+isa_ok($reader, 'Bio::EnsEMBL::Mongoose::Parser::MiRBase');
+
+my $num_records = 0;
 
 # check first record
-$parser->next;
-cmp_deeply($parser->get_accessions(), ['MI0000001'], 'First record accession');
-is($parser->get_id(), 'cel-let-7', 'First record ID');
-my $species = join(' ', (split /\s/, $parser->get_description())[0,1]);
-is($species, 'Caenorhabditis elegans', 'First record species');
-is($parser->get_sequence(), 'uacacuguggauccggugagguaguagguuguauaguuuggaauauuaccaccggugaacuaugcaauuuucuaccuuaccggagacagaacucuucga', 'First record sequence');
+$reader->read_record and ++$num_records;
+my $record = $reader->record;
+is($record->id, 'cel-let-7', 'First record ID');
+is($record->display_label, 'cel-let-7', 'First record display label');
+cmp_deeply($record->accessions, ['MI0000001'], 'First record accessions');
+is($record->taxon_id, 6239, 'First record tax id');
+my $expected_xrefs = [ bless( {
+			       'source' => 'RFAM',
+			       'creator' => 'MiRBase',
+			       'active' => 1,
+			       'id' => 'RF00027'
+			      }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
+		       bless( {
+			       'source' => 'WORMBASE',
+			       'creator' => 'MiRBase',
+			       'active' => 1,
+			       'id' => 'C05G5/12462-12364'
+			      }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
+
+cmp_deeply($record->xref, $expected_xrefs, 'First record xrefs');
+is($record->sequence, 'TACACTGTGGATCCGGTGAGGTAGTAGGTTGTATAGTTTGGAATATTACCACCGGTGAACTATGCAATTTTCTACCTTACCGGAGACAGAACTCTTCGA', 'First record sequence');
 
 # seek inside the file
-$parser->next for 1 .. 60;
-cmp_deeply($parser->get_accessions(), ['MI0000063'], 'Record accession');
-is($parser->get_id(), 'hsa-let-7b', 'Record ID');
-$species = join(' ', (split /\s/, $parser->get_description())[0,1]);
-is($species, 'Homo sapiens', 'Record species');
-is($parser->get_sequence(), 'cggggugagguaguagguugugugguuucagggcagugauguugccccucggaagauaacuauacaaccuacugccuucccug', 'Record sequence');
+$reader->read_record() and ++$num_records for 1 .. 60;
+$record = $reader->record;
+is($record->id, 'hsa-let-7b', 'Correct record ID');
+is($record->display_label, 'hsa-let-7b', 'Correct record display label');
+cmp_deeply($record->accessions, ['MI0000063'], 'Correct record accessions');
+is($record->taxon_id, 9606, 'Correct record tax id');
+$expected_xrefs = [ bless( {
+			    'source' => 'RFAM',
+			    'creator' => 'MiRBase',
+			    'active' => 1,
+			    'id' => 'RF00027'
+			   }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
+		    bless( {
+			    'source' => 'HGNC',
+			    'creator' => 'MiRBase',
+			    'active' => 1,
+			    'id' => '31479'
+			   }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
+		    bless( {
+			    'source' => 'ENTREZGENE',
+			    'creator' => 'MiRBase',
+			    'active' => 1,
+			    'id' => '406884'
+			   }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
+cmp_deeply($record->xref, $expected_xrefs, 'Correct record xrefs');
+is($record->sequence, 'CGGGGTGAGGTAGTAGGTTGTGTGGTTTCAGGGCAGTGATGTTGCCCCTCGGAAGATAACTATACAACCTACTGCCTTCCCTG', 'Correct record sequence');
 
-$parser->close;
+# read all the records until the end of the file
+while ($reader->read_record()) {
+  $record = $reader->record;
+  ++$num_records;
+}
+ok(1, 'Reached end of file without dying');
+is($num_records, 5883, "Successfully read all $num_records records from file");
 
 unlink $log_file;
 

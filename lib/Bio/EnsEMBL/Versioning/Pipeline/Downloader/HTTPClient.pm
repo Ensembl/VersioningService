@@ -27,6 +27,8 @@ use Try::Tiny;
 use Method::Signatures;
 use Bio::EnsEMBL::Mongoose::NetException;
 
+with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::NetClient';
+
 method connected_to_http ($url){
   my $status = LWP::Simple::head($url);
   return 1 if $status;
@@ -58,7 +60,13 @@ method get_http_files (
   foreach my $filename (@$filenames) {
     my $file = $host_URL.$filename;
     my $file_store = $path . '/' . $filename;
-    my $response_code = LWP::Simple::getstore( $file, $file_store );
+    
+    my $response_code = retry_sleep( sub {
+        my $response = LWP::Simple::getstore( $file, $file_store );
+        unless ($response) {print "Download Failed\n"; return}
+          else {return $response}
+      }, 2   );
+    
     if ($response_code == 200) { push @files, $file_store} else { Bio::EnsEMBL::Mongoose::NetException->throw("Incomplete download for $host_URL $filename") }; 
     }
   

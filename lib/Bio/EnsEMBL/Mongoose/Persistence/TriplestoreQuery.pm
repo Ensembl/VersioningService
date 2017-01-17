@@ -55,9 +55,12 @@ sub query {
   my $config = $self->query_parameters;
   # TODO: implement support for query modification with parameters
   #       species_name = graph choice, result_size = LIMIT, ids mapped to Ensembl URIs?
+  # print "Query received: $query\n";
+  # print "Sending query to: ".$self->triplestore_url."\n";
   my $sparql = RDF::Query::Client->new($query);
   my $result_iterator = $sparql->execute($self->triplestore_url);
   my $error = $sparql->error();
+  # print "Server returned:".$sparql->http_response;
   if ($error) { Bio::EnsEMBL::Mongoose::DBException->throw($error) }
   $self->result_set($result_iterator);
 }

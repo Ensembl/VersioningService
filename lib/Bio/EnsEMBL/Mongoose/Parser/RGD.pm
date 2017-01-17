@@ -59,18 +59,19 @@ sub read_record {
   Bio::EnsEMBL::Mongoose::IOException->throw ('Insufficient data in RGD line: ' . $content)
       unless $rgd and $symbol and $name;
 
-  $record->id($rgd);
-  $record->display_label($symbol);
-  $record->gene_name($symbol);
-  $record->description($name);
-  $record->add_synonym(split /;/, $old_name) if $old_name;
-  
+  $record->id($rgd); # RGD gene ID
+  $record->display_label($symbol); # official gene symbol
+  $record->gene_name($symbol); # which is also the gene name
+  $record->description($name); # gene name is sufficiently verbose to appear as a description
+  $record->add_synonym(split /;/, $old_name) if $old_name; # old name alias(es)
+
+  # RGD maintains links from each of their gene IDs to GenBank nucleotide IDs, separated by ';'
   map { $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'RefSeq', creator => 'RGD', id => $_)) }
     split /;/, $refseq if $refseq;
+  # the same for Ensembl Gene IDs
   map { $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'Ensembl', creator => 'RGD', id => $_)) }
     split /;/, $ensembl_id if $ensembl_id;
   
-
   return 1;
 }
 

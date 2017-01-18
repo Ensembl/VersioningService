@@ -1,0 +1,1000 @@
+XB-GENE-478054	trnt1	tRNA nucleotidyl transferase, CCA-adding, 1	ENSXETG00000025091
+XB-GENE-478064	foxh1.2	forkhead box H1, gene 2	ENSXETG00000005286
+XB-GENE-478074	nr5a2	nuclear receptor subfamily 5 group A member 2	ENSXETG00000000314
+XB-GENE-478084	tbx1	T-box 1	ENSXETG00000006304
+XB-GENE-478094	nr1d1	nuclear receptor subfamily 1 group D member 1	ENSXETG00000024397
+XB-GENE-478104	nucb1	nucleobindin 1	ENSXETG00000021229
+XB-GENE-478113	nsa2	NSA2, ribosome biogenesis homolog	ENSXETG00000005077
+XB-GENE-478121	csnk1a1	casein kinase 1, alpha 1	ENSXETG00000020861
+XB-GENE-478131	hoxc6	homeobox C6	ENSXETG00000023479
+XB-GENE-478141	hba1	hemoglobin subunit alpha 1	ENSXETG00000025664
+XB-GENE-478149	gdf9	growth differentiation factor 9	ENSXETG00000004168
+XB-GENE-478156	c2	complement component 2	ENSXETG00000010930
+XB-GENE-478165	gata2	GATA binding protein 2	ENSXETG00000016171
+XB-GENE-478184	gdf2	growth differentiation factor 2	ENSXETG00000011956
+XB-GENE-478190	sorbs2	sorbin and SH3 domain containing 2	ENSXETG00000001564
+XB-GENE-478196	tgfbr3	transforming growth factor beta receptor III	ENSXETG00000023030
+XB-GENE-478210	fzd4	frizzled class receptor 4	ENSXETG00000010434
+XB-GENE-478220	suclg1	succinate-CoA ligase, alpha subunit	ENSXETG00000001690
+XB-GENE-478230	mbip	MAP3K12 binding inhibitory protein 1	ENSXETG00000002911
+XB-GENE-478236	ptprs	protein tyrosine phosphatase, receptor type S	ENSXETG00000005350
+XB-GENE-478256	sostdc1	sclerostin domain containing 1	ENSXETG00000022798
+XB-GENE-478265	tcf3	transcription factor 3	ENSXETG00000013589
+XB-GENE-478274	oxt	oxytocin/neurophysin I prepropeptide	ENSXETG00000027327
+XB-GENE-478280	atat1	alpha tubulin acetyltransferase 1	ENSXETG00000024089
+XB-GENE-478288	slc24a4	solute carrier family 24 (sodium/potassium/calcium exchanger), member 4	ENSXETG00000010290
+XB-GENE-478294	rab28	RAB28, member RAS oncogene family	ENSXETG00000026677
+XB-GENE-478301	rhob	ras homolog family member B	ENSXETG00000026772
+XB-GENE-478310	zbtb16	zinc finger and BTB domain containing 16	ENSXETG00000022950
+XB-GENE-478317	fzd9	frizzled class receptor 9	ENSXETG00000010338
+XB-GENE-478327	egfl8	EGF-like-domain, multiple 8	ENSXETG00000005220
+XB-GENE-478336	ddx39b	DEAD-box helicase 39B	ENSXETG00000002498
+XB-GENE-478345	vax1	ventral anterior homeobox 1	ENSXETG00000008186
+XB-GENE-478355	fgg	fibrinogen gamma chain	ENSXETG00000022415
+XB-GENE-478365	rassf2	Ras association (RalGDS/AF-6) domain family member 2	ENSXETG00000016851
+XB-GENE-478374	ptprd	protein tyrosine phosphatase, receptor type D	ENSXETG00000011833
+XB-GENE-478383	pygl	phosphorylase, glycogen, liver	ENSXETG00000016477
+XB-GENE-478392	spic	Spi-C transcription factor (Spi-1/PU.1 related)	ENSXETG00000027989
+XB-GENE-478410	nr1d2	nuclear receptor subfamily 1 group D member 2	ENSXETG00000003869
+XB-GENE-478419	mapk6	mitogen-activated protein kinase 6	ENSXETG00000020744
+XB-GENE-478437	mapk8ip1	mitogen-activated protein kinase 8 interacting protein 1	ENSXETG00000001025
+XB-GENE-478443	nedd4	neural precursor cell expressed, developmentally down-regulated 4, E3 ubiquitin protein ligase	ENSXETG00000016554
+XB-GENE-478452	crx	cone-rod homeobox	ENSXETG00000018775
+XB-GENE-478462	hoxd3	homeobox D3	ENSXETG00000001800
+XB-GENE-478483	cga	glycoprotein hormones, alpha polypeptide	ENSXETG00000018063
+XB-GENE-478493	rxrg	retinoid X receptor gamma	ENSXETG00000004750
+XB-GENE-478502	postn	periostin, osteoblast specific factor	ENSXETG00000001812
+XB-GENE-478512	slc4a1ap	solute carrier family 4 (anion exchanger), member 1, adaptor protein	ENSXETG00000022503
+XB-GENE-478518	not	notochord homeobox	ENSXETG00000011780
+XB-GENE-478525	hoxb2	homeobox B2	ENSXETG00000027353
+XB-GENE-478535	rora	RAR-related orphan receptor A	ENSXETG00000021123
+XB-GENE-478544	foxe1	forkhead box E1	ENSXETG00000024889
+XB-GENE-478553	lamc1	laminin subunit gamma 1	ENSXETG00000012525
+XB-GENE-478569	ccnt1	cyclin T1	ENSXETG00000009784
+XB-GENE-478578	dner	delta/notch like EGF repeat containing	ENSXETG00000014758
+XB-GENE-478587	tgfbr1	transforming growth factor beta receptor I	ENSXETG00000023394
+XB-GENE-478600	frs3	fibroblast growth factor receptor substrate 3	ENSXETG00000011850
+XB-GENE-478609	nkx6-3	NK6 homeobox 3	ENSXETG00000016802
+XB-GENE-478615	nog4	noggin 4	ENSXETG00000027268
+XB-GENE-478622	tcf25	transcription factor 25 (basic helix-loop-helix)	ENSXETG00000023414
+XB-GENE-478629	tnni2	troponin I type 2 (skeletal, fast)	ENSXETG00000004621
+XB-GENE-478639	dact1	dishevelled-binding antagonist of beta-catenin 1	ENSXETG00000011962
+XB-GENE-478656	ankrd6	ankyrin repeat domain 6	ENSXETG00000019117
+XB-GENE-478663	prkcd	protein kinase C, delta	ENSXETG00000009359
+XB-GENE-478672	irs1	insulin receptor substrate 1	ENSXETG00000020086
+XB-GENE-478681	flii	FLII, actin remodeling protein	ENSXETG00000005767
+XB-GENE-478689	bag6	BCL2 associated athanogene 6	ENSXETG00000002500
+XB-GENE-478699	fgfr4	fibroblast growth factor receptor 4	ENSXETG00000007231
+XB-GENE-478709	ccnk	cyclin K	ENSXETG00000011438
+XB-GENE-478718	rxra	retinoid X receptor alpha	ENSXETG00000012733
+XB-GENE-478728	impdh2	IMP (inosine 5'-monophosphate) dehydrogenase 2	ENSXETG00000009343
+XB-GENE-478738	ckmt1b	creatine kinase, mitochondrial 1B	ENSXETG00000027612
+XB-GENE-478746	cdkn2b	cyclin-dependent kinase inhibitor 2B (p15, inhibits CDK4)	ENSXETG00000005465
+XB-GENE-478752	mapkap1	mitogen-activated protein kinase associated protein 1	ENSXETG00000000505
+XB-GENE-478761	six3	SIX homeobox 3	ENSXETG00000002758
+XB-GENE-478771	fga	fibrinogen alpha chain	ENSXETG00000026093
+XB-GENE-478789	t	T brachyury transcription factor	ENSXETG00000005370
+XB-GENE-478798	polg	polymerase (DNA directed), gamma	ENSXETG00000017750
+XB-GENE-478807	fras1	Fraser extracellular matrix complex subunit 1	ENSXETG00000000377
+XB-GENE-478813	fzd6	frizzled class receptor 6	ENSXETG00000004106
+XB-GENE-478822	map2k1	mitogen-activated protein kinase kinase 1	ENSXETG00000015887
+XB-GENE-478832	hoxc13	homeobox C13	ENSXETG00000025184
+XB-GENE-478841	nudcd1	NudC domain containing 1	ENSXETG00000010497
+XB-GENE-478850	acvr1	activin A receptor type I	ENSXETG00000010380
+XB-GENE-478859	mycn	v-myc avian myelocytomatosis viral oncogene neuroblastoma derived homolog	ENSXETG00000015485
+XB-GENE-478869	avp	arginine vasopressin	ENSXETG00000017979
+XB-GENE-478875	bmp10	bone morphogenetic protein 10	ENSXETG00000008196
+XB-GENE-478881	c4a	complement component 4A (Rodgers blood group)	ENSXETG00000005203
+XB-GENE-478888	hoxa10	homeobox A10	ENSXETG00000000728
+XB-GENE-478898	stard13	StAR related lipid transfer domain containing 13	ENSXETG00000016928
+XB-GENE-478907	slc9b2	solute carrier family 9, subfamily B (NHA2, cation proton antiporter 2), member 2	ENSXETG00000021321
+XB-GENE-478922	foxf1	forkhead box F1	ENSXETG00000003565
+XB-GENE-478930	tll2	tolloid like 2	ENSXETG00000007493
+XB-GENE-478939	rxfp3	relaxin/insulin-like family peptide receptor 3	ENSXETG00000002554
+XB-GENE-478945	odc1	ornithine decarboxylase 1	ENSXETG00000003519
+XB-GENE-478953	agtr1	angiotensin 2 receptor, type 1	ENSXETG00000016079
+XB-GENE-478962	hoxd4	homeobox D4	ENSXETG00000001799
+XB-GENE-478972	ppt2	palmitoyl-protein thioesterase 2	ENSXETG00000027741
+XB-GENE-478982	cdhr1	cadherin related family member 1	ENSXETG00000005632
+XB-GENE-478992	stat4	signal transducer and activator of transcription 4	ENSXETG00000004662
+XB-GENE-479002	hivep1	human immunodeficiency virus type I enhancer binding protein 1	ENSXETG00000015441
+XB-GENE-479011	rab2a	RAB2A, member RAS oncogene family	ENSXETG00000020178
+XB-GENE-479021	cchcr1	coiled-coil alpha-helical rod protein 1	ENSXETG00000024080
+XB-GENE-479027	nkx3-1	NK3 homeobox 1	ENSXETG00000007765
+XB-GENE-479036	rap1b	RAP1B, member of RAS oncogene family	ENSXETG00000026776
+XB-GENE-479046	smurf1	SMAD specific E3 ubiquitin protein ligase 1	ENSXETG00000007498
+XB-GENE-479055	foxc1	forkhead box C1	ENSXETG00000000594
+XB-GENE-479064	psmb8	proteasome subunit beta 8	ENSXETG00000016592
+XB-GENE-479074	csnk1g3	casein kinase 1, gamma 3	ENSXETG00000010259
+XB-GENE-479083	apom	apolipoprotein M	ENSXETG00000002499
+XB-GENE-479093	rab14	RAB14, member RAS oncogene family	ENSXETG00000019811
+XB-GENE-479103	tbx21	T-box 21	ENSXETG00000014748
+XB-GENE-479112	fstl5	follistatin-like 5	ENSXETG00000012007
+XB-GENE-479118	olig2	oligodendrocyte lineage transcription factor 2	ENSXETG00000024839
+XB-GENE-479125	slc4a4	solute carrier family 4 (sodium bicarbonate cotransporter), member 4	ENSXETG00000020880
+XB-GENE-479134	bmp6	bone morphogenetic protein 6	ENSXETG00000024635
+XB-GENE-479144	lmo2	LIM domain only 2	ENSXETG00000003986
+XB-GENE-479154	app	amyloid beta (A4) precursor protein	ENSXETG00000013612
+XB-GENE-479164	vwa7	von Willebrand factor A domain containing 7	ENSXETG00000024075
+XB-GENE-479174	ighx	immunoglobulin heavy chain precursor	ENSXETG00000004795
+XB-GENE-479181	nbl1	neuroblastoma 1, DAN family BMP antagonist	ENSXETG00000017604
+XB-GENE-479191	bmp1	bone morphogenetic protein 1	ENSXETG00000010536
+XB-GENE-479201	cyp24a1	cytochrome P450 family 24 subfamily A member 1	ENSXETG00000017527
+XB-GENE-479210	dll1	delta-like 1	ENSXETG00000022525
+XB-GENE-479219	ankrd49	ankyrin repeat domain 49	ENSXETG00000006415
+XB-GENE-479228	ppp2r5c	protein phosphatase 2 regulatory subunit B', gamma	ENSXETG00000010224
+XB-GENE-479237	stk19	serine/threonine kinase 19	ENSXETG00000002497
+XB-GENE-479247	foxd4l1.1	forkhead box D4-like 1, gene 1	ENSXETG00000001667
+XB-GENE-479255	fgfr3	fibroblast growth factor receptor 3 (achondroplasia, thanatophoric dwarfism)	ENSXETG00000002396
+XB-GENE-479265	mmp11	matrix metallopeptidase 11	ENSXETG00000022372
+XB-GENE-479274	angptl5	angiopoietin like 5	ENSXETG00000005480
+XB-GENE-479279	eya1	EYA transcriptional coactivator and phosphatase 1	ENSXETG00000015955
+XB-GENE-479289	sufu	suppressor of fused homolog	ENSXETG00000015219
+XB-GENE-479299	bmp15	bone morphogenetic protein 15	ENSXETG00000022583
+XB-GENE-479306	ms4a1	membrane-spanning 4-domains, subfamily A, member 1	ENSXETG00000026864
+XB-GENE-479318	notch1	notch 1	ENSXETG00000000757
+XB-GENE-479327	lmo4.2	LIM domain only 4, gene 2	ENSXETG00000023465
+XB-GENE-479337	rab30	RAB30, member RAS oncogene family	ENSXETG00000013633
+XB-GENE-479347	khdrbs1	KH domain containing, RNA binding, signal transduction associated 1	ENSXETG00000005246
+XB-GENE-479354	nr0b2	nuclear receptor subfamily 0 group B member 2	ENSXETG00000011771
+XB-GENE-479361	cfb	complement factor B	ENSXETG00000010935
+XB-GENE-479371	bmp5	bone morphogenetic protein 5	ENSXETG00000007071
+XB-GENE-479381	hras	Harvey rat sarcoma viral oncogene homolog	ENSXETG00000006040
+XB-GENE-479389	umod.1	uromodulin (uromucoid, Tamm-Horsfall glycoprotein), gene 1	ENSXETG00000004372
+XB-GENE-479395	ttr	transthyretin	ENSXETG00000004725
+XB-GENE-479419	clic1	chloride intracellular channel 1	ENSXETG00000024073
+XB-GENE-479429	ar	androgen receptor (dihydrotestosterone receptor; testicular feminization; spinal and bulbar muscular atrophy; Kennedy disease)	ENSXETG00000005089
+XB-GENE-479439	meis1	Meis homeobox 1	ENSXETG00000011473
+XB-GENE-479449	slc6a7	solute carrier family 6 (neurotransmitter transporter), member 7	ENSXETG00000011885
+XB-GENE-479458	pbx3	pre-B-cell leukemia homeobox 3	ENSXETG00000000502
+XB-GENE-479467	mapk1	mitogen-activated protein kinase 1	ENSXETG00000018576
+XB-GENE-479477	cxxc4	CXXC finger protein 4	ENSXETG00000014100
+XB-GENE-479486	nusap1	nucleolar and spindle associated protein 1	ENSXETG00000027499
+XB-GENE-479496	rps6ka1	ribosomal protein S6 kinase, 90kDa, polypeptide 1	ENSXETG00000012289
+XB-GENE-479505	rln3	relaxin 3	ENSXETG00000005572
+XB-GENE-479512	bcap31	B-cell receptor-associated protein 31	ENSXETG00000024749
+XB-GENE-479522	fgf11	fibroblast growth factor 11	ENSXETG00000008069
+XB-GENE-479538	aicda	activation-induced cytidine deaminase	ENSXETG00000023905
+XB-GENE-479548	atp6v1a	ATPase, H+ transporting, lysosomal 70kDa, V1 subunit A	ENSXETG00000009908
+XB-GENE-479558	zeb2	zinc finger E-box binding homeobox 2	ENSXETG00000000237
+XB-GENE-479583	hdac1	histone deacetylase 1	ENSXETG00000005253
+XB-GENE-479593	socs5	suppressor of cytokine signaling 5	ENSXETG00000022744
+XB-GENE-479599	ctnna1	catenin alpha 1	ENSXETG00000008405
+XB-GENE-479608	ppp1r8	protein phosphatase 1 regulatory subunit 8	ENSXETG00000011507
+XB-GENE-479615	spib	Spi-B transcription factor (Spi-1/PU.1 related)	ENSXETG00000009034
+XB-GENE-479624	nfil3	nuclear factor, interleukin 3 regulated	ENSXETG00000000804
+XB-GENE-479634	slc5a8	solute carrier family 5 (sodium/monocarboxylate cotransporter), member 8	ENSXETG00000002542
+XB-GENE-479643	mybpc3	myosin binding protein C, cardiac	ENSXETG00000007912
+XB-GENE-479652	nrm	nurim (nuclear envelope membrane protein)	ENSXETG00000024090
+XB-GENE-479667	pou3f4	POU class 3 homeobox 4	ENSXETG00000014504
+XB-GENE-479676	pde5a	phosphodiesterase 5A	ENSXETG00000004046
+XB-GENE-479691	psmb7.2	proteasome subunit beta 7	ENSXETG00000005198
+XB-GENE-479707	fzd5	frizzled class receptor 5	ENSXETG00000016383
+XB-GENE-479716	ctdp1	CTD phosphatase subunit 1	ENSXETG00000000856
+XB-GENE-479726	aqp5	aquaporin 5	ENSXETG00000024580
+XB-GENE-479735	il11	interleukin 11	ENSXETG00000000148
+XB-GENE-479741	aldh8a1	aldehyde dehydrogenase 8 family member A1	ENSXETG00000003727
+XB-GENE-479751	zfx	zinc finger protein, X-linked	ENSXETG00000007785
+XB-GENE-479760	frs2	fibroblast growth factor receptor substrate 2	ENSXETG00000001426
+XB-GENE-479769	eomes	eomesodermin	ENSXETG00000019924
+XB-GENE-479779	cebpb	CCAAT/enhancer binding protein beta	ENSXETG00000012286
+XB-GENE-479789	ace	angiotensin I converting enzyme	ENSXETG00000005315
+XB-GENE-479795	kng1	kininogen 1	ENSXETG00000025973
+XB-GENE-479802	twist1	twist family bHLH transcription factor 1	ENSXETG00000025630
+XB-GENE-479809	med1	mediator complex subunit 1	ENSXETG00000026977
+XB-GENE-479818	foxd2	forkhead box D2	ENSXETG00000016337
+XB-GENE-479827	tal1	T-cell acute lymphocytic leukemia 1	ENSXETG00000016346
+XB-GENE-479837	klf13	Kruppel-like factor 13	ENSXETG00000016478
+XB-GENE-479843	lrp1	LDL receptor related protein 1	ENSXETG00000010934
+XB-GENE-479852	thdl17	thyroid hormone down-regulated protein (gene 17)	ENSXETG00000012337
+XB-GENE-479868	tp63	tumor protein p63	ENSXETG00000026303
+XB-GENE-479876	pax5	paired box 5	ENSXETG00000006547
+XB-GENE-479886	10a1.1	retrotransposon-like element 10A1 gene 1	ENSXETG00000027095
+XB-GENE-479893	irs4	insulin receptor substrate 4	ENSXETG00000001566
+XB-GENE-479902	znf280d	zinc finger protein 280D	ENSXETG00000016560
+XB-GENE-479908	nkx3-3	NK3 homeobox 2	ENSXETG00000018432
+XB-GENE-479918	il10	interleukin 10	ENSXETG00000023670
+XB-GENE-479925	slc12a1	solute carrier family 12 (sodium/potassium/chloride transporter), member 1	ENSXETG00000008777
+XB-GENE-479941	tll1	tolloid like 1	ENSXETG00000017032
+XB-GENE-479951	rap2a	RAP2A, member of RAS oncogene family	ENSXETG00000023495
+XB-GENE-479960	casp3	caspase 3	ENSXETG00000001537
+XB-GENE-479970	snai1	snail family zinc finger 1	ENSXETG00000027366
+XB-GENE-479980	hoxa13	homeobox A13	ENSXETG00000000734
+XB-GENE-479990	bmpr2	bone morphogenetic protein receptor type II	ENSXETG00000022074
+XB-GENE-479999	fgf12	fibroblast growth factor 12	ENSXETG00000002144
+XB-GENE-480009	cd151	CD151 molecule (Raph blood group)	ENSXETG00000019035
+XB-GENE-480018	nr2f1	nuclear receptor subfamily 2 group F member 1	ENSXETG00000011594
+XB-GENE-480028	h1f0	H1 histone family member 0	ENSXETG00000015967
+XB-GENE-480035	slc7a5	solute carrier family 7 (amino acid transporter light chain, L system), member 5	ENSXETG00000016585
+XB-GENE-480044	abhd16a	abhydrolase domain containing 16A	ENSXETG00000024070
+XB-GENE-480060	hspa5	heat shock protein family A (Hsp70) member 5	ENSXETG00000016838
+XB-GENE-480067	tnik	TRAF2 and NCK interacting kinase	ENSXETG00000009142
+XB-GENE-480076	foxg1	forkhead box G1	ENSXETG00000010247
+XB-GENE-480085	hmx2	H6 family homeobox 2	ENSXETG00000027771
+XB-GENE-480094	eef1a1	eukaryotic translation elongation factor 1 alpha 1	ENSXETG00000001182
+XB-GENE-480103	mfn2	mitofusin 2	ENSXETG00000013049
+XB-GENE-480112	nr1i2	nuclear receptor subfamily 1 group I member 2	ENSXETG00000018029
+XB-GENE-480122	hand1	heart and neural crest derivatives expressed 1	ENSXETG00000008479
+XB-GENE-480131	tnf	tumor necrosis factor	ENSXETG00000002505
+XB-GENE-480138	agt	angiotensinogen (serpin peptidase inhibitor, clade A, member 8)	ENSXETG00000023342
+XB-GENE-480152	onecut1	one cut homeobox 1	ENSXETG00000006349
+XB-GENE-480159	grk4	G protein-coupled receptor kinase 4	ENSXETG00000014715
+XB-GENE-480167	rxrb	retinoid X receptor beta	ENSXETG00000020416
+XB-GENE-480177	dbx1	developing brain homeobox 1	ENSXETG00000014193
+XB-GENE-480186	il6	interleukin 6	ENSXETG00000007408
+XB-GENE-480192	paxip1	pax interacting (with transcription-activation domain) protein 1	ENSXETG00000006582
+XB-GENE-480201	sept2	septin 2	ENSXETG00000012166
+XB-GENE-480211	mst1r	macrophage stimulating 1 receptor	ENSXETG00000007306
+XB-GENE-480220	pcdh17	protocadherin 17	ENSXETG00000013565
+XB-GENE-480229	ppara	peroxisome proliferator-activated receptor alpha	ENSXETG00000023454
+XB-GENE-480239	igf1	insulin like growth factor 1	ENSXETG00000002532
+XB-GENE-480249	scyl3	SCY1-like, kinase-like 3	ENSXETG00000004735
+XB-GENE-480259	tnnc2	troponin C type 2 (fast)	ENSXETG00000014877
+XB-GENE-480268	gucy2f	guanylate cyclase 2F, retinal	ENSXETG00000001567
+XB-GENE-480278	rab8b	RAB8B, member RAS oncogene family	ENSXETG00000009721
+XB-GENE-480294	slc13a2	solute carrier family 13 (sodium-dependent dicarboxylate transporter), member 2	ENSXETG00000023776
+XB-GENE-480304	sox10	SRY-box 10	ENSXETG00000006348
+XB-GENE-480314	pde6d	phosphodiesterase 6D	ENSXETG00000022759
+XB-GENE-480320	hspb1	heat shock protein family B (small) member 1	ENSXETG00000008972
+XB-GENE-480330	alb	albumin	ENSXETG00000023395
+XB-GENE-480338	sin3b	SIN3 transcription regulator family member B	ENSXETG00000013501
+XB-GENE-480347	actc1	actin, alpha, cardiac muscle 1	ENSXETG00000012911
+XB-GENE-480355	msh5	mutS homolog 5	ENSXETG00000024072
+XB-GENE-480361	g3bp2	GTPase activating protein (SH3 domain) binding protein 2	ENSXETG00000000334
+XB-GENE-480369	slbp	stem-loop binding protein	ENSXETG00000003876
+XB-GENE-480379	fzd10	frizzled class receptor 10	ENSXETG00000002931
+XB-GENE-480396	wnt5b	wingless-type MMTV integration site family member 5B	ENSXETG00000009405
+XB-GENE-480413	slco5a1	solute carrier organic anion transporter family member 5A1	ENSXETG00000015232
+XB-GENE-480422	cd3g	CD3g molecule	ENSXETG00000010117
+XB-GENE-480431	zic3	Zic family member 3	ENSXETG00000024458
+XB-GENE-480441	dkk2	dickkopf WNT signaling pathway inhibitor 2	ENSXETG00000019859
+XB-GENE-480450	hes3.3	hes family bHLH transcription factor 3	ENSXETG00000011110
+XB-GENE-480459	casp10	caspase 10	ENSXETG00000004145
+XB-GENE-480467	tjp2	tight junction protein 2	ENSXETG00000001683
+XB-GENE-480476	foxa2	forkhead box A2	ENSXETG00000026998
+XB-GENE-480486	irx3	iroquois homeobox 3	ENSXETG00000005818
+XB-GENE-480496	fgf4	fibroblast growth factor 4 (heparin secretory transforming protein 1, Kaposi sarcoma oncogene)	ENSXETG00000001992
+XB-GENE-480506	tf	transferrin	ENSXETG00000011814
+XB-GENE-480515	tnnc1	troponin C type 1 (slow)	ENSXETG00000010816
+XB-GENE-480525	dhx16	DEAH-box helicase 16	ENSXETG00000024069
+XB-GENE-480535	ren	renin	ENSXETG00000007042
+XB-GENE-480544	dpepe	dipeptidase E	ENSXETG00000001084
+XB-GENE-480551	gnal	guanine nucleotide binding protein (G protein), alpha activating activity polypeptide, olfactory type	ENSXETG00000019702
+XB-GENE-480560	tgfb2	transforming growth factor beta 2	ENSXETG00000015347
+XB-GENE-480570	irx4	iroquois homeobox 4	ENSXETG00000008892
+XB-GENE-480579	spry1	sprouty RTK signaling antagonist 1	ENSXETG00000001573
+XB-GENE-480588	pnhd	pinhead	ENSXETG00000025525
+XB-GENE-480592	foxe3	forkhead box E3	ENSXETG00000016339
+XB-GENE-480601	hopx	HOP homeobox	ENSXETG00000010212
+XB-GENE-480608	ldha	lactate dehydrogenase A	ENSXETG00000013957
+XB-GENE-480618	irx2	iroquois homeobox 2	ENSXETG00000012653
+XB-GENE-480628	traf6	TNF receptor associated factor 6	ENSXETG00000007549
+XB-GENE-480638	chrd.1	chordin, gene 1	ENSXETG00000017290
+XB-GENE-480647	cyp21a2.1	cytochrome P450 family 21 subfamily A member 2	ENSXETG00000005187
+XB-GENE-480655	foxo4	forkhead box O4	ENSXETG00000020899
+XB-GENE-480662	aqp10	aquaporin 10	ENSXETG00000022960
+XB-GENE-480679	tlr5	toll-like receptor 5	ENSXETG00000015027
+XB-GENE-480688	nrp1	neuropilin 1	ENSXETG00000012629
+XB-GENE-480698	nos3	nitric oxide synthase 3	ENSXETG00000011979
+XB-GENE-480717	six1	SIX homeobox 1	ENSXETG00000016943
+XB-GENE-480727	sox4	SRY-box 4	ENSXETG00000014408
+XB-GENE-480737	hoxa1	homeobox A1	ENSXETG00000000715
+XB-GENE-480746	ybx1	Y-box binding protein 1	ENSXETG00000013436
+XB-GENE-480756	rab38	RAB38, member RAS oncogene family	ENSXETG00000011751
+XB-GENE-480765	spry4	sprouty RTK signaling antagonist 4	ENSXETG00000019568
+XB-GENE-480775	zic5	Zic family member 5	ENSXETG00000018872
+XB-GENE-480785	rasa2	RAS p21 protein activator 2	ENSXETG00000014755
+XB-GENE-480794	tmco3	transmembrane and coiled-coil domains 3	ENSXETG00000017774
+XB-GENE-480800	fzd8	frizzled class receptor 8	ENSXETG00000008812
+XB-GENE-480818	nr2f6	nuclear receptor subfamily 2 group F member 6	ENSXETG00000013531
+XB-GENE-480836	rara	retinoic acid receptor, alpha	ENSXETG00000024390
+XB-GENE-480846	bcl9	B-cell CLL/lymphoma 9	ENSXETG00000016298
+XB-GENE-480855	apc	adenomatous polyposis coli	ENSXETG00000021501
+XB-GENE-480865	sox8	SRY-box 8	ENSXETG00000005746
+XB-GENE-480875	sin3a	SIN3 transcription regulator family member A	ENSXETG00000015283
+XB-GENE-480893	nr4a2	nuclear receptor subfamily 4 group A member 2	ENSXETG00000024016
+XB-GENE-480902	dll4	delta-like 4	ENSXETG00000021584
+XB-GENE-480911	nkd1	naked cuticle homolog 1	ENSXETG00000018462
+XB-GENE-480918	pdp2	pyruvate dehyrogenase phosphatase catalytic subunit 2	ENSXETG00000017419
+XB-GENE-480927	bmper	BMP binding endothelial regulator	ENSXETG00000021129
+XB-GENE-480937	cdh5	cadherin 5, type 2, VE-cadherin (vascular epithelium)	ENSXETG00000020009
+XB-GENE-480947	rps6ka3	ribosomal protein S6 kinase, 90kDa, polypeptide 3	ENSXETG00000010285
+XB-GENE-480957	igf2r	insulin like growth factor 2 receptor	ENSXETG00000021138
+XB-GENE-480964	eaf1	ELL associated factor 1	ENSXETG00000022009
+XB-GENE-480974	wnt9b.2	wingless-type MMTV integration site family member 9B	ENSXETG00000027193
+XB-GENE-480983	fgf8	fibroblast growth factor 8	ENSXETG00000014474
+XB-GENE-480993	shox2	short stature homeobox 2	ENSXETG00000014058
+XB-GENE-480999	hoxc8	homeobox C8	ENSXETG00000023476
+XB-GENE-481009	rarb	retinoic acid receptor, beta	ENSXETG00000007272
+XB-GENE-481018	psmb9	proteasome subunit beta 9	ENSXETG00000026029
+XB-GENE-481028	emx2	empty spiracles homeobox 2	ENSXETG00000022080
+XB-GENE-481038	gjb1	gap junction protein beta 1	ENSXETG00000026283
+XB-GENE-481047	stat3.1	signal transducer and activator of transcription 3 (acute-phase response factor), gene 1	ENSXETG00000007642
+XB-GENE-481057	dxo	decapping exoribonuclease	ENSXETG00000027585
+XB-GENE-481066	rab11fip5	RAB11 family interacting protein 5 (class 1)	ENSXETG00000011781
+XB-GENE-481075	rorc	RAR-related orphan receptor C	ENSXETG00000002131
+XB-GENE-481084	arrb2	arrestin, beta 2	ENSXETG00000017230
+XB-GENE-481094	avpr1b	arginine vasopressin receptor 1B	ENSXETG00000005930
+XB-GENE-481100	ptges2	prostaglandin E synthase 2	ENSXETG00000012893
+XB-GENE-481106	hdac3	histone deacetylase 3	ENSXETG00000002708
+XB-GENE-481116	dtx1	deltex 1, E3 ubiquitin ligase	ENSXETG00000016413
+XB-GENE-481125	srsf2	serine/arginine-rich splicing factor 2	ENSXETG00000025271
+XB-GENE-481135	hes5.1	hes family bHLH transcription factor 5	ENSXETG00000012081
+XB-GENE-481145	tlr2	toll-like receptor 2	ENSXETG00000001817
+XB-GENE-481165	prdx1	peroxiredoxin 1	ENSXETG00000003501
+XB-GENE-481175	fibp	fibroblast growth factor (acidic) intracellular binding protein	ENSXETG00000020596
+XB-GENE-481185	foxj3	forkhead box J3	ENSXETG00000013466
+XB-GENE-481191	csnk1g2	casein kinase 1, gamma 2	ENSXETG00000006434
+XB-GENE-481201	tfap2a	transcription factor AP-2 alpha (activating enhancer binding protein 2 alpha)	ENSXETG00000001074
+XB-GENE-481210	zbtb12	zinc finger and BTB domain containing 12	ENSXETG00000010929
+XB-GENE-481219	ccnd2	cyclin D2	ENSXETG00000005972
+XB-GENE-481228	tab1	TGF-beta activated kinase 1/MAP3K7 binding protein 1	ENSXETG00000006916
+XB-GENE-481238	runx1t1	runt-related transcription factor 1; translocated to, 1 (cyclin D-related)	ENSXETG00000014592
+XB-GENE-481257	pdp1	pyruvate dehyrogenase phosphatase catalytic subunit 1	ENSXETG00000025921
+XB-GENE-481266	gpank1	G-patch domain and ankyrin repeats 1	ENSXETG00000002509
+XB-GENE-481272	met	MET proto-oncogene, receptor tyrosine kinase	ENSXETG00000021752
+XB-GENE-481282	slc9a3r2	solute carrier family 9, subfamily A (NHE3, cation proton antiporter 3), member 3 regulator 2	ENSXETG00000015931
+XB-GENE-481292	gnl1	guanine nucleotide binding protein-like 1	ENSXETG00000024087
+XB-GENE-481297	id2	inhibitor of DNA binding 2, dominant negative helix-loop-helix protein	ENSXETG00000008272
+XB-GENE-481307	smad6	SMAD family member 6	ENSXETG00000015939
+XB-GENE-481317	bcl2l1	BCL2-like 1	ENSXETG00000025175
+XB-GENE-481326	e2f5	E2F transcription factor 5, p130-binding	ENSXETG00000013780
+XB-GENE-481336	isl1	ISL LIM homeobox 1	ENSXETG00000004188
+XB-GENE-481343	snip1	Smad nuclear interacting protein 1	ENSXETG00000017464
+XB-GENE-481353	frzb	frizzled-related protein	ENSXETG00000001339
+XB-GENE-481363	nfe2l1	nuclear factor, erythroid 2 like 1	ENSXETG00000021958
+XB-GENE-481382	foxc2	forkhead box C2	ENSXETG00000016387
+XB-GENE-481391	smurf2	SMAD specific E3 ubiquitin protein ligase 2	ENSXETG00000024718
+XB-GENE-481401	aqp2	aquaporin 2 (collecting duct)	ENSXETG00000020388
+XB-GENE-481410	osr1	odd-skipped related transciption factor 1	ENSXETG00000007992
+XB-GENE-481419	gdf1	growth differentiation factor 1	ENSXETG00000010131
+XB-GENE-481426	hand2	heart and neural crest derivatives expressed 2	ENSXETG00000016908
+XB-GENE-481436	ghr	growth hormone receptor	ENSXETG00000005560
+XB-GENE-481445	mhc2a	major histocompatibility complex class II alpha chain precursor	ENSXETG00000017066
+XB-GENE-481452	crim1	cysteine rich transmembrane BMP regulator 1 (chordin-like)	ENSXETG00000010373
+XB-GENE-481459	il1r2	interleukin 1 receptor, type 2	ENSXETG00000004981
+XB-GENE-481465	kremen1	kringle containing transmembrane protein 1	ENSXETG00000019940
+XB-GENE-481474	aqp11	aquaporin 11	ENSXETG00000010702
+XB-GENE-481480	csnk1e	casein kinase 1, epsilon	ENSXETG00000006357
+XB-GENE-481495	ppard	peroxisome proliferator-activated receptor delta	ENSXETG00000015121
+XB-GENE-481504	six2	SIX homeobox 2	ENSXETG00000026158
+XB-GENE-481514	aqp9	aquaporin 9	ENSXETG00000010861
+XB-GENE-481523	vezf1	vascular endothelial zinc finger 1	ENSXETG00000008951
+XB-GENE-481530	map3k7	mitogen-activated protein kinase kinase kinase 7	ENSXETG00000018737
+XB-GENE-481539	f2	coagulation factor 2 (thrombin)	ENSXETG00000001982
+XB-GENE-481549	dlgap5	discs, large homolog-associated protein 5	ENSXETG00000015731
+XB-GENE-481559	mmp13l	matrix metallopeptidase 13 (collagenase 3) like	ENSXETG00000022215
+XB-GENE-481569	lmx1a	LIM homeobox transcription factor 1, alpha	ENSXETG00000013183
+XB-GENE-481578	arrb1	arrestin, beta 1	ENSXETG00000009605
+XB-GENE-481588	tnnt1	troponin T type 1 (skeletal, slow)	ENSXETG00000003199
+XB-GENE-481598	brd2	bromodomain containing 2	ENSXETG00000017067
+XB-GENE-481608	fabp1	fatty acid binding protein 1, liver	ENSXETG00000001938
+XB-GENE-481615	stmn1	stathmin 1	ENSXETG00000009198
+XB-GENE-481625	epb41	erythrocyte membrane protein band 4.1	ENSXETG00000014407
+XB-GENE-481644	dkk1	dickkopf WNT signaling pathway inhibitor 1	ENSXETG00000006598
+XB-GENE-481654	tnfsf11	tumor necrosis factor superfamily member 11	ENSXETG00000025365
+XB-GENE-481670	ell2	elongation factor, RNA polymerase II, 2	ENSXETG00000013296
+XB-GENE-481680	tap2	transporter 2, ATP-binding cassette, sub-family B (MDR/TAP)	ENSXETG00000016570
+XB-GENE-481689	sap18	Sin3A associated protein 18kDa	ENSXETG00000009598
+XB-GENE-481699	six4	SIX homeobox 4	ENSXETG00000016941
+XB-GENE-481708	ptgds	prostaglandin D2 synthase	ENSXETG00000003954
+XB-GENE-481718	socs4	suppressor of cytokine signaling 4	ENSXETG00000012209
+XB-GENE-481725	a2m	alpha-2-macroglobulin	ENSXETG00000024219
+XB-GENE-481741	e2f1	E2F transcription factor 1	ENSXETG00000021428
+XB-GENE-481750	angptl4	angiopoietin like 4	ENSXETG00000021893
+XB-GENE-481756	il1b	interleukin 1 beta	ENSXETG00000001276
+XB-GENE-481766	tle4	transducin like enhancer of split 4	ENSXETG00000010266
+XB-GENE-481784	gdf5	growth differentiation factor 5	ENSXETG00000021223
+XB-GENE-481794	zfpm2	zinc finger protein, FOG family member 2	ENSXETG00000006505
+XB-GENE-481800	elavl1	ELAV like RNA binding protein 1	ENSXETG00000008752
+XB-GENE-481810	gli2	GLI family zinc finger 2	ENSXETG00000011189
+XB-GENE-481820	lrp6	LDL receptor related protein 6	ENSXETG00000008917
+XB-GENE-481829	bmp2	bone morphogenetic protein 2	ENSXETG00000005519
+XB-GENE-481839	darmin	darmin	ENSXETG00000026681
+XB-GENE-481849	tnxb	tenascin XB	ENSXETG00000005168
+XB-GENE-481861	fzd1	frizzled class receptor 1	ENSXETG00000003463
+XB-GENE-481871	tln2	talin 2	ENSXETG00000009717
+XB-GENE-481880	fgf20	fibroblast growth factor 20	ENSXETG00000014498
+XB-GENE-481889	sox13	SRY-box 13	ENSXETG00000017139
+XB-GENE-481898	amn	amnion associated transmembrane protein	ENSXETG00000012751
+XB-GENE-481907	osr2	odd-skipped related transciption factor 2	ENSXETG00000017850
+XB-GENE-481916	psen1	presenilin 1	ENSXETG00000001008
+XB-GENE-481936	wnt7b	wingless-type MMTV integration site family member 7B	ENSXETG00000003073
+XB-GENE-481945	prkci	protein kinase C, iota	ENSXETG00000009210
+XB-GENE-481955	gadd45g	growth arrest and DNA damage inducible gamma	ENSXETG00000026537
+XB-GENE-481964	hoxa6	homeobox A6	ENSXETG00000027535
+XB-GENE-481973	hoxa9	homeobox A9	ENSXETG00000000724
+XB-GENE-481982	zic1	Zic family member 1	ENSXETG00000015467
+XB-GENE-481992	smad3	SMAD family member 3	ENSXETG00000007804
+XB-GENE-482002	rbbp4	retinoblastoma binding protein 4	ENSXETG00000000984
+XB-GENE-482011	rab5a	RAB5A, member RAS oncogene family	ENSXETG00000002305
+XB-GENE-482021	runx2	runt-related transcription factor 2	ENSXETG00000001397
+XB-GENE-482030	mfrp	membrane frizzled-related protein	ENSXETG00000021602
+XB-GENE-482036	srf	serum response factor	ENSXETG00000018511
+XB-GENE-482046	tbl1xr1	transducin (beta)-like 1 X-linked receptor 1	ENSXETG00000001521
+XB-GENE-482055	dlc1	DLC1 Rho GTPase activating protein	ENSXETG00000005630
+XB-GENE-482064	dapp1	dual adaptor of phosphotyrosine and 3-phosphoinositides	ENSXETG00000009309
+XB-GENE-482077	szl	sizzled	ENSXETG00000022260
+XB-GENE-482085	slc4a11	solute carrier family 4, sodium borate transporter, member 11	ENSXETG00000014645
+XB-GENE-482091	myl2	myosin light chain 2	ENSXETG00000011683
+XB-GENE-482101	spry2	sprouty RTK signaling antagonist 2	ENSXETG00000017807
+XB-GENE-482111	pkd2	polycystic kidney disease 2 (autosomal dominant)	ENSXETG00000000338
+XB-GENE-482133	ptgs2	prostaglandin-endoperoxide synthase 2 (prostaglandin G/H synthase and cyclooxygenase)	ENSXETG00000017378
+XB-GENE-482143	hmgn3	high mobility group nucleosomal binding domain 3	ENSXETG00000025850
+XB-GENE-482151	map2k4	mitogen-activated protein kinase kinase 4	ENSXETG00000011036
+XB-GENE-482166	stat1	signal transducer and activator of transcription 1	ENSXETG00000004649
+XB-GENE-482176	csf3r	colony stimulating factor 3 receptor	ENSXETG00000003916
+XB-GENE-482185	tubb	tubulin beta class I	ENSXETG00000024084
+XB-GENE-482193	esr1	estrogen receptor 1	ENSXETG00000012364
+XB-GENE-482209	rpl8	ribosomal protein L8	ENSXETG00000015483
+XB-GENE-482219	nkx2-2	NK2 homeobox 2	ENSXETG00000023499
+XB-GENE-482228	jun	jun proto-oncogene	ENSXETG00000011124
+XB-GENE-482238	pax9	paired box 9	ENSXETG00000002907
+XB-GENE-482248	rcor2	REST corepressor 2	ENSXETG00000002710
+XB-GENE-482257	gadd45a	growth arrest and DNA damage inducible alpha	ENSXETG00000012392
+XB-GENE-482267	hoxa3	homeobox A3	ENSXETG00000000717
+XB-GENE-482277	cdh3	cadherin 3	ENSXETG00000025992
+XB-GENE-482287	avpr2	arginine vasopressin receptor 2 (nephrogenic diabetes insipidus)	ENSXETG00000014233
+XB-GENE-482293	ep300	E1A binding protein p300	ENSXETG00000027318
+XB-GENE-482302	slc11a1	solute carrier family 11 (proton-coupled divalent metal ion transporter), member 1	ENSXETG00000014937
+XB-GENE-482311	ncoa2	nuclear receptor coactivator 2	ENSXETG00000015926
+XB-GENE-482320	hoxd13	homeobox D13	ENSXETG00000007575
+XB-GENE-482330	hoxc9	homeobox C9	ENSXETG00000023475
+XB-GENE-482346	fgf5	fibroblast growth factor 5	ENSXETG00000021534
+XB-GENE-482353	tnfsf13b	tumor necrosis factor superfamily member 13b	ENSXETG00000007281
+XB-GENE-482359	nkiras2	NFKB inhibitor interacting Ras-like 2	ENSXETG00000002296
+XB-GENE-482368	sia1	siamois homeodomain 1	ENSXETG00000009100
+XB-GENE-482375	fgl2	fibrinogen-like 2	ENSXETG00000019734
+XB-GENE-482390	casp2	caspase 2	ENSXETG00000006978
+XB-GENE-482400	timp3	TIMP metallopeptidase inhibitor 3	ENSXETG00000011514
+XB-GENE-482409	rps6kb1	ribosomal protein S6 kinase, 70kDa, polypeptide 1	ENSXETG00000010731
+XB-GENE-482419	hnf4a	hepatocyte nuclear factor 4, alpha	ENSXETG00000001775
+XB-GENE-482429	stam	signal transducing adaptor molecule	ENSXETG00000001364
+XB-GENE-482439	e2f6	E2F transcription factor 6	ENSXETG00000023790
+XB-GENE-482448	tdgf1.3	teratocarcinoma-derived growth factor 1, member 3	ENSXETG00000009177
+XB-GENE-482455	il17rd	interleukin 17 receptor D	ENSXETG00000000904
+XB-GENE-482462	thbs2	thrombospondin 2	ENSXETG00000008550
+XB-GENE-482472	fgfrl1	fibroblast growth factor receptor-like 1	ENSXETG00000021042
+XB-GENE-482482	lhx1	LIM homeobox 1	ENSXETG00000008963
+XB-GENE-482492	pitx2	paired-like homeodomain 2	ENSXETG00000013330
+XB-GENE-482502	mpo	myeloperoxidase	ENSXETG00000007787
+XB-GENE-482511	smarce1	SWI/SNF related, matrix associated, actin dependent regulator of chromatin, subfamily e, member 1	ENSXETG00000021355
+XB-GENE-482521	bix1.1	Brachyury-inducible homeobox 1, gene 1	ENSXETG00000026217
+XB-GENE-482528	foxo1	forkhead box O1	ENSXETG00000016048
+XB-GENE-482536	nr2c2	nuclear receptor subfamily 2 group C member 2	ENSXETG00000004817
+XB-GENE-482551	avpr1a	arginine vasopressin receptor 1A	ENSXETG00000018781
+XB-GENE-482557	hivep3	human immunodeficiency virus type I enhancer binding protein 3	ENSXETG00000012923
+XB-GENE-482566	nr2f2	nuclear receptor subfamily 2 group F member 2	ENSXETG00000022346
+XB-GENE-482576	hoxb3	homeobox B3	ENSXETG00000021967
+XB-GENE-482586	igf2	insulin like growth factor 2	ENSXETG00000014020
+XB-GENE-482596	slc1a5	solute carrier family 1 (neutral amino acid transporter), member 5	ENSXETG00000018275
+XB-GENE-482605	tnnt3	troponin T type 3 (skeletal, fast)	ENSXETG00000024952
+XB-GENE-482614	tnnt2	troponin T type 2 (cardiac)	ENSXETG00000017086
+XB-GENE-482624	arg2	arginase 2	ENSXETG00000007987
+XB-GENE-482634	cyr61	cysteine-rich, angiogenic inducer, 61	ENSXETG00000003094
+XB-GENE-482644	gli1	GLI family zinc finger 1	ENSXETG00000017144
+XB-GENE-482654	zic2	Zic family member 2	ENSXETG00000018864
+XB-GENE-482664	wnt10b	wingless-type MMTV integration site family member 10B	ENSXETG00000011173
+XB-GENE-482674	pik3cb	phosphatidylinositol-4,5-bisphosphate 3-kinase catalytic subunit beta	ENSXETG00000008254
+XB-GENE-482683	foxp2	forkhead box P2	ENSXETG00000011560
+XB-GENE-482693	mamdc2	MAM domain containing 2	ENSXETG00000001688
+XB-GENE-482702	prkacb	protein kinase, cAMP-dependent, beta catalytic subunit	ENSXETG00000008649
+XB-GENE-482711	mdm2	MDM2 proto-oncogene, E3 ubiquitin protein ligase	ENSXETG00000001434
+XB-GENE-482721	e2f4	E2F transcription factor 4, p107/p130-binding	ENSXETG00000003083
+XB-GENE-482731	hoxd1	homeobox D1	ENSXETG00000001801
+XB-GENE-482740	pax3	paired box 3	ENSXETG00000007640
+XB-GENE-482750	cdk1	cyclin-dependent kinase 1	ENSXETG00000003123
+XB-GENE-482759	gzma	granzyme A	ENSXETG00000000362
+XB-GENE-482768	map3k12	mitogen-activated protein kinase kinase kinase 12	ENSXETG00000012650
+XB-GENE-482777	barhl2	BarH-like homeobox 2	ENSXETG00000023986
+XB-GENE-482787	cdx4	caudal type homeobox 4	ENSXETG00000004589
+XB-GENE-482797	casp6	caspase 6	ENSXETG00000024111
+XB-GENE-482807	selp	selectin P	ENSXETG00000004741
+XB-GENE-482813	atp1b1	ATPase, Na+/K+ transporting, beta 1 polypeptide	ENSXETG00000002414
+XB-GENE-482822	wtap	Wilms tumor 1 associated protein	ENSXETG00000021175
+XB-GENE-482841	mmp2	matrix metallopeptidase 2	ENSXETG00000002801
+XB-GENE-482851	spred1	sprouty-related, EVH1 domain containing 1	ENSXETG00000018057
+XB-GENE-482857	tp73	tumor protein p73	ENSXETG00000005019
+XB-GENE-482866	prl.1	prolactin, gene 1	ENSXETG00000021991
+XB-GENE-482876	agtrap	angiotensin 2 receptor-associated protein	ENSXETG00000013094
+XB-GENE-482885	pappa	pregnancy-associated plasma protein A, pappalysin 1	ENSXETG00000021730
+XB-GENE-482891	prickle2	prickle homolog 2	ENSXETG00000006535
+XB-GENE-482901	arl6ip5	ADP ribosylation factor like GTPase 6 interacting protein 5	ENSXETG00000025139
+XB-GENE-482911	nelfe	negative elongation factor complex member E	ENSXETG00000010931
+XB-GENE-482920	sfrp5	secreted frizzled-related protein 5	ENSXETG00000024699
+XB-GENE-482930	smad2	SMAD family member 2	ENSXETG00000020292
+XB-GENE-482940	slc20a1	solute carrier family 20 (phosphate transporter), member 1	ENSXETG00000018957
+XB-GENE-482950	nr1h2	nuclear receptor subfamily 1 group H member 2	ENSXETG00000000307
+XB-GENE-482959	ncf2	neutrophil cytosolic factor 2	ENSXETG00000012530
+XB-GENE-482968	adh1	alcohol dehydrogenase 1	ENSXETG00000027121
+XB-GENE-482976	prrc2a	proline-rich coiled-coil 2A	ENSXETG00000002501
+XB-GENE-482986	fgf23.2	fibroblast growth factor 23, gene 2	ENSXETG00000026353
+XB-GENE-482993	foxo6	forkhead box O6	ENSXETG00000012944
+XB-GENE-483002	slc16a3	solute carrier family 16 (monocarboxylate transporter), member 3	ENSXETG00000019700
+XB-GENE-483012	glg1	golgi glycoprotein 1	ENSXETG00000025025
+XB-GENE-483018	igf2bp3	insulin like growth factor 2 mRNA binding protein 3	ENSXETG00000007396
+XB-GENE-483042	ccndx	cyclin Dx	ENSXETG00000000267
+XB-GENE-483058	bmp4	bone morphogenetic protein 4	ENSXETG00000008620
+XB-GENE-483068	ppp2r3a	protein phosphatase 2 regulatory subunit B'', alpha	ENSXETG00000018927
+XB-GENE-483085	nr3c2	nuclear receptor subfamily 3 group C member 2	ENSXETG00000026061
+XB-GENE-483094	il11ra	interleukin 11 receptor subunit alpha	ENSXETG00000002171
+XB-GENE-483099	armc1	armadillo repeat containing 1	ENSXETG00000020281
+XB-GENE-483108	insrr	insulin receptor-related receptor	ENSXETG00000018010
+XB-GENE-483117	foxn3	forkhead box N3	ENSXETG00000016645
+XB-GENE-483136	pparg	peroxisome proliferator-activated receptor gamma	ENSXETG00000017422
+XB-GENE-483146	six6	SIX homeobox 6	ENSXETG00000016945
+XB-GENE-483155	tecta.2	tectorin alpha, gene 2	ENSXETG00000002873
+XB-GENE-483164	runx1	runt-related transcription factor 1	ENSXETG00000014140
+XB-GENE-483174	pou3f2	POU class 3 homeobox 2	ENSXETG00000028057
+XB-GENE-483183	flt4	fms-related tyrosine kinase 4	ENSXETG00000008399
+XB-GENE-483193	hesx1	HESX homeobox 1	ENSXETG00000008710
+XB-GENE-483209	nodal	nodal growth differentiation factor	ENSXETG00000023748
+XB-GENE-483216	fgb	fibrinogen beta chain	ENSXETG00000022431
+XB-GENE-483226	hlx	H2.0-like homeobox	ENSXETG00000002734
+XB-GENE-483242	hoxa11	homeobox A11	ENSXETG00000000732
+XB-GENE-483252	sox12	SRY-box 12	ENSXETG00000024011
+XB-GENE-483261	il1rapl1	interleukin 1 receptor accessory protein-like 1	ENSXETG00000015369
+XB-GENE-483267	nodal5	nodal homolog 5	ENSXETG00000016779
+XB-GENE-483288	ncor1	nuclear receptor corepressor 1	ENSXETG00000006720
+XB-GENE-483297	tank	TRAF family member associated NFKB activator	ENSXETG00000016203
+XB-GENE-483306	cdx2	caudal type homeobox 2	ENSXETG00000011788
+XB-GENE-483315	nr4a1	nuclear receptor subfamily 4 group A member 1	ENSXETG00000000579
+XB-GENE-483324	mstn.1	myostatin, gene 1	ENSXETG00000009890
+XB-GENE-483331	pdx1	pancreatic and duodenal homeobox 1	ENSXETG00000011787
+XB-GENE-483338	nfe2l3	nuclear factor, erythroid 2 like 3	ENSXETG00000012174
+XB-GENE-483344	ruvbl2	RuvB-like AAA ATPase 2	ENSXETG00000025105
+XB-GENE-483361	fibcd1	fibrinogen C domain containing 1	ENSXETG00000001469
+XB-GENE-483370	gem	GTP binding protein overexpressed in skeletal muscle	ENSXETG00000014678
+XB-GENE-483379	ctbp1	C-terminal binding protein 1	ENSXETG00000021047
+XB-GENE-483389	rfng	RFNG O-fucosylpeptide 3-beta-N-acetylglucosaminyltransferase	ENSXETG00000019657
+XB-GENE-483399	rab32	RAB32, member RAS oncogene family	ENSXETG00000007893
+XB-GENE-483409	pkd1	polycystic kidney disease 1 (autosomal dominant)	ENSXETG00000015945
+XB-GENE-483418	sox11	SRY-box 11	ENSXETG00000023439
+XB-GENE-483427	rab3b	RAB3B, member RAS oncogene family	ENSXETG00000008055
+XB-GENE-483445	twsg1	twisted gastrulation BMP signaling modulator 1	ENSXETG00000004048
+XB-GENE-483455	bmpr1b	bone morphogenetic protein receptor type IB	ENSXETG00000019220
+XB-GENE-483465	dhh	desert hedgehog	ENSXETG00000011181
+XB-GENE-483475	rasd1	RAS, dexamethasone-induced 1	ENSXETG00000005738
+XB-GENE-483484	bmp3	bone morphogenetic protein 3	ENSXETG00000021538
+XB-GENE-483494	vegfb	vascular endothelial growth factor B	ENSXETG00000007183
+XB-GENE-483500	eno1	enolase 1, (alpha)	ENSXETG00000011897
+XB-GENE-483510	esrrb	estrogen-related receptor beta	ENSXETG00000013217
+XB-GENE-483520	foxk2	forkhead box K2	ENSXETG00000022803
+XB-GENE-483530	csf2rb	colony stimulating factor 2 receptor, beta, low-affinity (granulocyte-macrophage)	ENSXETG00000009375
+XB-GENE-483538	mov10	Mov10 RISC complex RNA helicase	ENSXETG00000006901
+XB-GENE-483544	nlk	nemo-like kinase	ENSXETG00000012503
+XB-GENE-483554	nr2e1	nuclear receptor subfamily 2 group E member 1	ENSXETG00000014853
+XB-GENE-483564	rab7a	RAB7A, member RAS oncogene family	ENSXETG00000016176
+XB-GENE-483574	nkx6-1	NK6 homeobox 1	ENSXETG00000013227
+XB-GENE-483580	rabgap1l	RAB GTPase activating protein 1-like	ENSXETG00000020019
+XB-GENE-483589	fgf16	fibroblast growth factor 16	ENSXETG00000004506
+XB-GENE-483599	cdh11	cadherin 11, type 2, OB-cadherin (osteoblast)	ENSXETG00000020467
+XB-GENE-483609	pdk1	pyruvate dehydrogenase kinase 1	ENSXETG00000007526
+XB-GENE-483618	slc24a2	solute carrier family 24 (sodium/potassium/calcium exchanger), member 2	ENSXETG00000023099
+XB-GENE-483637	rgn	regucalcin	ENSXETG00000004127
+XB-GENE-483646	foxj2	forkhead box J2	ENSXETG00000027639
+XB-GENE-483655	hoxa7	homeobox A7	ENSXETG00000000722
+XB-GENE-483664	evx1	even-skipped homeobox 1	ENSXETG00000000736
+XB-GENE-483674	fgf14	fibroblast growth factor 14	ENSXETG00000020664
+XB-GENE-483684	tek	TEK tyrosine kinase, endothelial	ENSXETG00000009382
+XB-GENE-483693	pax8	paired box 8	ENSXETG00000001272
+XB-GENE-483703	pomc	proopiomelanocortin	ENSXETG00000017532
+XB-GENE-483712	jak2	Janus kinase 2 (a protein tyrosine kinase)	ENSXETG00000000586
+XB-GENE-483721	cdk9	cyclin-dependent kinase 9	ENSXETG00000024742
+XB-GENE-483731	fzd7	frizzled class receptor 7	ENSXETG00000012404
+XB-GENE-483740	slc34a2	solute carrier family 34 (type II sodium/phosphate cotransporter), member 2	ENSXETG00000000954
+XB-GENE-483750	jak1	Janus kinase 1 (a protein tyrosine kinase)	ENSXETG00000020396
+XB-GENE-483760	crb1	crumbs family member 1, photoreceptor morphogenesis associated	ENSXETG00000009953
+XB-GENE-483770	tnfrsf19	tumor necrosis factor receptor superfamily member 19	ENSXETG00000009704
+XB-GENE-483776	hmx3	H6 family homeobox 3	ENSXETG00000009562
+XB-GENE-483786	cdkn2d	cyclin-dependent kinase inhibitor 2D (p19, inhibits CDK4)	ENSXETG00000011649
+XB-GENE-483795	gdnf	glial cell derived neurotrophic factor	ENSXETG00000004782
+XB-GENE-483802	casp9	caspase 9	ENSXETG00000006828
+XB-GENE-483812	baiap2l1	BAI1-associated protein 2-like 1	ENSXETG00000024036
+XB-GENE-483822	itga11	integrin subunit alpha 11	ENSXETG00000007816
+XB-GENE-483832	maea	macrophage erythroblast attacher	ENSXETG00000010676
+XB-GENE-483842	foxq1	forkhead box Q1	ENSXETG00000008529
+XB-GENE-483851	tax1bp3	Tax1 (human T-cell leukemia virus type I) binding protein 3	ENSXETG00000005800
+XB-GENE-483861	lsm2	LSM2 homolog, U6 small nuclear RNA and mRNA degradation associated	ENSXETG00000024077
+XB-GENE-483870	dvl1	dishevelled segment polarity protein 1	ENSXETG00000011120
+XB-GENE-483879	mef2d	myocyte enhancer factor 2D	ENSXETG00000020378
+XB-GENE-483889	klf9	Kruppel-like factor 9	ENSXETG00000019051
+XB-GENE-483904	acvr1b	activin A receptor type IB	ENSXETG00000000572
+XB-GENE-483914	nfe2	nuclear factor, erythroid 2	ENSXETG00000027400
+XB-GENE-483934	sox6	SRY-box 6	ENSXETG00000016058
+XB-GENE-483940	arx	aristaless related homeobox	ENSXETG00000021832
+XB-GENE-483950	tacc3	transforming, acidic coiled-coil containing protein 3	ENSXETG00000003874
+XB-GENE-483960	kcnj1	potassium channel, inwardly rectifying subfamily J, member 1	ENSXETG00000022779
+XB-GENE-483978	znf326	zinc finger protein 326	ENSXETG00000006087
+XB-GENE-483983	smarca4	SWI/SNF related, matrix associated, actin dependent regulator of chromatin, subfamily a, member 4	ENSXETG00000009355
+XB-GENE-483993	rasgrf2	Ras protein specific guanine nucleotide releasing factor 2	ENSXETG00000022942
+XB-GENE-484003	ppp2ca	protein phosphatase 2, catalytic subunit, alpha isozyme	ENSXETG00000016092
+XB-GENE-484012	acvr2a	activin A receptor type IIA	ENSXETG00000021720
+XB-GENE-484022	prmt1	protein arginine methyltransferase 1	ENSXETG00000002877
+XB-GENE-484032	igf1r	insulin like growth factor 1 receptor	ENSXETG00000002112
+XB-GENE-484041	casp7	caspase 7	ENSXETG00000016471
+XB-GENE-484060	aqp7	aquaporin 7	ENSXETG00000002150
+XB-GENE-484079	arf4	ADP ribosylation factor 4	ENSXETG00000008654
+XB-GENE-484088	pax6	paired box 6	ENSXETG00000008175
+XB-GENE-484098	wnt4	wingless-type MMTV integration site family member 4	ENSXETG00000004742
+XB-GENE-484108	stat6	signal transducer and activator of transcription 6, interleukin-4 induced	ENSXETG00000004431
+XB-GENE-484117	hnf1a	HNF1 homeobox A	ENSXETG00000012278
+XB-GENE-484127	rarg	retinoic acid receptor, gamma	ENSXETG00000012670
+XB-GENE-484137	igfbpl1	insulin like growth factor binding protein-like 1	ENSXETG00000014721
+XB-GENE-484153	pcdh20	protocadherin 20	ENSXETG00000012808
+XB-GENE-484162	tcf20	transcription factor 20 (AR1)	ENSXETG00000013417
+XB-GENE-484168	akt2	v-akt murine thymoma viral oncogene homolog 2	ENSXETG00000016986
+XB-GENE-484178	mapk4	mitogen-activated protein kinase 4	ENSXETG00000022383
+XB-GENE-484187	ihh	indian hedgehog	ENSXETG00000013874
+XB-GENE-484197	nap1l1	nucleosome assembly protein 1-like 1	ENSXETG00000013323
+XB-GENE-484207	vsig1	V-set and immunoglobulin domain containing 1	ENSXETG00000012851
+XB-GENE-484214	plek	pleckstrin	ENSXETG00000017358
+XB-GENE-484234	cenpa	centromere protein A	ENSXETG00000005197
+XB-GENE-484248	acvr2b	activin A receptor type IIB	ENSXETG00000020999
+XB-GENE-484258	nkiras1	NFKB inhibitor interacting Ras-like 1	ENSXETG00000003868
+XB-GENE-484267	wnt16	wingless-type MMTV integration site family member 16	ENSXETG00000022727
+XB-GENE-484277	bves	blood vessel epicardial substance	ENSXETG00000013301
+XB-GENE-484286	tp53	tumor protein p53	ENSXETG00000025055
+XB-GENE-484295	sox17a	SRY-box 17 alpha	ENSXETG00000025005
+XB-GENE-484313	slc9a1	solute carrier family 9, subfamily A (NHE1, cation proton antiporter 1), member 1	ENSXETG00000020678
+XB-GENE-484322	fzd3	frizzled class receptor 3	ENSXETG00000021149
+XB-GENE-484332	fgf13	fibroblast growth factor 13	ENSXETG00000003477
+XB-GENE-484342	mapk8ip2	mitogen-activated protein kinase 8 interacting protein 2	ENSXETG00000015685
+XB-GENE-484348	ca2	carbonic anhydrase 2	ENSXETG00000013740
+XB-GENE-484357	slc30a1	solute carrier family 30 (zinc transporter), member 1	ENSXETG00000014427
+XB-GENE-484367	nfic	nuclear factor I/C (CCAAT-binding transcription factor)	ENSXETG00000008149
+XB-GENE-484376	irx5	iroquois homeobox 5	ENSXETG00000002816
+XB-GENE-484385	pkhd1l1	polycystic kidney and hepatic disease 1 (autosomal recessive)-like 1	ENSXETG00000017994
+XB-GENE-484391	pfkp	phosphofructokinase, platelet	ENSXETG00000021922
+XB-GENE-484400	prrt1	proline-rich transmembrane protein 1	ENSXETG00000005163
+XB-GENE-484409	gs17	gastrula-specific protein 17	ENSXETG00000027833
+XB-GENE-484416	slc22a5	solute carrier family 22 (organic cation/carnitine transporter), member 5	ENSXETG00000016581
+XB-GENE-484425	ptf1a	pancreas specific transcription factor, 1a	ENSXETG00000005914
+XB-GENE-484435	mmd	monocyte to macrophage differentiation-associated	ENSXETG00000004315
+XB-GENE-484447	fn1	fibronectin 1	ENSXETG00000010898
+XB-GENE-484457	pgr	progesterone receptor	ENSXETG00000005482
+XB-GENE-484466	fgf9	fibroblast growth factor 9	ENSXETG00000021075
+XB-GENE-484475	ghsr	growth hormone secretagogue receptor	ENSXETG00000023610
+XB-GENE-484481	chrdl1	chordin-like 1	ENSXETG00000012426
+XB-GENE-484487	emc2	ER membrane protein complex subunit 2	ENSXETG00000003604
+XB-GENE-484495	pdgfa	platelet-derived growth factor alpha polypeptide	ENSXETG00000001379
+XB-GENE-484511	spag9	sperm associated antigen 9	ENSXETG00000011059
+XB-GENE-484517	pcdh8	protocadherin 8	ENSXETG00000018865
+XB-GENE-484527	nkx6-2	NK6 homeobox 2	ENSXETG00000023614
+XB-GENE-484533	vegfc	vascular endothelial growth factor C	ENSXETG00000002447
+XB-GENE-484543	grem1	gremlin 1, DAN family BMP antagonist	ENSXETG00000018095
+XB-GENE-484553	sox2	SRY-box 2	ENSXETG00000026292
+XB-GENE-484563	pik3c2a	phosphatidylinositol-4-phosphate 3-kinase catalytic subunit type 2 alpha	ENSXETG00000016008
+XB-GENE-484572	carm1	coactivator associated arginine methyltransferase 1	ENSXETG00000009357
+XB-GENE-484592	cdh6	cadherin 6, type 2, K-cadherin (fetal kidney)	ENSXETG00000016687
+XB-GENE-484602	mapk11	mitogen-activated protein kinase 11	ENSXETG00000022254
+XB-GENE-484611	amd1	adenosylmethionine decarboxylase 1	ENSXETG00000021331
+XB-GENE-484627	mip	major intrinsic protein of lens fiber	ENSXETG00000021804
+XB-GENE-484636	gata1	GATA binding protein 1 (globin transcription factor 1)	ENSXETG00000018547
+XB-GENE-484646	foxf2	forkhead box F2	ENSXETG00000000589
+XB-GENE-484655	zeb1	zinc finger E-box binding homeobox 1	ENSXETG00000011655
+XB-GENE-484663	prrx1	paired related homeobox 1	ENSXETG00000004727
+XB-GENE-484669	pbx2	pre-B-cell leukemia homeobox 2	ENSXETG00000005223
+XB-GENE-484679	thibz	thyroid hormone induced bZip protein	ENSXETG00000007922
+XB-GENE-484686	smad9	SMAD family member 9	ENSXETG00000001820
+XB-GENE-484695	fshb	follicle stimulating hormone, beta polypeptide	ENSXETG00000018246
+XB-GENE-484705	slc9a8	solute carrier family 9, subfamily A (NHE8, cation proton antiporter 8), member 8	ENSXETG00000024003
+XB-GENE-484718	rhobtb1	Rho-related BTB domain containing 1	ENSXETG00000003124
+XB-GENE-484727	nr2c1	nuclear receptor subfamily 2 group C member 1	ENSXETG00000023840
+XB-GENE-484736	olig4	oligodendrocyte transcription factor 4	ENSXETG00000027637
+XB-GENE-484757	nr3c1	nuclear receptor subfamily 3 group C member 1	ENSXETG00000001879
+XB-GENE-484766	ezr	ezrin	ENSXETG00000009776
+XB-GENE-484776	wisp1	WNT1 inducible signaling pathway protein 1	ENSXETG00000010987
+XB-GENE-484785	ahsg	alpha-2-HS-glycoprotein	ENSXETG00000019385
+XB-GENE-484795	igfbp4	insulin like growth factor binding protein 4	ENSXETG00000021361
+XB-GENE-484799	rin2	Ras and Rab interactor 2	ENSXETG00000009700
+XB-GENE-484805	tcf21	transcription factor 21	ENSXETG00000000114
+XB-GENE-484815	sox3	SRY-box 3	ENSXETG00000007607
+XB-GENE-484831	atp1a1	ATPase, Na+/K+ transporting, alpha 1 polypeptide	ENSXETG00000020366
+XB-GENE-484840	oxtr	oxytocin receptor	ENSXETG00000001441
+XB-GENE-484855	gli3	GLI family zinc finger 3	ENSXETG00000001856
+XB-GENE-484865	sox17b.1	SRY (sex determining region Y)-box 17 beta, gene 1	ENSXETG00000026438
+XB-GENE-484872	mdh1	malate dehydrogenase 1	ENSXETG00000013016
+XB-GENE-484888	tp53rk	TP53 regulating kinase	ENSXETG00000003469
+XB-GENE-484896	ptges	prostaglandin E synthase	ENSXETG00000014173
+XB-GENE-484906	gata5	GATA binding protein 5	ENSXETG00000005127
+XB-GENE-484916	slc9a5	solute carrier family 9, subfamily A (NHE5, cation proton antiporter 5), member 5	ENSXETG00000008087
+XB-GENE-484925	gdf7	growth differentiation factor 7	ENSXETG00000008906
+XB-GENE-484935	gpr89b	G protein-coupled receptor 89B	ENSXETG00000016309
+XB-GENE-484943	nap1l4	nucleosome assembly protein 1-like 4	ENSXETG00000003664
+XB-GENE-484953	akt1	v-akt murine thymoma viral oncogene homolog 1	ENSXETG00000008603
+XB-GENE-484962	mitf	microphthalmia-associated transcription factor	ENSXETG00000000154
+XB-GENE-484980	foxr1	forkhead box R1	ENSXETG00000021565
+XB-GENE-484989	sec61g	Sec61 translocon gamma subunit	ENSXETG00000015843
+XB-GENE-484999	wt1	Wilms tumor 1	ENSXETG00000008172
+XB-GENE-485009	mmp1	matrix metallopeptidase 1	ENSXETG00000022198
+XB-GENE-485016	rala	v-ral simian leukemia viral oncogene homolog A (ras related)	ENSXETG00000013108
+XB-GENE-485026	tfap2b	transcription factor AP-2 beta (activating enhancer binding protein 2 beta)	ENSXETG00000021674
+XB-GENE-485035	klf2	Kruppel-like factor 2	ENSXETG00000002075
+XB-GENE-485044	fgf10	fibroblast growth factor 10	ENSXETG00000025130
+XB-GENE-485054	h2afz	H2A histone family member Z	ENSXETG00000011167
+XB-GENE-485063	gata6	GATA binding protein 6	ENSXETG00000003144
+XB-GENE-485073	igfbp5	insulin like growth factor binding protein 5	ENSXETG00000019879
+XB-GENE-485083	tlr8	toll-like receptor 8	ENSXETG00000005346
+XB-GENE-485089	rnf220.1	ring finger protein 220, gene 1	ENSXETG00000001054
+XB-GENE-485093	nos2	nitric oxide synthase 2	ENSXETG00000012498
+XB-GENE-485111	kmt2c	lysine (K)-specific methyltransferase 2C	ENSXETG00000009730
+XB-GENE-485117	lrp5	LDL receptor related protein 5	ENSXETG00000010024
+XB-GENE-485127	atp1b3	ATPase, Na+/K+ transporting, beta 3 polypeptide	ENSXETG00000014751
+XB-GENE-485137	fabp2	fatty acid binding protein 2, intestinal	ENSXETG00000004045
+XB-GENE-485147	sfrp2	secreted frizzled-related protein 2	ENSXETG00000026087
+XB-GENE-485170	cyp7a1	cytochrome P450 family 7 subfamily A member 1	ENSXETG00000005661
+XB-GENE-485176	ret	ret proto-oncogene	ENSXETG00000005422
+XB-GENE-485185	pabpc4	poly(A) binding protein, cytoplasmic 4 (inducible form)	ENSXETG00000010946
+XB-GENE-485195	casp1	caspase 1	ENSXETG00000007792
+XB-GENE-485204	hoxd10	homeobox D10	ENSXETG00000007580
+XB-GENE-485214	lifr	leukemia inhibitory factor receptor alpha	ENSXETG00000013223
+XB-GENE-485220	otx2	orthodenticle homeobox 2	ENSXETG00000015687
+XB-GENE-485230	otp	orthopedia homeobox	ENSXETG00000017073
+XB-GENE-485252	sall4	spalt-like transcription factor 4	ENSXETG00000012326
+XB-GENE-485261	myocd	myocardin	ENSXETG00000011035
+XB-GENE-485270	eif4ebp2	eukaryotic translation initiation factor 4E binding protein 2	ENSXETG00000025651
+XB-GENE-485280	wnt1	wingless-type MMTV integration site family member 1	ENSXETG00000009817
+XB-GENE-485290	ryk	receptor-like tyrosine kinase	ENSXETG00000011818
+XB-GENE-485307	mhc1a	major histocompatibility complex class I antigen	ENSXETG00000017065
+XB-GENE-485314	ppp1r14b	protein phosphatase 1 regulatory inhibitor subunit 14B	ENSXETG00000007199
+XB-GENE-485321	zfhx2	zinc finger homeobox 2	ENSXETG00000022562
+XB-GENE-485327	prox1	prospero homeobox 1	ENSXETG00000023176
+XB-GENE-485337	meis3	Meis homeobox 3	ENSXETG00000002807
+XB-GENE-485346	ddr1	discoidin domain receptor tyrosine kinase 1	ENSXETG00000024086
+XB-GENE-485361	nr5a1	nuclear receptor subfamily 5 group A member 1	ENSXETG00000011456
+XB-GENE-485370	sox14	SRY-box 14	ENSXETG00000022689
+XB-GENE-485379	admp	anti-dorsalizing morphogenic protein	ENSXETG00000008743
+XB-GENE-485387	arhgef12	Rho guanine nucleotide exchange factor 12	ENSXETG00000017018
+XB-GENE-485396	cdx1	caudal type homeobox 1	ENSXETG00000010282
+XB-GENE-485414	tshb	thyroid stimulating hormone, beta	ENSXETG00000028034
+XB-GENE-485424	bmp8	bone morphogenetic protein 8 (osteogenic protein 2)	ENSXETG00000010940
+XB-GENE-485432	esrra	estrogen-related receptor alpha	ENSXETG00000007211
+XB-GENE-485441	pitx1	paired-like homeodomain 1	ENSXETG00000010401
+XB-GENE-485457	slc44a4	solute carrier family 44 member 4	ENSXETG00000010924
+XB-GENE-485467	slc7a8	solute carrier family 7 (amino acid transporter light chain, L system), member 8	ENSXETG00000014603
+XB-GENE-485477	nucb2	nucleobindin 2	ENSXETG00000016026
+XB-GENE-485487	eya4	EYA transcriptional coactivator and phosphatase 4	ENSXETG00000000110
+XB-GENE-485497	igfbp1	insulin like growth factor binding protein 1	ENSXETG00000015656
+XB-GENE-485507	cdk7	cyclin-dependent kinase 7	ENSXETG00000000481
+XB-GENE-485517	lef1	lymphoid enhancer-binding factor 1	ENSXETG00000021102
+XB-GENE-485527	rab1a	RAB1A, member RAS oncogene family	ENSXETG00000014011
+XB-GENE-485536	mapkbp1	mitogen-activated protein kinase binding protein 1	ENSXETG00000000050
+XB-GENE-485545	dcn	decorin	ENSXETG00000021847
+XB-GENE-485555	nudt6	nudix hydrolase 6	ENSXETG00000001585
+XB-GENE-485564	grb10	growth factor receptor bound protein 10	ENSXETG00000004962
+XB-GENE-485573	mapk9	mitogen-activated protein kinase 9	ENSXETG00000016541
+XB-GENE-485591	spred2	sprouty-related, EVH1 domain containing 2	ENSXETG00000014000
+XB-GENE-485597	ccnj	cyclin J	ENSXETG00000012186
+XB-GENE-485606	tgfbr2	transforming growth factor beta receptor II	ENSXETG00000014480
+XB-GENE-485616	bmpr1a	bone morphogenetic protein receptor type IA	ENSXETG00000003655
+XB-GENE-485626	hsp70	heat shock 70kDa protein	ENSXETG00000024078
+XB-GENE-485634	avpi1	arginine vasopressin induced 1	ENSXETG00000013519
+XB-GENE-485643	mmp14	matrix metallopeptidase 14	ENSXETG00000022669
+XB-GENE-485652	hnf1b	HNF1 homeobox B	ENSXETG00000008000
+XB-GENE-485662	jag1	jagged 1	ENSXETG00000002340
+XB-GENE-485672	hoxc5	homeobox C5	ENSXETG00000025183
+XB-GENE-485682	diras2	DIRAS family, GTP-binding RAS-like 2	ENSXETG00000000810
+XB-GENE-485691	smad4.1	SMAD family member 4, gene 1	ENSXETG00000022355
+XB-GENE-485701	scly	selenocysteine lyase	ENSXETG00000026777
+XB-GENE-485710	tnni1.2	troponin I type 1 (skeletal, slow), gene 2	ENSXETG00000023613
+XB-GENE-485720	tfcp2	transcription factor CP2	ENSXETG00000009632
+XB-GENE-485735	nrp2	neuropilin 2	ENSXETG00000010095
+XB-GENE-485744	vegfa	vascular endothelial growth factor A	ENSXETG00000016375
+XB-GENE-485753	il12rb2	interleukin 12 receptor subunit beta 2	ENSXETG00000012397
+XB-GENE-485759	nodal6	nodal homolog 6	ENSXETG00000016778
+XB-GENE-485766	ifngr2.1	interferon gamma receptor 2 (interferon gamma transducer 1), gene 1	ENSXETG00000000044
+XB-GENE-485772	hoxb1	homeobox B1	ENSXETG00000021964
+XB-GENE-485782	mapk12	mitogen-activated protein kinase 12	ENSXETG00000000436
+XB-GENE-485791	hoxd9	homeobox D9	ENSXETG00000007581
+XB-GENE-485801	nr2e3	nuclear receptor subfamily 2 group E member 3	ENSXETG00000005219
+XB-GENE-485807	hdac2	histone deacetylase 2	ENSXETG00000007339
+XB-GENE-485816	sim1	single-minded family bHLH transcription factor 1	ENSXETG00000002406
+XB-GENE-485826	hnf4b	hepatocyte nuclear factor 4, beta	ENSXETG00000016389
+XB-GENE-485834	tlx1	T-cell leukemia homeobox 1	ENSXETG00000008043
+XB-GENE-485854	hivep2	human immunodeficiency virus type I enhancer binding protein 2	ENSXETG00000023284
+XB-GENE-485863	ppih	peptidylprolyl isomerase H (cyclophilin H)	ENSXETG00000013439
+XB-GENE-485873	pkm	pyruvate kinase, muscle	ENSXETG00000005206
+XB-GENE-485892	rsad2	radical S-adenosyl methionine domain containing 2	ENSXETG00000023435
+XB-GENE-485898	mixl1	Mix paired-like homeobox	ENSXETG00000025923
+XB-GENE-485905	ins	insulin	ENSXETG00000014029
+XB-GENE-485914	atp6v1b1	ATPase, H+ transporting, lysosomal 56/58kDa, V1 subunit B1	ENSXETG00000021532
+XB-GENE-485923	hey2	hes-related family bHLH transcription factor with YRPW motif 2	ENSXETG00000021844
+XB-GENE-485930	gata3	GATA binding protein 3	ENSXETG00000025398
+XB-GENE-485946	tpm1	tropomyosin 1 (alpha)	ENSXETG00000009718
+XB-GENE-485956	pafah1b3	platelet activating factor acetylhydrolase 1b catalytic subunit 3	ENSXETG00000012063
+XB-GENE-485966	fgf1	fibroblast growth factor 1 (acidic)	ENSXETG00000019566
+XB-GENE-485975	tcf7l2	transcription factor 7-like 2 (T-cell specific, HMG-box)	ENSXETG00000018735
+XB-GENE-485985	nkx2-1	NK2 homeobox 1	ENSXETG00000002909
+XB-GENE-485995	grhl2	grainyhead-like transcription factor 2	ENSXETG00000006632
+XB-GENE-486004	smad7	SMAD family member 7	ENSXETG00000020317
+XB-GENE-486014	bmp7.1	bone morphogenetic protein 7, gene 1	ENSXETG00000011272
+XB-GENE-486024	ap2a2	adaptor related protein complex 2 alpha 2 subunit	ENSXETG00000025765
+XB-GENE-486033	lemd3	LEM domain containing 3	ENSXETG00000013841
+XB-GENE-486052	lrp2	LDL receptor related protein 2	ENSXETG00000016214
+XB-GENE-486061	hoxa5	homeobox A5	ENSXETG00000000720
+XB-GENE-486067	bax	BCL2-associated X protein	ENSXETG00000023523
+XB-GENE-486077	wnt6	wingless-type MMTV integration site family member 6	ENSXETG00000013856
+XB-GENE-486086	pde3b	phosphodiesterase 3B	ENSXETG00000019677
+XB-GENE-486095	skil	SKI-like proto-oncogene	ENSXETG00000009208
+XB-GENE-486104	atp4a	ATPase, H+/K+ exchanging, alpha polypeptide	ENSXETG00000006825
+XB-GENE-486113	lhb	luteinizing hormone beta polypeptide	ENSXETG00000021249
+XB-GENE-486122	btrc	beta-transducin repeat containing E3 ubiquitin protein ligase	ENSXETG00000021199
+XB-GENE-486131	hrg	histidine-rich glycoprotein	ENSXETG00000019389
+XB-GENE-486138	hes2	hes family bHLH transcription factor 2	ENSXETG00000001163
+XB-GENE-486147	msr1	macrophage scavenger receptor 1	ENSXETG00000017345
+XB-GENE-486153	pdzd3	PDZ domain containing 3	ENSXETG00000021587
+XB-GENE-486162	pitx3	paired-like homeodomain 3	ENSXETG00000010022
+XB-GENE-486172	esrrg	estrogen-related receptor gamma	ENSXETG00000020932
+XB-GENE-486189	thbs1	thrombospondin 1	ENSXETG00000011217
+XB-GENE-486199	pias4	protein inhibitor of activated STAT 4	ENSXETG00000006386
+XB-GENE-486209	pcdh18	protocadherin 18	ENSXETG00000011158
+XB-GENE-486218	eya3	EYA transcriptional coactivator and phosphatase 3	ENSXETG00000012888
+XB-GENE-486233	skiv2l	Ski2 like RNA helicase	ENSXETG00000010932
+XB-GENE-486240	slc26a3.2	solute carrier family 26 (anion exchanger), member 3	ENSXETG00000025660
+XB-GENE-486256	esr2	estrogen receptor 2 (ER beta)	ENSXETG00000007257
+XB-GENE-486265	march1	membrane associated ring-CH-type finger 1	ENSXETG00000017063
+XB-GENE-486274	c3	complement component 3	ENSXETG00000017270
+XB-GENE-486283	nphp1	nephronophthisis 1 (juvenile)	ENSXETG00000022446
+XB-GENE-486292	sbno2	strawberry notch homolog 2	ENSXETG00000021579
+XB-GENE-486296	fst	follistatin	ENSXETG00000023385
+XB-GENE-486306	per2	period circadian clock 2	ENSXETG00000008256
+XB-GENE-486316	crhbp	corticotropin releasing hormone binding protein	ENSXETG00000017080
+XB-GENE-486325	tmem27	transmembrane protein 27	ENSXETG00000022466
+XB-GENE-486334	nr2f5	nuclear receptor subfamily 2, group F, member 5	ENSXETG00000011046
+XB-GENE-486342	arrdc1	arrestin domain containing 1	ENSXETG00000016949
+XB-GENE-486352	ctnnbip1	catenin beta interacting protein 1	ENSXETG00000022152
+XB-GENE-486361	ruvbl1	RuvB-like AAA ATPase 1	ENSXETG00000002064
+XB-GENE-486371	c5	complement component 5	ENSXETG00000019600
+XB-GENE-486376	nfib	nuclear factor I/B	ENSXETG00000000835
+XB-GENE-486394	thdl18	thyroid hormone down-regulated protein (gene 18)	ENSXETG00000026899
+XB-GENE-486416	bhlhe40	basic helix-loop-helix family member e40	ENSXETG00000005207
+XB-GENE-486426	mapkapk5	mitogen-activated protein kinase-activated protein kinase 5	ENSXETG00000011682
+XB-GENE-486436	rab21	RAB21, member RAS oncogene family	ENSXETG00000011586
+XB-GENE-486445	sox21	SRY-box 21	ENSXETG00000010955
+XB-GENE-486455	foxa4	forkhead box A4	ENSXETG00000026171
+XB-GENE-486462	slc2a2	solute carrier family 2 (facilitated glucose transporter), member 2	ENSXETG00000009145
+XB-GENE-486472	slc5a5	solute carrier family 5 (sodium/iodide cotransporter), member 5	ENSXETG00000013546
+XB-GENE-486482	hes7.2	hes family bHLH transcription factor 7	ENSXETG00000009083
+XB-GENE-486491	prkcb	protein kinase C, beta	ENSXETG00000017294
+XB-GENE-486499	fgf19	fibroblast growth factor 19	ENSXETG00000025489
+XB-GENE-486505	vdr	vitamin D (1,25- dihydroxyvitamin D3) receptor	ENSXETG00000010658
+XB-GENE-486515	wif1	WNT inhibitory factor 1	ENSXETG00000013842
+XB-GENE-486525	qki	QKI, KH domain containing, RNA binding	ENSXETG00000015705
+XB-GENE-486532	rhd	Rh blood group, D antigen	ENSXETG00000003690
+XB-GENE-486540	cript	cysteine-rich PDZ-binding protein	ENSXETG00000022737
+XB-GENE-486549	slc6a2	solute carrier family 6 (neurotransmitter transporter), member 2	ENSXETG00000002785
+XB-GENE-486558	pias1	protein inhibitor of activated STAT 1	ENSXETG00000007813
+XB-GENE-486567	zbtb33	zinc finger and BTB domain containing 33	ENSXETG00000004479
+XB-GENE-486576	grhl1	grainyhead-like transcription factor 1	ENSXETG00000007012
+XB-GENE-486585	hoxc11	homeobox C11	ENSXETG00000023471
+XB-GENE-486595	wnt2	wingless-type MMTV integration site family member 2	ENSXETG00000025566
+XB-GENE-486605	tlr7	toll-like receptor 7	ENSXETG00000027076
+XB-GENE-486612	foxl2	forkhead box L2	ENSXETG00000008253
+XB-GENE-486618	ncoa3	nuclear receptor coactivator 3	ENSXETG00000003480
+XB-GENE-486632	pias3	protein inhibitor of activated STAT 3	ENSXETG00000018642
+XB-GENE-486641	bcl11a	B-cell CLL/lymphoma 11A	ENSXETG00000002206
+XB-GENE-486650	myd88	myeloid differentiation primary response 88	ENSXETG00000018434
+XB-GENE-486676	hoxa4	homeobox A4	ENSXETG00000027534
+XB-GENE-486685	prkch	protein kinase C, eta	ENSXETG00000014450
+XB-GENE-486694	hey1	hes-related family bHLH transcription factor with YRPW motif 1	ENSXETG00000007864
+XB-GENE-486704	kazald1	Kazal-type serine peptidase inhibitor domain 1	ENSXETG00000008045
+XB-GENE-486713	kcp	kielin/chordin-like protein	ENSXETG00000014993
+XB-GENE-486722	nr1h5	nuclear receptor subfamily 1, group H, member 5	ENSXETG00000021443
+XB-GENE-486729	thul16	thyroid hormone up-regulated protein (gene 16)	ENSXETG00000023308
+XB-GENE-486746	dmbx1	diencephalon/mesencephalon homeobox 1	ENSXETG00000004360
+XB-GENE-486753	ddah2	dimethylarginine dimethylaminohydrolase 2	ENSXETG00000024074
+XB-GENE-486762	tap1	transporter 1, ATP-binding cassette, sub-family B (MDR/TAP)	ENSXETG00000016577
+XB-GENE-486771	gsc	goosecoid homeobox	ENSXETG00000023328
+XB-GENE-486781	axin1	axin 1	ENSXETG00000012143
+XB-GENE-486791	dusp22	dual specificity phosphatase 22	ENSXETG00000011414
+XB-GENE-486801	pax2	paired box 2	ENSXETG00000014206
+XB-GENE-486810	thdl20	thyroid hormone down-regulated protein (gene 20)	ENSXETG00000007188
+XB-GENE-486817	irx1	iroquois homeobox 1	ENSXETG00000006958
+XB-GENE-486827	mkl1	megakaryoblastic leukemia (translocation) 1	ENSXETG00000022963
+XB-GENE-486846	naa25	N(alpha)-acetyltransferase 25, NatB auxiliary subunit	ENSXETG00000004301
+XB-GENE-486855	tbx5	T-box 5	ENSXETG00000017688
+XB-GENE-486865	gps2	G protein pathway suppressor 2	ENSXETG00000027787
+XB-GENE-486875	srsf1	serine/arginine-rich splicing factor 1	ENSXETG00000008954
+XB-GENE-486884	trpm7	transient receptor potential cation channel, subfamily M, member 7	ENSXETG00000022057
+XB-GENE-486894	tshz2	teashirt zinc finger homeobox 2	ENSXETG00000017555
+XB-GENE-486908	tlr9	toll-like receptor 9	ENSXETG00000005958
+XB-GENE-486915	hoxc10	homeobox C10	ENSXETG00000023472
+XB-GENE-486941	prickle1	prickle homolog 1	ENSXETG00000006797
+XB-GENE-486951	nkx2-6	NK2 homeobox 6	ENSXETG00000007764
+XB-GENE-486958	mef2c	MADS box transcription enhancer factor 2, polypeptide C (myocyte enhancer factor 2C)	ENSXETG00000007038
+XB-GENE-486968	slc15a2	solute carrier family 15 (oligopeptide transporter), member 2	ENSXETG00000012024
+XB-GENE-486978	acsm3	acyl-CoA synthetase medium-chain family member 3	ENSXETG00000016740
+XB-GENE-486987	tnni3	troponin I type 3 (cardiac)	ENSXETG00000024676
+XB-GENE-486996	mrc2	mannose receptor, C type 2	ENSXETG00000005331
+XB-GENE-487002	fgf2	fibroblast growth factor 2 (basic)	ENSXETG00000001587
+XB-GENE-487012	crat.2	carnitine O-acetyltransferase, gene 2	ENSXETG00000005161
+XB-GENE-487022	fzd2	frizzled class receptor 2	ENSXETG00000008840
+XB-GENE-487032	sox5	SRY-box 5	ENSXETG00000026458
+XB-GENE-487039	insig1	insulin induced gene 1	ENSXETG00000013492
+XB-GENE-487049	srsf5	serine/arginine-rich splicing factor 5	ENSXETG00000002211
+XB-GENE-487059	pde6c	phosphodiesterase 6C	ENSXETG00000003730
+XB-GENE-487069	csnk2a2	casein kinase 2, alpha prime polypeptide	ENSXETG00000013728
+XB-GENE-487078	map2k7	mitogen-activated protein kinase kinase 7	ENSXETG00000022865
+XB-GENE-487087	slf2	SMC5-SMC6 complex localization factor 2	ENSXETG00000015214
+XB-GENE-487092	csf3	colony stimulating factor 3	ENSXETG00000024403
+XB-GENE-487098	gsk3b	glycogen synthase kinase 3 beta	ENSXETG00000018019
+XB-GENE-487108	acvr1c	activin A receptor type IC	ENSXETG00000010381
+XB-GENE-487117	ace2	angiotensin I converting enzyme 2	ENSXETG00000022452
+XB-GENE-487124	xbp1	X-box binding protein 1	ENSXETG00000027416
+XB-GENE-487140	pax7	paired box 7	ENSXETG00000018527
+XB-GENE-487150	rassf3	Ras association (RalGDS/AF-6) domain family member 3	ENSXETG00000027778
+XB-GENE-487159	hhex	hematopoietically expressed homeobox	ENSXETG00000012215
+XB-GENE-487169	nodal1	nodal homolog 1	ENSXETG00000009008
+XB-GENE-487178	nppb	natriuretic peptide B	ENSXETG00000013082
+XB-GENE-487193	gdf11.1	growth differentiation factor 11, gene 1	ENSXETG00000021861
+XB-GENE-487200	ctnnb1	catenin beta 1	ENSXETG00000013848
+XB-GENE-487210	mcph1	microcephalin 1	ENSXETG00000015950
+XB-GENE-487220	net1	neuroepithelial cell transforming 1	ENSXETG00000018160
+XB-GENE-487230	tcf19	transcription factor 19	ENSXETG00000024079
+XB-GENE-487236	cux2	cut-like homeobox 2	ENSXETG00000011684
+XB-GENE-487242	rps6ka2	ribosomal protein S6 kinase, 90kDa, polypeptide 2	ENSXETG00000025994
+XB-GENE-487251	gsk3a	glycogen synthase kinase 3 alpha	ENSXETG00000012072
+XB-GENE-487261	socs2	suppressor of cytokine signaling 2	ENSXETG00000023815
+XB-GENE-487270	syngap1	synaptic Ras GTPase activating protein 1	ENSXETG00000020358
+XB-GENE-487279	dnm1l	dynamin 1-like	ENSXETG00000012252
+XB-GENE-487289	foxd3	forkhead box D3	ENSXETG00000010836
+XB-GENE-487299	igfbp2	insulin like growth factor binding protein 2	ENSXETG00000019875
+XB-GENE-487309	gdf3	growth differentiation factor 3	ENSXETG00000002076
+XB-GENE-487318	mixer	mix-like endodermal regulator	ENSXETG00000027672
+XB-GENE-487325	vegfd	vascular endothelial growth factor D	ENSXETG00000007499
+XB-GENE-487334	tbx20	T-box 20	ENSXETG00000013110
+XB-GENE-487344	vars	valyl-tRNA synthetase	ENSXETG00000024076
+XB-GENE-487352	foxa1	forkhead box A1	ENSXETG00000025867
+XB-GENE-487362	slc9a3r1	solute carrier family 9, subfamily A (NHE3, cation proton antiporter 3), member 3 regulator 1	ENSXETG00000006840
+XB-GENE-487371	snai2	snail family zinc finger 2	ENSXETG00000024006
+XB-GENE-487381	fsd2	fibronectin type 3 and SPRY domain containing 2	ENSXETG00000016103
+XB-GENE-487387	ehmt2	euchromatic histone-lysine N-methyltransferase 2	ENSXETG00000010928
+XB-GENE-487394	mef2a	myocyte enhancer factor 2A	ENSXETG00000018788
+XB-GENE-487404	arnt2	aryl hydrocarbon receptor nuclear translocator 2	ENSXETG00000012988
+XB-GENE-487420	smo	smoothened, frizzled class receptor	ENSXETG00000014939
+XB-GENE-487430	rpa2	replication protein A2	ENSXETG00000001834
+XB-GENE-487458	gata4	GATA binding protein 4	ENSXETG00000000673
+XB-GENE-487468	pygo1	pygopus family PHD finger 1	ENSXETG00000027828
+XB-GENE-487474	nodal2	nodal homolog 2	ENSXETG00000025789
+XB-GENE-487481	nkx2-4	NK2 homeobox 4	ENSXETG00000023500
+XB-GENE-487490	dio3	deiodinase, iodothyronine, type 3	ENSXETG00000024414
+XB-GENE-487499	hhip	hedgehog interacting protein	ENSXETG00000017616
+XB-GENE-487509	marcksl1	MARCKS-like 1	ENSXETG00000027638
+XB-GENE-487527	hnf4g	hepatocyte nuclear factor 4, gamma	ENSXETG00000017845
+XB-GENE-487536	nphp4	nephronophthisis 4	ENSXETG00000002886
+XB-GENE-487542	c6orf136	chromosome 6 open reading frame 136	ENSXETG00000027932
+XB-GENE-487547	cd44	CD44 molecule (Indian blood group)	ENSXETG00000007556
+XB-GENE-487556	isl2	ISL LIM homeobox 2	ENSXETG00000015323
+XB-GENE-487563	slc11a2	solute carrier family 11 (proton-coupled divalent metal ion transporter), member 2	ENSXETG00000009636
+XB-GENE-487573	alas2	5'-aminolevulinate synthase 2	ENSXETG00000022017
+XB-GENE-487583	pdgfb	platelet-derived growth factor beta polypeptide	ENSXETG00000006912
+XB-GENE-487592	nr6a1	nuclear receptor subfamily 6 group A member 1	ENSXETG00000008578
+XB-GENE-487602	nog2	noggin 2	ENSXETG00000020301
+XB-GENE-487610	nos1	nitric oxide synthase 1	ENSXETG00000022354
+XB-GENE-487620	mcl1	myeloid cell leukemia 1	ENSXETG00000008910
+XB-GENE-487626	prkd1	protein kinase D1	ENSXETG00000010248
+XB-GENE-487634	mkl2	MKL/myocardin-like 2	ENSXETG00000010993
+XB-GENE-487643	prkcq	protein kinase C, theta	ENSXETG00000018106
+XB-GENE-487658	foxi4.2	forkhead box I4, gene 2	ENSXETG00000001934
+XB-GENE-487675	meis2	Meis homeobox 2	ENSXETG00000012882
+XB-GENE-487684	ppp1r14c	protein phosphatase 1 regulatory inhibitor subunit 14C	ENSXETG00000022545
+XB-GENE-487693	ptgis	prostaglandin I2 (prostacyclin) synthase	ENSXETG00000001780
+XB-GENE-487699	htra1	HtrA serine peptidase 1	ENSXETG00000015580
+XB-GENE-487708	tfrc	transferrin receptor	ENSXETG00000003077
+XB-GENE-487717	twsg2	twisted gastrulation homolog 2	ENSXETG00000014602
+XB-GENE-487724	nog	noggin	ENSXETG00000001325
+XB-GENE-487733	rps6ka6	ribosomal protein S6 kinase, 90kDa, polypeptide 6	ENSXETG00000014506
+XB-GENE-487749	slc9a7	solute carrier family 9, subfamily A (NHE7, cation proton antiporter 7), member 7	ENSXETG00000004133
+XB-GENE-487775	frat1	frequently rearranged in advanced T-cell lymphomas 1	ENSXETG00000025928
+XB-GENE-487784	runx3	runt-related transcription factor 3	ENSXETG00000001029
+XB-GENE-487794	rab9a	RAB9A, member RAS oncogene family	ENSXETG00000013345
+XB-GENE-487802	cdkn1a	cyclin-dependent kinase inhibitor 1A (p21, Cip1)	ENSXETG00000024887
+XB-GENE-487811	nphs1	nephrosis 1, congenital, Finnish type (nephrin)	ENSXETG00000017513
+XB-GENE-487830	hes4	hes family bHLH transcription factor 4	ENSXETG00000001769
+XB-GENE-487844	eya2	EYA transcriptional coactivator and phosphatase 2	ENSXETG00000003474
+XB-GENE-487863	ptpn6	protein tyrosine phosphatase, non-receptor type 6	ENSXETG00000023918
+XB-GENE-487873	nphp3	nephronophthisis 3 (adolescent)	ENSXETG00000008477
+XB-GENE-487882	gh1	growth hormone 1	ENSXETG00000014248
+XB-GENE-487899	slc13a1	solute carrier family 13 (sodium/sulfate symporter), member 1	ENSXETG00000022751
+XB-GENE-487909	rbbp7	retinoblastoma binding protein 7	ENSXETG00000026983

@@ -38,5 +38,6 @@ $broker->add_new_source('UCSC','UCSC',1,'Bio::EnsEMBL::Versioning::Pipeline::Dow
 $broker->add_new_source('MiRBase','MiRBase',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::MiRBase','Bio::EnsEMBL::Mongoose::Parser::MiRBase');
 $broker->add_new_source('DBASS','DBASS',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::DBASS','Bio::EnsEMBL::Mongoose::Parser::DBASS');
 $broker->add_new_source('RGD','RGD',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RGD','Bio::EnsEMBL::Mongoose::Parser::RGD');
+$broker->add_new_source('Xenbase','Xenbase',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::Xenbase','Bio::EnsEMBL::Mongoose::Parser::Xenbase');
 
 print "Created basic Xref working set of sources. Now enable the update pipeline to allow it to download the first copy of each source\n";

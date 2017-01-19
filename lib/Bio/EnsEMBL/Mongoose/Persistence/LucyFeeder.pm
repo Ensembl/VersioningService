@@ -120,10 +120,24 @@ sub store_record {
         my @isoforms = @{$flattened_record{isoforms}};
         $flattened_record{isoforms} = join ' ',@isoforms;
     }
-    # Throw out pointless duplicates
-    if (exists $flattened_record{'sequence'}) {delete $flattened_record{'sequence'}};
-    if (exists $flattened_record{'xref'}) {delete $flattened_record{'xref'}};
-    if (exists $flattened_record{'isoforms'}) {delete $flattened_record{'isoforms'}};
+    # Throw out pointless duplicates that don't need to be in the index, just in the blob
+    for my $key (qw/
+        sequence 
+        xref 
+        isoforms 
+        transcript_start 
+        transcript_end 
+        exon_starts
+        exon_ends
+        cds_start
+        cds_end
+        chromosome
+        strand/) {
+        if (exists $flattened_record{$key}) {
+            delete $flattened_record{$key};
+        }
+    }
+    
     # blob the record into the docstore for restoration on query
     $flattened_record{blob} = $self->compress_sereal($record);
     

@@ -152,20 +152,45 @@ sub get_all_name_mapping {
   return \%mappings;
 }
 
-# Given an source name (from Ensembl or xref sources), determines if an xref should be bidirectional/transitive
+# Given an source name and a target name (from Ensembl or xref sources), determines if an xref should be bidirectional/transitive
 # Used by the Xref RDF code to generate reversible links for ID equivalence, and one-way links for many-to-one IDs
-sub is_bidirectional {
-  my $self = shift;
+
+# Returns [boolean,boolean], corresponding to outbound link true/false and return link true/false
+sub allowed_xrefs {
+  my $self =shift;
   my $source = shift;
-  $source = lc $source;
-  my $map = $self->{xref_mapping};
-  if (exists $map->{$source} && $map->{$source}->{bidirectional} == 1) {
-    return 1;
-  }
-  return;
+  my $target_source = shift;
+  my $source_type = $self->get_feature_type(lc $source);
+  my $target_type = $self->get_feature_type(lc $target_source);
+  return [1,0] if $target_type eq 'annotation';
+  return [1,1] if $source_type eq $target_type;
+  return [0,0];
 }
 
 
+# sub is_bidirectional {
+#   my $self = shift;
+#   my $source = shift;
+#   $source = lc $source;
+#   my $map = $self->{xref_mapping};
+#   if (exists $map->{$source} && defined $map->{$source}->{feature_type}) {
+#     my $type = $map->{$source}->{feature_type};
+#     return 1 if $type eq 'gene' or $type eq 'transcript' or $type eq 'translation';
+#     return;
+#   }
+#   return;
+# }
+
+# Possible values for feature type = gene, transcript, translation, annotation
+sub get_feature_type {
+  my $self = shift;
+  my $source = shift;
+  my $map = $self->{xref_mapping};
+  if (exists $map->{$source} && defined $map->{$source}->{feature_type}) {
+    return $map->{$source}->{feature_type};
+  }
+    return;
+}
 
 
 1;

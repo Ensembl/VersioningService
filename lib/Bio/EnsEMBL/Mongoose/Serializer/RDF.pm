@@ -108,9 +108,11 @@ sub print_slimline_record {
     my $xref_source = $self->identifier($xref->source);
     my $clean_id = uri_escape($xref->id);
     my $xref_uri = $xref_source.$clean_id;
-
-    print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
-    if ( $self->identifier_mapping->is_bidirectional($xref->source)) {
+    my ($outbound,$inbound) = $self->identifier_mapping->allowed_xrefs($source,$xref_source);
+    if ($outbound) {
+      print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
+    }
+    if ($inbound) {
       print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
     }
   }

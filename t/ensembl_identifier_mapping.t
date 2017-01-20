@@ -11,6 +11,10 @@ ok ($converter);
 is ($converter->identifier_org_translation('RefSeq_ncRNA'), 'http://identifiers.org/refseq/', "Test simple mapping 1");
 is ($converter->identifier_org_translation('HGNC'), 'http://identifiers.org/hgnc/', "Test simple mapping 2");
 is ($converter->identifier_org_translation('RefSeq_ncRNA_predicted'), 'http://identifiers.org/refseq/', "Test simple mapping 3");
+is ($converter->identifier_org_translation('Nonsense'), undef, 'Source not known by identifiers.org comes back undef');
+
+is($converter->identifier('HGNC'), 'http://identifiers.org/hgnc/', 'identifiers.org URL correctly generated');
+is($converter->identifier('Nonsense'), 'http://rdf.ebi.ac.uk/resource/ensembl/xref/Nonsense/', 'New/unseen sources get localised in an Ensembl bucket');
 
 my $mapping = $converter->get_mapping('UniProt/SWISSPROT');
 is($mapping->{canonical_LOD},"http://purl.uniprot.org/uniprot/","Test full mapping fetch");
@@ -18,8 +22,10 @@ is($mapping->{canonical_LOD},"http://purl.uniprot.org/uniprot/","Test full mappi
 is($converter->LOD_uri('UniProt/SWISSPROT'),"http://purl.uniprot.org/uniprot/","Check LOD_uri() functions");
 is($converter->LOD_uri('durpadurp'),undef,'Check results of a missing LOD mapping');
 
-ok($converter->is_bidirectional('UniProt/SWISSPROT'),'Swissprot IDs are first class citizens');
-ok(!$converter->is_bidirectional('eggNOG'),'eggNOG may not have reversible xref links');
-ok(!$converter->is_bidirectional('DrStrangelove','Unfamiliar sources do not create reversible links'));
+is_deeply($converter->allowed_xrefs('UniProt/SWISSPROT','RefSeq_peptide'), [1,1], 'Same classes of data can link in both directions');
+is_deeply($converter->allowed_xrefs('Ensembl','eggNOG'),[1,0],'Annotation type sources can only be linked to one way');
+is_deeply($converter->allowed_xrefs('RefSeq_ncRNA','ensembl'),[0,0],'Features of different types may not xref to each other');
+is_deeply($converter->allowed_xrefs('ensembl_transcript','DrStrangelove'),[0,0],'Unfamiliar sources do not get links');
+is_deeply($converter->allowed_xrefs('DrStrangelove','ensembl_transcript'),[0,0],'Unfamiliar sources do not create links');
 
 done_testing;

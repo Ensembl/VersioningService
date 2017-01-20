@@ -5,6 +5,10 @@ use Test::Exception;
 use Test::Differences;
 use Bio::EnsEMBL::RDF::FusekiWrapper;
 
+if (! defined $ENV{FUSEKI_HOME}) {
+  plan skip_all => 'Cannot test Fuseki integration unless Fuseki is available'
+}
+
 note "Starting Fuseki Java process";
 my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new();
 $fuseki->start_server();

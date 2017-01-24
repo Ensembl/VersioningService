@@ -38,14 +38,14 @@ my $test_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
    ],
   });
 
-$rdf_writer->print_record($test_record,'Uniprot/SPTREMBL');
+$rdf_writer->print_record($test_record,'ensembl_transcript');
 
 my $dependent_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   id => 'NM1',
   accessions => [qw/1 2 3/],
   xref => [
-    Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new({source => 'MIM_GENE', active => 1, version => 1, id => '100'}),
-    Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new({source => 'MIM_GENE', active => 1, version => 1, id => 'MrCyclic'})
+    Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new({source => 'flybase_transcript_id', active => 1, version => 1, id => '100'}),
+    Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new({source => 'flybase_transcript_id', active => 1, version => 1, id => 'MrCyclic'})
   ],
 });
 # Spurious test data looks like uniprot_id->xref->refseq_id->xref->mim_id
@@ -60,7 +60,7 @@ my $loopy_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   ],
 });
 
-$rdf_writer->print_record($loopy_record, 'MIM_GENE');
+$rdf_writer->print_record($loopy_record, 'flybase_transcript_id');
 
 note $dummy_content;
 
@@ -75,7 +75,7 @@ $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/', $dummy_conte
 
 my $prefixes = $rdf_writer->compatible_name_spaces();
 my $sparql = 'select ?hop ?source ?label where {
-    <http://purl.uniprot.org/uniprot/Testy> term:refers-to+ ?hop .
+    <http://rdf.ebi.ac.uk/resource/ensembl.transcript/Testy> term:refers-to+ ?hop .
     ?hop dcterms:source ?source .
     OPTIONAL { ?hop rdfs:label ?label . }
   }';

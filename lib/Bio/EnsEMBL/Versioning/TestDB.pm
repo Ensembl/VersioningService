@@ -27,7 +27,7 @@ use Bio::EnsEMBL::Versioning::Broker;
 use Env;
 require Exporter;
 use parent 'Exporter';
-@EXPORT_OK = qw(broker);
+@EXPORT_OK = qw(broker get_conf_location);
 
 my $broker = Bio::EnsEMBL::Versioning::Broker->new(config_file => get_conf_location(), create => 1);
 # $broker->schema->deploy(); # auto create schema in test DB

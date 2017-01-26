@@ -1,7 +1,7 @@
 =head1 LICENSE
 
 Copyright [1999-2015] Wellcome Trust Sanger Institute and the EMBL-European Bioinformatics Institute
-Copyright [2016] EMBL-European Bioinformatics Institute
+Copyright [2016-2017] EMBL-European Bioinformatics Institute
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -260,6 +260,30 @@ sub get_active_sources {
       { active => 1}
     );
     return [ $result->all ];
+}
+
+sub get_versions_for_run {
+    my $self = shift;
+    my $run_id = shift;
+    my $result = $self->schema->resultset('VersionRun')->search(
+      { run_id => $run_id}
+    )->related_resultset('versions');
+    return [ $result->all ];
+}
+
+sub get_version_for_run_source {
+    my $self = shift;
+    my $run_id = shift;
+    my $source_name = shift;
+
+    my $result = $self->schema->resultset('VersionRun')->search(
+                           { run_id => $run_id}
+                           )->related_resultset('versions')->search(
+                           { 'sources.name' => $source_name },
+                           { join => 'sources' }
+    );
+    my $version = $result->single;
+    return $version;
 }
 
 sub get_file_list_for_version {

@@ -75,9 +75,9 @@ sub run {
   $base_path ||= '/tmp';
   my $species_without_underscore = $species;
   $species_without_underscore =~ s/_/ /g;
-  $base_path = $base_path . "/". "xref_rdf_dumps". "/". $run_id . "/". $species;
+  $base_path = File::Spec->join( $base_path, "xref_rdf_dumps", $run_id, $species);
   
-  if ( !-d $base_path ) {
+  if (!-d $base_path) {
     make_path $base_path or die "Failed to create path: $base_path";
   }
   
@@ -101,13 +101,13 @@ sub run {
       $searcher->get_records();
       $fh->close;    
     } catch {
-      warn $_;
+      warn('Warning ' . $_. ' while dumping RDF for source '.$source);
       $fh->close;
     };
 }
 
   # Dump generic labels to attach to all possible sources for presentation. e.g. purl.uniprot.org/uniprot rdfs:label "Uniprot"
-  my $source_fh = IO::File->new(File::Spec->catfile($base_path,'sources'.'.ttl'), 'w');
+  my $source_fh = IO::File->new(File::Spec->catfile($base_path,'sources'.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $source_fh, config_file => "$ENV{MONGOOSE}/conf/manager.conf");
   $writer->print_source_meta;
   $source_fh->close;

@@ -34,8 +34,8 @@ Bio::EnsEMBL::Versioning::Pipeline::LogSummary
 
 =head1 DESCRIPTION
 
-A module which logs the pipeline runs
-
+eHive pipeline module to log the start and end time of the Xref pipeline run and
+to store the versions/sources used in the pipeline run
 
 =cut
 
@@ -43,9 +43,7 @@ package Bio::EnsEMBL::Versioning::Pipeline::LogSummary;
 
 use strict;
 use warnings;
-
 use Bio::EnsEMBL::Versioning::Logger;
-
 use Try::Tiny;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
@@ -73,7 +71,6 @@ sub run {
     $message = { run_id => $run_id };
     $self->dataflow_output_id($message,2);
   }
-  
   
   return;
 

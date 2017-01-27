@@ -19,26 +19,20 @@ limitations under the License.
 
 use strict;
 use warnings;
-use Data::Dumper;
 
 use Test::More;
-use Test::Exception;
-use Env;
 use Bio::EnsEMBL::Versioning::Logger;
 use Bio::EnsEMBL::Versioning::TestDB qw/broker get_conf_location/;
-use File::Temp qw/tempfile tempdir/;
-use Test::MockObject::Extends;
-use Test::MockObject;
- use Time::HiRes qw (sleep);
+use Time::HiRes qw (sleep);
 
 
 my $broker = broker();
 
 #add uniprot
 my $uniprot_version = $broker->schema->resultset('Version')->create({revision => '2013_12', record_count => 49243530, uri => '/lustre/scratch110/ensembl/Uniprot/203_12/uniprot.txt', count_seen => 1});
-ok($uniprot_version->version_id eq 1, "Has version_id $uniprot_version");
+ok($uniprot_version->version_id eq 1, "Has version_id ". $uniprot_version->version_id);
 
-$broker->schema->storage->debug(1);
+#$broker->schema->storage->debug(1); uncomment to see sql statements
 my $uniprot_group = $broker->schema->resultset('SourceGroup')->create({ name => 'UniProtGroup' });
 my $uniprot_source = $uniprot_group->create_related('sources', {name=> 'UniProt/SWISSPROT', parser => 'UniProtParser', current_version => $uniprot_version, active => 1, downloader => 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniProtSwissProt'});
 
@@ -95,7 +89,7 @@ my $version_run_rs = $broker->schema->resultset('Run')->search(
     
 
 my $version_run = $version_run_rs->version_runs->first;
-ok($version_run->version_id), "Got the right version_id";
+ok($version_run->version_id, "Got the right version_id");
 ok($version_run->run_id == $run_rs->run_id, "Got the right run_id");
 
 my $versions = $broker->get_versions_for_run($run_id);
@@ -103,20 +97,22 @@ ok(scalar(@{$versions}) == 2, "Got back two versions");
 my $version1 = shift @$versions;
 my $version2 = shift @$versions;
 
-ok($version1->version_id == 1);
-ok($version1->revision eq '2013_12');
+ok($version1->version_id == 1, "Got back version_id  for source1");
+ok($version1->revision eq '2013_12', "Got back revision for source1");
 
-ok($version2->version_id == 2);
-ok($version2->revision eq '2017_01');
+ok($version2->version_id == 2, "Got back version_id for source2");
+ok($version2->revision eq '2017_01', "Got back revision for source2");
 
 
 my $version_uniprot_source = $broker->get_version_for_run_source($run_id, $uniprot_source->name);
-ok($version_uniprot_source->revision eq '2013_12');
+ok($version_uniprot_source->revision eq '2013_12', "revision ok for uniprot");
 
 my $version_reactome_source = $broker->get_version_for_run_source($run_id, $reactome_source->name);
-ok($version_reactome_source->revision eq '2017_01');
+ok($version_reactome_source->revision eq '2017_01', "revision ok for reactome");
 
-
-
-
+my $base_path = '/tmp';
+$run_id = 206;
+my $species = "homo sapiens";
+my $full_path = File::Spec->join( $base_path, "xref_rdf_dumps", $run_id, $species);
+print "$full_path\n";
 done_testing;

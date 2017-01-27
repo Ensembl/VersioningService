@@ -19,27 +19,6 @@ limitations under the License.
 
 package Bio::EnsEMBL::Versioning::Logger;
 
-use Moose;
-use Method::Signatures;
-use Moose::Util::TypeConstraints;
-use Module::Load::Conditional qw/can_load/;
-use Env;
-use Config::General;
-use File::Temp qw/tempdir/;
-use File::Path qw/make_path remove_tree/;
-use File::Copy;
-use File::Spec;
-use IO::Dir;
-use Data::Dumper;
-
-use Try::Tiny;
-use Class::Inspector;
-use Bio::EnsEMBL::Mongoose::DBException;
-use Bio::EnsEMBL::Mongoose::UsageException;
-use Bio::EnsEMBL::Mongoose::IOException;
-use Bio::EnsEMBL::Versioning::ORM::Schema;
-use DateTime; 
-
 use parent qw/Bio::EnsEMBL::Versioning::Broker/;
 
 sub log_run{

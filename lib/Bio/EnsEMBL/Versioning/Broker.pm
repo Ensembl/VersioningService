@@ -262,6 +262,30 @@ sub get_active_sources {
     return [ $result->all ];
 }
 
+sub get_versions_for_run {
+    my $self = shift;
+    my $run_id = shift;
+    my $result = $self->schema->resultset('VersionRun')->search(
+      { run_id => $run_id}
+    )->related_resultset('versions');
+    return [ $result->all ];
+}
+
+sub get_version_for_run_source {
+    my $self = shift;
+    my $run_id = shift;
+    my $source_name = shift;
+
+    my $result = $self->schema->resultset('VersionRun')->search(
+                           { run_id => $run_id}
+                           )->related_resultset('versions')->search(
+                           { 'sources.name' => $source_name },
+                           { join => 'sources' }
+    );
+    my $version = $result->single;
+    return $version;
+}
+
 sub get_file_list_for_version {
   my $self = shift;
   my $version = shift;

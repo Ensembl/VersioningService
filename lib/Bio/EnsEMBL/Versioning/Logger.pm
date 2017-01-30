@@ -19,7 +19,8 @@ limitations under the License.
 
 package Bio::EnsEMBL::Versioning::Logger;
 
-use parent qw/Bio::EnsEMBL::Versioning::Broker/;
+use Moose;
+extends qw/Bio::EnsEMBL::Versioning::Broker/;
 
 sub log_run{
   my $self = shift;

@@ -26,6 +26,7 @@ use Bio::EnsEMBL::Mongoose::IOException;
 use Bio::EnsEMBL::IO::Parser::Genbank;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Try::Tiny;
+use Digest::MD5;
 
 # Requires access to compara taxonomy database, due to lack of taxon ID in Refseq files
 
@@ -102,10 +103,13 @@ sub read_record {
     } else {
         $self->log->info("RefSeq record $id has no accessible accession");
     }
-    my $sequence = $parser->get_sequence();
+    my $sequence = uc($parser->get_sequence());
     if ($sequence) {
         $record->sequence( $sequence );
         $record->sequence_length(length($sequence));
+        my $stomach = Digest::MD5->new;
+        $stomach->add($sequence);
+        $record->checksum($stomach->hexdigest);
     }
     my $description = $parser->get_description();
     if ($description) {

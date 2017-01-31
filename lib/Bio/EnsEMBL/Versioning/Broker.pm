@@ -93,6 +93,13 @@ subtype Source => as 'Object'
   => message { 'This method requires a Source object from the ORM' }
   => where { $_->isa('Bio::EnsEMBL::Versioning::ORM::Schema::Result::Source') };
 
+has scratch_space => (
+  isa => 'Str',
+  is => 'rw',
+  lazy => 1,
+  builder => 'get_scratch_path'
+);
+
 
 with 'MooseX::Log::Log4perl';
 
@@ -125,6 +132,15 @@ sub init_broker {
   return $schema;
 }
 
+sub get_scratch_path {
+  my $self = shift;
+  if (exists $self->config->{scratch_space} && -w $self->config->{scratch_space}) {
+    return $self->config->{scratch_space};
+  } else {
+    Bio::EnsEMBL::Mongoose::IOException->throw("scratch_space not defined in config file");
+  }
+}
+
 # supply a temp folder for downloading to.
 sub temp_location {
     my $self = shift;
@@ -133,7 +149,6 @@ sub temp_location {
     $self->log->debug("New download folder: $dir");
     return $dir;
 }
-
 
 # generate a storage folder derived from the type and version of a source
 sub location {
@@ -153,22 +168,19 @@ sub location {
 sub shunt_to_fast_disk {
   my ($self,$file_list,$do_not_delete) = @_;
   my $conf = $self->config;
-  if (exists $conf->{scratch_space}) {
-    my $scratch = $conf->{scratch_space};
-    my @copies;
-    if (-d $scratch && -w $scratch) {
-      my $tmp_dir = tempdir(DIR => $scratch, CLEANUP => !$do_not_delete);
-      foreach my $file (@$file_list) {
-        my ($vol,$dir,$filename) = File::Spec->splitpath($file);
-        my $copy_name = File::Spec->catfile($tmp_dir,$filename);
-        copy($file,$copy_name) || Bio::EnsEMBL::Mongoose::IOException->throw("Unable to copy to scratch space for parsing $!");
-        $self->log->debug("Copying $filename to scratch space: $copy_name");
-        push @copies, $copy_name;
-      }
-      return \@copies;
-    } else {
-      Bio::EnsEMBL::Mongoose::IOException->throw("Scratch space defined as $scratch but not writeable");
+
+  my $scratch = $self->scratch_space;
+  my @copies;
+  if (-d $scratch && -w $scratch) {
+    my $tmp_dir = tempdir(DIR => $scratch, CLEANUP => !$do_not_delete);
+    foreach my $file (@$file_list) {
+      my ($vol,$dir,$filename) = File::Spec->splitpath($file);
+      my $copy_name = File::Spec->catfile($tmp_dir,$filename);
+      copy($file,$copy_name) || Bio::EnsEMBL::Mongoose::IOException->throw("Unable to copy to scratch space for parsing $!");
+      $self->log->debug("Copying $filename to scratch space: $copy_name");
+      push @copies, $copy_name;
     }
+    return \@copies;
   } else {
     $self->log->warn('No configuration for fast disk, leaving files where they are');
     return $file_list;

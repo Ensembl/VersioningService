@@ -30,6 +30,8 @@ use XML::LibXML::Reader qw(
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
+use Digest::MD5 qw/md5_hex/;
+
 # Consumes Swissprot file and emits Mongoose::Persistence::Records
 with 'MooseX::Log::Log4perl', 'Bio::EnsEMBL::Mongoose::Parser::Parser';
 
@@ -305,16 +307,15 @@ sub sequence {
     $reader->nextElement('sequence');
     my $version = $reader->getAttribute('version');
     $self->record->sequence_version($version) if $version;
-    my $checksum = $reader->getAttribute('checksum');
-    if ($checksum) {
-        $self->record->checksum($checksum);
-    }
+    # my $checksum = $reader->getAttribute('checksum'); Replaced with MD5
     $reader->read;
     my $sequence = $reader->value;
     $sequence =~ s/\s+//g;
     if (defined $sequence) {
         $self->record->sequence($sequence);
         $self->record->sequence_length(length($sequence));
+        my $checksum = md5_hex($sequence);
+        $self->record->checksum($checksum);
     }
 }
 

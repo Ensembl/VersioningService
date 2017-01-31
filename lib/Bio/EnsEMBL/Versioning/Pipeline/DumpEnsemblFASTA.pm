@@ -53,7 +53,7 @@ use File::Path qw/make_path/;
 use File::Spec;
 use IO::File;
 
-use Digest::CRC;
+use Digest::MD5 qw/md5_hex/;
 
 sub fetch_input {
   my $self = shift;
@@ -86,21 +86,30 @@ sub run {
   
   my $fh = IO::File->new($self->param('cdna_path').'transcripts.fa' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'transcripts.fa');
   my $fasta_writer = Bio::EnsEMBL::Utils::IO::FASTASerializer->new($fh);
+  my $checksum_fh = IO::File->new($self->param('cdna_path').'transcripts.md5' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'transcripts.md5');
 
   my $pep_fh = IO::File->new($self->param('pep_path').'peptides.fa' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'transcripts.fa');
   my $pep_writer = Bio::EnsEMBL::Utils::IO::FASTASerializer->new($pep_fh);
+  my $pep_checksum_fh = IO::File->new($self->param('pep_path').'peptides.md5' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'peptides.crc');
 
   my $adaptor = $self->get_DBAdaptor('core');
   my $transcript_adaptor = $adaptor->get_adaptor('Transcript');
   my $transcript_list = $transcript_adaptor->fetch_all();
   while (my $transcript = shift @$transcript_list) {
     $fasta_writer->print_Seq($transcript->seq);
-    $pep_writer->print_Seq($transcript->translate) if $transcript->translate;
+    printf $checksum_fh "%s\t%s\n",$transcript->stable_id,md5_hex($transcript->seq->seq);
+    my $translation = $transcript->translate;
+    if ($translation) {
+      $pep_writer->print_Seq($translation);
+      printf $pep_checksum_fh "%s\t%s\n",$transcript->stable_id,md5_hex($translation->seq);
+    }
   }
 
 
   $fh->close;
+  $checksum_fh->close;
   $pep_fh->close;
+  $pep_checksum_fh->close;
 
 }
 

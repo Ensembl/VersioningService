@@ -1,10 +1,8 @@
-[compara config]
+# [taxonomy config]
+# Needed mainly for taxonomic lookups provided by the Taxonomizer service
 
-# Required mainly for taxonomic lookups.
-# Note that taxonomies shift around a bit between releases as per the taxonomists wishes
-
-compara_host = hostname
-compara_db = ensembl_compara_81
-compara_pass = 
-compara_user = anonymous
-compara_port = 3306
+tax_host = mysql-eg-publicsql.ebi.ac.uk
+tax_db = ncbi_taxonomy
+tax_pass = 
+tax_user = anonymous
+tax_port = 4157

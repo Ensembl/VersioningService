@@ -98,7 +98,7 @@ sub pipeline_analyses {
          run_all     => $self->o('run_all'),
       },
       -flow_into => {
-         2 => ['DumpRDF']
+         2 => ['DumpRDF','DumpFASTA']
       }
     },
     {
@@ -112,7 +112,17 @@ sub pipeline_analyses {
       -rc_name => 'default',
       -flow_into  => {
          3  => ['LogSummaryEnd']
-       },
+      },
+    },
+    {
+      -logic_name => 'DumpFASTA',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpEnsemblFASTA',
+      -max_retry_count => 1,
+      -hive_capacity => 4,
+      -failed_job_tolerance => 25,
+      -flow_into => {
+
+      }
     },
     {
       -logic_name => 'LogSummaryEnd',
@@ -121,7 +131,7 @@ sub pipeline_analyses {
          begin_run => 1,
          end_run => 1,
        },
-      -wait_for   => [ qw/DumpRDF/ ],
+      -wait_for   => [ qw/DumpRDF DumpFASTA/ ],
     },
   ];
 }

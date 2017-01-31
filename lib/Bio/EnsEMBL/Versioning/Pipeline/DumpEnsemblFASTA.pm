@@ -96,7 +96,7 @@ sub run {
   my $transcript_adaptor = $adaptor->get_adaptor('Transcript');
   my $transcript_list = $transcript_adaptor->fetch_all();
   while (my $transcript = shift @$transcript_list) {
-    $fasta_writer->print_Seq($transcript->seq);
+    $fasta_writer->print_Seq($transcript->spliced_seq);
     printf $checksum_fh "%s\t%s\n",$transcript->stable_id,md5_hex($transcript->seq->seq);
     my $translation = $transcript->translate;
     if ($translation) {

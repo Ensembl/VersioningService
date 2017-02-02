@@ -81,7 +81,7 @@ sub _init_storage {
             $self->index_conf({index_location => $opts{index_location}, data_location => $opts{data_location} });
         }
     }
-    $self->log->debug("Activating Lucy index"); 
+    $self->log->debug("Activating Lucy index ".$opts{index_location}); 
     $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config=>$self->index_conf);
     return $store;
 }
@@ -232,6 +232,19 @@ method work_with_index ( Str :$source, Str :$version? ) {
   $self->index_conf({ index_location => $path, source => $source, version => $version});
   $self->storage_engine();
   $self->source($source);
+}
+
+method work_with_run ( Str :$source, Str :$run_id) {
+  my $version = $self->versioning_service->get_version_for_run_source($run_id,$source);
+  my $path = $version->index_uri;
+  $self->index_conf({ index_location => $path, source => $source, version => $version->revision});
+  $self->storage_engine();
+  $self->source($source);
+}
+
+sub prep_query {
+  my $self = shift;
+  $self->storage_engine->query();
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -71,6 +71,8 @@ use IO::File;
 use Bio::EnsEMBL::Mongoose::SearchEngineException;
 use Bio::EnsEMBL::Mongoose::IOException;
 
+extends 'Bio::EnsEMBL::Mongoose::IndexReader';
+
 has handle => (
     isa => 'Maybe[Ref]',
     is => 'rw',
@@ -83,6 +85,7 @@ has handle => (
         open $handle, ">&STDOUT";
         return $handle;
     },
+    predicate => 'straight_to_file'
 );
 
 sub DEMOLISH {
@@ -118,111 +121,7 @@ sub _select_writer {
     return $writer->new(handle => $self->handle, config => $self->writer_conf);
 }
 
-# Contains information about the index Lucy will use, either by file or hash.
-has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file');
-has storage_engine_conf => (isa => 'HashRef', is => 'rw');
-has index_conf => ( isa => 'HashRef', is => 'rw');
-has storage_engine => (
-    isa => 'Bio::EnsEMBL::Mongoose::Persistence::LucyQuery',
-    is => 'ro',
-    lazy => 1,
-    builder => '_init_storage',
-);
-
-sub _init_storage {
-    my $self = shift;
-    my $store;
-    if ($self->using_conf_file) {
-        $self->log->debug("Reading config file ".$self->storage_engine_conf_file);
-        my $conf = Config::General->new($self->storage_engine_conf_file);
-        my %opts = $conf->getall();
-        $self->storage_engine_conf(\%opts);
-        if (exists $opts{LOD_location}) {
-            $self->writer_conf(\%opts);
-            $self->log->debug("Getting RDF config from ".$opts{LOD_location});
-        }
-        if (exists $opts{index_location}) {
-            $self->index_conf({index_location => $opts{index_location}, data_location => $opts{data_location} });
-        }
-    }
-    $self->log->debug("Activating Lucy index"); 
-    $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config=>$self->index_conf);
-    return $store;
-}
-
-has species => (isa => 'Str', is => 'rw',default => 'human');
-has source => (isa => 'Str', is => 'rw',default => 'UniProt/SWISSPROT');
-
-has query_params => (
-    isa => 'Object',
-    is => 'rw',
-    builder => '_populate_query_object',
-    lazy => 1,
-);
-
-sub _populate_query_object {
-    my $self = shift;
-    my $taxon = $self->taxonomizer->fetch_taxon_id_by_name($self->species);
-    unless ($taxon) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw("Search for ".$self->species." didn't return any taxa, no query can be made without a taxon") }
-    my $query = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
-        taxons => [$taxon],
-        format => $self->output_format,
-    );
-    return $query;
-}
-
-has versioning_service => (
-    isa => 'Bio::EnsEMBL::Versioning::Broker',
-    is => 'ro',
-    lazy => 1,
-    predicate => 'versioning_service_ready',
-    builder => '_awaken_giant',
-);
-
-sub _awaken_giant {
-    my $self = shift;
-    my $broker = Bio::EnsEMBL::Versioning::Broker->new();
-    return $broker;
-}
-
-has taxonomizer => (
-    isa => 'Bio::EnsEMBL::Mongoose::Taxonomizer',
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        return Bio::EnsEMBL::Mongoose::Taxonomizer->new;
-    }
-);
-
-has refer_to_blacklist => (
-    isa => 'Bool',
-    is => 'rw',
-    traits => ['Bool'],
-    default => 0,
-    handles => {
-        use_blacklist => 'set',
-        ignore_blacklist => 'unset',
-    }
-);
-
-has blacklist => (
-    isa => 'HashRef[Str]',
-    is => 'rw',
-    lazy => 1,
-    builder => '_build_blacklist',
-    traits => ['Hash'],
-    handles => {
-        clear_blacklist => 'clear',
-    }
-);
-
-has blacklist_source => (
-    isa => 'Str',
-    is => 'rw',
-    lazy => 1,
-    default => '',
-);
-
+# To indicate whether to use Uniprot Web service to get additional data
 has isoforms => (
     isa => 'Bool',
     is => 'rw',
@@ -251,19 +150,13 @@ sub _build_blacklist {
 my $counter = 0;
 sub get_records {
     my $self = shift;
+    my $source = $self->source();
+
     $self->storage_engine->query_parameters($self->query_params);
     $self->storage_engine->query();
-    my $source = $self->source();
-    while (my $result = $self->storage_engine->next_result) {
-        my $record = $self->storage_engine->convert_result_to_record($result);
-        # Filter record against a possible blacklist of unwanted accessions. Quite possibly slow
-        if ($self->refer_to_blacklist) {
-            my @accessions;
-            @accessions = @{$record->accessions} if $record->accessions;
-            foreach my $accession (@accessions) {
-                if ($self->blacklist->exists($accession)) {next; $self->log->debug('Skipping blacklisted id: '.$accession)}
-            }
-        }
+    
+    while (my $record = $self->next_record) {
+
         $self->writer->print_record($record, $source);
         if ($self->isoforms) {
             $self->log->debug("Adding isoforms from Uniprot website");
@@ -307,15 +200,6 @@ sub convert_name_to_taxon {
         );
     }
     $self->query_params->taxons([$taxon]);
-}
-
-method work_with_index ( Str :$source, Str :$version? ) {
-  # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
-  my $path = $self->versioning_service->get_index_by_name_and_version($source,$version);
-  $self->log->debug("Switching to index: $path from source $source and version $version");
-  $self->index_conf({ index_location => $path, source => $source, version => $version});
-  $self->storage_engine();
-  $self->source($source);
 }
 
 sub add_isoforms { 

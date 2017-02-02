@@ -73,7 +73,8 @@ has result_set => (
     lazy => 1,
     default => sub {
         
-    }
+    },
+    predicate => 'mid_query'
 );
 
 has parsed_query => (
@@ -163,6 +164,11 @@ sub query {
     my $search = $self->query_parser->parse($self->query_string)->as_lucy_query;
     $self->parsed_query($search);
     $self->cursor(0);
+    $self->result_set($self->search_engine->hits(
+            query => $search,
+            num_wanted => $self->buffer_size, 
+            offset => $self->cursor)
+        );
     $self->log->debug('Query: '.$self->query_string);
 }
 
@@ -184,7 +190,7 @@ sub next_result {
 sub convert_result_to_record {
     my $self = shift;
     my $result = shift;
-    my $blob = $result->{'blob'};
+    my $blob = $result->{blob};
     #print $result->{'blob'}."\n";
     my $record = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder::decompress_sereal($self,$blob);
     return $record;

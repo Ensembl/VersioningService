@@ -3,7 +3,8 @@ use strict;
 use Test::More;
 use Test::Exception;
 use Test::Differences;
-use Bio::EnsEMBL::RDF::FusekiWrapper;
+
+use_ok 'Bio::EnsEMBL::RDF::FusekiWrapper';
 
 if (! defined $ENV{FUSEKI_HOME}) {
   plan skip_all => 'Cannot test Fuseki integration unless Fuseki is available'

@@ -2,16 +2,15 @@ use Test::More;
 use Test::Differences;
 use Test::Deep;
 
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
-use Bio::EnsEMBL::Mongoose::Parser::EntrezGene;
-use Data::Dumper;
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::EntrezGene';
 
 my $reader = new Bio::EnsEMBL::Mongoose::Parser::EntrezGene(
     source_file => "$ENV{MONGOOSE}/t/data/gene_info.gz",
 );
-
-
 
 my $num_of_records = 0;
 #first record

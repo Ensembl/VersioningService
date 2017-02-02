@@ -1,10 +1,11 @@
 use Test::More;
 use Test::Differences;
 
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
-use Bio::EnsEMBL::Mongoose::Parser::MIM2Gene;
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::MIM2Gene';
 
 my $reader = new Bio::EnsEMBL::Mongoose::Parser::MIM2Gene(
     source_file => "$ENV{MONGOOSE}/t/data/mim2gene.txt",

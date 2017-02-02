@@ -74,6 +74,6 @@ while ($reader->read_record()) {
   ++$num_records;
 }
 ok(1, 'Reached end of file without dying');
-is($num_records, 5883, "Successfully read all $num_records records from file");
+is($num_records, 136, "Successfully read all $num_records records from file");
 
 done_testing();

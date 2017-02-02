@@ -246,6 +246,16 @@ sub primary_accession {
     my $self = shift;
     my $accession = $self->get_accession(0);
     return $accession if $accession;
+
+    # record has no accession, which leads to blank RDF labels
+    # transfer the ID over to accession in the absence of anything else
+    if ($self->id) {
+      $self->new_accession(sprintf "%s", $self->id); # need a string
+      $self->suspicion("Record has no primary accession, transferred ID");
+      return $self->get_accession(0);
+    }
+
+    $self->suspicion("Record has no primary accession");
     return;
 }
 

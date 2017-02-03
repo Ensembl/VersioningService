@@ -4,7 +4,6 @@ use warnings;
 use Test::More;
 use Test::Differences;
 use Test::Deep;
-use Log::Log4perl;
 
 use FindBin qw/$Bin/;
 use lib "$Bin";

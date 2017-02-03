@@ -1,10 +1,11 @@
 use Test::More;
 use Test::Differences;
 
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
-use Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster;
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster';
 
 # Uses uniprot BRAF record (P15056) to validate the Swissprot parser.
 my $xml_reader = new Bio::EnsEMBL::Mongoose::Parser::SwissprotFaster(
@@ -48,6 +49,5 @@ $xml_reader->read_record;
 
 # Verify what happens when EOF is reached
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
-
 
 done_testing;

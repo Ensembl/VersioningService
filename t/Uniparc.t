@@ -1,9 +1,11 @@
 use Test::More;
 use Test::Differences;
 
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
-use Bio::EnsEMBL::Mongoose::Parser::Uniparc;
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::Uniparc';
 
 my $xml_reader = new Bio::EnsEMBL::Mongoose::Parser::Uniparc(
     source_file => "$ENV{MONGOOSE}/t/data/UPI0000000001.xml",
@@ -30,7 +32,6 @@ $record = $xml_reader->record;
 #print "Xrefs ".scalar(@{$record->xref})."\n";
 my @xrefs = @{$record->xref};
 cmp_ok(scalar @{$record->xref}, '==', 2, 'Second record has only two active xrefs');
-
 
 ok(!$xml_reader->read_record, 'Check end-of-file behaviour. Reader should return false.');
 

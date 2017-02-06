@@ -1,0 +1,27 @@
+language: "perl"
+
+perl:
+  - "5.16"
+  - "5.14"
+  
+before_install:
+    - git clone --branch master --depth 1 https://github.com/Ensembl/ensembl.git
+    - git clone --branch master --depth 1 https://github.com/Ensembl/ensembl-hive
+    - git clone --branch master --depth 1 https://github.com/Ensembl/ensembl-taxonomy
+    - git clone -b bioperl-release-1-6-1 --depth 1 https://github.com/bioperl/bioperl-live.git
+    - curl -O http://mirror.vorboss.net/apache/jena/binaries/apache-jena-fuseki-2.4.1.tar.gz && tar zxvf apache-jena-fuseki-2.4.1.tar.gz 
+
+install:
+    - cpanm --installdeps --with-recommends --notest .
+    - cpanm -n Devel::Cover::Report::Coveralls
+    - cpanm -n DBD::mysql DBD::SQLite
+
+before_script:
+    - sleep 10
+    
+script: "./travisci/harness.sh"
+
+notifications:
+  email:
+    on_success: always
+    on_failure: always

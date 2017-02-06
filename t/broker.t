@@ -18,15 +18,17 @@ use warnings;
 use Test::More;
 use Test::Exception;
 use Env;
-use Bio::EnsEMBL::Versioning::Broker;
-use Bio::EnsEMBL::Versioning::TestDB qw/broker/;
+
 use File::Temp qw/tempfile tempdir/;
 use Test::MockObject::Extends;
 use Test::MockObject;
 
-use FindBin qw/$Bin/;
-use lib "$Bin";
-use TestDefaults;
+BEGIN { 
+  use FindBin qw/$Bin/;
+  $ENV{MONGOOSE} = "$Bin/..";
+}
+
+use Bio::EnsEMBL::Versioning::TestDB qw/broker/;
 
 my $broker = broker();
 # throw in some test data

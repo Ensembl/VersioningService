@@ -4,6 +4,8 @@ use Test::More;
 use Test::Exception;
 use Test::Differences;
 
+use FindBin qw/$Bin/;
+
 use_ok 'Bio::EnsEMBL::RDF::FusekiWrapper';
 
 if (! defined $ENV{FUSEKI_HOME}) {
@@ -14,7 +16,7 @@ note "Starting Fuseki Java process";
 my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new();
 $fuseki->start_server();
 note "Server started?";
-$fuseki->load_data(['data/test_graph.ttl']);
+$fuseki->load_data(["$Bin/data/test_graph.ttl"]);
 note "Data loaded";
 my $row_count = 0;
 my $sparql = 'SELECT ?s ?p ?o WHERE { ?s ?p ?o . }';

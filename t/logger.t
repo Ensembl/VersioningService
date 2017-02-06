@@ -25,6 +25,9 @@ use Bio::EnsEMBL::Versioning::Logger;
 use Bio::EnsEMBL::Versioning::TestDB qw/broker get_conf_location/;
 use Time::HiRes qw (sleep);
 
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
 my $broker = broker();
 

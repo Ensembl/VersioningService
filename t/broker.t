@@ -24,6 +24,10 @@ use File::Temp qw/tempfile tempdir/;
 use Test::MockObject::Extends;
 use Test::MockObject;
 
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
 my $broker = broker();
 # throw in some test data
 # consider changing to "fixtures", for neat and tidy test data.

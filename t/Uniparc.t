@@ -18,7 +18,7 @@ $xml_reader->read_record;
 
 my $record = $xml_reader->record;
 is($record->accessions->[0], 'UPI0000000001', 'primary_accession check');
-is($record->checksum, '28FE89850863372D', 'checksum check');
+is($record->checksum, 'ef8a186543fe2e2243b5f2c571e8ce69', 'checksum check');
 cmp_ok($record->sequence_length, '==', 250, 'sequence_length check');
 cmp_ok(length($seq), '==', 250, 'other length check');
 # Uniparc parser not keeping sequence, therefore no verification.

@@ -9,7 +9,7 @@ export TEST_POD=1
 # export FUSEKI_HOME=$ENSDIR/apache-jena-fuseki-2.4.1/ 
 # export PATH=$FUSEKI_HOME/bin:$PATH # allow to find s-put for fuseki integration tests
 
-cp t/MultiTestDB.conf.example t/MultiTestDB.conf
+cp travisci/MultiTestDB.conf.travisci.mysql  modules/t/MultiTestDB.conf
 cp conf/databases.conf.example conf/databases.conf
 cp conf/test.conf.example conf/test.conf
 

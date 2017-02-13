@@ -15,7 +15,6 @@ before_install:
     - git clone --branch master --depth 1 https://github.com/Ensembl/ensembl-hive
     - git clone --branch master --depth 1 https://github.com/Ensembl/ensembl-taxonomy
     - git clone -b bioperl-release-1-6-1 --depth 1 https://github.com/bioperl/bioperl-live.git
-    - curl -O http://mirror.vorboss.net/apache/jena/binaries/apache-jena-fuseki-2.4.1.tar.gz && tar zxvf apache-jena-fuseki-2.4.1.tar.gz 
 
 install:
     - cpanm --installdeps --with-recommends --notest .

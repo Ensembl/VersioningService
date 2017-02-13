@@ -1,3 +1,9 @@
+[![Build Status](https://travis-ci.org/Ensembl/VersioningService.png?branch=master)][travis]
+[![Coverage Status](https://coveralls.io/repos/Ensembl/VersioningService/badge.png)][coveralls]
+
+[travis]: https://travis-ci.org/Ensembl/VersioningService
+[coveralls]: https://coveralls.io/r/Ensembl/VersioningService
+
 # Versioning Service
 Service for downloading and consuming external data integrated into Ensembl releases.
 

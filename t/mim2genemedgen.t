@@ -1,10 +1,11 @@
 use Test::More;
 use Test::Differences;
 
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
-use Data::Dumper;
-use Bio::EnsEMBL::Mongoose::Parser::MIM2GeneMedGen;
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::MIM2GeneMedGen';
 
 my $reader = Bio::EnsEMBL::Mongoose::Parser::MIM2GeneMedGen->new(
     source_file => "$ENV{MONGOOSE}/t/data/mim2gene_medshort",
@@ -19,7 +20,6 @@ while (my $record = $reader->read_record) {
   if ($record->id eq 100100) {
     $record_of_interest = $record;
   }
-  # print Dumper $record;
 }
 
 is_deeply(\@ids, [qw/100050 100070 100100 100200 100300 100600 100640 100650 100660/], 'IDs extracted from file match');
@@ -29,7 +29,5 @@ is ($record_of_interest->id,'100100','Check correct record extracted');
 
 # print Dumper $record_of_interest;
 cmp_ok(scalar @xrefs,'==',2,'Two xrefs on MIM 100100');
-
-
 
 done_testing;

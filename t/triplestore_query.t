@@ -4,10 +4,14 @@ use Test::Differences;
 use Test::Deep;
 use List::Compare;
 use Test::MockObject::Extends;
-use Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery;
 use RDF::Trine;
 use RDF::Query;
-use Data::Dumper;
+
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
+use_ok 'Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery';
 
 my $query_agent = Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery->new();
 my $test_data = "$ENV{MONGOOSE}/t/data/test_graph.ttl";
@@ -27,7 +31,6 @@ $query_agent = Test::MockObject::Extends->new($query_agent);
 my $mock_query = sub {
   my $self = shift;
   my $query = shift;
-  # note Dumper $query;
   my $query_obj = RDF::Query->new($query);
   my $iterator = $query_obj->execute($model);
   $query_agent->result_set($iterator);
@@ -56,11 +59,8 @@ is_deeply($id_list, ['Subject b','Subject c'], 'a links to b and c');
 
 my $id_list = $query_agent->recurse_xrefs('Subject b');
 is_deeply($id_list, ['Subject c'], 'b links only to a');
-# note Dumper $id_list;
 
 my $id_list = $query_agent->get_all_linking_xrefs('Subject c');
 is_deeply($id_list, ['Subject a','Subject b'], 'c is linked to by a and b');
-
-
 
 done_testing();

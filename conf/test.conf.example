@@ -15,4 +15,4 @@ scratch_space = "/tmp"
 
 [RDF config]
 # Used to assist linked data generation by RDF code
-LOD_location = "/path/to/xref_LOD_mapping.json"
+LOD_location = "conf/xref_LOD_mapping.json"

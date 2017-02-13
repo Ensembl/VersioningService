@@ -3,9 +3,6 @@ use Test::Differences;
 use Cwd;
 use Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq;
 
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
-
 my $refseq = Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq->new();
 $refseq->file_pattern('complete\.55\.bna.*');
 

@@ -1,9 +1,9 @@
 # Test the REST interface against ensembl REST server
 use Test::More;
 use Moose;
-use Bio::EnsEMBL::Versioning::Pipeline::Downloader::HTTPClient;
-use Data::Dumper;
 use Cwd;
+
+use_ok 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::HTTPClient';
 
 package Thingy;
 

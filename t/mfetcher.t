@@ -2,12 +2,15 @@ use Test::More;
 use Test::Differences;
 use Test::Exception;
 
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use FindBin qw/$Bin/;
 use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use IO::String;
+
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
 my $out;
 my $fh = IO::String->new($out);
 

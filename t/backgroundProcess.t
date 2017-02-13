@@ -9,7 +9,14 @@ use strict;
 use Test::More;
 use Test::Differences;
 
-my $runner = Runner->new(command => './bin/fake_server.pl', args => { '--param' => 2 });
+BEGIN {
+  use FindBin qw/$Bin/;
+  $ENV{MONGOOSE} = "$Bin/..";
+  $ENV{FAKE_SERVER} = "$Bin/bin/fake_server.pl";
+  print $ENV{FAKE_SERVER}, "\n";
+}
+
+my $runner = Runner->new(command => $ENV{FAKE_SERVER}, args => { '--param' => 2 });
 $runner->run_command();
 ok($runner->get_pid(),'Make sure a PID got assigned to a process');
 note $runner->get_pid();
@@ -20,7 +27,7 @@ sleep 2;
 ok(!$runner->background_process_alive,'Process finished');
 
 # Launch a 20-second process before asking it to close early
-$runner = Runner->new(command => './bin/fake_server.pl', args => { param => 20 });
+$runner = Runner->new(command => $ENV{FAKE_SERVER}, args => { param => 20 });
 $runner->run_command();
 note $runner->get_pid();
 my $pid = $runner->get_pid();

@@ -1,9 +1,11 @@
 use Test::More;
 use Test::Differences;
 
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
-use Bio::EnsEMBL::Mongoose::Parser::RefSeq;
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::RefSeq';
 
 
 my $source = $ENV{MONGOOSE}."/t/data/XM_005579308.gbff";

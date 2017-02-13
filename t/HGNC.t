@@ -1,12 +1,14 @@
 use Test::More;
 use Test::Differences;
 use File::Path 'remove_tree';
-use Data::Dumper;
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
-use Bio::EnsEMBL::Mongoose::Parser::HGNC;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
+
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::HGNC';
 
 my $source = $ENV{MONGOOSE}."/t/data/hgnc.json";
 my $hgnc_reader = new Bio::EnsEMBL::Mongoose::Parser::HGNC(
@@ -67,7 +69,6 @@ while (my $hit = $interlocutor->next_result) {
 cmp_ok(scalar @results, '==', 4, 'All four records made it to the index');
 is_deeply([map { $_->id } @results], [qw/HGNC:5 Cave Johnson Lemons/], 'IDs come back out of index intact');
 
-#print Dumper @results;
 # Delete index
 remove_tree($index_path);
 

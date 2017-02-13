@@ -21,10 +21,15 @@ use strict;
 use warnings;
 
 use Test::More;
-use Bio::EnsEMBL::Versioning::Logger;
-use Bio::EnsEMBL::Versioning::TestDB qw/broker get_conf_location/;
 use Time::HiRes qw (sleep);
 
+BEGIN { 
+  use FindBin qw/$Bin/;
+  $ENV{MONGOOSE} = "$Bin/..";
+}
+
+use Bio::EnsEMBL::Versioning::Logger;
+use Bio::EnsEMBL::Versioning::TestDB qw/broker get_conf_location/;
 
 my $broker = broker();
 

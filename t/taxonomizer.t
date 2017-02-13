@@ -2,13 +2,9 @@ use Test::More;
 use Test::Differences;
 use Test::Deep;
 
-use Bio::EnsEMBL::Mongoose::Taxonomizer;
-
-BEGIN {
-  use FindBin qw/$Bin/;
-  $ENV{MONGOOSE} = "$Bin/..";
-  $ENV{LOG} = "$Bin";
-}
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
 use_ok 'Bio::EnsEMBL::Mongoose::Taxonomizer';
 

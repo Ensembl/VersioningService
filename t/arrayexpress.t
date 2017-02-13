@@ -2,14 +2,15 @@ use Test::More;
 use Test::Differences;
 use Test::Deep;
 
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
-use Bio::EnsEMBL::Mongoose::Parser::ArrayExpress;
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::ArrayExpress';
 
 my $reader = new Bio::EnsEMBL::Mongoose::Parser::ArrayExpress(
     source_file => "$ENV{MONGOOSE}/t/data/homo_sapiens.ensgene.tsv",
 );
-
 
 my $num_of_records = 0;
 #first record

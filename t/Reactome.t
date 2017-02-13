@@ -2,15 +2,15 @@ use Test::More;
 use Test::Differences;
 use Test::Deep;
 
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
-use Bio::EnsEMBL::Mongoose::Parser::Reactome;
-use Data::Dumper;
+use_ok  'Bio::EnsEMBL::Mongoose::Parser::Reactome';
 
 my $reader = new Bio::EnsEMBL::Mongoose::Parser::Reactome(
     source_file => "$ENV{MONGOOSE}/t/data/reactome.txt",
 );
-
 
 my $num_of_records = 0;
 #first record
@@ -68,6 +68,5 @@ cmp_deeply($all_xrefs, $expected_xref, "Got back right xrefs");
 #get the first xref and check if the object is right
 my $first_xref = shift $all_xrefs;
 isa_ok($first_xref, "Bio::EnsEMBL::Mongoose::Persistence::RecordXref");
-
 
 done_testing;

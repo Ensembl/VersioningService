@@ -5,7 +5,6 @@ use Test::JSON;
 use Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient;
 use IO::File;
 
-
 package Thingy;
 
 use Moose;

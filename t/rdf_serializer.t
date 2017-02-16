@@ -26,7 +26,7 @@ is($rdf_writer->identifier('EMBL_predicted'),'http://identifiers.org/ena.embl/',
 is($rdf_writer->new_xref('test','target'),'http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/test/target/1','Get an xref URI');
 is($rdf_writer->new_xref('test','target'),'http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/test/target/2','xref id iterator increments');
 
-# Test record-writing powers
+# Test record-writing powers with synthetic data
 
 my $test_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   id => 'Testy',
@@ -38,7 +38,6 @@ my $test_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
    ],
   });
 
-$rdf_writer->print_record($test_record,'ensembl_transcript');
 
 my $dependent_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   id => 'NM1',
@@ -49,8 +48,6 @@ my $dependent_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   ],
 });
 # Spurious test data looks like uniprot_id->xref->refseq_id->xref->mim_id
-$rdf_writer->print_record($dependent_record,'RefSeq_dna');
-
 # Now try to break the implementation, by including a deliberate cycle.
 my $loopy_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   id => 'MrCyclic',
@@ -60,10 +57,19 @@ my $loopy_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   ],
 });
 
+$rdf_writer->print_record($test_record,'ensembl_transcript');
+$rdf_writer->print_record($dependent_record,'RefSeq_dna');
 $rdf_writer->print_record($loopy_record, 'flybase_transcript_id');
 
-note $dummy_content;
+# Add some unrelated links to test Checksum link generation
+# Checksum records are found by their checksum so they don't need to look very interesting
+my $checksum_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
+  id => 'MrHex'
+});
+$rdf_writer->print_checksum_xrefs('ENST1',$checksum_record,'RNACentral');
 
+
+note $dummy_content;
 # parse and validate data
 my $store = RDF::Trine::Store::Memory->new();
 my $model = RDF::Trine::Model->new($store);
@@ -92,10 +98,27 @@ $sparql = 'select ?id where {
     ?node dc:identifier ?id .
   }';
 
+# Check on checksum-typed xrefs
 $query = RDF::Query->new($prefixes.$sparql);
 $query->error;
 $iterator = $query->execute($model);
 @results = $iterator->get_all;
-cmp_deeply([map { $_->{id}->as_string} @results],bag(qw/"Testy" "NM1" "MrCyclic" "NM2" "100"/),'null1 not included in results, and NM1 does not appear twice');
+cmp_deeply([map { $_->{id}->as_string} @results],bag(qw/"Testy" "NM1" "MrCyclic" "NM2" "100" "MrHex" "ENST1"/),'null1 not included in results, and NM1 does not appear twice');
+
+$sparql = 'select ?id ?target_id where {
+    ?node term:refers-to ?hop .
+    ?node dc:identifier ?id .
+    ?hop rdf:type term:Checksum .
+    ?hop term:refers-to ?xref .
+    ?xref dc:identifier ?target_id.
+  }';
+
+$query = RDF::Query->new($prefixes.$sparql);
+$query->error;
+$iterator = $query->execute($model);
+my $result = $iterator->next;
+
+cmp_deeply([qw/ "ENST1" "MrHex"/], [$result->{id}->as_string,$result->{target_id}->as_string] , 'Checksum-type xref successfully extracted');
+
 
 done_testing();

@@ -111,6 +111,8 @@ sub run {
   $pep_fh->close;
   $pep_checksum_fh->close;
 
+  # Send checksum locations onto next process
+  $self->dataflow_output_id({ cdna_path => $self->param('cdna_path'), pep_path => $self->param('pep_path')}, 2);
 }
 
 1;

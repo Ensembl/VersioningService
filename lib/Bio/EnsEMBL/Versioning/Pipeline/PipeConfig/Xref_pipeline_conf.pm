@@ -121,8 +121,16 @@ sub pipeline_analyses {
       -hive_capacity => 4,
       -failed_job_tolerance => 25,
       -flow_into => {
-
+        2 => ['CheckCheckSum']
       }
+    },
+    {
+      -logic_name => 'CheckCheckSum',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::CheckCheckSum',
+      -max_retry_count => 0,
+      -hive_capacity => 10,
+      -failed_job_tolerance => 1,
+
     },
     {
       -logic_name => 'LogSummaryEnd',

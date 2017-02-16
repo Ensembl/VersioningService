@@ -72,14 +72,17 @@ has storage_engine => (
 sub _init_storage {
     my $self = shift;
     my $store;
+    my %opts;
     if ($self->using_conf_file) {
         $self->log->debug("Reading config file ".$self->storage_engine_conf_file);
         my $conf = Config::General->new($self->storage_engine_conf_file);
-        my %opts = $conf->getall();
+        %opts = $conf->getall();
         $self->storage_engine_conf(\%opts);
         if (exists $opts{index_location}) {
             $self->index_conf({index_location => $opts{index_location}, data_location => $opts{data_location} });
         }
+    } else {
+      %opts = %{$self->index_conf};
     }
     $self->log->debug("Activating Lucy index ".$opts{index_location}); 
     $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config=>$self->index_conf);
@@ -246,6 +249,19 @@ sub prep_query {
   my $self = shift;
   $self->storage_engine->query();
 }
+
+sub query {
+  my $self = shift;
+  my $query_params = shift;
+  if (!ref $query_params eq 'Bio::EnsEMBL::Mongoose::Persistence::QueryParameters') {
+    Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Usage requires a QueryParameters object passed as a parameter');
+  }
+  $self->query_params($query_params);
+  $self->convert_name_to_taxon if $query_params->species;
+  # Ideally one would not repeatedly convert species name to taxon over and over...
+  $self->prep_query;
+}
+
 
 __PACKAGE__->meta->make_immutable;
 

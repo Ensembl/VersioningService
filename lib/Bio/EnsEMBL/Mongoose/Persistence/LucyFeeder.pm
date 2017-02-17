@@ -66,6 +66,10 @@ has schema => (
             }
         }
         
+        # Add additional positional fields to enable range query
+        $schema->spec_field( name => 'transcript_start_padded', type => $lucy_str);
+        $schema->spec_field( name => 'transcript_end_padded', type => $lucy_str);
+
         # Add on bonus blob field
         
         $schema->spec_field( name => 'blob', type => $lucy_blob);
@@ -120,6 +124,15 @@ sub store_record {
         my @isoforms = @{$flattened_record{isoforms}};
         $flattened_record{isoforms} = join ' ',@isoforms;
     }
+
+    # store the transcript_start and transcript_end as fixed width string to be able to sort and search
+    if($flattened_record{transcript_start}){
+      $flattened_record{transcript_start_padded} = sprintf("%018d", $flattened_record{transcript_start});
+    }
+    if($flattened_record{transcript_end}){
+      $flattened_record{transcript_end_padded} = sprintf("%018d", $flattened_record{transcript_end});
+    }
+
     # Throw out pointless duplicates that don't need to be in the index, just in the blob
     for my $key (qw/
         sequence 
@@ -131,8 +144,7 @@ sub store_record {
         exon_ends
         cds_start
         cds_end
-        chromosome
-        strand/) {
+        /) {
         if (exists $flattened_record{$key}) {
             delete $flattened_record{$key};
         }

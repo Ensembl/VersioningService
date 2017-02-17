@@ -46,7 +46,6 @@ has search_engine => (
     lazy => 1,
     default => sub {
         my $self = shift;
-        $self->log->debug(Dumper $self->config);
         return Lucy::Search::IndexSearcher->new(
             index => $self->config->{index_location},
         );
@@ -204,6 +203,101 @@ sub get_all_records {
         push @records,$self->convert_result_to_record($result);
     }
     return \@records;
+}
+
+# Build term query
+sub build_term_query {
+  my $self = shift;
+  my ($args) = @_;
+
+  my $term_query = Lucy::Search::TermQuery->new(
+    field => $args->{field},
+    term  => $args->{term},
+  );
+  return $term_query;
+}
+
+
+## Build range query
+sub build_range_query {
+  my $self = shift;
+  my ($args) = @_;
+  my $range_query;
+
+  if(exists $args->{include_upper} && exists $args->{include_lower}){
+    $range_query = Lucy::Search::RangeQuery->new(
+      field         => $args->{field},
+      lower_term    => $args->{lower_term},
+      upper_term    => $args->{upper_term},
+      include_upper => $args->{include_upper},
+      include_lower => $args->{include_lower},
+   );
+  }elsif(exists $args->{include_upper}){
+    $range_query = Lucy::Search::RangeQuery->new(
+      field         => $args->{field},
+      upper_term    => $args->{upper_term},
+      include_upper => $args->{include_upper},
+   );
+  }elsif(exists $args->{include_lower}){
+    $range_query = Lucy::Search::RangeQuery->new(
+      field         => $args->{field},
+      lower_term    => $args->{lower_term},
+      include_lower => $args->{include_lower},
+   );
+  }
+
+  return $range_query;
+}
+sub fetch_region_overlaps{
+  my ($self, $taxon_id, $chromosome, $strand, $start, $end) = @_;
+
+  my $term_query_species = $self->build_term_query({field => "taxon_id", term => $taxon_id});
+  my $term_query_chromosome = $self->build_term_query({field => "chromosome", term => $chromosome});
+  my $term_query_strand = $self->build_term_query({field => "strand", term => $strand});
+
+  my $taxon_and_chr_strand_query = Lucy::Search::ANDQuery->new(
+    children => [ $term_query_species, $term_query_chromosome, $term_query_strand ],
+  );
+
+  #transcript_start_padded >= start and transcript_start_padded <=end
+  my $range_query1 = $self->build_range_query({field => "transcript_start_padded", lower_term => $start, upper_term=>$end, include_lower => 1, include_upper => 1});
+
+   #transcript_end_padded >= start and transcript_end_padded <=end
+  my $range_query2 = $self->build_range_query({field => "transcript_end_padded", lower_term => $start, upper_term=>$end, include_lower => 1, include_upper => 1});
+
+  #lower_term - Lower delimiter. If not supplied, all values less than upper_term will pass.
+  my $range_query3 = $self->build_range_query({field => "transcript_start_padded", upper_term=>$start, include_upper => 1});
+
+  #upper_term - Upper delimiter. If not supplied, all values greater than lower_term will pass.
+  my $range_query4 = $self->build_range_query({field => "transcript_end_padded", lower_term=>$end, include_lower => 1});
+
+  #(txStart <= 10000 AND txEnd >= 90500))
+  my $and_query_range = Lucy::Search::ANDQuery->new(
+    children => [ $range_query3, $range_query4 ],
+  );
+
+  #== ((txStart BETWEEN 10000 AND 90500) OR (txEnd BETWEEN 10000 AND 90500) OR (txStart <= 10000 AND txEnd >= 90500))
+  my $or_query = Lucy::Search::ORQuery->new(
+    children => [ $range_query1, $range_query2, $and_query_range ],
+  );
+
+  my $final_query = Lucy::Search::ANDQuery->new(
+    children => [ $taxon_and_chr_strand_query, $or_query ],
+  );
+
+  my $hits = $self->search_engine->hits(
+        query      => $final_query,
+        num_wanted => 1000000,
+  );
+
+  my $hit_count = $hits->total_hits;  # get the hit count here
+  my @results;
+  while ( my $hit = $hits->next ) {
+    my $record = $self->convert_result_to_record($hit);
+    push @results, $record;
+  }
+
+  return \@results;
 }
 
 __PACKAGE__->meta->make_immutable;

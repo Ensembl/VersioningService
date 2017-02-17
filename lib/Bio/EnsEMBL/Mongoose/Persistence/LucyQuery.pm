@@ -46,6 +46,7 @@ has search_engine => (
     lazy => 1,
     default => sub {
         my $self = shift;
+        $self->log->debug(Dumper $self->config);
         return Lucy::Search::IndexSearcher->new(
             index => $self->config->{index_location},
         );

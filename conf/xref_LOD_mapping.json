@@ -660,6 +660,11 @@
       "feature_type": "transcript"
     },
     {
+      "db_name": "JGI",
+      "description": "Joint Genome Institute, describing Ciona Intestinalis protein sequences",
+      "feature_type": "protein"
+    },
+    {
       "db_name": "KEGG",
       "example_id": "00450+2.1.1.-",
       "ignore": true,
@@ -978,6 +983,12 @@
       "id_namespace": "pubmed",
       "bidirectional": false,
       "feature_type": "annotation"
+    },
+    {
+      "db_name": "RGD",
+      "description": "Rat genome database",
+      "bidirectional": true,
+      "feature_type": "gene"
     },
     {
       "db_name": "Reactome",
@@ -1382,6 +1393,12 @@
       "ignore": true,
       "bidirectional": true,
       "feature_type": "translation"
+    },
+    {
+      "db_name": "VGNC",
+      "description": "Chimp naming consortium",
+      "bidirectional": true,
+      "feature_type": "gene"
     },
     {
       "db_name": "WikiGene",

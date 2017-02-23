@@ -257,7 +257,7 @@ sub query {
     Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Usage requires a QueryParameters object passed as a parameter');
   }
   $self->query_params($query_params);
-  $self->convert_name_to_taxon if $query_params->species;
+  $self->convert_name_to_taxon if $query_params->species_name;
   # Ideally one would not repeatedly convert species name to taxon over and over...
   $self->prep_query;
 }

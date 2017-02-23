@@ -44,10 +44,12 @@ $reader->next_record;
 
 $reader = Bio::EnsEMBL::Mongoose::IndexReader->new(
     storage_engine_conf_file => "$Bin/../conf/test.conf",
-    species => 'Morlock',
+    
 );
-
-throws_ok( sub { $reader->next_record() }, 'Bio::EnsEMBL::Mongoose::SearchEngineException', 'Bad species name causes an exception explaining why');
+$params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
+    species_name => 'Morlock'
+);
+throws_ok( sub { $reader->query($params) }, 'Bio::EnsEMBL::Mongoose::SearchEngineException', 'Bad species name causes an exception explaining why');
 
 # Test for checksums via accessors
 

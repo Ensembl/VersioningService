@@ -74,7 +74,7 @@ sub fetch_input {
   my $base_path = $broker->scratch_space;
   # TODO - EG specific pathing suitable for their greater number of species
   foreach my $type (qw/cdna pep/) {
-    my $full_path = File::Spec->catfile($base_path,'xref',$release,$species,'fasta',$type,'/');
+    my $full_path = File::Spec->catfile($base_path,'xref',$release,$species,'fasta','ensembl',$type,'/');
     make_path($full_path);
     $self->param("${type}_path",$full_path);
   }

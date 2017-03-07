@@ -17,12 +17,17 @@ limitations under the License.
 
 =head1 DESCRIPTION
 
-Responsible for turning pairs of species and Xref source into an alignment method to apply
-Used by ExonerateAligner
+Responsible for turning pairs of species and Xref source into an alignment method to apply. 
+It also defines what parameters are set to given a particular method name. Used by ExonerateAligner
 
 =head1 SYNOPSIS
 
 my $method_string = $method_factory->get_method_by_species_and_source('gopher','holes');
+
+if ($method_factory->valid_method($method_string) ) {
+  print "$method_string is the chosen method";
+  ...
+};
 
 =cut
 package Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory;
@@ -44,7 +49,7 @@ sub _populate_method_matrix {
   my $self = shift;
   # this is where you'd read a config file if you need to
   # I suspect this approach to configuring aligners will get us into trouble with bacteria
-  # These strings are defined in ExonerateAligner...
+  # These strings are used by ExonerateAligner
   my $matrix = {
     default => {
       default => 'top5_90%'

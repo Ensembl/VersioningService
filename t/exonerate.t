@@ -10,7 +10,7 @@ my $exonerate = Bio::EnsEMBL::Mongoose::Utils::ExonerateAligner->new(source => '
 $exonerate->set_method('best_90%');
 my $command = $exonerate->build_command;
 
-is($command, 'exonerate --showalignment false --showvulgar false --ryo xref\t%qi\t%ti\t%ei\t%ql\t%tl\t%qab\t%qae\t%tab\t%tae\t%C\t%s\n '
+is($command, q(exonerate --showalignment false --showvulgar false --ryo 'xref\t%qi\t%ti\t%ei\t%ql\t%tl\t%qab\t%qae\t%tab\t%tae\t%C\t%s\n' )
   .'--gappedextension false --model affine:local --bestn 1 --subopt no --query test --target pruefen ', 'Sanity check on parameters for exonerate');
 
 my $spurious_exonerate_output = "xref\tENST01\tNM003\t99.2\t100\t110\t1\t100\t1\t100\tM\t110\n";
@@ -30,7 +30,7 @@ for (my $i = 1; $i<=3; $i++) {
   $exonerate = Bio::EnsEMBL::Mongoose::Utils::ExonerateAligner->new(source => 'test', target => 'pruefen',chunk_cardinality => 3, execute_on_chunk => $i);
   $exonerate->set_method('best_90%');
   $command = $exonerate->build_command;
-  is($command, 'exonerate --showalignment false --showvulgar false --ryo \'xref\t%qi\t%ti\t%ei\t%ql\t%tl\t%qab\t%qae\t%tab\t%tae\t%C\t%s\n\' '
+  is($command, q(exonerate --showalignment false --showvulgar false --ryo 'xref\t%qi\t%ti\t%ei\t%ql\t%tl\t%qab\t%qae\t%tab\t%tae\t%C\t%s\n' )
   ."--gappedextension false --model affine:local --bestn 1 --subopt no --query test --target pruefen --querychunktotal 3 --querychunkid $i", 'Chunking parameters for exonerate');
 
 }

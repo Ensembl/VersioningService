@@ -2,9 +2,9 @@ use Modern::Perl;
 use Test::More;
 use FindBin qw/$Bin/;
 
-use Bio::EnsEMBL::Mongoose::AlignmentMethodFactory;
+use Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory;
 
-my $method_factory = Bio::EnsEMBL::Mongoose::AlignmentMethodFactory->new();
+my $method_factory = Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory->new();
 
 ok($method_factory->are_you_there('uniprot'),'Default accessors');
 

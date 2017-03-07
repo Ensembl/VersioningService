@@ -25,6 +25,7 @@ use Moose;
 use Config::General;
 use Moose::Util::TypeConstraints;
 use Bio::EnsEMBL::Mongoose::UsageException;
+use Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory;
 
 extends 'Bio::EnsEMBL::Mongoose::Utils::Aligner';
 
@@ -39,45 +40,7 @@ has conf => (is => 'rw',isa => 'HashRef', default => sub {{
   subopt => 'no'
 }});
 
-# Range of criteria for alignment selection
-has preset_methods => (
-  is => 'ro', 
-  isa => 'HashRef', 
-  traits => ['Hash'], 
-  handles => { 
-    valid_method => 'exists',
-    method_names => 'keys',
-    fetch_method => 'get'
-  },
-  default => sub {{
-    best_exact => {
-      query_score => 1,
-      target_score => 1,
-      n => 1
-    },
-    'best_90%' => {
-      query_score => 0.9,
-      target_score => 0.9,
-      n => 1
-    },
-    'top5_90%' => {
-      query_score => 0.9,
-      target_score => 0.9,
-      n => 5
-    },
-    top5_asymmetric => {
-      query_score => 0.95,
-      target_score => 0.70,
-      n => 5
-    },
-    'top_5_55%' => {
-      query_score => 0.55,
-      target_score => 0.55,
-      n => 5
-    }
-}});
-
-# These can be set directly, or via a preset above with set_method(). Might belong in generic Aligner class in future
+# These can be set directly, or via a presets in AlignmentMethodFactory with set_method(). Might belong in generic Aligner class in future
 has query_threshold => (is => 'rw', isa => 'Num'); # %id match
 has target_threshold => (is => 'rw', isa => 'Num'); # %id match from target to query
 has limit => (is => 'rw', isa => 'Int'); # i.e. number of results to return, --bestn
@@ -85,6 +48,7 @@ has limit => (is => 'rw', isa => 'Int'); # i.e. number of results to return, --b
 has chunk_cardinality => (is => 'rw', isa => 'Int'); # number of jobs being run on the query file
 has execute_on_chunk => (is => 'rw', isa => 'Int'); # portion of query file to work on
 
+has method_factory => (is => 'ro', default => sub{{ Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory->new() }});
 
 has result_filter => (
   traits => ['Code'], 
@@ -103,8 +67,8 @@ sub BUILD {
 sub set_method {
   my $self = shift;
   my $method = shift;
-  if ($method and $self->valid_method($method)) {
-    my $params = $self->fetch_method($method);
+  if ($method and $self->method_factory->valid_method($method)) {
+    my $params = $self->method_factory->fetch_method($method);
     $self->query_threshold($params->{query_score});
     $self->target_threshold($params->{target_score});
     $self->limit($params->{n});

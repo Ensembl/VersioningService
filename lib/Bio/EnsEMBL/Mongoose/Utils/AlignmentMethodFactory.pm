@@ -18,14 +18,14 @@ limitations under the License.
 =head1 DESCRIPTION
 
 Responsible for turning pairs of species and Xref source into an alignment method to apply
-Se
+Used by ExonerateAligner
 
 =head1 SYNOPSIS
 
 my $method_string = $method_factory->get_method_by_species_and_source('gopher','holes');
 
 =cut
-package Bio::EnsEMBL::Mongoose::AlignmentMethodFactory;
+package Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory;
 
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -40,26 +40,6 @@ has method_matrix => (
     get_methods_by_source => 'get',
   }
 );
-
-sub get_method_by_species_and_source {
-  my ($self,$species, $source) = @_;
-  my $method;
-  if ($self->are_you_there($source) ) {
-    # species-specific mode choice
-    my $methods = $self->get_methods_by_source(lc $source);
-    if (exists $methods->{$species}) {
-      return $methods->{$species};
-    } else {
-      # default for source
-      return $methods->{default};
-    }
-  } else {
-    # global default
-    return $self->get_methods_by_source('default')->{default};
-  }
-  
-}
-
 sub _populate_method_matrix {
   my $self = shift;
   # this is where you'd read a config file if you need to
@@ -83,5 +63,63 @@ sub _populate_method_matrix {
     },
   };
 }
+
+# Range of criteria for alignment selection
+has preset_methods => (
+  is => 'ro', 
+  isa => 'HashRef', 
+  traits => ['Hash'], 
+  handles => { 
+    valid_method => 'exists',
+    method_names => 'keys',
+    fetch_method => 'get'
+  },
+  default => sub {{
+    best_exact => {
+      query_score => 1,
+      target_score => 1,
+      n => 1
+    },
+    'best_90%' => {
+      query_score => 0.9,
+      target_score => 0.9,
+      n => 1
+    },
+    'top5_90%' => {
+      query_score => 0.9,
+      target_score => 0.9,
+      n => 5
+    },
+    top5_asymmetric => {
+      query_score => 0.95,
+      target_score => 0.70,
+      n => 5
+    },
+    'top_5_55%' => {
+      query_score => 0.55,
+      target_score => 0.55,
+      n => 5
+    }
+}});
+
+sub get_method_by_species_and_source {
+  my ($self,$species, $source) = @_;
+  my $method;
+  if ($self->are_you_there($source) ) {
+    # species-specific mode choice
+    my $methods = $self->get_methods_by_source(lc $source);
+    if (exists $methods->{$species}) {
+      return $methods->{$species};
+    } else {
+      # default for source
+      return $methods->{default};
+    }
+  } else {
+    # global default
+    return $self->get_methods_by_source('default')->{default};
+  }
+  
+}
+
 
 1;

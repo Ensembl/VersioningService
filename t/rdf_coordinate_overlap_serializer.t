@@ -1,16 +1,11 @@
 use strict;
 use Test::More;
-use Test::Deep;
+#use Test::Deep;
 
 use Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
-use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 use FindBin qw/$Bin/;
-
 use IO::String;
-use RDF::Trine;
-use RDF::Query;
-use Data::Dumper;
 
 my $dummy_content;
 my $dummy_fh = IO::String->new($dummy_content);

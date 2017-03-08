@@ -23,16 +23,11 @@ use warnings;
 use Test::More;
 use Bio::EnsEMBL::Registry;
 use Bio::EnsEMBL::Test::MultiTestDB;
-
-use Bio::EnsEMBL::Production::DBSQL::BulkFetcher;
-use File::Path;;
-use Data::Dumper;
-use Benchmark;
+use File::Path;
 
 use FindBin qw/$Bin/;
 use Config::General;
 my %conf = Config::General->new($Bin.'/../conf/test.conf')->getall();
-
 
 
 BEGIN { 

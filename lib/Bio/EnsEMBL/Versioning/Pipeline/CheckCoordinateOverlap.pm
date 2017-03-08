@@ -45,19 +45,12 @@ use warnings;
 
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
-use Bio::EnsEMBL::Utils::Exception qw/throw/;
-use Bio::EnsEMBL::Versioning::Broker;
-use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
-use Bio::EnsEMBL::Mongoose::IndexReader;
-use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap;
-use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Bio::EnsEMBL::Versioning::CoordinateMapper;
 use Bio::EnsEMBL::ApiVersion qw/software_version/;
 use File::Path qw/make_path/;
 use File::Spec;
 use IO::File;
-use Bio::EnsEMBL::Utils::IO qw/slurp_to_array/;
 
 
 sub fetch_input {

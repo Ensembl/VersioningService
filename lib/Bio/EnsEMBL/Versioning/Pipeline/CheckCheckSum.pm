@@ -80,7 +80,7 @@ sub fetch_input {
   if (!-d $output_path) {
     make_path $output_path or die "Failed to create path: $output_path";
   }
-  $self->param_required('output_path',$output_path);
+  $self->param('output_path',$output_path);
 }
 
 sub run {

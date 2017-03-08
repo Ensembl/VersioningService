@@ -1,0 +1,6 @@
+22	2014-02-07 12:47:43	human_est	embl_118	Jan 31 12:35	\N	\N	\N	\N	\N	Exonerate2Genes	\N	\N	\N
+8166	2014-03-06 09:35:06	refseq_human_import	refseq_65	07_2014	\N	\N	\N	\N	\N	\N	\N	\N	\N
+8358	2014-06-04 19:23:09	estgene	embl_118	Jan 31 12:35	\N	\N	\N	\N	\N	Bio::EnsEMBL::Pipeline::RunnableDB::EST_GeneBuilder	\N	\N	\N
+8359	2014-06-25 16:43:11	ccds_import	\N	24042014	\N	\N	\N	\N	\N	\N	\N	\N	\N
+8360	2014-09-01 14:40:19	refseq_import	\N	2016-08-03 11:43:09	GCF_000001405.34_GRCh38.p8_genomic.gff	\N	\N	\N	\N	\N	\N	\N	\N
+8361	2014-11-07 11:47:57	grc_alignment_import	\N	GRCh38.p2	\N	\N	\N	\N	\N	\N	\N	\N	\N

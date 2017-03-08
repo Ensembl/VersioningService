@@ -1,0 +1,9 @@
+assembly_exception	4	5161414
+transcript	4	2473591
+gene	4	133037909
+exon	4	1378008
+dna_align_feature	4	5081216
+gene	3	278678
+transcript	3	278678
+dna_align_feature	3	806
+exon	3	13357

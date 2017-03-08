@@ -73,7 +73,7 @@ sub set_method {
     $self->target_threshold($params->{target_score});
     $self->limit($params->{n});
   } else {
-    Bio::EnsEMBL::Mongoose::UsageException->throw("No method $method available. Valid methods are ".join(',',$self->method_names()) );
+    Bio::EnsEMBL::Mongoose::UsageException->throw("No method $method available. Valid methods are ".join(',',$self->method_factory->method_names()) );
   }
 }
 

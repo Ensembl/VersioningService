@@ -124,22 +124,15 @@ sub print_checksum_xrefs {
   my $record = shift;
   my $source = shift;
 
-  my $fh = $self->handle;
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
-  my $clean_id = uri_escape($id);
-  my $namespace = $self->identifier($source);
-
-  my $xref_source = $self->prefix('ensembl').$ens_id;
-  my $xref_link = $self->new_xref('ensembl',$source);
-
-  $namespace = $self->identifier($source);
-  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
-  my $xref_target = $namespace.$clean_id;
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($ens_id,'ensembl',$id,$source);
+  
+  my $fh = $self->handle;
   # Meta about Ensembl ID
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->prefix('ensembl')));
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
-  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), '"'.$ens_id.'"' );
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), qq/"$ens_id"/ );
   # Create link
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
   print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
@@ -154,20 +147,49 @@ sub print_slimline_checksum_xrefs {
   my $record = shift;
   my $source = shift;
 
-  my $fh = $self->handle;
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);
-  my $namespace = $self->identifier($source);
-
-  my $xref_source = $self->prefix('ensembl').$ens_id;
-  my $xref_link;
-
-  $namespace = $self->identifier($source);
-  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
-  my $xref_target = $namespace.$clean_id;
-
+  my ($xref_source,undef,$xref_target) = $self->generate_uris($ens_id,'ensembl',$id,$source);
+  
+  my $fh = $self->handle;
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
+}
+
+sub print_alignment_xrefs {
+  my ($self,$source_id,$source,$target_id,$target_source,$score) = @_;
+  
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($source_id,$source,$target_id,$target_source);
+  
+  my $fh = $self->handle;
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Alignment'));
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
+}
+
+sub print_slimline_alignment_xrefs {
+  my ($self,$source_id,$source,$target_id,$target_source) = @_;
+
+  my ($xref_source,undef,$xref_target) = $self->generate_uris($source_id,$source,$target_id,$target_source);
+
+  my $fh = $self->handle;
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+}
+
+# Generates a triad of URIs for a two-step Xref link, i.e. source_id refers-to xref refers-to target_id
+sub generate_uris {
+  my ($self,$source_id,$source,$target_id,$target_source) = @_;
+
+  my $start = $self->identifier($source).$source_id;
+
+  my $middle = $self->new_xref($source,$target_source);
+  $middle = $self->prefix('ensembl').$source.'/' unless $middle;
+  my $clean_id = uri_escape($target_id);
+  my $namespace = $self->identifier($target_source);
+  my $end = $namespace.$clean_id;
+  return ($start,$middle,$end);
 }
 
 
@@ -178,7 +200,7 @@ sub print_source_meta {
   my $mappings = $self->identifier_mapping->get_all_name_mapping;
   foreach my $source (keys %$mappings) {
     print $fh $self->triple( 
-      $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), '"'.$source.'"'
+      $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), qq/"$source"/
     );
   }
 }

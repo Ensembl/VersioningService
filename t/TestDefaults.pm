@@ -2,7 +2,7 @@
 # i.e. environment variables, logging
 
 package TestDefaults;
-
+use strict;
 use Log::Log4perl;
 
 BEGIN {

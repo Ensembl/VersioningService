@@ -1,3 +1,4 @@
+use strict;
 use Test::More;
 use Test::Differences;
 use Test::Exception;
@@ -50,7 +51,7 @@ $out = '';
 $fh->setpos(0);
 $params->ids([]);
 $params->taxons([]);
-# $params->species_name('Hylarana picturata');
+
 $params->species_name('Pulchrana picturata');
 
 $mfetcher->convert_name_to_taxon;

@@ -171,7 +171,7 @@ sub get_records {
     $self->storage_engine->query();
     
     while (my $record = $self->next_record) {
-        next unless $self->custom_filter && $self->include_record($record);
+        next unless ($self->custom_filter && $self->include_record($record)) || !$self->custom_filter;
         $self->writer->print_record($record, $source);
         if ($self->isoforms) {
             $self->log->debug("Adding isoforms from Uniprot website");

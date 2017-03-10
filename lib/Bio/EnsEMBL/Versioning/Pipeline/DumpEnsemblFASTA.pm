@@ -45,7 +45,7 @@ use strict;
 use warnings;
 
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
-use Bio::EnsEMBL::ApiVersion qw/software_version/;
+
 use Bio::EnsEMBL::Utils::IO::FASTASerializer;
 use Bio::EnsEMBL::Utils::Exception qw/throw/;
 use Bio::EnsEMBL::Versioning::Broker;
@@ -58,12 +58,7 @@ use Digest::MD5 qw/md5_hex/;
 sub fetch_input {
   my $self = shift;
   my $eg = $self->param('eg');
-  my $release;
-  if ($eg) {
-     $release = $self->param('eg_version');
-  } else {
-    $release = software_version;
-  }
+  
   # See Bio::EnsEMBL::Production::Pipeline::FASTA::DumpFile for determining whether we can reuse the previous release dumps
   # if($self->param('check_intentions')==1 && $self->param('requires_new_dna')==0){ 
   #    delete $sequence_types{'dna'};
@@ -74,7 +69,7 @@ sub fetch_input {
   my $base_path = $broker->scratch_space;
   # TODO - EG specific pathing suitable for their greater number of species
   foreach my $type (qw/cdna pep/) {
-    my $full_path = File::Spec->catfile($base_path,'xref',$release,$species,'fasta','ensembl',$type,'/');
+    my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'fasta','ensembl',$type,'/');
     make_path($full_path);
     $self->param("${type}_path",$full_path);
   }
@@ -112,7 +107,21 @@ sub run {
   $pep_checksum_fh->close;
 
   # Send checksum locations onto next process
-  $self->dataflow_output_id({ cdna_path => $self->param('cdna_path'), pep_path => $self->param('pep_path')}, 2);
+  $self->dataflow_output_id({ 
+    species => $self->param('species'), 
+    cdna_path => $self->param('cdna_path'), 
+    pep_path => $self->param('pep_path')
+  }, 2);
+  # to further FASTA dumping
+  $self->dataflow_output_id({ species => $self->param('species')}, 3); 
+
+  # Save Ensembl FASTA paths for later
+  $self->dataflow_output_id({ 
+    $self->param('species').':cdna_path' => $self->param('cdna_path')
+  },4);
+  $self->dataflow_output_id({ 
+    $self->param('species').':pep_path' => $self->param('pep_path')
+  },4);
 }
 
 1;

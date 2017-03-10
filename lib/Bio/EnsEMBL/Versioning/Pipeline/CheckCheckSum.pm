@@ -87,14 +87,23 @@ sub run {
   my ($self) = @_;
 
   my $run_id = $self->param('run_id'); # Comes from hive param stack
-  
-  my %ens_checksum;
-  # convert Ensembl ID\tchecksum into () id1 => checksum1, ...)
-  my %transcript_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('cdna_path')) };
-  $self->search_source_by_checksum('RefSeq',\%transcript_checksum,$run_id);
-  # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
-  my %peptide_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('pep_path')) };
-  $self->search_source_by_checksum('UniprotSwissprot',\%peptide_checksum);
+  my $output_hash;
+
+  # invert loop as required in order to deal with sources versus types
+  foreach my $type (qw/cdna pep/) {
+    # put id->checksum pairs into a hash directly from file from DumpEnsemblFASTA
+    my %ens_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($type.'_path')};
+    my $source;
+    if ($type eq 'cdna') {
+      $source = 'RefSeq';
+    } elsif ($type eq 'pep') {
+      $source = 'UniprotSwissprot';
+    }
+    my $checksum_path = $self->search_source_by_checksum($source,\%ens_checksum,$run_id);
+    $output_hash->{ species => $self->param('species'), source => $source, type => $type, checksum => $checksum_path};
+    # store in checksum_ttl_path accumulator
+    $self->dataflow_output_id($output_hash,2);
+  }
 }
 
 
@@ -102,7 +111,8 @@ sub search_source_by_checksum {
   my ($self,$source,$checksum_hash,$run_id) = @_;
   my $indexer = $self->param('indexer');
   my $path = $self->param('output_path');
-  my $fh = IO::File->new($path.$source.'_checksum.ttl','w') or throw("Failed to open ${source}_checksum.ttl for writing");
+  my $full_output_path = $path.$source.'_checksum.ttl';
+  my $fh = IO::File->new($full_output_path,'w') or throw("Failed to open $full_output_path for writing");
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh);
   $indexer->work_with_run($source,$run_id);
   
@@ -120,7 +130,7 @@ sub search_source_by_checksum {
     }
   }
   $fh->close;
-
+  return $full_output_path;
 }
 
 

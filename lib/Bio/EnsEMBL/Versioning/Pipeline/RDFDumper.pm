@@ -33,7 +33,7 @@ Bio::EnsEMBL::Versioning::Pipeline::RDFDumper
 
 =head1 DESCRIPTION
 
-eHive pipeline module for RDF Dumping
+eHive pipeline module for RDF Xref Dumping
 
 =cut
 
@@ -61,13 +61,9 @@ use List::Compare;
 sub run {
   my ($self) = @_;
 
-  my $species = $self->param('species');
-  my $run_id = $self->param('run_id');
-  my $base_path = $self->param('base_path');
-
-  my $message = { run_id => $run_id };
-  $self->dataflow_output_id($message,3);
-  
+  my $species = $self->param_required('species');
+  my $run_id = $self->param_required('run_id');
+  my $base_path = $self->param_required('base_path');
   
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
 
@@ -112,7 +108,6 @@ sub run {
   $writer->print_source_meta;
   $source_fh->close;
 
-  $self->dataflow_output_id({},4);
 
 }
 

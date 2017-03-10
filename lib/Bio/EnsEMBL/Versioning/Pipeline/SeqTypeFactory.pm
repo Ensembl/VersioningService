@@ -1,0 +1,69 @@
+=head1 LICENSE
+
+Copyright [1999-2015] Wellcome Trust Sanger Institute and the EMBL-European Bioinformatics Institute
+Copyright [2016-2017] EMBL-European Bioinformatics Institute
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+=cut
+
+=pod
+
+
+=head1 CONTACT
+
+  Please email comments or questions to the public Ensembl
+  developers list at <dev@ensembl.org>.
+
+  Questions may also be sent to the Ensembl help desk at
+  <helpdesk@ensembl.org>.
+
+=head1 NAME
+
+Bio::EnsEMBL::Versioning::Pipeline::SeqTypeFactory
+
+=head1 DESCRIPTION
+
+Starting from a species, this factory produces parameter pairings for dumping the 
+right kinds of sequence from possible sources
+=cut
+
+package Bio::EnsEMBL::Versioning::Pipeline::SeqTypeFactory;
+
+use strict;
+use warnings;
+
+use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
+
+sub fetch_input {
+  my $self = shift;
+  $self->param_required('species');
+}
+
+sub run {
+  my $self = shift;
+  my $species = $self->param('species');
+  # abstract this to a conf file as required
+  my @source_dumping_list = (
+    ['RefSeq', 'rna'],
+    ['RefSeq', 'pep'],
+    ['UniProt', 'pep'],
+    ['UCSC', 'rna']
+  );
+
+  foreach my $source (grep { $_->[0] eq $species} @source_dumping_list) {
+    $self->dataflow_output_id({ species => $species,source => $source->[0],seq_type => $source->[1] } ,2);
+  }
+}
+
+1;

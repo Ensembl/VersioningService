@@ -83,11 +83,11 @@ sub pipeline_analyses {
          begin_run => 1,
          end_run => 0,
          }, 
-       -rc_name       => 'default', 
-       -flow_into  => {
+      -rc_name => 'bookkeeping', 
+      -flow_into  => {
          2  => ['ScheduleSpecies']
          },
-     }, 
+    }, 
     {
       -logic_name => 'ScheduleSpecies',
       -module     => 'Bio::EnsEMBL::Production::Pipeline::SpeciesFactory',
@@ -97,8 +97,10 @@ sub pipeline_analyses {
          division    => $self->o('division'),
          run_all     => $self->o('run_all'),
       },
+      -rc_name => 'bookkeeping',
       -flow_into => {
-         2 => ['DumpRDF','DumpFASTA']
+         '2->A' => ['DumpRDF','DumpFASTA'],
+         'A->1' => ['LogSummaryEnd']
       }
     },
     {
@@ -108,7 +110,7 @@ sub pipeline_analyses {
        },
       -max_retry_count => 0, # low to prevent pointless dumping repetition
       -hive_capacity => 10,
-      -failed_job_tolerance => 25, # percent of jobs that can fail while allowing the pipeline to complete.
+      -failed_job_tolerance => 25, 
       -rc_name => 'default',
       -flow_into  => {
          3  => ['LogSummaryEnd']
@@ -117,11 +119,13 @@ sub pipeline_analyses {
     {
       -logic_name => 'DumpFASTA',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpEnsemblFASTA',
-      -max_retry_count => 1,
+      -max_retry_count => 0,
       -hive_capacity => 4,
       -failed_job_tolerance => 25,
       -flow_into => {
-        2 => ['CheckCheckSum']
+        2 => ['CheckCheckSum'],
+        3 => ['SeqTypeFactory'],
+        4 => ['?accu_name=fasta_paths&accu_address={species_type}']
       }
     },
     {
@@ -130,16 +134,54 @@ sub pipeline_analyses {
       -max_retry_count => 0,
       -hive_capacity => 10,
       -failed_job_tolerance => 1,
-
+      -flow_into => {
+        2 => ['?accu_name=checksum_ttl_path&accu_address={species}{type}']
+      }
+    },
+    {
+      -logic_name => 'SeqTypeFactory',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::SeqTypeFactory',
+      -rc_name => 'bookkeeping',
+      -flow_into => {
+        2 => ['DumpXrefFASTA']
+      }
+    },
+    {
+      -logic_name => 'DumpXrefFASTA',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpXrefFASTA',
+      -hive_capacity => 10,
+      -failed_job_tolerance => 25,
+      -flow_into => {
+        2 => ['SpawnAlignments'],
+      }
+    },
+    {
+      -logic_name => 'SpawnAlignments',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::AlignmentFactory',
+      -hive_capacity => 4,
+      -failed_job_tolerance => 0,
+      -rc_name => 'bookkeeping',
+      -flow_into => {
+        2 => ['RunAlignment']
+      }
+    },
+    {
+      -logic_name => 'RunAlignment',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::Alignment',
+      -hive_capacity => 100,
+      -max_retry_count => 3,
+      -failed_job_tolerance => 30,
+      -rc_name => 'alignment'
     },
     {
       -logic_name => 'LogSummaryEnd',
       -module     => 'Bio::EnsEMBL::Versioning::Pipeline::LogSummary',
+      -rc_name => 'bookkeeping',
       -parameters => {
          begin_run => 1,
          end_run => 1,
        },
-      -wait_for   => [ qw/DumpRDF DumpFASTA/ ],
+      -wait_for   => [ qw/DumpRDF RunAlignment/ ],
     },
   ];
 }
@@ -152,8 +194,9 @@ sub beekeeper_extra_cmdline_options {
 sub resource_classes {
 my $self = shift;
   return {
-    'dump'      => { LSF => '-q normal -M10000 -R"select[mem>10000] rusage[mem=10000]"' },
-    'verify'    => { LSF => '-q small -M1000 -R"select[mem>1000] rusage[mem=1000]"' }
+    'dump'      => { LSF => '-q rh7_production -M10000 -R"select[mem>10000] rusage[mem=10000]"' },
+    'alignment' => { LSF => '-q rh7_production -M1000 -R"select[mem>1000] rusage[mem=1000]"' },
+    'bookkeeping' => { LSF => '-q rh7_production -M500 -R"select[mem>500] rusage[mem=500]"' }
   }
 }
 

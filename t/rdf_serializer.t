@@ -55,6 +55,7 @@ my $loopy_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   xref => [
     Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new({source => 'RefSeq_dna', active => 1, version => 1, id => 'NM1'})
   ],
+  comment => 'Lengthy description for humans'
 });
 
 $rdf_writer->print_record($test_record,'ensembl_transcript');
@@ -120,5 +121,16 @@ my $result = $iterator->next;
 
 cmp_deeply([qw/ "ENST1" "MrHex"/], [$result->{id}->as_string,$result->{target_id}->as_string] , 'Checksum-type xref successfully extracted');
 
+$sparql = 'select ?comment where {
+    ?node dc:identifier "MrCyclic" .
+    ?node rdfs:comment ?comment.
+  }';
+
+$query = RDF::Query->new($prefixes.$sparql);
+$query->error;
+$iterator = $query->execute($model);
+$result = $iterator->next;
+
+is($result->{comment}->as_string,'"Lengthy description for humans"','Comments correctly expressed in RDF');
 
 done_testing();

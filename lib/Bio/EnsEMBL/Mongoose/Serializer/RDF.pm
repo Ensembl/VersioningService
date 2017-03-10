@@ -54,6 +54,9 @@ sub print_record {
   if ($record->description) {
     print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'description'),'"'.$self->escape($record->description).'"');
   }
+  if ($record->comment) {
+    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('rdfs').'comment'),'"'.$self->escape($record->comment).'"');
+  }
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;

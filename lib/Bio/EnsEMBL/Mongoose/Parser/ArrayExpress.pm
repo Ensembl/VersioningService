@@ -89,7 +89,8 @@ sub read_record {
     my $id = $linecolumns[ $fields->{$self->feature_type} ];
     $record->id( $id );
     $record->display_label($id );
-    $record->description($linecolumns[ $fields->{"description"} ] );
+    my $description = $linecolumns[ $fields->{"description"} ];
+    $record->description( $description) if $description;
     $record->taxon_id($self->taxon_id);
     
     my $gene_name = $linecolumns[ $fields->{"hgnc_symbol"} ];

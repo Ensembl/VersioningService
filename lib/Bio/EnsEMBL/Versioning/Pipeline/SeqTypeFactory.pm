@@ -34,8 +34,8 @@ Bio::EnsEMBL::Versioning::Pipeline::SeqTypeFactory
 
 =head1 DESCRIPTION
 
-Starting from a species, this factory produces parameter pairings for dumping the 
-right kinds of sequence from possible sources
+Starting from a species and sequence type, this factory produces parameter pairings for dumping the 
+right kinds of sequence from relevant sources for alignment
 =cut
 
 package Bio::EnsEMBL::Versioning::Pipeline::SeqTypeFactory;
@@ -48,21 +48,24 @@ use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 sub fetch_input {
   my $self = shift;
   $self->param_required('species');
+  $self->param_required('seq_type');
 }
 
 sub run {
   my $self = shift;
   my $species = $self->param('species');
+  my $seq_type = $self->param('seq_type');
+
   # abstract this to a conf file as required
   my @source_dumping_list = (
-    ['RefSeq', 'rna'],
+    ['RefSeq', 'cdna'],
     ['RefSeq', 'pep'],
     ['UniProt', 'pep'],
-    ['UCSC', 'rna']
+    ['UCSC', 'cdna']
   );
 
-  foreach my $source (grep { $_->[0] eq $species} @source_dumping_list) {
-    $self->dataflow_output_id({ species => $species,source => $source->[0],seq_type => $source->[1] } ,2);
+  foreach my $source (grep { $_->[1] eq $seq_type} @source_dumping_list) {
+    $self->dataflow_output_id({ species => $species,source => $source->[0],seq_type => $seq_type } ,2);
   }
 }
 

@@ -106,14 +106,21 @@ sub run {
   $pep_fh->close;
   $pep_checksum_fh->close;
 
-  # Send checksum locations onto next process
+}
+
+sub write_output {
+  my ($self) = @_;
+
+# Send checksum locations onto next process
   $self->dataflow_output_id({ 
     species => $self->param('species'), 
     cdna_path => $self->param('cdna_path'), 
     pep_path => $self->param('pep_path')
   }, 2);
   # to further FASTA dumping
-  $self->dataflow_output_id({ species => $self->param('species')}, 3); 
+  foreach my $type (qw/cdna pep/){
+    $self->dataflow_output_id({ species => $self->param('species'), seq_type => $type }, 3); 
+  }
 
   # Save Ensembl FASTA paths for later
   $self->dataflow_output_id({ 
@@ -122,6 +129,7 @@ sub run {
   $self->dataflow_output_id({ 
     $self->param('species').':pep_path' => $self->param('pep_path')
   },4);
+
 }
 
 1;

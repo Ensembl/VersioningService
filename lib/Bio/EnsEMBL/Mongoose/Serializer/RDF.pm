@@ -121,12 +121,20 @@ sub print_slimline_record {
 sub print_checksum_xrefs {
   my $self = shift;
   my $ens_id = shift;
+  my $ens_type = shift; # Basically transcript or peptide. Leave unset for gene
   my $record = shift;
   my $source = shift;
 
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
-  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($ens_id,'ensembl',$id,$source);
+
+  # Where a non-gene feature type, use a different prefix for the feature URI
+  my $ens_namespace = 'ensembl';
+  if ($ens_type ) {
+    $ens_namespace = $ens_type;
+  }
+  
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($ens_id,$ens_namespace,$id,$source);
   
   my $fh = $self->handle;
   # Meta about Ensembl ID
@@ -144,13 +152,19 @@ sub print_checksum_xrefs {
 sub print_slimline_checksum_xrefs {
   my $self = shift;
   my $ens_id = shift;
+  my $ens_type = shift;
   my $record = shift;
   my $source = shift;
+
+  my $ens_namespace = 'ensembl';
+  if ($ens_type ) {
+    $ens_namespace = $ens_type;
+  }
 
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);
-  my ($xref_source,undef,$xref_target) = $self->generate_uris($ens_id,'ensembl',$id,$source);
+  my ($xref_source,undef,$xref_target) = $self->generate_uris($ens_id,$ens_namespace,$id,$source);
   
   my $fh = $self->handle;
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
@@ -204,7 +218,6 @@ sub print_source_meta {
     );
   }
 }
-
 
 __PACKAGE__->meta->make_immutable;
 

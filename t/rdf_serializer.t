@@ -66,7 +66,7 @@ $rdf_writer->print_record($loopy_record, 'flybase_transcript_id');
 my $checksum_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   id => 'MrHex'
 });
-$rdf_writer->print_checksum_xrefs('ENST1',$checksum_record,'RNACentral');
+$rdf_writer->print_checksum_xrefs('ENST1','transcript',$checksum_record,'RNACentral');
 
 
 note $dummy_content;

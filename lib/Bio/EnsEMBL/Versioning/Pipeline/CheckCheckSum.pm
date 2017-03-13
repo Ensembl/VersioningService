@@ -116,6 +116,12 @@ sub search_source_by_checksum {
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh);
   $indexer->work_with_run($source,$run_id);
   
+  my $ens_feature_type;
+  if ($source eq 'RefSeq') {
+    $ens_feature_type = 'transcript';
+  } elsif ($source eq 'UniprotSwissprot') {
+    $ens_feature_type = 'protein';
+  }
   foreach my $ens_id (keys %$checksum_hash) {
     $indexer->query(
       Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
@@ -124,9 +130,10 @@ sub search_source_by_checksum {
         result_size => 1,
         species => $self->param('species')
       )
-    ); 
+    );
+
     while (my $record = $indexer->next_record) {
-      $writer->print_checksum_xrefs($ens_id,$record,$source);
+      $writer->print_checksum_xrefs($ens_id,$ens_feature_type,$record,$source);
     }
   }
   $fh->close;

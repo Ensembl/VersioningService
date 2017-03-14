@@ -48,6 +48,8 @@ use Bio::EnsEMBL::Versioning::Broker;
 use File::Path qw/make_path/;
 use File::Spec;
 
+use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
+
 sub fetch_input {
   my $self = shift;
   $self->param_required('xref_fasta');

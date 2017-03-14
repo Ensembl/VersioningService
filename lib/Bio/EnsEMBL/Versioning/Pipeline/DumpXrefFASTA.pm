@@ -84,7 +84,7 @@ sub run {
   my $source = $self->param('source');
   my $filename = $self->param('path').$seq_type.'.fa';
 
-  my $fh = IO::File->new($filename ,'w');
+  my $fh = IO::File->new($filename ,'w')
     || throw("Cannot write to filehandle ".$filename);
   
   # Env variable to find conf file mid-pipeline should be removed

@@ -85,7 +85,7 @@ sub run {
 
   my $pep_fh = IO::File->new($self->param('pep_path').'peptides.fa' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'transcripts.fa');
   my $pep_writer = Bio::EnsEMBL::Utils::IO::FASTASerializer->new($pep_fh);
-  my $pep_checksum_fh = IO::File->new($self->param('pep_path').'peptides.md5' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'peptides.crc');
+  my $pep_checksum_fh = IO::File->new( $self->param('pep_path').'peptides.md5' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'peptides.md5');
 
   my $adaptor = $self->get_DBAdaptor('core');
   my $transcript_adaptor = $adaptor->get_adaptor('Transcript');

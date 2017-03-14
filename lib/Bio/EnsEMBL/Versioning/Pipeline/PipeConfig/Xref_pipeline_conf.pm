@@ -196,7 +196,8 @@ my $self = shift;
   return {
     'dump'      => { LSF => '-q production-rh7 -M10000 -R"select[mem>10000] rusage[mem=10000]"' },
     'alignment' => { LSF => '-q production-rh7 -M1000 -R"select[mem>1000] rusage[mem=1000]"' },
-    'bookkeeping' => { LSF => '-q production-rh7 -M500 -R"select[mem>500] rusage[mem=500]"' }
+    'bookkeeping' => { LSF => '-q production-rh7 -M500 -R"select[mem>500] rusage[mem=500]"' },
+    'default' => { LSF => '-q production-rh7 -M2000 -R"select[mem>2000] rusage[mem=2000]"' }
   }
 }
 

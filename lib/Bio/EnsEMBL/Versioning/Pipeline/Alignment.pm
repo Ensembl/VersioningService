@@ -46,6 +46,8 @@ use warnings;
 use Bio::EnsEMBL::Mongoose::Utils::ExonerateAligner;
 use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 
+use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
+
 sub fetch_input {
   my $self = shift;
   $self->param_required('max_chunks'); # how many fractions of the file are being worked on

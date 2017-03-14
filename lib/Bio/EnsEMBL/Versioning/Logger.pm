@@ -43,6 +43,10 @@ sub log_run{
     my $version;
     foreach my $source(@{$self->get_active_sources}){
       $version = $self->get_current_version_of_source($source->name);
+      if (!$version) {
+        $self->warning('No active version of source '.$source->name.'. Forced to ignore');
+        next;
+      }
       $self->schema->resultset('VersionRun')->create({version_id=>$version->version_id, run_id=>$run_id});
     }
 

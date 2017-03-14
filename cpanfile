@@ -20,7 +20,7 @@ requires 'Proc::Background';
 # Moose dependencies
 
 requires 'Moose';
-requires 'Moose::Any', '0.26';
+requires 'Any::Moose', '0.26';
 requires 'Moose::Role';
 requires 'MooseX::Log::Log4perl';
 requires 'MooseX::Storage';

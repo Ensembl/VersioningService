@@ -94,7 +94,7 @@ sub run {
     storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf', 
     species => $self->param('species')
   );
-  $search->work_with_run($source,$self->param('run_id'));
+  $search->work_with_run(source => $source,run_id => $self->param('run_id'));
 
   # Apply any source-specific filtering
   if ($source = 'RefSeq' && uc $seq_type eq 'rna') { 

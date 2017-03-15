@@ -76,7 +76,7 @@ sub run {
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
   my $base_path = $broker->scratch_space;
 
-  my $output_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'alignment_rdf');
+  my $output_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'xref_rdf_dumps','alignment');
   make_path($output_path);
 
   for (my $chunklet = 1; $chunklet <= $chunks; $chunklet++) {

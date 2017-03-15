@@ -76,7 +76,7 @@ sub fetch_input {
   $self->param_required('pep_path');
   
   # Define where the RDF output will go and create the folder
-  my $output_path = File::Spec->join( $self->param('base_path'), "xref_rdf_dumps", $self->param('run_id'), $species, 'checksum');
+  my $output_path = File::Spec->join( $self->param('base_path'), 'xref', $self->param('run_id'), $species, "xref_rdf_dumps", 'checksum');
   if (!-d $output_path) {
     make_path $output_path or die "Failed to create path: $output_path";
   }

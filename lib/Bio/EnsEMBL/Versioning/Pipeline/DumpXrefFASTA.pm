@@ -56,14 +56,6 @@ use IO::File;
 sub fetch_input {
   my $self = shift;
 
-  my $eg = $self->param('eg');
-  my $release;
-  if ($eg) {
-     $release = $self->param('eg_version');
-  } else {
-    $release = software_version;
-  }
-
   my $species = $self->param_required('species');
   my $run_id = $self->param_required('run_id');
   my $source = $self->param_required('source'); # as in RefSeq, or some other item that needs dumping
@@ -72,7 +64,7 @@ sub fetch_input {
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
   my $base_path = $broker->scratch_space;
 
-  my $full_path = File::Spec->catfile($base_path,'xref',$release,$species,'fasta',$source,$seq_type,'/');
+  my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'fasta',$source,$seq_type,'/');
   make_path($full_path);
   $self->param("path",$full_path);
 

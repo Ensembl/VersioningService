@@ -239,17 +239,23 @@ method work_with_index ( Str :$source, Str :$version? ) {
 
 method work_with_run ( Str :$source, Str :$run_id) {
   my $version = $self->versioning_service->get_version_for_run_source($run_id,$source);
+  unless ($version) {
+    Bio::EnsEMBL::Mongoose::SearchEngineException->throw("Run ID $run_id and source $source cannot be found in versioning service");
+  }
   my $path = $version->index_uri;
   $self->index_conf({ index_location => $path, source => $source, version => $version->revision});
   $self->storage_engine();
   $self->source($source);
 }
 
+# Useful when triggering a query when the parameters were provided elsewhere, but not yet fetching the results. Awakes lazy-loaders downstream
 sub prep_query {
   my $self = shift;
   $self->storage_engine->query();
 }
 
+# Note no return value. For that there is next_record();
+# QueryParameters object is sent to the query engine, and the results can be retrieved with next_record()
 sub query {
   my $self = shift;
   my $query_params = shift;

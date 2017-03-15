@@ -108,6 +108,7 @@ sub fetch_nested_taxons {
 sub fetch_taxon_id_by_name {
     my $self = shift;
     my $name = shift;
+    $name =~ s/_/ /g; # sanitise production names and the like into search strings
     my $adaptor = $self->ncbi_taxon_adaptor;
     my $node = $adaptor->fetch_by_taxon_name($name);
     if ($node) {

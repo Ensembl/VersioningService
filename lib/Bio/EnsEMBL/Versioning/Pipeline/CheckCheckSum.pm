@@ -92,7 +92,7 @@ sub run {
   # invert loop as required in order to deal with sources versus types
   foreach my $type (qw/cdna pep/) {
     # put id->checksum pairs into a hash directly from file from DumpEnsemblFASTA
-    my %ens_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($type.'_path')};
+    my %ens_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param($type.'_path'))};
     my $source;
     if ($type eq 'cdna') {
       $source = 'RefSeq';

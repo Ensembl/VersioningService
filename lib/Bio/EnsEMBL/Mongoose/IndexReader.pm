@@ -60,7 +60,18 @@ use Bio::EnsEMBL::Mongoose::SearchEngineException;
 use Bio::EnsEMBL::Mongoose::IOException;
 
 # Contains information about the index Lucy will use, either by file or hash.
-has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file');
+has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file', trigger => \&_validate_path);
+
+sub _validate_path {
+  my ($self,$new_value,$old_value) = @_;
+  if ($new_value) {
+    $self->log->debug("Changing config file from $new_value to $new_value");
+  }
+  if ($new_value) {
+    Bio::EnsEMBL::Mongoose::IOException->throw('Cannot configure IndexReader due to unreadable config file: $new_value') unless (-r $new_value);
+  } 
+}
+
 has storage_engine_conf => (isa => 'HashRef', is => 'rw');
 has index_conf => ( isa => 'HashRef', is => 'rw');
 has storage_engine => (

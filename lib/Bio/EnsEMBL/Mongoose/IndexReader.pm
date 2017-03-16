@@ -52,6 +52,7 @@ use Method::Signatures;
 # In future this module should not be tightly tied to Apache Lucy, but allow
 # any document store to queried in this fashion, at least within the Lucene family.
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
+use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Bio::EnsEMBL::Versioning::Broker;
 

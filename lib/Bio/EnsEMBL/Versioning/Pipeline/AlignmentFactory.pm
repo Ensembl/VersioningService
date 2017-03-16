@@ -63,9 +63,10 @@ sub run {
   my $self = shift;
   # inspect file size to decide on chunking
   my $seq_type = $self->param('seq_type'); # peptides or [r|d]na
-  my $source_file;
   my $species = $self->param('species');
-  $source_file = $self->param($species.':'.$seq_type.'_path');
+  my $source_file_hash = $self->param_required('fasta_paths'); # Get Hive accumulator
+
+  my $source_file = $source_file_hash->{$species.':'.$seq_type.'_path'}; # Extract the element we want from the accumulator
 
   my $target_file = $self->param('xref_fasta');
   my $size = stat($target_file)->size;

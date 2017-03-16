@@ -74,14 +74,14 @@ sub run {
   my $full_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps");
   
   if (!-d $full_path) {
-    make_path $full_path or die "Failed to create path: $base_path";
+    make_path $full_path or die "Failed to create path: $full_path";
   }
   
   my $fh;
   my @final_source_list = map { $_->name } @$valid_source_list;
   foreach my $source (@final_source_list) {
   	print ("Source $source");
-    $fh = IO::File->new(File::Spec->catfile($full_path,$source.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
+    $fh = IO::File->new(File::Spec->catfile($full_path,$source.'.ttl'), 'w') || die "Cannot write to $full_path: $!";
     try {
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
         output_format => 'RDF',
@@ -103,7 +103,7 @@ sub run {
 }
 
   # Dump generic labels to attach to all possible sources for presentation. e.g. purl.uniprot.org/uniprot rdfs:label "Uniprot"
-  my $source_fh = IO::File->new(File::Spec->catfile($base_path,'sources'.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
+  my $source_fh = IO::File->new(File::Spec->catfile($full_path,'sources'.'.ttl'), 'w') || die "Cannot write to $full_path: $!";
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $source_fh, config_file => "$ENV{MONGOOSE}/conf/manager.conf");
   $writer->print_source_meta;
   $source_fh->close;

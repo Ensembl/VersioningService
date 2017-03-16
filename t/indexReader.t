@@ -54,4 +54,9 @@ throws_ok( sub { $reader->query($params) }, 'Bio::EnsEMBL::Mongoose::SearchEngin
 
 # Test for checksums via accessors
 
+# Deliberately screw up configuration
+
+throws_ok( sub { $reader->storage_engine_conf_file('/tmp/red_weed') }, 'Bio::EnsEMBL::Mongoose::IOException','Absent config file generates exception');
+
+
 done_testing;

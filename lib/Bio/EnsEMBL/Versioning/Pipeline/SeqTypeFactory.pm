@@ -60,7 +60,7 @@ sub run {
   my @source_dumping_list = (
     ['RefSeq', 'cdna'],
     ['RefSeq', 'pep'],
-    ['UniProt', 'pep'],
+    ['Swissprot', 'pep'],
     ['UCSC', 'cdna']
   );
 

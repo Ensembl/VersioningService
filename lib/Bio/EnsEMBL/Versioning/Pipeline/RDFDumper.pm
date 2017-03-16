@@ -71,17 +71,17 @@ sub run {
   $base_path ||= '/tmp';
   my $species_without_underscore = $species;
   $species_without_underscore =~ s/_/ /g;
-  $base_path = File::Spec->join( $base_path, $run_id, $species, "xref_rdf_dumps");
+  my $full_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps");
   
-  if (!-d $base_path) {
-    make_path $base_path or die "Failed to create path: $base_path";
+  if (!-d $full_path) {
+    make_path $full_path or die "Failed to create path: $base_path";
   }
   
   my $fh;
   my @final_source_list = map { $_->name } @$valid_source_list;
   foreach my $source (@final_source_list) {
   	print ("Source $source");
-    $fh = IO::File->new(File::Spec->catfile($base_path,'xref',$run_id,$species,'xref_rdf_dumps',$source.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
+    $fh = IO::File->new(File::Spec->catfile($full_path,$source.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
     try {
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
         output_format => 'RDF',

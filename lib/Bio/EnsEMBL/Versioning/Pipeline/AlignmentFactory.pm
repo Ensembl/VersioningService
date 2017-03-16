@@ -56,6 +56,7 @@ sub fetch_input {
   $self->param_required('seq_type');
   $self->param_required('species');
   $self->param_required('source');
+  $self->param_required('run_id');
 }
 
 sub run {

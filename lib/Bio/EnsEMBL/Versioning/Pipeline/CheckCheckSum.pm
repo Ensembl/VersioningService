@@ -111,7 +111,7 @@ sub search_source_by_checksum {
   my ($self,$source,$checksum_hash,$run_id) = @_;
   my $indexer = $self->param('indexer');
   my $path = $self->param('output_path');
-  my $full_output_path = $path.$source.'_checksum.ttl';
+  my $full_output_path = $path.'/'.$source.'_checksum.ttl';
   my $fh = IO::File->new($full_output_path,'w') or throw("Failed to open $full_output_path for writing");
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh);
   $indexer->work_with_run($source,$run_id);

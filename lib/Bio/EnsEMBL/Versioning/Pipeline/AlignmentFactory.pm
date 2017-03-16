@@ -81,7 +81,7 @@ sub run {
   make_path($output_path);
 
   for (my $chunklet = 1; $chunklet <= $chunks; $chunklet++) {
-    $output_path .= sprintf "%s_alignment_%s_of_%s.ttl",$self->param('source'),$chunklet,$chunks;
+    $output_path .= sprintf "/%s_alignment_%s_of_%s.ttl",$self->param('source'),$chunklet,$chunks;
     $self->dataflow_output_id({
       align_method => $method, 
       max_chunks => $chunks, 

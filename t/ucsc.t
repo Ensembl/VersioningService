@@ -38,11 +38,11 @@ cmp_deeply($record->exon_ends, [17436], 'Correct first record exon ends');
 # is($record->taxon_id, 9606, 'Correct tax id');
 my $xrefs = $record->xref;
 my $expected_xrefs = [ bless( {
-			       'source' => 'Ensembl',
-			       'creator' => 'UCSC',
-			       'active' => 1,
-			       'id' => 'ENST00000619216.1'
-			      }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
+             'source' => 'Ensembl',
+             'creator' => 'UCSC',
+             'active' => 1,
+             'id' => 'ENST00000619216.1'
+            }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
 cmp_deeply($xrefs, $expected_xrefs, "First record xrefs");
 my $xref = shift $xrefs;
 isa_ok($xref, "Bio::EnsEMBL::Mongoose::Persistence::RecordXref");
@@ -58,76 +58,76 @@ for (1 .. 118) {
 # uc057axt.1	chr1	+	925149	935793	925941	935793	5	925149,925921,930154,931038,935771,	925189,926013,930336,931089,935793,	Q5SV95	ENST00000437963.5
 
 my @expected_records = (
-		{
-		 id => 'uc057axr.1',
-		 gene_name => 'uc057axr',
-		 display_label => 'uc057axr',
-		 chromosome => '1',
-		 strand => -1,
-		 transcript_start => 917370,
-		 transcript_end => 918534,
-		 cds_start => 0, # non coding transcripts have cds_start == cds_end and are set to null
-		 cds_end => 0,   #
-		 exon_starts => [917370, 918022],
-		 exon_ends => [917486, 918534],
-		 xrefs => [ bless( {
-				   'source' => 'Ensembl',
-				   'creator' => 'UCSC',
-				   'active' => 1,
-				   'id' => 'ENST00000432961.1'
-				  }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
-		},
-		{
-		 id => 'uc057axs.1',
-		 gene_name => 'uc057axs',
-		 display_label => 'uc057axs',
-		 chromosome => '1',
-		 strand => 1,
-		 transcript_start => 924880,
-		 transcript_end => 939291,
-		 cds_start => 925942,
-		 cds_end => 939291, 
-		 exon_starts => [924880, 925922, 930155, 931039, 935772, 939040, 939275],
-		 exon_ends => [924948, 926013, 930336, 931089, 935896, 939129, 939291],
-		 xrefs => [ bless( {
-				   'source' => 'UniProtKB',
-				   'creator' => 'UCSC',
-				   'active' => 1,
-				   'id' => 'A6PWC8'
-				   }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
-			    bless( {
-				    'source' => 'Ensembl',
-				    'creator' => 'UCSC',
-				    'active' => 1,
-				    'id' => 'ENST00000420190.5'
-				   }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' )]
-		},
-		{
-		 id => 'uc057axt.1',
-		 gene_name => 'uc057axt',
-		 display_label => 'uc057axt',
-		 chromosome => '1',
-		 strand => 1,
-		 transcript_start => 925150,
-		 transcript_end => 935793,
-		 cds_start => 925942, 
-		 cds_end => 935793, 
-		 exon_starts => [925150, 925922, 930155, 931039, 935772],
-		 exon_ends => [925189, 926013, 930336, 931089, 935793],
-		 xrefs => [ bless( {
-				   'source' => 'UniProtKB',
-				   'creator' => 'UCSC',
-				   'active' => 1,
-				   'id' => 'Q5SV95'
-				   }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
-			    bless( {
-				    'source' => 'Ensembl',
-				    'creator' => 'UCSC',
-				    'active' => 1,
-				    'id' => 'ENST00000437963.5'
-				   }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' )]
-		}
-	       );
+    {
+     id => 'uc057axr.1',
+     gene_name => 'uc057axr',
+     display_label => 'uc057axr',
+     chromosome => '1',
+     strand => -1,
+     transcript_start => 917370,
+     transcript_end => 918534,
+     cds_start => 0, # non coding transcripts have cds_start == cds_end and are set to null
+     cds_end => 0,   #
+     exon_starts => [917370, 918022],
+     exon_ends => [917486, 918534],
+     xrefs => [ bless( {
+           'source' => 'Ensembl',
+           'creator' => 'UCSC',
+           'active' => 1,
+           'id' => 'ENST00000432961.1'
+          }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
+    },
+    {
+     id => 'uc057axs.1',
+     gene_name => 'uc057axs',
+     display_label => 'uc057axs',
+     chromosome => '1',
+     strand => 1,
+     transcript_start => 924880,
+     transcript_end => 939291,
+     cds_start => 925942,
+     cds_end => 939291, 
+     exon_starts => [924880, 925922, 930155, 931039, 935772, 939040, 939275],
+     exon_ends => [924948, 926013, 930336, 931089, 935896, 939129, 939291],
+     xrefs => [ bless( {
+           'source' => 'UniProtKB',
+           'creator' => 'UCSC',
+           'active' => 1,
+           'id' => 'A6PWC8'
+           }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
+          bless( {
+            'source' => 'Ensembl',
+            'creator' => 'UCSC',
+            'active' => 1,
+            'id' => 'ENST00000420190.5'
+           }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' )]
+    },
+    {
+     id => 'uc057axt.1',
+     gene_name => 'uc057axt',
+     display_label => 'uc057axt',
+     chromosome => '1',
+     strand => 1,
+     transcript_start => 925150,
+     transcript_end => 935793,
+     cds_start => 925942, 
+     cds_end => 935793, 
+     exon_starts => [925150, 925922, 930155, 931039, 935772],
+     exon_ends => [925189, 926013, 930336, 931089, 935793],
+     xrefs => [ bless( {
+           'source' => 'UniProtKB',
+           'creator' => 'UCSC',
+           'active' => 1,
+           'id' => 'Q5SV95'
+           }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
+          bless( {
+            'source' => 'Ensembl',
+            'creator' => 'UCSC',
+            'active' => 1,
+            'id' => 'ENST00000437963.5'
+           }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' )]
+    }
+         );
 
 while ($num_of_records < 122) {
   $reader->read_record();

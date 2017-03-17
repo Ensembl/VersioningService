@@ -115,7 +115,7 @@ sub search_source_by_checksum {
   my $full_output_path = $path.'/'.$source.'_checksum.ttl';
   my $fh = IO::File->new($full_output_path,'w') or throw("Failed to open $full_output_path for writing");
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $self->param('broker_conf'));
-  $indexer->work_with_run($source,$run_id);
+  $indexer->work_with_run(source => $source,run_id => $run_id);
   
   my $ens_feature_type;
   if ($source eq 'RefSeq') {

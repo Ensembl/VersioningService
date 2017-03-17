@@ -85,7 +85,7 @@ sub run {
     try {
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
         output_format => 'RDF',
-        storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf',
+        storage_engine_conf_file => $self->param('broker_conf'),
         species => $species_without_underscore,
         handle => $fh,
       );
@@ -104,7 +104,7 @@ sub run {
 
   # Dump generic labels to attach to all possible sources for presentation. e.g. purl.uniprot.org/uniprot rdfs:label "Uniprot"
   my $source_fh = IO::File->new(File::Spec->catfile($full_path,'sources'.'.ttl'), 'w') || die "Cannot write to $full_path: $!";
-  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $source_fh, config_file => "$ENV{MONGOOSE}/conf/manager.conf");
+  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $source_fh, config_file => $self->param('broker_conf'));
   $writer->print_source_meta;
   $source_fh->close;
 

@@ -57,6 +57,7 @@ sub fetch_input {
   $self->param_required('align_method'); 
   $self->param_required('target_source'); # external source, e.g. RefSeq
   $self->param_required('output_path');
+  $self->param_required('broker_conf');
 }
 
 sub run {
@@ -80,7 +81,7 @@ sub run {
   my $hits = $aligner->run;
 
   if (keys %$hits > 0) {
-    my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh);
+    my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file =>$self->param('broker_conf'));
     foreach my $alignment (keys %$hits) {
       my ($source_id,$target_id) = split /:/,$alignment;
       my $source_identity = $hits->{$alignment}->{query_identity};

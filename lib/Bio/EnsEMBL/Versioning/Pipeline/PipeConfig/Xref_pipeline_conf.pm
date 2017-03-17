@@ -60,6 +60,7 @@ sub pipeline_wide_parameters {
     %{ $self->SUPER::pipeline_wide_parameters() },
     base_path => $self->o('base_path'),
     'sub_dir'       => $self->o('base_path'),
+    broker_conf => $self->o('broker_conf')
   }
 }
 
@@ -95,7 +96,7 @@ sub pipeline_analyses {
          species     => $self->o('species'),
          antispecies => $self->o('antispecies'),
          division    => $self->o('division'),
-         run_all     => $self->o('run_all'),
+         run_all     => $self->o('run_all')
       },
       -rc_name => 'bookkeeping',
       -flow_into => {

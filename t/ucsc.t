@@ -36,16 +36,6 @@ cmp_deeply($record->exon_starts, [17369], 'Correct first record exon starts');
 cmp_deeply($record->exon_ends, [17436], 'Correct first record exon ends');
 
 # is($record->taxon_id, 9606, 'Correct tax id');
-my $xrefs = $record->xref;
-my $expected_xrefs = [ bless( {
-             'source' => 'Ensembl',
-             'creator' => 'UCSC',
-             'active' => 1,
-             'id' => 'ENST00000619216.1'
-            }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
-cmp_deeply($xrefs, $expected_xrefs, "First record xrefs");
-my $xref = shift $xrefs;
-isa_ok($xref, "Bio::EnsEMBL::Mongoose::Persistence::RecordXref");
 
 # seek at some random point in the file
 for (1 .. 118) {
@@ -70,12 +60,7 @@ my @expected_records = (
      cds_end => 0,   #
      exon_starts => [917370, 918022],
      exon_ends => [917486, 918534],
-     xrefs => [ bless( {
-           'source' => 'Ensembl',
-           'creator' => 'UCSC',
-           'active' => 1,
-           'id' => 'ENST00000432961.1'
-          }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
+     xrefs => []
     },
     {
      id => 'uc057axs.1',
@@ -94,12 +79,6 @@ my @expected_records = (
            'creator' => 'UCSC',
            'active' => 1,
            'id' => 'A6PWC8'
-           }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
-          bless( {
-            'source' => 'Ensembl',
-            'creator' => 'UCSC',
-            'active' => 1,
-            'id' => 'ENST00000420190.5'
            }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' )]
     },
     {
@@ -119,15 +98,9 @@ my @expected_records = (
            'creator' => 'UCSC',
            'active' => 1,
            'id' => 'Q5SV95'
-           }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
-          bless( {
-            'source' => 'Ensembl',
-            'creator' => 'UCSC',
-            'active' => 1,
-            'id' => 'ENST00000437963.5'
            }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' )]
     }
-         );
+);
 
 while ($num_of_records < 122) {
   $reader->read_record();

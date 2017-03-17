@@ -79,7 +79,7 @@ sub read_record {
   # 8.    exonStarts  (comma-separated list of exon start positions)
   # 9.    exonEnds    (comma-separated list of exon end positions)
   # 10.   proteinID   (cross reference to a protein ID, e.g. UniProt)
-  # 11.   alignID     (not sure what this is right now)
+  # 11.   alignID     (not sure what this is right now, but it often links to Ensembl transcripts, or other UCSC accessions)
   
   my @fields = split( /\t/, $content );
   my ( $name,
@@ -91,7 +91,7 @@ sub read_record {
        $cdsEnd,
        $exonStarts,
        $exonEnds ) = @fields[ 0 .. 6, 8, 9];
-  my @protein_ids = @fields[10 .. $#fields];
+  my $protein_id = $fields[10];
 
   # UCSC uses slightly different chromosome names, at least for
   # human and mouse, so chop off the 'chr' in the beginning.  We do
@@ -114,7 +114,7 @@ sub read_record {
   # ... and they use the same kind of "inbetween" coordinates as e.g.
   # exonerate, so increment all start coordinates by one.
   $txStart += 1;
-  $exonStarts = join( ',', map( { ++$_ } split( /,/, $exonStarts ) ) );
+  $exonStarts = join( ',', map( { $_ +1 } split( /,/, $exonStarts ) ) );
   if ( defined($cdsStart) ) { $cdsStart += 1 }
 
   # Cut off the last comma from $exonEnds, if it exists.  This is done
@@ -137,8 +137,7 @@ sub read_record {
   $record->exon_ends([ split /,/, $exonEnds ]);
   
   # add xrefs to protein IDs
-  foreach my $protein_id (@protein_ids) {
-    next unless $protein_id;
+  if ($protein_id) {
     my $source;
     if ($protein_id =~ /^[A-Z0-9]{6,10}$/) {
       $source = 'UniProtKB';

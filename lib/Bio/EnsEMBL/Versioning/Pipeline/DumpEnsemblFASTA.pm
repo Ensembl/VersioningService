@@ -124,10 +124,12 @@ sub write_output {
 
   # Save Ensembl FASTA paths for later
   $self->dataflow_output_id({ 
-    $self->param('species').':cdna_path' => $self->param('cdna_path')
+    'seq_type' => $self->param('species') . ':cdna_path',
+    'fasta_paths' => $self->param('cdna_path'),
   },4);
   $self->dataflow_output_id({ 
-    $self->param('species').':pep_path' => $self->param('pep_path')
+    'seq_type' => $self->param('species').':pep_path', 
+    'fasta_paths' => $self->param('pep_path')
   },4);
 
 }

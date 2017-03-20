@@ -102,7 +102,8 @@ sub run {
       $source = 'Swissprot';
     }
     my $checksum_path = $self->search_source_by_checksum($source,\%ens_checksum,$run_id);
-    $output_hash->{ species => $self->param('species'), source => $source, type => $type, checksum => $checksum_path};
+    $output_hash->{ species => $self->param('species'), source => $source, type => $type, checksum_ttl_path => $checksum_path};
+    # Parallel accumulator for species+source combo may be necessary to preserve source
     # store in checksum_ttl_path accumulator
     $self->dataflow_output_id($output_hash,2);
   }

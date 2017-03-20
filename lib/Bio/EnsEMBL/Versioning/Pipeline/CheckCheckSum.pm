@@ -99,7 +99,7 @@ sub run {
     if ($type eq 'cdna') {
       $source = 'RefSeq';
     } elsif ($type eq 'pep') {
-      $source = 'UniprotSwissprot';
+      $source = 'Swissprot';
     }
     my $checksum_path = $self->search_source_by_checksum($source,\%ens_checksum,$run_id);
     $output_hash->{ species => $self->param('species'), source => $source, type => $type, checksum => $checksum_path};
@@ -120,7 +120,7 @@ sub search_source_by_checksum {
   my $ens_feature_type;
   if ($source eq 'RefSeq') {
     $ens_feature_type = 'transcript';
-  } elsif ($source eq 'UniprotSwissprot') {
+  } elsif ($source eq 'Swissprot') {
     $ens_feature_type = 'protein';
   }
   foreach my $ens_id (keys %$checksum_hash) {

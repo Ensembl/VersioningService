@@ -57,6 +57,7 @@ sub fetch_input {
   $self->param_required('species');
   $self->param_required('source');
   $self->param_required('run_id');
+  $self->param_required('fasta_paths');
 }
 
 sub run {

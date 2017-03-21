@@ -41,7 +41,7 @@ has dump_path => (
 has source_list => (
   is => 'rw', 
   isa => 'ArrayRef', 
-  default => sub { [qw/Swissprot Trembl MIM mim2gene HGNC EntrezGene Uniparc RefSeq Reactome ArrayExpress/]}, 
+  default => sub { [qw/Swissprot Trembl MIM mim2gene HGNC EntrezGene Uniparc RefSeq Reactome ArrayExpress UniGene/]}, 
   documentation => 'Name a source to dump, or several by repeating the option. Defaults to all known sources'
 );
 has format => (

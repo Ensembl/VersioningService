@@ -41,5 +41,6 @@ $broker->add_new_source('RGD','RGD',1,'Bio::EnsEMBL::Versioning::Pipeline::Downl
 $broker->add_new_source('Xenbase','Xenbase',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::Xenbase','Bio::EnsEMBL::Mongoose::Parser::Xenbase');
 $broker->add_new_source('JGI','JGI',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::JGI','Bio::EnsEMBL::Mongoose::Parser::JGI');
 $broker->add_new_source('VGNC','VGNC',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::VGNC','Bio::EnsEMBL::Mongoose::Parser::VGNC');
+$broker->add_new_source('UniGene','UniGene',1,'Bio::EnsEMBL::Versioning::Pipeline::Downloader::UniGene','Bio::EnsEMBL::Mongoose::Parser::UniGene');
 
 print "Created basic Xref working set of sources. Now enable the update pipeline to allow it to download the first copy of each source\n";

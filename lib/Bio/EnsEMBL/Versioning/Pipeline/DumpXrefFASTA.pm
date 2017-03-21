@@ -60,6 +60,7 @@ sub fetch_input {
   my $run_id = $self->param_required('run_id');
   my $source = $self->param_required('source'); # as in RefSeq, or some other item that needs dumping
   my $seq_type = $self->param_required('seq_type'); # RNA, pep etc.
+  $self->param_required('fasta_path'); # Ensembl FASTA dump location needed downstream
 
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
   my $base_path = $broker->scratch_space;

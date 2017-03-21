@@ -126,7 +126,6 @@ sub pipeline_analyses {
       -flow_into => {
         2 => ['CheckCheckSum'],
         3 => ['SeqTypeFactory'],
-        4 => ['?accu_name=fasta_paths&accu_address={seq_type}']
       }
     },
     {

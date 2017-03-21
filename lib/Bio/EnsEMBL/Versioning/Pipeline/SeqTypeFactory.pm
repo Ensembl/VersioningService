@@ -49,6 +49,7 @@ sub fetch_input {
   my $self = shift;
   $self->param_required('species');
   $self->param_required('seq_type');
+  $self->param_required('fasta_path'); # Ensembl FASTA path needed downstream
 }
 
 sub run {
@@ -65,7 +66,12 @@ sub run {
   );
 
   foreach my $source (grep { $_->[1] eq $seq_type} @source_dumping_list) {
-    $self->dataflow_output_id({ species => $species,source => $source->[0],seq_type => $seq_type } ,2);
+    $self->dataflow_output_id({ 
+      species => $species,
+      source => $source->[0],
+      seq_type => $seq_type,
+      fasta_path => $self->param('fasta_path')
+    } ,2);
   }
 }
 

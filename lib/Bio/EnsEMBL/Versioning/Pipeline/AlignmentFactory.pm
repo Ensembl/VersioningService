@@ -57,7 +57,7 @@ sub fetch_input {
   $self->param_required('species');
   $self->param_required('source');
   $self->param_required('run_id');
-  $self->param_required('fasta_paths');
+  $self->param_required('fasta_path');
 }
 
 sub run {
@@ -65,11 +65,9 @@ sub run {
   # inspect file size to decide on chunking
   my $seq_type = $self->param('seq_type'); # peptides or [r|d]na
   my $species = $self->param('species');
-  my $source_file_hash = $self->param_required('fasta_paths'); # Get Hive accumulator
+  my $source_file = $self->param('fasta_path'); # Get Ensembl FASTA path for this data type
 
-  my $source_file = $source_file_hash->{$species.':'.$seq_type.'_path'}; # Extract the element we want from the accumulator
-
-  my $target_file = $self->param('xref_fasta');
+  my $target_file = $self->param('xref_fasta'); # Get FASTA dumped from other source to align against
   my $size = stat($target_file)->size;
   my $chunks = int ($size / 1000000);
   

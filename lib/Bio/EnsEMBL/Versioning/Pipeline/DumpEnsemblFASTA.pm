@@ -127,18 +127,13 @@ sub write_output {
 
   # Seed sequence types to per-species-per-xref-source FASTA dumping
   foreach my $type (qw/cdna pep/){
-    $self->dataflow_output_id({ species => $self->param('species'), seq_type => $type }, 3); 
+    $self->dataflow_output_id({ 
+      species => $self->param('species'), 
+      seq_type => $type ,
+      fasta_path => $self->param("${type}_path")
+    }, 3); 
   }
 
-  # Save Ensembl FASTA paths for later
-  $self->dataflow_output_id({ 
-    'seq_type' => $self->param('species') . ':cdna_path',
-    'fasta_paths' => $self->param('cdna_path'),
-  },4);
-  $self->dataflow_output_id({ 
-    'seq_type' => $self->param('species').':pep_path', 
-    'fasta_paths' => $self->param('pep_path')
-  },4);
 
 }
 

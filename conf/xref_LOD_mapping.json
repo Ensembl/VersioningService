@@ -221,31 +221,36 @@
       "db_name": "ensemblbacteria",
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
       "id_namespace": "ensembl.bacteria",
-      "bidirectional": true
+      "bidirectional": true,
+      "feature_type": "annotation"
     },
     {
       "db_name": "ensemblmetazoa",
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
       "id_namespace": "ensembl.metazoa",
-      "bidirectional": true
+      "bidirectional": true,
+      "feature_type": "annotation"
     },
     {
       "db_name": "ensemblplants",
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
       "id_namespace": "ensembl.plants",
-      "bidirectional": true
+      "bidirectional": true,
+      "feature_type": "annotation"
     },
     {
       "db_name": "ensemblprotists",
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
       "id_namespace": "ensembl.protists",
-      "bidirectional": true
+      "bidirectional": true,
+      "feature_type": "annotation"
     },
     {
       "db_name": "ensemblfungi",
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
       "id_namespace": "ensembl.fungi",
-      "bidirectional": true
+      "bidirectional": true,
+      "feature_type": "annotation"
     },
     {
       "db_name": "EC",
@@ -328,7 +333,8 @@
       "id_namespace": "ncbigene",
       "URI_type": "http://purl.obolibrary.org/obo/SO_0000704",
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 60
     },
     {
       "db_name": "GeneID",
@@ -336,7 +342,8 @@
       "id_namespace": "ncbigene",
       "URI_type": "http://purl.obolibrary.org/obo/SO_0000704",
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 60
     },
     {
       "db_name": "EntrezGene_trans_name",
@@ -562,7 +569,8 @@
       "example_id": "HGNC:13598",
       "id_namespace": "hgnc",
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 100
     },
     {
       "db_name": "HGNC_trans_name",
@@ -700,7 +708,8 @@
       "description": "Mouse genome database (MGD) is an authority on rodent genes",
       "id_namespace": "mgi",
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 100
     },
     {
       "db_name": "MGI_trans_name",
@@ -734,7 +743,7 @@
     },
     {
       "db_name": "mim2gene",
-      "description": "MIM sources do not ",
+      "description": "MIM data describing the MIM gene entries and their relationships with other resources",
       "example_id": "615122",
       "id_namespace": "omim",
       "ignore": true,
@@ -754,20 +763,23 @@
       "example_id": "MI0000866",
       "id_namespace": "mirbase",
       "bidirectional": false,
-      "feature_type": "annotation"
+      "feature_type": "annotation",
+      "priority": 100
     },
     {
       "db_name": "miRBase mature sequence",
       "example_id": "MIMAT0005480",
       "id_namespace": "mirbase.mature",
-      "bidirectional": false
+      "bidirectional": false,
+      "feature_type": "annotation"
     },
     {
       "db_name": "miRBase_gene_name",
       "example_id": "dre-let-7a-1.1",
       "ignore": true,
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 100
     },
     {
       "db_name": "miRBase_trans_name",
@@ -1113,7 +1125,8 @@
       "example_id": "6486239",
       "id_namespace": "rgd",
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 100
     },
     {
       "db_name": "RGD_trans_name",
@@ -1471,13 +1484,15 @@
       "example_id": "ZDB-GENE-040718-36",
       "id_namespace": "zfin",
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 100
     },
     {
       "db_name": "zfin",
       "id_namespace": "zfin",
       "bidirectional": true,
-      "feature_type": "gene"
+      "feature_type": "gene",
+      "priority": 100
     },
     {
       "db_name": "ZFIN_ID_trans_name",

@@ -196,7 +196,7 @@ has checksum => (
 );
 
 has version => (
-    isa => 'Int',
+    isa => 'Str',
     is => 'rw',
 );
 

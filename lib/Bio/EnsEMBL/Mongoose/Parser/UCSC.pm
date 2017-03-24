@@ -143,6 +143,8 @@ sub read_record {
       $source = 'UniProtKB';
     } elsif ($protein_id =~ /^ENS/) {
       $source = 'Ensembl';
+    } elsif ($protein_id =~ /^NP/) {
+      $source = 'RefSeq';
     } else {
       Bio::EnsEMBL::Mongoose::IOException->throw ("Unknown source for protein ID: $protein_id")
     }

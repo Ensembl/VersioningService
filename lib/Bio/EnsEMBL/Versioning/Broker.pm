@@ -137,7 +137,7 @@ sub get_scratch_path {
   if (exists $self->config->{scratch_space} && -w $self->config->{scratch_space}) {
     return $self->config->{scratch_space};
   } else {
-    Bio::EnsEMBL::Mongoose::IOException->throw("scratch_space not defined in config file ".$self->config_file);
+    Bio::EnsEMBL::Mongoose::IOException->throw("scratch_space not defined or writeable in config file ".$self->config_file);
   }
 }
 

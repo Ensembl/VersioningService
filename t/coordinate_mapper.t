@@ -26,14 +26,11 @@ use Bio::EnsEMBL::Test::MultiTestDB;
 use File::Path;
 
 use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 use Config::General;
 my %conf = Config::General->new($Bin.'/../conf/test.conf')->getall();
 
-
-BEGIN { 
-  use FindBin qw/$Bin/;
-  $ENV{MONGOOSE} = "$Bin/..";
-}
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Versioning::CoordinateMapper;

@@ -6,6 +6,8 @@ use Test::Exception;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 use Bio::EnsEMBL::Mongoose::IndexReader;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 

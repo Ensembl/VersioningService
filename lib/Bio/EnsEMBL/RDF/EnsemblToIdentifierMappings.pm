@@ -162,9 +162,8 @@ sub allowed_xrefs {
   my $target_source = shift;
   my $source_type = $self->get_feature_type(lc $source);
   my $target_type = $self->get_feature_type(lc $target_source);
-  return [1,0] if $target_type eq 'annotation';
-  return [1,1] if $source_type eq $target_type;
-  return [0,0];
+  return 1 if $source_type eq $target_type and $source_type ne 'annotation';
+  return 0;
 }
 
 

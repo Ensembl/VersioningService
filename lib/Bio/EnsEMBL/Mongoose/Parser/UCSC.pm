@@ -146,7 +146,9 @@ sub read_record {
     } elsif ($protein_id =~ /^NP/) {
       $source = 'RefSeq';
     } else {
-      Bio::EnsEMBL::Mongoose::IOException->throw ("Unknown source for protein ID: $protein_id")
+      # Bio::EnsEMBL::Mongoose::IOException->throw ("Unknown source for protein ID: $protein_id")
+      return 1;
+      # Can't trivially write a regex to anticipate isoforms, all Ensembl ID types and RefSeq types
     }
     $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, creator => 'UCSC', id => $protein_id));
   }

@@ -57,11 +57,9 @@ my $species = 'homo_sapiens';
 
 #create test index
 my $index_path = $ENV{MONGOOSE}.'/t/data/test_index_ucsc';
-
 if(-e $index_path) {
   rmtree $index_path;
 }
-  
 my $indexer = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new(
   index => $index_path,
 );
@@ -90,7 +88,7 @@ while (my $hit = $interlocutor->next_result) {
 cmp_ok(scalar @results, '==', 7705, 'All 7705 records made it to the index');
 
 # store features from otherfeatures database into lucy index and check if you have got the records back
-my $temp_index_folder = $mapper->create_temp_index({'species' => $species, 'dba' => $other_dba, 'analysis_name' => "refseq_import"});
+my $temp_index_folder = $mapper->create_index_from_database(species => $species, dba => $other_dba, analysis_name => "refseq_import");
 my $searcher = Lucy::Search::IndexSearcher->new( index => $temp_index_folder );
 my $lucy =  Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new( index => $temp_index_folder );
 
@@ -113,32 +111,82 @@ my $dummy_fh = IO::String->new($dummy_content);
 my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
 # test the mapper for refseq
-$mapper->calculate_overlap_score({'index_location' => $temp_index_folder , 'species' => $species, 'core_dba' => $core_dba, 'other_dba' => $other_dba,'rdf_writer' => $rdf_writer , 'source' => "refseq"});
+$mapper->calculate_overlap_score(index_location => $temp_index_folder , species => $species, core_dba => $core_dba, other_dba => $other_dba,rdf_writer => $rdf_writer , source => "refseq");
 #print Dumper($dummy_content);
 
-like( $dummy_content, '/ENST00000296839/', 'Have got ENST00000296839' );
-like( $dummy_content, '/ENST00000611664/', 'Have got ENST00000611664' );
-like( $dummy_content, '/ENST00000259806/', 'Have got ENST00000259806' );
-like( $dummy_content, '/ENSP00000259806/', 'Have got ENSP00000259806' );
-like( $dummy_content, '/ENSP00000296839/', 'Have got ENSP00000296839' );
+use RDF::Trine;
+use RDF::Query;
 
-like( $dummy_content, '/NM_033260.3/', 'Have got NM_033260.3' );
-like( $dummy_content, '/NR_106778/', 'Have got NR_106778' );
-like( $dummy_content, '/NM_001452.1/', 'Have got NM_001452.1' );
+my $store = RDF::Trine::Store::Memory->new();
+my $model = RDF::Trine::Model->new($store);
+my $parser = RDF::Trine::Parser->new('turtle');
+$parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/', $dummy_content, $model);
+my $prefixes = $rdf_writer->compatible_name_spaces();
+my $sparql = 'select ?stable_id ?score ?entity from <http://rdf.ebi.ac.uk/resource/ensembl/> where { 
+  ?ensembl_feature term:refers-to ?xref .
+  ?ensembl_feature rdfs:label ?stable_id .
+  ?xref term:score ?score .
+  ?xref term:refers-to ?entity .
+  }';
+my $sparql_query = RDF::Query->new($prefixes.$sparql);
+$sparql_query->error;
+my @sparql_results = $sparql_query->execute($model)->get_all;
 
-like( $dummy_content, '/0.853/', 'Have got score 0.853' );
-like( $dummy_content, '/0.773/', 'Have got score 0.773' );
+my %expected_scores = (ENST00000296839 => 0.87, ENSP00000296839 => 0.87, ENST00000259806 => 1, ENSP00000259806 => 1, ENST00000611664 => 1);
 
-#Try UCSC - don't pass other_dba
-my $dummy_content_ucsc;
-my $dummy_fh_ucsc = IO::String->new($dummy_content_ucsc);
-my $rdf_writer_ucsc = Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap->new(handle => $dummy_fh_ucsc ,config_file => "$Bin/../conf/test.conf");
+foreach my $result (@sparql_results) {
+  my $score;
+  my $feature_id = $result->{stable_id}->value;
+  if (exists $expected_scores{$feature_id}) {
+    cmp_ok(sprintf("%.3f", $result->{score}->value), '==', $expected_scores{$feature_id}, "Testing for score against $feature_id");
+  } else {
+    fail("SPARQL query returned unexpected value $feature_id");
+  }
+}
 
-# test the mapper for ucsc
-$mapper->calculate_overlap_score({'index_location' => $index_path , 'species' => $species, 'core_dba' => $core_dba, 'rdf_writer' => $rdf_writer_ucsc , 'source' => "ucsc"});
+# #Try UCSC - don't pass other_dba
+ my $dummy_content_ucsc;
+ my $dummy_fh_ucsc = IO::String->new($dummy_content_ucsc);
+ my $rdf_writer_ucsc = Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap->new(handle => $dummy_fh_ucsc ,config_file => "$Bin/../conf/test.conf");
 
-like( $dummy_content_ucsc, '/ENST00000296839/', 'Have got ENST00000296839' );
-like( $dummy_content_ucsc, '/ENST00000611664/', 'Have got ENST00000611664' );
-like( $dummy_content_ucsc, '/ENST00000259806/', 'Have got ENST00000259806' );
+# # test the mapper for ucsc
+# Rest triplestore to prevent contamination from previous testing
+$store = RDF::Trine::Store::Memory->new();
+$mapper->calculate_overlap_score(index_location => $index_path , species => $species, core_dba => $core_dba, rdf_writer => $rdf_writer_ucsc , source => "ucsc");
+$model = RDF::Trine::Model->new($store);
+$parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ucsc/', $dummy_content_ucsc, $model);
+
+$sparql = 'select ?stable_id ?ucsc_id from <http://rdf.ebi.ac.uk/resource/ucsc/> where { 
+  ?ensembl_feature rdfs:label ?stable_id .
+  ?ensembl_feature term:refers-to ?xref .
+  ?xref term:refers-to ?uri .
+  ?uri dc:identifier ?ucsc_id .
+  }';
+$sparql_query = RDF::Query->new($prefixes.$sparql);
+$sparql_query->error;
+@sparql_results = $sparql_query->execute($model)->get_all;
+
+my %expected_ids = (ENST00000603854 => 'uc063ljp.1', 
+                    ENST00000314040 => 'uc003mtk.1', 
+                    ENST00000296839 => 'uc003mtl.5', 
+                    ENST00000627866 => 'uc063ljq.1',
+                    ENST00000568244 => 'uc063ljr.1',
+                    ENST00000259806 => 'uc003mtm.3',
+                    ENST00000611664 => 'uc032wiw.1',
+                    ENST00000415106 => 'uc063ozn.1');
+
+foreach my $result (@sparql_results) {
+  my $id = $result->{stable_id}->value;
+  if (exists $expected_ids{$id}) {
+    is($result->{ucsc_id}->value, $expected_ids{$id}, "Ensembl Transcript $id expected and found linked to UCSC ID");
+  } else {
+    fail("Missing results for $id in SPARQL results");
+  }
+}
+
+# Post-test cleanup
+if(-e $index_path) {
+  rmtree $index_path;
+}
 
 done_testing();

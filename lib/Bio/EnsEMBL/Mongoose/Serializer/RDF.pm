@@ -111,7 +111,7 @@ sub print_slimline_record {
     my $xref_source = $self->identifier($xref->source);
     my $clean_id = uri_escape($xref->id);
     my $xref_uri = $xref_source.$clean_id;
-    my $allowed = $self->identifier_mapping->allowed_xrefs($source,$xref_source);
+    my $allowed = $self->identifier_mapping->allowed_xrefs($source,$xref->source);
     if ($allowed) {
       print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
       print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));

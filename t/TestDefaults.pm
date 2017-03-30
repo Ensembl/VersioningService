@@ -24,6 +24,8 @@ log4perl.appender.File.filename=$log_file
 log4perl.appender.File.mode=append
 log4perl.appender.File.layout=Log::Log4perl::Layout::PatternLayout
 log4perl.appender.File.layout.ConversionPattern=%d %p> %F{1}:%L - %m%n
+
+log4perl.logger.rdf.query=ERROR, Screen, File
 LOGCONF
 
 Log::Log4perl::init(\$log_conf);

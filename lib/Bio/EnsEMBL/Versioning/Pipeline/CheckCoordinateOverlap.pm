@@ -45,7 +45,7 @@ use warnings;
 
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
-use Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap;
+use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use Bio::EnsEMBL::Versioning::CoordinateMapper;
 use Bio::EnsEMBL::ApiVersion qw/software_version/;
 use File::Path qw/make_path/;
@@ -93,7 +93,7 @@ sub run {
   # Coordinate overlap is done only for refseq and ucsc
   foreach my $source(@sources){
     my $fh = IO::File->new($output_path.'/'.$source.'_coordinate_overlap.ttl','w') or throw("Failed to open ${source}_overlap.ttl for writing");
-    my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap->new(handle => $fh, config_file => $ENV{MONGOOSE}.'/conf/manager.conf');
+    my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $ENV{MONGOOSE}.'/conf/manager.conf');
 
     my $mapper = Bio::EnsEMBL::Versioning::CoordinateMapper->new;
     

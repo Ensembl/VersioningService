@@ -21,7 +21,6 @@ package Bio::EnsEMBL::Versioning::CoordinateMapper;
 
 use Moose;
 use Bio::EnsEMBL::Mapper::RangeRegistry;
-use Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use File::Temp qw/ tempfile tempdir /;
 use Method::Signatures;

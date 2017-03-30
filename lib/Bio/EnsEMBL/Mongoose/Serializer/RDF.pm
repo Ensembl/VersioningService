@@ -184,6 +184,59 @@ sub print_source_meta {
   }
 }
 
+sub print_coordinate_overlap_xrefs {
+  my $self = shift;
+  my $ens_id = shift;
+  my $record = shift;
+  my $source = shift;
+  my $score = shift;
+
+  my $fh = $self->handle;
+  my $id = $record->id;
+  unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
+  my $namespace = $self->identifier($source);
+
+  my $xref_source = $self->prefix('ensembl').$ens_id;
+  my $xref_link = $self->new_xref('ensembl',$source);
+
+  $namespace = $self->identifier($source);
+  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
+  my $xref_target = $namespace.$clean_id;
+  # Meta about Ensembl ID
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->prefix('ensembl')));
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), '"'.$ens_id.'"' );
+  # Create link
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
+  print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+  # Annotate link
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Coordinate_overlap'));
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
+}
+
+sub print_slimline_coordinate_overlap_xrefs {
+  my $self = shift;
+  my $ens_id = shift;
+  my $record = shift;
+  my $source = shift;
+
+  my $fh = $self->handle;
+  my $id = $record->id;
+  unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
+  my $namespace = $self->identifier($source);
+
+  my $xref_source = $self->prefix('ensembl').$ens_id;
+  my $xref_link;
+
+  $namespace = $self->identifier($source);
+  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
+  my $xref_target = $namespace.$clean_id;
+
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
+}
 
 __PACKAGE__->meta->make_immutable;
 

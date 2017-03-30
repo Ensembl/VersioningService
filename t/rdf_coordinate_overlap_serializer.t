@@ -2,14 +2,14 @@ use strict;
 use Test::More;
 #use Test::Deep;
 
-use Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap;
+use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use FindBin qw/$Bin/;
 use IO::String;
 
 my $dummy_content;
 my $dummy_fh = IO::String->new($dummy_content);
-my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
+my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
 # Test record-writing powers
 

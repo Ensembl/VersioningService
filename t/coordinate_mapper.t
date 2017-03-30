@@ -34,6 +34,7 @@ my %conf = Config::General->new($Bin.'/../conf/test.conf')->getall();
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Bio::EnsEMBL::Versioning::CoordinateMapper;
+use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Bio::EnsEMBL::Versioning::TestDB qw/broker get_conf_location/;
 
@@ -108,7 +109,7 @@ cmp_ok($hit_count_transcripts, '==', 16, 'All 16 transcripts made it to the inde
 
 my $dummy_content;
 my $dummy_fh = IO::String->new($dummy_content);
-my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
+my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
 # test the mapper for refseq
 $mapper->calculate_overlap_score(index_location => $temp_index_folder , species => $species, core_dba => $core_dba, other_dba => $other_dba,rdf_writer => $rdf_writer , source => "refseq");
@@ -147,7 +148,7 @@ foreach my $result (@sparql_results) {
 # #Try UCSC - don't pass other_dba
  my $dummy_content_ucsc;
  my $dummy_fh_ucsc = IO::String->new($dummy_content_ucsc);
- my $rdf_writer_ucsc = Bio::EnsEMBL::Mongoose::Serializer::RDFCoordinateOverlap->new(handle => $dummy_fh_ucsc ,config_file => "$Bin/../conf/test.conf");
+ my $rdf_writer_ucsc = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh_ucsc ,config_file => "$Bin/../conf/test.conf");
 
 # # test the mapper for ucsc
 # Rest triplestore to prevent contamination from previous testing

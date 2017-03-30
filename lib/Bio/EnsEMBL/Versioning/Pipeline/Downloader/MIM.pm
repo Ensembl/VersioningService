@@ -71,9 +71,12 @@ sub _get_remote {
     accepts => 'application/octet-stream',
     file_name => $self->file_pattern
   );
-  $self->log->debug('Downloaded MIM FTP files: '.join("\n",@$result));
-  return $result if (scalar @$result > 0);
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from MIM site");
+  if ($result and scalar @$result > 0) {
+    $self->log->debug('Downloaded MIM FTP files: '.join("\n",@$result));
+    return $result
+    } else {
+      Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from MIM site");
+    }
 }
 
 __PACKAGE__->meta->make_immutable;

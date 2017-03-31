@@ -17,6 +17,10 @@ my $ttl;
 my $dummy_fh = IO::String->new($ttl);
 my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
+my $full_fat_ttl;
+my $dummy_fh = IO::String->new($full_fat_ttl);
+my $other_rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
+
 # Now test the creation of specific combinations of data, and the resulting queries over that data.
 
 sub xrefs {
@@ -102,7 +106,8 @@ push @records,['lrg', Bio::EnsEMBL::Mongoose::Persistence::Record->new({
 # Dump the lot to RDF in bidirectional form
 foreach my $write_me (@records) {
   my ($source,$record) = @$write_me;
-  $rdf_writer->print_slimline_record($record,$source);  
+  $rdf_writer->print_slimline_record($record,$source);
+  $other_rdf_writer->print_record($record,$source);
 }
 
 # TODO: Add alignment links, overlap links and so on.
@@ -158,6 +163,28 @@ query($query,'uri',[
   ],
   'Multi-hop transitive proteins');
 
+# Now check the fully-fledged model
+note $full_fat_ttl;
+
+$parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl_full/', $full_fat_ttl, $model);
+
+$query = 'select distinct ?id from <http://rdf.ebi.ac.uk/resource/ensembl_full/> where {
+  ?uri term:refers-to ?xref .
+  ?xref rdf:type term:Direct ;
+        term:refers-to ?other_uri .
+  ?other_uri dc:identifier ?id .
+  }';
+
+query($query,'id',[qw/GT10 eg1 eg2 ep2 hgnc1 ip1 lrg1 ncbi1 pdb1 rp2 rt1/],'Direct xrefs return all annotations as well as features');
+
+# $query = 'select distinct ?id from <http://rdf.ebi.ac.uk/resource/ensembl_full/> where {
+#   ?uri term:refers-to ?xref .
+#   ?xref rdf:type term:Direct .
+#   ?xref term:refers-to ?other_uri .
+#   ?other_uri dc:identifier ?id .
+#   }';
+
+# query($query,'id',[qw/GT10 eg1 eg2 ep2 hgnc1 ip1 lrg1 ncbi1 pdb1 rp2 rt1/],'');
 
 
 

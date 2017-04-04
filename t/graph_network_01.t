@@ -109,7 +109,8 @@ foreach my $write_me (@records) {
   $rdf_writer->print_slimline_record($record,$source);
   $other_rdf_writer->print_record($record,$source);
 }
-
+$rdf_writer->print_source_meta;
+$other_rdf_writer->print_source_meta;
 # TODO: Add alignment links, overlap links and so on.
 
 my $store = RDF::Trine::Store::Memory->new();
@@ -128,6 +129,16 @@ sub query {
   my $iterator = $query->execute($model);
   my @results = $iterator->get_all;
   cmp_deeply([map {$_->{$var_name}->value} @results],bag(@$expected_accessions),$test_name);
+}
+
+sub ordered_query {
+  my ($query,$var_name,$expected_accessions,$test_name) = @_;
+  my $prefixes = $rdf_writer->compatible_name_spaces();
+  $query = RDF::Query->new($prefixes.$query);
+  $query->error;
+  my $iterator = $query->execute($model);
+  my @results = $iterator->get_all;
+  cmp_deeply([map {$_->{$var_name}->value} @results],$expected_accessions, $test_name);
 }
 
 my $query = 'select ?uri from <http://rdf.ebi.ac.uk/resource/ensembl/> where { 
@@ -177,14 +188,16 @@ $query = 'select distinct ?id from <http://rdf.ebi.ac.uk/resource/ensembl_full/>
 
 query($query,'id',[qw/GT10 eg1 eg2 ep2 hgnc1 ip1 lrg1 ncbi1 pdb1 rp2 rt1/],'Direct xrefs return all annotations as well as features');
 
-# $query = 'select distinct ?id from <http://rdf.ebi.ac.uk/resource/ensembl_full/> where {
-#   ?uri term:refers-to ?xref .
-#   ?xref rdf:type term:Direct .
-#   ?xref term:refers-to ?other_uri .
-#   ?other_uri dc:identifier ?id .
-#   }';
+# Test that hgnc ID wins
 
-# query($query,'id',[qw/GT10 eg1 eg2 ep2 hgnc1 ip1 lrg1 ncbi1 pdb1 rp2 rt1/],'');
+$query = 'select ?id ?priority from <http://rdf.ebi.ac.uk/resource/ensembl/> where {
+  <http://identifiers.org/ncbigene/ncbi1> term:refers-to+ ?xref_uri .
+  ?xref_uri dcterms:source ?source ;
+            dc:identifier ?id .
+  ?source term:priority ?priority .
+} ORDER BY DESC(?priority)';
+
+ordered_query($query,'id',[qw/hgnc1 ncbi1/], 'Correctly select IDs in priority order');
 
 
 

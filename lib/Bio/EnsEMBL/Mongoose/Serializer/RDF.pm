@@ -91,7 +91,7 @@ sub print_record {
   }
 }
 
-# Create a transitive network of simple xrefs and resources. No annotated middle node, no labels, just URIs and more URIs
+# Create a transitive network of simple xrefs and resources. No annotated middle node, just URIs, labels and sources.
 # This will be much more efficient to traverse in all directions so that we can find the entire set of interlinked URIs
 sub print_slimline_record {
   my $self = shift;
@@ -102,10 +102,15 @@ sub print_slimline_record {
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);
+
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$clean_id;
-
+  
+  # Label annotations for finding best IDs in a given scenario
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
+  
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     my $xref_source = $self->identifier($xref->source);
@@ -115,6 +120,7 @@ sub print_slimline_record {
     if ($allowed) {
       print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
       print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
+      print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('dcterms').'source'), $self->u( $xref_source ));
     }
   }
 }
@@ -140,7 +146,7 @@ sub print_checksum_xrefs {
   # Meta about Ensembl ID
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->prefix('ensembl')));
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
-  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), '"'.$ens_id.'"' );
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), qq/"$ens_id"/ );
   # Create link
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
   print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
@@ -179,8 +185,14 @@ sub print_source_meta {
   my $mappings = $self->identifier_mapping->get_all_name_mapping;
   foreach my $source (keys %$mappings) {
     print $fh $self->triple( 
-      $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), '"'.$source.'"'
+      $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), qq/"$source"/
     );
+    my $full_map = $self->identifier_mapping->get_mapping($source);
+    if (exists $full_map->{priority}) {
+      print $fh $self->triple(
+        $self->u($mappings->{$source}), $self->u($self->prefix('term').'priority'), $full_map->{priority}
+      );
+    }
   }
 }
 

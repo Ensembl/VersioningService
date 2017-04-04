@@ -191,14 +191,23 @@ query($query,'id',[qw/GT10 eg1 eg2 ep2 hgnc1 ip1 lrg1 ncbi1 pdb1 rp2 rt1/],'Dire
 # Test that hgnc ID wins
 
 $query = 'select ?id ?priority from <http://rdf.ebi.ac.uk/resource/ensembl/> where {
+  <http://rdf.ebi.ac.uk/resource/ensembl/eg2> term:refers-to+ ?xref_uri .
+  ?xref_uri dcterms:source ?source ;
+            dc:identifier ?id .
+  ?source term:priority ?priority .
+} ORDER BY DESC(?priority)';
+# Note, ORDER BY DESC puts things with no ?priority top unless you explicitly require a value in the query
+
+ordered_query($query,'id',[qw/hgnc1 ncbi1/], 'Correctly select IDs in priority order');
+
+
+$query = 'select ?id ?priority from <http://rdf.ebi.ac.uk/resource/ensembl/> where {
   <http://identifiers.org/ncbigene/ncbi1> term:refers-to+ ?xref_uri .
   ?xref_uri dcterms:source ?source ;
             dc:identifier ?id .
   ?source term:priority ?priority .
 } ORDER BY DESC(?priority)';
 
-ordered_query($query,'id',[qw/hgnc1 ncbi1/], 'Correctly select IDs in priority order');
-
-
+ordered_query($query,'id',[qw/hgnc1 ncbi1/], "Doesn't matter where you start, still get the same ID");
 
 done_testing;

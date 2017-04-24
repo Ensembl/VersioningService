@@ -26,30 +26,33 @@ use Bio::EnsEMBL::Hive::Utils qw/destringify/;
 
 sub fetch_input {
   my $self = shift;
-    
-  my $check_latest = $self->jobs('CheckLatest');
+  
+  my $check_latest = $self->jobs('CheckLatest');  
+  my $parse_source = $self->jobs('ParseSource');
   my $download = $self->jobs('DownloadSource');
 
   my @args = (
-    $check_latest->{successful_jobs},
     $check_latest->{failed_jobs},
-    $download->{successful_jobs},
+    $check_latest->{successful_jobs},
     $download->{failed_jobs},
+    $download->{successful_jobs},
+    $parse_source->{failed_jobs},
+    $parse_source->{successful_jobs},
     $self->failed(),
-    $self->summary($check_latest),
-    $self->summary($download)
+    $self->summary($download),
+    $self->summary($parse_source)
   );
 
-  my %errors = $self->logs('ErrorLog');
-
+  # Compose content
   my $msg = "Your Versioning Pipeline has finished. We have:\n\n";
-  
-  foreach my $key (keys %errors) {
-    $msg .= $key . $errors{$key} . "\n";
-  }
 
-  $msg .= sprintf(<<'MSG', @args);
-
+  foreach my $analysis (qw/CheckLatest DownloadSource ParseSource/) {
+    my %errors = $self->logs($analysis);
+    
+    foreach my $key (keys %errors) {
+      $msg .= $key . $errors{$key} . "\n";
+    }
+    $msg .= sprintf(<<'MSG', @args);
   * %d sources checked for latest version (%d failed)
   * %d sources with downloaded file (%d failed)
 
@@ -64,7 +67,8 @@ Full breakdown follows ...
 %s
 
 MSG
-
+  }
+  
   $self->param('text', $msg);
   return;
 }

@@ -75,6 +75,7 @@ sub _load_taxonomy_db {
         -host => $conf->{tax_host},
         -port => $conf->{tax_port},
         -dbname => $conf->{tax_db},
+        -DISCONNECT_WHEN_INACTIVE => $conf->{tax_disconnect}
     );
     if (!$dba) {
         Bio::EnsEMBL::Mongoose::IOException->throw(

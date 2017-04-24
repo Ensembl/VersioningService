@@ -6,3 +6,5 @@ tax_db = ncbi_taxonomy
 tax_pass = 
 tax_user = anonymous
 tax_port = 4157
+# Use this for long-running jobs that may exceed the database timeout
+tax_disconnect = 1

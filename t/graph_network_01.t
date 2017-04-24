@@ -117,7 +117,7 @@ my $store = RDF::Trine::Store::Memory->new();
 my $model = RDF::Trine::Model->new($store);
 my $parser = RDF::Trine::Parser->new('turtle');
 
-note $ttl;
+# note $ttl;
 $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/', $ttl, $model);
 ok($model);
 
@@ -175,7 +175,7 @@ query($query,'uri',[
   'Multi-hop transitive proteins');
 
 # Now check the fully-fledged model
-note $full_fat_ttl;
+# note $full_fat_ttl;
 
 $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl_full/', $full_fat_ttl, $model);
 

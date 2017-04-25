@@ -55,6 +55,9 @@ sub print_record {
   if ($record->description) {
     print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'description'),'"'.$self->escape($record->description).'"');
   }
+  if ($record->comment) {
+    print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('rdfs').'comment'),'"'.$self->escape($record->comment).'"');
+  }
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
@@ -89,7 +92,7 @@ sub print_record {
   }
 }
 
-# Create a transitive network of simple xrefs and resources. No annotated middle node, no labels, just URIs and more URIs
+# Create a transitive network of simple xrefs and resources. No annotated middle node, just URIs, labels and sources.
 # This will be much more efficient to traverse in all directions so that we can find the entire set of interlinked URIs
 sub print_slimline_record {
   my $self = shift;
@@ -104,18 +107,21 @@ sub print_slimline_record {
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$clean_id;
-
+  
+  # Label annotations for finding best IDs in a given scenario
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
+  
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     my $xref_source = $self->identifier($xref->source);
     my $clean_id = uri_escape($xref->id);
     my $xref_uri = $xref_source.$clean_id;
-    my ($outbound,$inbound) = $self->identifier_mapping->allowed_xrefs($source,$xref_source);
-    if ($outbound) {
+    my $allowed = $self->identifier_mapping->allowed_xrefs($source,$xref->source);
+    if ($allowed) {
       print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
-    }
-    if ($inbound) {
       print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
+      print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('dcterms').'source'), $self->u( $xref_source ));
     }
   }
 }
@@ -218,7 +224,67 @@ sub print_source_meta {
     print $fh $self->triple( 
       $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), qq/"$source"/
     );
+    my $full_map = $self->identifier_mapping->get_mapping($source);
+    if (exists $full_map->{priority}) {
+      print $fh $self->triple(
+        $self->u($mappings->{$source}), $self->u($self->prefix('term').'priority'), $full_map->{priority}
+      );
+    }
   }
+}
+
+sub print_coordinate_overlap_xrefs {
+  my $self = shift;
+  my $ens_id = shift;
+  my $record = shift;
+  my $source = shift;
+  my $score = shift;
+
+  my $fh = $self->handle;
+  my $id = $record->id;
+  unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
+  my $namespace = $self->identifier($source);
+
+  my $xref_source = $self->prefix('ensembl').$ens_id;
+  my $xref_link = $self->new_xref('ensembl',$source);
+
+  $namespace = $self->identifier($source);
+  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
+  my $xref_target = $namespace.$clean_id;
+  # Meta about Ensembl ID
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->prefix('ensembl')));
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), '"'.$ens_id.'"' );
+  # Create link
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
+  print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+  # Annotate link
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Coordinate_overlap'));
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
+}
+
+sub print_slimline_coordinate_overlap_xrefs {
+  my $self = shift;
+  my $ens_id = shift;
+  my $record = shift;
+  my $source = shift;
+
+  my $fh = $self->handle;
+  my $id = $record->id;
+  unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
+  my $namespace = $self->identifier($source);
+
+  my $xref_source = $self->prefix('ensembl').$ens_id;
+  my $xref_link;
+
+  $namespace = $self->identifier($source);
+  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
+  my $xref_target = $namespace.$clean_id;
+
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
 }
 
 __PACKAGE__->meta->make_immutable;

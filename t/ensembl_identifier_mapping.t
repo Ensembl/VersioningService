@@ -22,12 +22,9 @@ is($mapping->{canonical_LOD},"http://purl.uniprot.org/uniprot/","Test full mappi
 is($converter->LOD_uri('UniProt/SWISSPROT'),"http://purl.uniprot.org/uniprot/","Check LOD_uri() functions");
 is($converter->LOD_uri('durpadurp'),undef,'Check results of a missing LOD mapping');
 
-is_deeply($converter->allowed_xrefs('UniProt/SWISSPROT','RefSeq_peptide'), [1,1], 'Same classes of data can link in both directions');
-is_deeply($converter->allowed_xrefs('Ensembl','eggNOG'),[1,0],'Annotation type sources can only be linked to one way');
-is_deeply($converter->allowed_xrefs('RefSeq_ncRNA','ensembl'),[0,0],'Features of different types may not xref to each other');
-is_deeply($converter->allowed_xrefs('ensembl_transcript','DrStrangelove'),[0,0],'Unfamiliar sources do not get links');
-is_deeply($converter->allowed_xrefs('DrStrangelove','ensembl_transcript'),[0,0],'Unfamiliar sources do not create links');
-
-
-
+cmp_ok($converter->allowed_xrefs('UniProt/SWISSPROT','RefSeq_peptide'), '==', 1, 'Same classes of data can link in both directions');
+cmp_ok($converter->allowed_xrefs('Ensembl','eggNOG'), '==', 0 ,'Annotation type sources cannot be linked transitively to other feature types');
+cmp_ok($converter->allowed_xrefs('RefSeq_ncRNA','ensembl'),'==',0,'Features of different types may not xref to each other');
+cmp_ok($converter->allowed_xrefs('ensembl_transcript','DrStrangelove'),'==',0,'Unfamiliar sources do not get links');
+cmp_ok($converter->allowed_xrefs('DrStrangelove','ensembl_transcript'),'==',0,'Unfamiliar sources do not create links');
 done_testing;

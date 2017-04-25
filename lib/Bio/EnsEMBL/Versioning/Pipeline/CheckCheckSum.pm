@@ -74,56 +74,38 @@ sub fetch_input {
   $self->param('indexer',$indexer);
   $self->param_required('cdna_path');
   $self->param_required('pep_path');
-  $self->param_required('broker_conf');
   
   # Define where the RDF output will go and create the folder
-  my $output_path = File::Spec->join( $self->param('base_path'), 'xref', $self->param('run_id'), $species, "xref_rdf_dumps", 'checksum');
+  my $output_path = File::Spec->join( $self->param('base_path'), "xref_rdf_dumps", $self->param('run_id'), $species, 'checksum');
   if (!-d $output_path) {
     make_path $output_path or die "Failed to create path: $output_path";
   }
   $self->param('output_path',$output_path);
-
 }
 
 sub run {
   my ($self) = @_;
 
   my $run_id = $self->param('run_id'); # Comes from hive param stack
-  my $output_hash;
-
-  # invert loop as required in order to deal with sources versus types
-  foreach my $type (qw/cdna pep/) {
-    # put id->checksum pairs into a hash directly from file from DumpEnsemblFASTA
-    my %ens_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param($type.'_path'))};
-    my $source;
-    if ($type eq 'cdna') {
-      $source = 'RefSeq';
-    } elsif ($type eq 'pep') {
-      $source = 'Swissprot';
-    }
-    my $checksum_path = $self->search_source_by_checksum($source,\%ens_checksum,$run_id);
-    $output_hash->{ species => $self->param('species'), source => $source, type => $type, checksum_ttl_path => $checksum_path};
-    # Parallel accumulator for species+source combo may be necessary to preserve source
-    # store in checksum_ttl_path accumulator
-    $self->dataflow_output_id($output_hash,2);
-  }
+  
+  my %ens_checksum;
+  # convert Ensembl ID\tchecksum into () id1 => checksum1, ...)
+  my %transcript_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('cdna_path')) };
+  $self->search_source_by_checksum('RefSeq',\%transcript_checksum,$run_id);
+  # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
+  my %peptide_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('pep_path')) };
+  $self->search_source_by_checksum('UniprotSwissprot',\%peptide_checksum);
 }
+
 
 sub search_source_by_checksum {
   my ($self,$source,$checksum_hash,$run_id) = @_;
   my $indexer = $self->param('indexer');
   my $path = $self->param('output_path');
-  my $full_output_path = $path.'/'.$source.'_checksum.ttl';
-  my $fh = IO::File->new($full_output_path,'w') or throw("Failed to open $full_output_path for writing");
-  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $self->param('broker_conf'));
-  $indexer->work_with_run(source => $source,run_id => $run_id);
+  my $fh = IO::File->new($path.$source.'_checksum.ttl','w') or throw("Failed to open ${source}_checksum.ttl for writing");
+  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh);
+  $indexer->work_with_run($source,$run_id);
   
-  my $ens_feature_type;
-  if ($source eq 'RefSeq') {
-    $ens_feature_type = 'transcript';
-  } elsif ($source eq 'Swissprot') {
-    $ens_feature_type = 'protein';
-  }
   foreach my $ens_id (keys %$checksum_hash) {
     $indexer->query(
       Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
@@ -132,14 +114,13 @@ sub search_source_by_checksum {
         result_size => 1,
         species => $self->param('species')
       )
-    );
-
+    ); 
     while (my $record = $indexer->next_record) {
-      $writer->print_checksum_xrefs($ens_id,$ens_feature_type,$record,$source);
+      $writer->print_checksum_xrefs($ens_id,$record,$source);
     }
   }
   $fh->close;
-  return $full_output_path;
+
 }
 
 

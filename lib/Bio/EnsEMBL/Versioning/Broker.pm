@@ -137,7 +137,7 @@ sub get_scratch_path {
   if (exists $self->config->{scratch_space} && -w $self->config->{scratch_space}) {
     return $self->config->{scratch_space};
   } else {
-    Bio::EnsEMBL::Mongoose::IOException->throw("scratch_space not defined in config file");
+    Bio::EnsEMBL::Mongoose::IOException->throw("scratch_space not defined or writeable in config file ".$self->config_file);
   }
 }
 
@@ -351,7 +351,7 @@ method finalise_index (Source $source, Str $revision, $doc_store, Int $record_co
   $version_set->index_uri(File::Spec->catfile($final_location,'index'));
   $version_set->record_count($record_count);
   $self->log->debug("Saved index to $final_location with $record_count entries");
-  $version_set->update;
+  $version_set->update->discard_changes();
 
   $source->current_version($version_set);
   $source->update;

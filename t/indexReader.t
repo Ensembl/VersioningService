@@ -3,10 +3,11 @@ use Test::More;
 use Test::Differences;
 use Test::Exception;
 
+use Log::Log4perl;
+Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 use FindBin qw/$Bin/;
 use lib "$Bin";
 use TestDefaults;
-
 use Bio::EnsEMBL::Mongoose::IndexReader;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 
@@ -53,10 +54,5 @@ $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
 throws_ok( sub { $reader->query($params) }, 'Bio::EnsEMBL::Mongoose::SearchEngineException', 'Bad species name causes an exception explaining why');
 
 # Test for checksums via accessors
-
-# Deliberately screw up configuration
-
-throws_ok( sub { $reader->storage_engine_conf_file('/tmp/red_weed') }, 'Bio::EnsEMBL::Mongoose::IOException','Absent config file generates exception');
-
 
 done_testing;

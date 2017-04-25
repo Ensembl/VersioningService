@@ -15,6 +15,6 @@ cp conf/test.conf.example conf/test.conf
 
 echo "Running test suite"
 prove -vl
-prove -vl t/awkward-tests
+# prove -vl t/awkward-tests
 
 exit $?

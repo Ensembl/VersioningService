@@ -177,11 +177,10 @@ sub allowed_xrefs {
   my $self =shift;
   my $source = shift;
   my $target_source = shift;
-  my $source_type = $self->get_feature_type(lc $source);
-  my $target_type = $self->get_feature_type(lc $target_source);
-  return [1,0] if $target_type eq 'annotation';
-  return [1,1] if $source_type eq $target_type;
-  return [0,0];
+  my $source_type = $self->get_feature_type($source);
+  my $target_type = $self->get_feature_type($target_source);
+  return 1 if $source_type eq $target_type and $source_type ne 'annotation';
+  return 0;
 }
 
 
@@ -202,6 +201,7 @@ sub allowed_xrefs {
 sub get_feature_type {
   my $self = shift;
   my $source = shift;
+  $source = lc $source;
   my $map = $self->{xref_mapping};
   if (exists $map->{$source} && defined $map->{$source}->{feature_type}) {
     return $map->{$source}->{feature_type};

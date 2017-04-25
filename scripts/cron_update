@@ -6,7 +6,7 @@ then
 fi
 source /etc/profile.d/lsf.sh
 source /nfs/software/ensembl/RHEL7/envs/basic.sh
-export PERL5LIB=$PERL5LIB:${HOME}/src/ensembl/modules:${HOME}/src/ensembl-compara/modules:${HOME}/src/VersioningService/lib/:${HOME}/src/ensembl-io/modules/:${HOME}/src/ensembl-hive/modules/:${HOME}/src/ensembl-production/modules
+export PERL5LIB=$PERL5LIB:${HOME}/src/ensembl/modules/:${HOME}/src/ensembl-taxonomy/modules:${HOME}/src/VersioningService/lib/:${HOME}/src/ensembl-io/modules/:${HOME}/src/ensembl-hive/modules/:${HOME}/src/ensembl-production/modules/
 export MONGOOSE=${HOME}/src/VersioningService
 export BIN=$BIN:${HOME}/src/ensembl-hive/scripts/
 [ -e bsub ] && { echo "Failed to find LSF components"; exit 1; }

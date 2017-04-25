@@ -89,7 +89,8 @@ sub read_record {
     my $id = $linecolumns[ $fields->{$self->feature_type} ];
     $record->id( $id );
     $record->display_label($id );
-    $record->description($linecolumns[ $fields->{"description"} ] );
+    my $description = $linecolumns[ $fields->{"description"} ];
+    $record->description( $description) if $description;
     $record->taxon_id($self->taxon_id);
     
     my $gene_name = $linecolumns[ $fields->{"hgnc_symbol"} ];
@@ -98,28 +99,24 @@ sub read_record {
     }else{
       $record->gene_name($id);
     }
-    
-    my $entrezgenes = $self->split_value($linecolumns[ $fields->{"entrezgene"} ]) if (exists $fields->{"entrezgene"} and defined($linecolumns[ $fields->{"entrezgene"}]) and length($linecolumns[ $fields->{"entrezgene"}]) > 0);
-    my $mirbase_ids = $self->split_value($linecolumns[ $fields->{"mirbase_id"} ]) if (exists $fields->{"mirbase_id"} and defined($linecolumns[ $fields->{"mirbase_id"}]) and length($linecolumns[ $fields->{"mirbase_id"}]) > 0);
-    my $refseqs = $self->split_value($linecolumns[ $fields->{"refseq"} ]) if (exists $fields->{"refseq"} and defined($linecolumns[ $fields->{"refseq"}]) and length($linecolumns[ $fields->{"refseq"}]) > 0);
-    my $unigenes = $self->split_value($linecolumns[ $fields->{"unigene"} ]) if (exists $fields->{"unigene"} and defined($linecolumns[ $fields->{"unigene"}]) and length($linecolumns[ $fields->{"unigene"}]) > 0);
-    my $uniprots = $self->split_value($linecolumns[ $fields->{"uniprot"} ]) if exists $fields->{"uniprot"} and defined($linecolumns[ $fields->{"uniprot"}]) and length($linecolumns[ $fields->{"uniprot"}]) > 0;
-    my $interpros = $self->split_value($linecolumns[ $fields->{"interpro"} ]) if exists $fields->{"interpro"} and defined($linecolumns[ $fields->{"interpro"}]) and length($linecolumns[ $fields->{"interpro"}]) > 0;
-
-    $record = $self->add_ae_xref($record, $entrezgenes, 'entrezgene');
-    $record = $self->add_ae_xref($record, $mirbase_ids, 'mirbase');
-    $record = $self->add_ae_xref($record, $refseqs, 'refseq');
-    $record = $self->add_ae_xref($record, $unigenes, 'unigene');
-    $record = $self->add_ae_xref($record, $uniprots, 'uniprot');
-    $record = $self->add_ae_xref($record, $interpros, 'interpro');
+    # Strip out specific xrefs from columns, unpack them and add them to the record
+    foreach my $source (qw/entrezgene mirbase_id refseq unigene uniprot interpro/) {
+      my $ids;
+      if (exists $fields->{$source} and defined($linecolumns[ $fields->{$source}]) and length($linecolumns[ $fields->{$source}]) > 0) {
+        $ids = $self->split_value($linecolumns[ $fields->{$source} ]);
+      }
+      $record = $self->add_ae_xref($record, $ids, $source);
+    }
     $record = $self->add_ae_xref($record, [$record->id], 'ensembl');
 
-    if (exists $fields->{"synonym"}){
-      my $synonyms = $self->split_value($linecolumns[ $fields->{"synonym"}]) if (exists $fields->{"synonym"} and defined($linecolumns[ $fields->{"synonym"}]) and length($linecolumns[ $fields->{"synonym"}]) > 0);
+
+    if (exists $fields->{"synonym"} and defined($linecolumns[ $fields->{"synonym"}]) and length($linecolumns[ $fields->{"synonym"}]) > 0) {
+      my $synonyms = $self->split_value($linecolumns[ $fields->{"synonym"}]);
       foreach my $synonym (@$synonyms){
         $record->add_synonym($synonym);
       }
-  }
+    
+    }
 
   return 1;
   }

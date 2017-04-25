@@ -55,7 +55,7 @@ sub fetch_input {
     $msg .= sprintf(<<'MSG', @args);
   * %d sources checked for latest version (%d failed)
   * %d sources with downloaded file (%d failed)
-
+  * %d sources with parsed data (%d failed)
 %s
 
 ===============================================================================
@@ -88,33 +88,16 @@ sub jobs {
     };
   }
   my $id = $analysis->dbID();
-  @jobs = @{$aja->fetch_all_by_analysis_id($id)};
-  $_->{input} = destringify($_->input_id()) for @jobs;
-  my %passed_sources = map { $_->{input}->{source_name}, 1 } grep { $_->status() eq 'DONE' } @jobs;
-  my %failed_sources = map { $_->{input}->{source_name}, 1 } grep { $_->status() eq 'FAILED' } @jobs;
+  @jobs = @{$aja->fetch_all_by_analysis_id_status($logic_name)};
+
   return {
     analysis => $analysis,
     name => $logic_name,
     jobs => \@jobs,
-    successful_jobs => scalar(keys %passed_sources),
-    failed_jobs => scalar(keys %failed_sources),
+    successful_jobs => scalar grep { $_->status eq 'DONE' } @jobs,
+    failed_jobs => scalar grep { $_->status eq 'FAILED' } @jobs,
   };
 }
-
-
-sub logs {
-  my ($self, $logic_name) = @_;
-  my $aa = $self->db->get_AnalysisAdaptor();
-  my $aja = $self->db->get_AnalysisJobAdaptor();
-  my $analysis = $aa->fetch_by_logic_name($logic_name);
-  my $id = $analysis->dbID();
-  my @jobs = @{$aja->generic_fetch("j.analysis_id =$id")};
-  $_->{input} = destringify($_->input_id()) for @jobs;
-  @jobs = sort { $a->{input}->{source_name} cmp $b->{input}->{source_name} } @jobs;
-  my %errors = map { $_->{input}->{error}, $_->{input}->{source_name} } @jobs;
-  return %errors;
-}
-
 
 sub failed {
   my ($self) = @_;
@@ -127,7 +110,7 @@ The following jobs have failed during this run. Please check your hive's error m
 
 MSG
   foreach my $job (@{$failed}) {
-    my $analysis = $self->db()->get_AnalysisAdaptor()->fetch_by_dbID($job->analysis_id());
+    my $analysis = $job->analysis();
     my $line = sprintf(q{  * job_id=%d %s(%5d) input_id='%s'}, $job->dbID(), $analysis->logic_name(), $analysis->dbID(), $job->input_id());
     $output .= $line;
     $output .= "\n";

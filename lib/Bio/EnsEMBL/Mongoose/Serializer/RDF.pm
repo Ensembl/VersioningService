@@ -103,7 +103,7 @@ sub print_slimline_record {
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);
-  $source = uri_escape($source);
+  # $source = uri_escape($source);
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$clean_id;

@@ -22,6 +22,8 @@ use warnings;
 
 use Test::More;
 use Time::HiRes qw (sleep);
+use FindBin qw/$Bin/;
+use lib "$Bin";
 use TestDefaults;
 
 use Bio::EnsEMBL::Versioning::Logger;

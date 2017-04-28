@@ -176,6 +176,9 @@ sub print_slimline_checksum_xrefs {
   
   my $fh = $self->handle;
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('term').'refers-to'), $self->u($xref_source) );
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
 }
 
 sub print_alignment_xrefs {
@@ -198,6 +201,9 @@ sub print_slimline_alignment_xrefs {
 
   my $fh = $self->handle;
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('term').'refers-to'), $self->u($xref_source));
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$source_id"/);
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$target_id"/);
 }
 
 # Generates a triad of URIs for a two-step Xref link, i.e. source_id refers-to xref refers-to target_id
@@ -285,6 +291,9 @@ sub print_slimline_coordinate_overlap_xrefs {
   my $xref_target = $namespace.$clean_id;
 
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('term').'refers-to'), $self->u($xref_source) );
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
 }
 
 __PACKAGE__->meta->make_immutable;

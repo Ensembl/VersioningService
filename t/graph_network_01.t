@@ -125,7 +125,7 @@ sub query {
   my ($query,$var_name,$expected_accessions,$test_name) = @_;
   my $prefixes = $rdf_writer->compatible_name_spaces();
   $query = RDF::Query->new($prefixes.$query);
-  $query->error;
+  note (RDF::Query->error) unless $query;
   my $iterator = $query->execute($model);
   my @results = $iterator->get_all;
   cmp_deeply([map {$_->{$var_name}->value} @results],bag(@$expected_accessions),$test_name);
@@ -135,7 +135,7 @@ sub ordered_query {
   my ($query,$var_name,$expected_accessions,$test_name) = @_;
   my $prefixes = $rdf_writer->compatible_name_spaces();
   $query = RDF::Query->new($prefixes.$query);
-  $query->error;
+  note (RDF::Query->error) unless $query;
   my $iterator = $query->execute($model);
   my @results = $iterator->get_all;
   cmp_deeply([map {$_->{$var_name}->value} @results],$expected_accessions, $test_name);

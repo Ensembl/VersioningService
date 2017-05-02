@@ -11,6 +11,7 @@ use TestDefaults;
 
 use IO::String;
 use RDF::Trine;
+use RDF::Trine::Node::Resource;
 use RDF::Query;
 
 my $ttl;
@@ -18,8 +19,8 @@ my $dummy_fh = IO::String->new($ttl);
 my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
 my $full_fat_ttl;
-my $dummy_fh = IO::String->new($full_fat_ttl);
-my $other_rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
+my $big_dummy_fh = IO::String->new($full_fat_ttl);
+my $other_rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $big_dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
 # Now test the creation of specific combinations of data, and the resulting queries over that data.
 
@@ -116,17 +117,20 @@ $other_rdf_writer->print_source_meta;
 my $store = RDF::Trine::Store::Memory->new();
 my $model = RDF::Trine::Model->new($store);
 my $parser = RDF::Trine::Parser->new('turtle');
-
+my $chunky_store = RDF::Trine::Store::Memory->new();
+my $chunky_model = RDF::Trine::Model->new($chunky_store);
 # note $ttl;
 $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/', $ttl, $model);
+$parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl_full/', $full_fat_ttl, $chunky_model);
 ok($model);
 
 sub query {
-  my ($query,$var_name,$expected_accessions,$test_name) = @_;
+  my ($query,$var_name,$expected_accessions,$test_name,$specific_model) = @_;
+  $specific_model = $model unless $specific_model;
   my $prefixes = $rdf_writer->compatible_name_spaces();
   $query = RDF::Query->new($prefixes.$query);
   note (RDF::Query->error) unless $query;
-  my $iterator = $query->execute($model);
+  my $iterator = $query->execute($specific_model);
   my @results = $iterator->get_all;
   cmp_deeply([map {$_->{$var_name}->value} @results],bag(@$expected_accessions),$test_name);
 }
@@ -177,8 +181,6 @@ query($query,'uri',[
 # Now check the fully-fledged model
 # note $full_fat_ttl;
 
-$parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl_full/', $full_fat_ttl, $model);
-
 $query = 'select distinct ?id from <http://rdf.ebi.ac.uk/resource/ensembl_full/> where {
   ?uri term:refers-to ?xref .
   ?xref rdf:type term:Direct ;
@@ -186,7 +188,7 @@ $query = 'select distinct ?id from <http://rdf.ebi.ac.uk/resource/ensembl_full/>
   ?other_uri dc:identifier ?id .
   }';
 
-query($query,'id',[qw/GT10 eg1 eg2 ep2 hgnc1 ip1 lrg1 ncbi1 pdb1 rp2 rt1/],'Direct xrefs return all annotations as well as features');
+query($query,'id',[qw/GT10 eg1 eg2 ep2 hgnc1 ip1 lrg1 ncbi1 pdb1 rp2 rt1/],'Direct xrefs return all annotations as well as features',$chunky_model);
 
 # Test that hgnc ID wins
 
@@ -209,5 +211,73 @@ $query = 'select ?id ?priority from <http://rdf.ebi.ac.uk/resource/ensembl/> whe
 } ORDER BY DESC(?priority)';
 
 ordered_query($query,'id',[qw/hgnc1 ncbi1/], "Doesn't matter where you start, still get the same ID");
+
+
+# Now suppose that eg1 has been retired from Ensembl, so we are duty bound to remove any trace of links to it.
+# Delete from non-transitive graph first, HOWEVER RDF::Trine::Model does not support deletes in its regular interface. So none of this works...
+
+$query = 'SELECT ?xref FROM <http://rdf.ebi.ac.uk/resource/ensembl_full/> WHERE {
+  ?uri term:refers-to ?xref . ?xref term:refers-to ensembl:eg1 .
+  }';
+my $prefixes = $rdf_writer->compatible_name_spaces();
+my $rdf_query = RDF::Query->new($prefixes.$query);
+my $iterator = $rdf_query->execute($chunky_model);
+note 'Model size prior to removing triples: '.$chunky_model->size;
+while (my $hit = $iterator->next) {
+  my $xref = $hit->{xref}->value;
+  note "Delete $xref";
+  # $query = sprintf 'WITH <http://rdf.ebi.ac.uk/resource/ensembl/> DELETE { %s term:refers-to ?any }',$xref;
+  # my $delete_query = RDF::Query->new($prefixes.$query);
+  # note (RDF::Query->error) unless $delete_query;
+  # $delete_query->execute($model);
+  # $query = sprintf 'WITH <http://rdf.ebi.ac.uk/resource/ensembl/> DELETE { ?any term:refers-to %s }',$xref;
+  # $delete_query = RDF::Query->new($prefixes.$query);
+  # $delete_query->execute($model);
+  # # Further cleanup would require checking to see whether entity labels were still required based on whether they are connected to anything
+  # e.g. DELETE { ?any dc:identifier ?label } WHERE { ?any dc:identifier ?label . FILTER NOT EXISTS {{ ?any_other term:refers-to ?any. } UNION { ?any term:refers-to ?anything . }}
+
+  # RDF::Trine::Model direct delete. Not transferrable to a real server
+  # my $predicate = RDF::Trine::Node::Resource->new('http://rdf.ebi.ac.uk/terms/ensembl/refers-to');
+  my $xref_node = RDF::Trine::Node::Resource->new($xref);
+  $chunky_model->remove_statements(undef,     undef,$xref_node);
+  $chunky_model->remove_statements($xref_node,undef,undef);
+
+  my $resource_node = RDF::Trine::Node::Resource->new('http://rdf.ebi.ac.uk/resource/ensembl/eg1');
+  $model->remove_statements(undef,undef,$resource_node);
+  $model->remove_statements($resource_node,undef,undef);
+}
+note 'Model size after deleting statements linked to eg1: '.$chunky_model->size;
+# Now test to see that eg1 is gone.
+note $full_fat_ttl;
+$query = 'select ?uri ?label from <http://rdf.ebi.ac.uk/resource/ensembl_full/> where { 
+  <http://identifiers.org/ncbigene/ncbi1> <http://rdf.ebi.ac.uk/terms/ensembl/refers-to>+ ?uri .
+  ?uri rdfs:label ?label .
+  FILTER (?uri != <http://identifiers.org/ncbigene/ncbi1>)
+}';
+
+query($query,'uri',[
+  'http://identifiers.org/hgnc/hgnc1',
+  'http://identifiers.org/lrg/lrg1'
+  ],
+  'Multi-hop transitive gene xrefs minus the deleted miscreant in full graph',
+  $chunky_model);
+# 'http://rdf.ebi.ac.uk/resource/ensembl/eg2' ????
+
+# and check transitive graph
+
+$query = 'select ?uri from <http://rdf.ebi.ac.uk/resource/ensembl/> where { 
+  <http://identifiers.org/ncbigene/ncbi1> <http://rdf.ebi.ac.uk/terms/ensembl/refers-to>+ ?uri .
+  FILTER (?uri != <http://identifiers.org/ncbigene/ncbi1>)
+}';
+
+query($query,'uri',[
+  'http://identifiers.org/hgnc/hgnc1',
+  'http://identifiers.org/lrg/lrg1',
+  'http://rdf.ebi.ac.uk/resource/ensembl/eg2'
+  ],
+  'Multi-hop transitive gene xrefs minus the deleted miscreant',
+  $model);
+
+
 
 done_testing;

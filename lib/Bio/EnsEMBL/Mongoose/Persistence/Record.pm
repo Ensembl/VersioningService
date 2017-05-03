@@ -95,14 +95,12 @@ has transcript_end => (
 
 has cds_start => (
     isa => 'Int',
-    is => 'rw',
-    default => 0
+    is => 'rw'
 );
 
 has cds_end => (
     isa => 'Int',
-    is => 'rw',
-    default => 0
+    is => 'rw'
 );
 
 has exon_starts => (

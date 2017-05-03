@@ -88,7 +88,7 @@ $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 );
 
 $mfetcher->get_records;
-is($out,'{"evidence_level":1,"xref":[],"sequence":"FLPLLFGAISHLL","sequence_length":13,"taxon_id":"110109","checksum":"D70518BB9A83D879","protein_name":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1","tag":["protein"]}','JSON output plus evidence level filter');
+is($out,'{"evidence_level":1,"xref":[],"sequence":"FLPLLFGAISHLL","sequence_length":13,"taxon_id":"110109","checksum":"D70518BB9A83D879","display_label":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1","tag":["protein"]}','JSON output plus evidence level filter');
 
 $out = '';
 $fh = IO::String->new($out);

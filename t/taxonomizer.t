@@ -1,3 +1,4 @@
+use Modern::Perl;
 use Test::More;
 use Test::Differences;
 use Test::Deep;

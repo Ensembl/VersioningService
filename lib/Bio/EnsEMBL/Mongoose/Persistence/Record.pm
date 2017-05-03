@@ -74,11 +74,14 @@ has region => (
     is => 'rw',
 );
 
-# A name for the gene this refers to
+# A name for the gene this record refers to. Useful when this record is not itself a gene, e.g. Uniprot
 has gene_name => (
     isa => 'Str',
     is => 'rw',
 );
+
+# A collection of properties to describe coding sequences of a gene or transcript. 
+# Needed for specific sources which we perform positional overlap calculations on
 
 has transcript_start => (
     isa => 'Int',
@@ -113,8 +116,11 @@ has exon_ends => (
     is => 'rw',
     traits => ['Array']
 );
+# End collection of properties.
 
-# Name of the protein this record refers to
+
+# Name of the protein this record refers to, usually when this record is not itself a protein
+# See also display_label for those cases. Main use is for establishing equivalence in a multi-typed source
 has protein_name => (
     isa => 'Str',
     is => 'rw',
@@ -177,7 +183,7 @@ has display_label => (
     isa => 'Str',
     is => 'rw',
 );
-
+# Long form description of the function of this record
 has description => (
     isa => 'Str',
     is => 'rw',

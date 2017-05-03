@@ -58,6 +58,11 @@ sub print_record {
   if ($record->comment) {
     print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('rdfs').'comment'),'"'.$self->escape($record->comment).'"');
   }
+  # For when a transcript-based-record references a protein from the same source. A bit fragile I suppose, but mainly only required for RefSeq data
+  if ($record->protein_name) {
+    print $fh $self->triple($self->u($base_entity) , $self->prefix('obo').'SO_translates_to' , $self->u($self->identifier($source).'/'.$record->protein_name) );
+    print $fh $self->triple($self->u($self->identifier($source).'/'.$record->protein_name) , $self->prefix('obo').'SO_transcribed_from' , $self->u($base_entity) );
+  }
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;

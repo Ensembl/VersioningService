@@ -148,6 +148,10 @@ sub read_record {
                     } 
                 }
             } 
+        } elsif ($feat->{header} eq 'CDS') {
+            if (exists $feat->{protein_id}) {
+                $record->protein_name(pop @{$feat->{protein_id}});
+            }
         }
     }
 

@@ -25,7 +25,7 @@ my $record = $reader->record;
 is($record->id, 'VGNC:3019', 'First record ID');
 is($record->primary_accession, 'VGNC:3019', 'First record accession');
 is($record->display_label, 'ALKAL1', 'First record display label');
-is($record->gene_name, 'ALK and LTK ligand 1', 'First record gene name');
+is($record->entry_name, 'ALK and LTK ligand 1', 'First record gene name');
 is($record->taxon_id, 9598, 'Correct tax id');
 cmp_deeply($record->synonyms, [ 'FAM150A' ], 'First record synonyms');
 my $xrefs = $record->xref;
@@ -48,7 +48,7 @@ for (1 .. 49) {
 my $expected = {
 		id => 'VGNC:5662',
 		display_label => 'ABCA3',
-		gene_name => 'ATP binding cassette subfamily A member 3',
+		entry_name => 'ATP binding cassette subfamily A member 3',
 		synonyms => undef,
 		taxon_id => 9598,
 		xrefs => [ bless( {

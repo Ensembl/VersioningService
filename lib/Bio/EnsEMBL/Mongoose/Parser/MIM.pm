@@ -112,7 +112,7 @@ sub TI {
   }
   $record->id($id) if $id;
   $record->display_label($gene_name) if $gene_name;
-  $record->gene_name($symbol) if $symbol;
+  $record->entry_name($symbol) if $symbol;
 
   foreach my $bit (@bits) {
     my @subbits = split /;/,$bit;

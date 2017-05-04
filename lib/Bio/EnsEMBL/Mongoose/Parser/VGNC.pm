@@ -84,7 +84,7 @@ sub read_record {
   $record->id($vgnc_id);
   $record->accessions([ $vgnc_id ]);
   $record->display_label($symbol);
-  $record->gene_name($name);
+  $record->entry_name($name);
 
   $prev_symbol =~ s/"//g if $prev_symbol;
   map { $record->add_synonym($_) if $_ } ($alias_symbol, $prev_symbol);

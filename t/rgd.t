@@ -23,7 +23,7 @@ my $record = $reader->record;
 ++$num_of_records;
 is($record->id, 1594427, 'First record ID');
 is($record->display_label, '2331ex4-5', 'First record display label');
-is($record->gene_name, '2331ex4-5', 'First record gene name');
+is($record->entry_name, '2331ex4-5', 'First record gene name');
 is($record->description, 'class I gene fragment 2331', 'First record description');
 is($record->taxon_id, 10116, 'Correct tax id');
 my $xrefs = $record->xref;
@@ -64,7 +64,7 @@ for (1 .. 64) {
 my $expected = {
 		id => 621583,
 		display_label => 'A4galt',
-		gene_name => 'A4galt',
+		entry_name => 'A4galt',
 		description => 'alpha 1,4-galactosyltransferase',
 		synonyms => [ 'Gb3' ],
 		xrefs => [ bless( {

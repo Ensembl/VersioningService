@@ -63,6 +63,10 @@ sub print_record {
     print $fh $self->triple($self->u($base_entity) , $self->prefix('obo').'SO_translates_to' , $self->u($self->identifier($source).'/'.$record->protein_name) );
     print $fh $self->triple($self->u($self->identifier($source).'/'.$record->protein_name) , $self->prefix('obo').'SO_transcribed_from' , $self->u($base_entity) );
   }
+  if ($record->gene_name) {
+    print $fh $self->triple($self->u($base_entity) , $self->prefix('obo').'SO_translates_to' , $self->u($self->identifier($source).'/'.$record->protein_name) );
+    print $fh $self->triple($self->u($self->identifier($source).'/'.$record->protein_name) , $self->prefix('obo').'SO_transcribed_from' , $self->u($base_entity) );
+  }
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;

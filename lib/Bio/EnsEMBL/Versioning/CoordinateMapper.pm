@@ -112,7 +112,7 @@ sub store_as_record{
   $record->id($transcript->stable_id());
   $record->taxon_id($species_id) if $species_id;
 
-  $record->gene_name($transcript->stable_id());
+  $record->entry_name($transcript->stable_id());
   $record->display_label($transcript->stable_id());
   
   $record->chromosome($chr_name);

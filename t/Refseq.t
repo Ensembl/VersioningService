@@ -24,7 +24,8 @@ is($record->accessions->[0], 'XM_005579308', 'primary_accession check');
 cmp_ok($record->sequence_length, '==', 6102, 'sequence_length check');
 is($record->taxon_id, '9541','Taxon correctly extracted');
 is($record->id, 'XM_005579308','ID correctly extracted');
-is($record->gene_name, 'CTSC','Gene name correctly extracted');
+is($record->gene_name, '102137896','NCBIGene name correctly extracted');
+# is($record->entry_name, 'CTSC','Gene name correctly extracted');
 cmp_ok(length($record->comment), '==', 665, 'Check comment block extracted whole as an array');
 
 # Feature extraction

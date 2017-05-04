@@ -24,7 +24,7 @@ my $record = $reader->record;
 ++$num_of_records;
 is($record->id, 'uc031tla.1', 'First record ID');
 is($record->taxon_id, 9606, 'First record tax ID');
-is($record->gene_name, 'uc031tla', 'First record gene name');
+is($record->entry_name, 'uc031tla', 'First record gene name');
 is($record->display_label, 'uc031tla', 'First record display label');
 is($record->chromosome, 1, 'Correct first record chromosome');
 is($record->strand, -1, 'Correct first record strand');
@@ -50,7 +50,7 @@ for (1 .. 118) {
 my @expected_records = (
     {
      id => 'uc057axr.1',
-     gene_name => 'uc057axr',
+     entry_name => 'uc057axr',
      display_label => 'uc057axr',
      chromosome => '1',
      strand => -1,
@@ -64,7 +64,7 @@ my @expected_records = (
     },
     {
      id => 'uc057axs.1',
-     gene_name => 'uc057axs',
+     entry_name => 'uc057axs',
      display_label => 'uc057axs',
      chromosome => '1',
      strand => 1,
@@ -83,7 +83,7 @@ my @expected_records = (
     },
     {
      id => 'uc057axt.1',
-     gene_name => 'uc057axt',
+     entry_name => 'uc057axt',
      display_label => 'uc057axt',
      chromosome => '1',
      strand => 1,

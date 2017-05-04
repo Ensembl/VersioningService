@@ -95,7 +95,8 @@ has transcript_end => (
 
 has cds_start => (
     isa => 'Int',
-    is => 'rw'
+    is => 'rw',
+    predicate => 'is_coding'
 );
 
 has cds_end => (

@@ -30,8 +30,8 @@ is($record->chromosome, 1, 'Correct first record chromosome');
 is($record->strand, -1, 'Correct first record strand');
 is($record->transcript_start, 17369, 'Correct first record transcript start');
 is($record->transcript_end, 17436, 'Correct first record transcript end');
-is($record->cds_start, 0, 'Correct first record cds start');
-is($record->cds_end, 0, 'Correct first record cds end');
+is($record->cds_start, undef, 'Correct first record cds start');
+is($record->cds_end, undef, 'Correct first record cds end');
 cmp_deeply($record->exon_starts, [17369], 'Correct first record exon starts');
 cmp_deeply($record->exon_ends, [17436], 'Correct first record exon ends');
 
@@ -56,8 +56,8 @@ my @expected_records = (
      strand => -1,
      transcript_start => 917370,
      transcript_end => 918534,
-     cds_start => 0, # non coding transcripts have cds_start == cds_end and are set to null
-     cds_end => 0,   #
+     cds_start => undef, # non coding transcripts have cds_start == cds_end and are set to null
+     cds_end => undef,   #
      exon_starts => [917370, 918022],
      exon_ends => [917486, 918534],
      xrefs => []

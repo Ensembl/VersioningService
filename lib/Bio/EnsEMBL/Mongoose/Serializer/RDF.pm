@@ -60,12 +60,14 @@ sub print_record {
   }
   # For when a transcript-based-record references a protein from the same source. A bit fragile I suppose, but mainly only required for RefSeq data
   if ($record->protein_name) {
-    print $fh $self->triple($self->u($base_entity) , $self->prefix('obo').'SO_translates_to' , $self->u($self->identifier($source).'/'.$record->protein_name) );
-    print $fh $self->triple($self->u($self->identifier($source).'/'.$record->protein_name) , $self->prefix('obo').'SO_translation_of' , $self->u($base_entity) );
+    print $fh $self->triple($self->u($base_entity) , $self->u($self->prefix('obo').'SO_translates_to') , $self->u($self->identifier($source).$record->protein_name) );
+    print $fh $self->triple($self->u($self->identifier($source).$record->protein_name) , $self->u($self->prefix('obo').'SO_translation_of') , $self->u($base_entity) );
   }
-  if ($record->gene_name) {
-    print $fh $self->triple($self->u($base_entity) , $self->prefix('obo').'SO_transcribed_from' , $self->u($self->identifier($source).'/'.$record->gene_name) );
-    print $fh $self->triple($self->u($self->identifier($source).'/'.$record->gene_name) , $self->prefix('obo').'SO_transcribed_to' , $self->u($base_entity) );
+  # For when a RefSeq record references a gene, it is always referring to NCBIGene, aka EntrezGene
+  if ($record->gene_name && $source =~ /refseq/i) {
+    my $gene_source = 'EntrezGene';
+    print $fh $self->triple($self->u($base_entity) , $self->u($self->prefix('obo').'SO_transcribed_from') , $self->u($self->identifier($gene_source).$record->gene_name) );
+    print $fh $self->triple($self->u($self->identifier($gene_source).$record->gene_name) , $self->u($self->prefix('obo').'SO_transcribed_to') , $self->u($base_entity) );
   }
 
   foreach my $xref (@{$record->xref}) {

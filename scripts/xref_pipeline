@@ -11,7 +11,7 @@ export BIN=$BIN:${HOME}/src/ensembl-hive/scripts/
 cat "Xref pipeline began at $(date +%y%m%dT%H%M%S)" > ${HOME}/xref_pipeline_running
 
 URL=mysql://${DB_USER}:${DB_PASS}@mysql-gti-xref-prod:4481/xref_pipeline_$(date +%y%m%dT%H%M%S)
-${HOME}/src/ensembl-hive/scripts/init_pipeline.pl Bio::EnsEMBL::Versioning::Pipeline::PipeConfig::Source_update_conf -pipeline_url $URL
+${HOME}/src/ensembl-hive/scripts/init_pipeline.pl Bio::EnsEMBL::Versioning::Pipeline::PipeConfig::Xref_pipeline_conf -pipeline_url $URL
 
 ${HOME}/src/ensembl-hive/scripts/beekeeper.pl -url $URL -loop >> ${HOME}/versioning_logs/beekeeper_$(date +%y%m%dT%H%M%S).out
 

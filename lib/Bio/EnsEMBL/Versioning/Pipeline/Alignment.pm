@@ -69,7 +69,7 @@ sub run {
   my $target = $self->param('target_file');
   my $target_source = $self->param('target_source');
 
-  my $fh = IO::File->new($self->param('output_path'),'w');
+  my $fh = IO::File->new($self->param('output_path'),'w') or die "Couldn't open", $self->param('output_path') ,  " for writing: $!\n";;
 
   my $aligner = Bio::EnsEMBL::Mongoose::Utils::ExonerateAligner->new(
     chunk_cardinality => $max_chunks, 

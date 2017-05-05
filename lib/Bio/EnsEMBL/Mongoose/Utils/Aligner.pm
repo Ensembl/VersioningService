@@ -41,7 +41,7 @@ sub run {
 
   my $command_string = $self->build_command();
   $command_string .= $self->user_parameters if $self->user_parameters;
-  my $output = exec($command_string);
+  my $output = `$command_string`;
   my $alignment = $self->output_filter($output);
   return $alignment;
 }

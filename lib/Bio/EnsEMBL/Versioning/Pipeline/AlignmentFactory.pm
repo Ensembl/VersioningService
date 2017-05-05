@@ -69,8 +69,8 @@ sub run {
 
   my $target_file = $self->param('xref_fasta'); # Get FASTA dumped from other source to align against
   my $size = stat($target_file)->size;
-  my $chunks = int ($size / 1000000);
-  
+  my $chunks = int ($size / 1000000) + 1;
+
   my $method_factory = Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory->new();
   my $method = $method_factory->get_method_by_species_and_source($species,$self->param('source'));
 
@@ -81,7 +81,7 @@ sub run {
   make_path($output_path);
 
   for (my $chunklet = 1; $chunklet <= $chunks; $chunklet++) {
-    $output_path .= sprintf "/%s_alignment_%s_of_%s.ttl",$self->param('source'),$chunklet,$chunks;
+    my $output_path_chunk = $output_path . sprintf "/%s_alignment_%s_of_%s.ttl",$self->param('source'),$chunklet,$chunks;
     $self->dataflow_output_id({
       align_method => $method, 
       max_chunks => $chunks, 
@@ -89,7 +89,7 @@ sub run {
       source_file => $source_file, 
       target_file => $target_file, 
       target_source => $self->param('source'),
-      output_path => $output_path
+      output_path => $output_path_chunk
     },2);
   }
 }

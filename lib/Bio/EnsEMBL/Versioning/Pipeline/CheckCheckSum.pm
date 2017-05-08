@@ -94,7 +94,7 @@ sub run {
   $self->search_source_by_checksum('RefSeq',\%transcript_checksum,$run_id);
   # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
   my %peptide_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('pep_path')) };
-  $self->search_source_by_checksum('UniprotSwissprot',\%peptide_checksum);
+  $self->search_source_by_checksum('Swissprot',\%peptide_checksum);
 }
 
 

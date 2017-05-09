@@ -100,7 +100,7 @@ sub pipeline_analyses {
       },
       -rc_name => 'bookkeeping',
       -flow_into => {
-         '2->A' => ['DumpRDF','DumpFASTA'],
+         '2->A' => ['DumpRDF','DumpFASTA','DumpEnsemblGeneModel'],
          'A->1' => ['LogSummaryEnd']
       }
     },
@@ -116,6 +116,13 @@ sub pipeline_analyses {
       -flow_into  => {
          3  => ['LogSummaryEnd']
       },
+    },
+    {
+      -logic_name => 'DumpEnsemblGeneModel',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpEnsemblGeneModel',
+      -max_retry_count => 1,
+      -hive_capacity => 4,
+      -failed_job_tolerance => 0,
     },
     {
       -logic_name => 'DumpFASTA',

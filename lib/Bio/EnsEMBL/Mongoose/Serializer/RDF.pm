@@ -60,14 +60,12 @@ sub print_record {
   }
   # For when a transcript-based-record references a protein from the same source. A bit fragile I suppose, but mainly only required for RefSeq data
   if ($record->protein_name) {
-    print $fh $self->triple($self->u($base_entity) , $self->u($self->prefix('obo').'SO_translates_to') , $self->u($self->identifier($source).$record->protein_name) );
-    print $fh $self->triple($self->u($self->identifier($source).$record->protein_name) , $self->u($self->prefix('obo').'SO_translation_of') , $self->u($base_entity) );
+    $self->print_gene_model_link(undef,undef,$record->id,$source,$record->protein_name,$source);
   }
   # For when a RefSeq record references a gene, it is always referring to NCBIGene, aka EntrezGene
   if ($record->gene_name && $source =~ /refseq/i) {
     my $gene_source = 'EntrezGene';
-    print $fh $self->triple($self->u($base_entity) , $self->u($self->prefix('obo').'SO_transcribed_from') , $self->u($self->identifier($gene_source).$record->gene_name) );
-    print $fh $self->triple($self->u($self->identifier($gene_source).$record->gene_name) , $self->u($self->prefix('obo').'SO_transcribed_to') , $self->u($base_entity) );
+    $self->print_gene_model_link($record->gene_name,$gene_source,$record->id,$source,undef,undef);
   }
 
   foreach my $xref (@{$record->xref}) {
@@ -306,6 +304,37 @@ sub print_slimline_coordinate_overlap_xrefs {
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
   print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
 }
+
+sub print_gene_model_link {
+  my $self = shift;
+  my $gene_id = shift;
+  my $gene_source = shift;
+  my $transcript_id = shift;
+  my $transcript_source = shift;
+  my $protein_id = shift;
+  my $protein_source = shift;
+
+  my $fh = $self->handle;
+  my ($namespace,$gene_uri,$transcript_uri,$protein_uri);
+
+  $namespace = $self->identifier($transcript_source);
+  $transcript_uri = $namespace.$transcript_id;
+  
+  if ($gene_id) {
+    $namespace = $self->identifier($gene_source);
+    $gene_uri = $namespace.$gene_id;
+    print $fh $self->triple($self->u($gene_uri), $self->u($self->prefix('obo').'SO_transcribed_to'), $self->u($transcript_uri));
+    print $fh $self->triple($self->u($transcript_uri), $self->u($self->prefix('obo').'SO_transcribed_from'), $self->u($gene_uri));
+  }
+
+  if ($protein_id) {
+    $namespace = $self->identifier($protein_source);
+    $protein_uri = $namespace.$protein_id;
+    print $fh $self->triple($self->u($transcript_uri), $self->u($self->prefix('obo').'SO_translates_to'), $self->u($protein_uri));
+    print $fh $self->triple($self->u($protein_uri), $self->u($self->prefix('obo').'SO_translation_of'), $self->u($transcript_uri));
+  }
+}
+
 
 __PACKAGE__->meta->make_immutable;
 

@@ -90,10 +90,10 @@ sub run {
   $search->work_with_run(source => $source,run_id => $self->param('run_id'));
 
   # Apply any source-specific filtering
-  if ($source = 'RefSeq' && lc $seq_type eq 'rna') { 
+  if ($source eq 'RefSeq' && lc $seq_type eq 'rna') { 
     $search->filter(\&filter_refseq_rna);
   }
-  if ($source = 'RefSeq' && lc $seq_type eq 'pep') { 
+  if ($source eq 'RefSeq' && lc $seq_type eq 'pep') { 
     $search->filter(\&filter_refseq_protein);
   }
   $search->get_records;

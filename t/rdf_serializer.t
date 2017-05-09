@@ -155,7 +155,7 @@ is($result->{transcript}->as_string,'<http://identifiers.org/refseq/2>' ,'Refseq
 is($result->{protein}->as_string, '<http://identifiers.org/refseq/3>', 'Refseq protein connected to transcript');
 
 $rdf_writer->print_gene_model_link(undef,undef,'4','RefSeq_mrna','5','Refseq_peptide');
-$rdf_writer->print_gene_model_link('6','NCBIGene','4','RefSeq_mrna',undef,undef);
+$rdf_writer->print_gene_model_link('6','EntrezGene','4','RefSeq_mrna',undef,undef);
 $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/',$dummy_content,$model);
 
 $sparql = 'select ?gene ?transcript where {

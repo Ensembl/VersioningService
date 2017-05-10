@@ -104,7 +104,7 @@ sub run {
     my $translation = $transcript->translate;
     if ($translation) {
       $pep_writer->print_Seq($translation);
-      printf $pep_checksum_fh "%s\t%s\n",$transcript->stable_id,md5_hex($translation->seq);
+      printf $pep_checksum_fh "%s\t%s\n",$translation->stable_id,md5_hex($translation->seq);
     }
   }
 

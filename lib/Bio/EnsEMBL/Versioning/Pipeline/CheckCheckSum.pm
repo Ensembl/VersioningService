@@ -90,10 +90,18 @@ sub run {
   
   my %ens_checksum;
   # convert Ensembl ID\tchecksum into () id1 => checksum1, ...)
-  my %transcript_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('cdna_path')) };
+  my %transcript_checksum;
+  my %peptide_checksum;
+  foreach my $path (qw/cdna_path pep_path/) {
+    foreach my $line ( @{ slurp_to_array($self->param($path)) } ) {
+      my ($id,$checksum) = split "\t",$line;
+      $transcript_checksum{$id} = $checksum;
+    };
+  }
+  throw('No Ensembl transcript checksums extracted from '.$self->param('cdna_path')) if (scalar(keys %transcript_checksum) == 0);
+  throw('No Ensembl protein checksums extracted from '.$self->param('pep_path')) if (scalar(keys %peptide_checksum) == 0);
   $self->search_source_by_checksum('RefSeq',\%transcript_checksum,$run_id);
   # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
-  my %peptide_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('pep_path')) };
   $self->search_source_by_checksum('Swissprot',\%peptide_checksum);
 }
 

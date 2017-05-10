@@ -93,9 +93,15 @@ sub run {
   my %transcript_checksum;
   my %peptide_checksum;
   foreach my $path (qw/cdna_path pep_path/) {
+    my $checksum_hash;
+    if ($path eq 'cdna_path') {
+      $checksum_hash = \%transcript_checksum;
+    } else {
+      $checksum_hash = \%peptide_checksum;
+    }
     foreach my $line ( @{ slurp_to_array($self->param($path)) } ) {
       my ($id,$checksum) = split "\t",$line;
-      $transcript_checksum{$id} = $checksum;
+      $checksum_hash->{$id} = $checksum;
     };
   }
   throw('No Ensembl transcript checksums extracted from '.$self->param('cdna_path')) if (scalar(keys %transcript_checksum) == 0);

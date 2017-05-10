@@ -108,6 +108,10 @@ sub run {
     }
   }
 
+  # Preserve the filenames for transcript and peptide fasta files for handing downstream to aligner
+  $self->param('pep_file',$pep_path);
+  $self->param('cdna_file',$cdna_path);
+
   $fh->close;
   $checksum_fh->close;
   $pep_fh->close;
@@ -130,7 +134,7 @@ sub write_output {
     $self->dataflow_output_id({ 
       species => $self->param('species'), 
       seq_type => $type ,
-      fasta_path => $self->param("${type}_path")
+      fasta_path => $self->param("${type}_file")
     }, 3); 
   }
 

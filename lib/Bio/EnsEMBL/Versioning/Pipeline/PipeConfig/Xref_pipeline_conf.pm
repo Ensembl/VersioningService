@@ -134,6 +134,7 @@ sub pipeline_analyses {
       -max_retry_count => 0,
       -hive_capacity => 10,
       -failed_job_tolerance => 20,
+      -rc_name => 'greedy_process'
     },
     {
       -logic_name => 'SeqTypeFactory',
@@ -194,7 +195,8 @@ my $self = shift;
     'dump'      => { LSF => '-q production-rh7 -M10000 -R"select[mem>10000] rusage[mem=10000]"' },
     'alignment' => { LSF => '-q production-rh7 -M1000 -R"select[mem>1000] rusage[mem=1000]"' },
     'bookkeeping' => { LSF => '-q production-rh7 -M500 -R"select[mem>500] rusage[mem=500]"' },
-    'default' => { LSF => '-q production-rh7 -M2000 -R"select[mem>2000] rusage[mem=2000]"' }
+    'default' => { LSF => '-q production-rh7 -M2000 -R"select[mem>2000] rusage[mem=2000]"' },
+    'greedy_process' => { LSF => '-q production-rh7 -M8000 -R"select[mem>8000] rusage[mem=8000]"' }
   }
 }
 

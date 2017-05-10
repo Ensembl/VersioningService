@@ -45,6 +45,7 @@ use strict;
 use warnings;
 use Bio::EnsEMBL::Mongoose::Utils::ExonerateAligner;
 use Bio::EnsEMBL::Mongoose::Serializer::RDF;
+use Bio::EnsEMBL::Utils::Exception;
 
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
@@ -69,7 +70,7 @@ sub run {
   my $target = $self->param('target_file');
   my $target_source = $self->param('target_source');
 
-  my $fh = IO::File->new($self->param('output_path'),'w') or die "Couldn't open", $self->param('output_path') ,  " for writing: $!\n";;
+  my $fh = IO::File->new($self->param('output_path'),'w') or throw("Couldn't open". $self->param('output_path') ." for writing: $!\n");
 
   my $aligner = Bio::EnsEMBL::Mongoose::Utils::ExonerateAligner->new(
     chunk_cardinality => $max_chunks, 

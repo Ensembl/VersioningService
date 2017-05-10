@@ -70,7 +70,7 @@ sub run {
   my $target_file = $self->param('xref_fasta'); # Get FASTA dumped from other source to align against
   my $size = stat($target_file)->size;
   my $chunks = int ($size / 1000000) + 1;
-
+  $self->warning(sprintf('Spawning %d alignment jobs for %s',$chunks,$target_file),'INFO');
   my $method_factory = Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory->new();
   my $method = $method_factory->get_method_by_species_and_source($species,$self->param('source'));
 

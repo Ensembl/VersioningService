@@ -61,8 +61,7 @@ sub run {
   my @source_dumping_list = (
     ['RefSeq', 'cdna'],
     ['RefSeq', 'pep'],
-    ['Swissprot', 'pep'],
-    ['UCSC', 'cdna']
+    ['Swissprot', 'pep']
   );
 
   foreach my $source (grep { $_->[1] eq $seq_type} @source_dumping_list) {

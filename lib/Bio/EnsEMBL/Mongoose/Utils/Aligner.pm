@@ -24,6 +24,7 @@ package Bio::EnsEMBL::Mongoose::Utils::Aligner;
 use Moose;
 use Config::General;
 use Moose::Util::TypeConstraints;
+use Bio::EnsEMBL::Mongoose::IOException;
 
 has exe => (is =>'rw',isa => 'Str');
 has conf => (is => 'rw',isa => 'HashRef');
@@ -43,6 +44,9 @@ sub run {
   $command_string .= $self->user_parameters if $self->user_parameters;
   my $output = `$command_string`;
   my $alignment = $self->output_filter($output);
+  if ($output && $alignment && length($alignment) == 0 ) { 
+    Bio::EnsEMBL::Mongoose::IOException->throw(sprintf "Error while running alignment. %s was executed, but output contained no alignments that filter could identify.\n %s\n",$self->exe, $command_string);
+  }
   return $alignment;
 }
 

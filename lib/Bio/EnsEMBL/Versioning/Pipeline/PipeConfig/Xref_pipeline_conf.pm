@@ -134,9 +134,6 @@ sub pipeline_analyses {
       -max_retry_count => 0,
       -hive_capacity => 10,
       -failed_job_tolerance => 20,
-      -flow_into => {
-        2 => ['?accu_name=checksum_ttl_path&accu_address={species}{type}']
-      }
     },
     {
       -logic_name => 'SeqTypeFactory',

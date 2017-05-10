@@ -106,17 +106,17 @@ sub run {
   }
   throw('No Ensembl transcript checksums extracted from '.$self->param('cdna_path')) if (scalar(keys %transcript_checksum) == 0);
   throw('No Ensembl protein checksums extracted from '.$self->param('pep_path')) if (scalar(keys %peptide_checksum) == 0);
-  $self->search_source_by_checksum('RefSeq',\%transcript_checksum,$run_id);
+  $self->search_source_by_checksum('RefSeq',\%transcript_checksum,'ensembl_transcript',$run_id);
   # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
-  $self->search_source_by_checksum('Swissprot',\%peptide_checksum);
+  $self->search_source_by_checksum('Swissprot',\%peptide_checksum,'ensembl_protein',$run_id);
 }
 
 
 sub search_source_by_checksum {
-  my ($self,$source,$checksum_hash,$run_id) = @_;
+  my ($self,$source,$checksum_hash,$type,$run_id) = @_;
   my $indexer = $self->param('indexer');
   my $path = $self->param('output_path');
-  my $fh = IO::File->new($path.$source.'_checksum.ttl','w') or throw("Failed to open ${source}_checksum.ttl for writing");
+  my $fh = IO::File->new($path.$source.'_checksum.ttl','w') or throw("Failed to open $path${source}_checksum.ttl for writing");
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $self->param('broker_conf'));
   $indexer->work_with_run(source => $source,run_id => $run_id);
   
@@ -130,7 +130,7 @@ sub search_source_by_checksum {
       )
     ); 
     while (my $record = $indexer->next_record) {
-      $writer->print_checksum_xrefs($ens_id,$record,$source);
+      $writer->print_checksum_xrefs($ens_id,$type,$record,$source);
     }
   }
   $fh->close;

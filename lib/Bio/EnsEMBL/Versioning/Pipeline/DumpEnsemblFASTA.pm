@@ -124,8 +124,8 @@ sub write_output {
 # Send checksum locations onto next process
   $self->dataflow_output_id({ 
     species => $self->param('species'), 
-    cdna_path => $self->param('cdna_checksum_path'), 
-    pep_path => $self->param('pep_checksum_path')
+    cdna_checksum_path => $self->param('cdna_checksum_path'), 
+    pep_checksum_path => $self->param('pep_checksum_path')
   }, 2);
 
   $self->warning('pep_file = '.$self->param('pep_file'). ' and cdna_file = '.$self->param('cdna_file') ,'INFO');

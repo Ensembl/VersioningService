@@ -72,8 +72,8 @@ sub fetch_input {
   my $indexer = Bio::EnsEMBL::Mongoose::IndexReader->new(species => $species);
 
   $self->param('indexer',$indexer);
-  $self->param_required('cdna_path');
-  $self->param_required('pep_path');
+  $self->param_required('cdna_checksum_path');
+  $self->param_required('pep_checksum_path');
   
   # Define where the RDF output will go and create the folder
   my $output_path = File::Spec->join( $self->param('base_path'), 'xref',$self->param('run_id'), $species, 'xref_rdf_dumps','checksum');

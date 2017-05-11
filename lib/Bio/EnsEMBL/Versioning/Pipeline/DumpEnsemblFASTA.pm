@@ -111,7 +111,6 @@ sub run {
   # Preserve the filenames for transcript and peptide fasta files for handing downstream to aligner
   $self->param('pep_file',$pep_path);
   $self->param('cdna_file',$cdna_path);
-
   $fh->close;
   $checksum_fh->close;
   $pep_fh->close;
@@ -129,6 +128,7 @@ sub write_output {
     pep_path => $self->param('pep_checksum_path')
   }, 2);
 
+  $self->warning('pep_file = '.$self->param('pep_file'). ' and cdna_file = '.$self->param('cdna_file') ,'INFO');
   # Seed sequence types to per-species-per-xref-source FASTA dumping
   foreach my $type (qw/cdna pep/){
     $self->dataflow_output_id({ 

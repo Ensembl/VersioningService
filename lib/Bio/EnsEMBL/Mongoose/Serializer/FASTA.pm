@@ -45,7 +45,7 @@ has header_function => (
                 $accession = $record->get_accession(1);
             }
             my $handle = $self->handle;
-            printf $handle "> %s %s %s %s\n", $accession, $record->taxon_id, $record->evidence_level, ""; 
+            printf $handle ">%s %s %s %s\n", $accession, $record->taxon_id, $record->evidence_level, ""; 
         }
     }
 );

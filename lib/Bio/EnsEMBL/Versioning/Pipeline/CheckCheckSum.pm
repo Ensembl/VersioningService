@@ -92,9 +92,9 @@ sub run {
   # convert Ensembl ID\tchecksum into () id1 => checksum1, ...)
   my %transcript_checksum;
   my %peptide_checksum;
-  foreach my $path (qw/cdna_path pep_path/) {
+  foreach my $path (qw/cdna_checksum_path pep_checksum_path/) {
     my $checksum_hash;
-    if ($path eq 'cdna_path') {
+    if ($path eq 'cdna_checksum_path') {
       $checksum_hash = \%transcript_checksum;
     } else {
       $checksum_hash = \%peptide_checksum;
@@ -104,8 +104,8 @@ sub run {
       $checksum_hash->{$id} = $checksum;
     };
   }
-  throw('No Ensembl transcript checksums extracted from '.$self->param('cdna_path')) if (scalar(keys %transcript_checksum) == 0);
-  throw('No Ensembl protein checksums extracted from '.$self->param('pep_path')) if (scalar(keys %peptide_checksum) == 0);
+  throw('No Ensembl transcript checksums extracted from '.$self->param('cdna_checksum_path')) if (scalar(keys %transcript_checksum) == 0);
+  throw('No Ensembl protein checksums extracted from '.$self->param('pep_checksum_path')) if (scalar(keys %peptide_checksum) == 0);
   $self->search_source_by_checksum('RefSeq',\%transcript_checksum,'ensembl_transcript',$run_id);
   # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
   $self->search_source_by_checksum('Swissprot',\%peptide_checksum,'ensembl_protein',$run_id);

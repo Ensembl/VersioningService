@@ -90,7 +90,8 @@ sub run {
   $search->work_with_run(source => $source,run_id => $self->param('run_id'));
 
   # Apply any source-specific filtering
-  if ($source eq 'RefSeq' && lc $seq_type eq 'rna') { 
+  if (!$seq_type || ($seq_type ne 'cdna' && $seq_type ne 'pep')) { throw("No sequence type from earlier in the pipeline. $seq_type should be 'cdna' or 'pep")}
+  if ($source eq 'RefSeq' && lc $seq_type eq 'cdna') { 
     $search->filter(\&filter_refseq_rna);
   }
   if ($source eq 'RefSeq' && lc $seq_type eq 'pep') { 

@@ -101,9 +101,9 @@ sub run {
   while (my $transcript = shift @$transcript_list) {
     $fasta_writer->print_Seq($transcript->seq);
     printf $checksum_fh "%s\t%s\n",$transcript->stable_id,md5_hex($transcript->seq->seq);
-    my $translation = $transcript->translate;
+    my $translation = $transcript->translation;
     if ($translation) {
-      $pep_writer->print_Seq($translation);
+      $pep_writer->print_Seq($transcript->translate);
       printf $pep_checksum_fh "%s\t%s\n",$translation->stable_id,md5_hex($translation->seq);
     }
   }

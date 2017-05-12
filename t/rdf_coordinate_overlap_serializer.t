@@ -28,12 +28,12 @@ like( $dummy_content, '/0.823/', 'Have got 0.823' );
 my $expected_content = '<http://rdf.ebi.ac.uk/resource/ensembl/ENST00000580678> <http://purl.org/dc/terms/source> <http://rdf.ebi.ac.uk/resource/ensembl/> .
 <http://rdf.ebi.ac.uk/resource/ensembl/ENST00000580678> <http://purl.org/dc/elements/1.1/identifier> "ENST00000580678" .
 <http://rdf.ebi.ac.uk/resource/ensembl/ENST00000580678> <http://www.w3.org/2000/01/rdf-schema#label> "ENST00000580678" .
-<http://rdf.ebi.ac.uk/resource/ensembl/ENST00000580678> <http://rdf.ebi.ac.uk/terms/ensembl/refers-to> <http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/1> .
-<http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/1> <http://rdf.ebi.ac.uk/terms/ensembl/refers-to> <http://rdf.ebi.ac.uk/resource/ensembl/xref/ucsc_transcript/uc060qbx.1> .
-<http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdf.ebi.ac.uk/terms/ensembl/Coordinate_overlap> .
+<http://rdf.ebi.ac.uk/resource/ensembl/ENST00000580678> <http://rdf.ebi.ac.uk/terms/ensembl/refers-to> <http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/overlap1> .
+<http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/overlap1> <http://rdf.ebi.ac.uk/terms/ensembl/refers-to> <http://rdf.ebi.ac.uk/resource/ensembl/xref/ucsc_transcript/uc060qbx.1> .
+<http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/overlap1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdf.ebi.ac.uk/terms/ensembl/Coordinate_overlap> .
 <http://rdf.ebi.ac.uk/resource/ensembl/xref/ucsc_transcript/uc060qbx.1> <http://purl.org/dc/elements/1.1/identifier> "uc060qbx.1" .
-<http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/1> <http://rdf.ebi.ac.uk/terms/ensembl/score> "0.823" .
+<http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/ensembl/ucsc_transcript/overlap1> <http://rdf.ebi.ac.uk/terms/ensembl/score> "0.823" .
 ';
 
-ok($dummy_content eq $expected_content, "Contents are the same. Got back the right rdf output");
+cmp_ok($dummy_content,'eq',$expected_content, "Contents are the same. Got back the right rdf output");
 done_testing();

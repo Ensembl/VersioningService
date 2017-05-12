@@ -85,12 +85,6 @@ sub print_record {
     print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
     # xref links to target ID
     print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
-    # reverse links
-    # Enable if it proves necessary to have reverse links for sources
-    # if ( $self->identifier_mapping->is_bidirectional($xref->source)) {
-    #   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-from'),$self->u($base_entity));
-    #   print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('term').'refers-from'),$self->u($xref_link));
-    # }
     # xref type
     print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Direct'));
     # Scope here to describe evidence codes and such (associated xrefs indeed) to qualify the xref itself.
@@ -102,7 +96,7 @@ sub print_record {
 }
 
 # Create a transitive network of simple xrefs and resources. No annotated middle node, just URIs, labels and sources.
-# This will be much more efficient to traverse in all directions so that we can find the entire set of interlinked URIs
+# This will be much more efficient to traverse in all directions so that we can find all the connected sets of URIs
 sub print_slimline_record {
   my $self = shift;
   my $record = shift;

@@ -46,6 +46,7 @@ use warnings;
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 use Bio::EnsEMBL::Mongoose::Serializer::RDF;
+use Bio::EnsEMBL::Mongoose::IndexReader;
 use Bio::EnsEMBL::Versioning::CoordinateMapper;
 use Bio::EnsEMBL::ApiVersion qw/software_version/;
 use File::Path qw/make_path/;

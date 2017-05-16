@@ -63,14 +63,15 @@ sub fetch_input {
     $release = software_version;
   }
   my $species = $self->param('species');
-  
+  my $run_id = $self->param_required('run_id');
+  my $base_path = $self->param_required('base_path');
   # Derive location of coordinate_overlap
   my $indexer = Bio::EnsEMBL::Mongoose::IndexReader->new(species => $species);
 
   $self->param('indexer',$indexer);
   
   # Define where the RDF output will go and create the folder
-  my $output_path = File::Spec->join( $self->param('base_path'), "xref_rdf_dumps", $self->param('run_id'), $species, 'coordinate_overlap');
+  my $output_path = File::Spec->join($base_path , 'xref', $run_id, $species, "xref_rdf_dumps", 'coordinate_overlap');
   if (!-d $output_path) {
     make_path $output_path or die "Failed to create path: $output_path";
   }
@@ -88,7 +89,7 @@ sub run {
   my $species= $self->param('species');
   
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
-  my @sources = qw/refseq ucsc/;
+  my @sources = @{ $self->param_required('sources') };
   
   # Coordinate overlap is done only for refseq and ucsc
   foreach my $source(@sources){

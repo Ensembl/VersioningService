@@ -100,7 +100,7 @@ sub pipeline_analyses {
       },
       -rc_name => 'bookkeeping',
       -flow_into => {
-         '2->A' => ['DumpRDF','DumpFASTA','CoordOverlap'],
+         '2->A' => ['DumpRDF','DumpFASTA','CoordinateOverlap'],
          'A->1' => ['LogSummaryEnd']
       }
     },

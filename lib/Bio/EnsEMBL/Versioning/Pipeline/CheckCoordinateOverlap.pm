@@ -51,6 +51,7 @@ use Bio::EnsEMBL::ApiVersion qw/software_version/;
 use File::Path qw/make_path/;
 use File::Spec;
 use IO::File;
+use Bio::EnsEMBL::Mongoose::IOException;
 
 
 sub fetch_input {
@@ -97,7 +98,7 @@ sub run {
 
     my $mapper = Bio::EnsEMBL::Versioning::CoordinateMapper->new;
     
-    # for refseq we need to covert the rows from otherfeatures database to lucy index with coorinate info stored in the records. 
+    # for refseq we need to covert the rows from otherfeatures database to lucy index with coordinate info stored in the records. 
     # for UCSC, we already have the index with coordinate info
     if($source eq "refseq"){
       my $other_dba = $self->get_DBAdaptor('otherfeatures');
@@ -105,6 +106,8 @@ sub run {
       my $temp_index_folder = $mapper->create_temp_index({'species' => $species, 'dba' => $other_dba, 'analysis_name' => $source."_import"});
       if(defined $temp_index_folder && -e $temp_index_folder){
         $mapper->calculate_overlap_score({'index_location' => $temp_index_folder , 'species' => $species, 'core_dba' => $core_dba, 'other_dba' => $other_dba,'rdf_writer' => $rdf_writer , 'source' => $source});
+      } else {
+        Bio::EnsEMBL::Mongoose::IOException->throw("Failed to generate RefSeq index location $temp_index_folder for overlap calculations");
       }
     }else{
       my $index_uri = $broker->get_index_by_name_and_version('UCSC');

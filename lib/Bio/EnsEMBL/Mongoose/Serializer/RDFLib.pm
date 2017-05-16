@@ -68,8 +68,12 @@ sub new_xref {
   my $self = shift;
   my $source = shift;
   my $target = shift;
+  my $label = shift; # Additional string to prevent xrefs of different types sharing the same xref ID
   $self->another_xref;
-  return $self->prefix('ensembl').'xref/connection/'.$source.'/'.$target.'/'.$self->xref_id();
+  my $xref_uri = $self->prefix('ensembl').'xref/connection/'.$source.'/'.$target.'/';
+  $xref_uri .= $label if $label;
+  $xref_uri .= $self->xref_id();
+  return $xref_uri;
 }
 
 # Delegate URI generating to the mapping object

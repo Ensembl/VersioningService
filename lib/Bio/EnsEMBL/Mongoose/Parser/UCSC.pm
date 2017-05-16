@@ -125,7 +125,7 @@ sub read_record {
   $record->id($name);
   $record->taxon_id($self->{taxon_id}) if $self->{taxon_id};
   $name =~ s/\.\d$//;
-  $record->gene_name($name);
+  $record->entry_name($name);
   $record->display_label($name);
   $record->chromosome($chrom);
   $record->strand($strand);

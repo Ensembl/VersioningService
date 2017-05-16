@@ -16,7 +16,19 @@
       "stored": true,
       "type": "blob"
     },
+    "cds_end": {
+      "sortable": true,
+      "type": "string"
+    },
+    "cds_start": {
+      "sortable": true,
+      "type": "string"
+    },
     "checksum": {
+      "sortable": true,
+      "type": "string"
+    },
+    "chromosome": {
       "sortable": true,
       "type": "string"
     },
@@ -37,6 +49,14 @@
       "type": "string"
     },
     "evidence_level": {
+      "sortable": true,
+      "type": "string"
+    },
+    "exon_ends": {
+      "sortable": true,
+      "type": "string"
+    },
+    "exon_starts": {
       "sortable": true,
       "type": "string"
     },
@@ -76,6 +96,10 @@
       "sortable": true,
       "type": "string"
     },
+    "strand": {
+      "sortable": true,
+      "type": "string"
+    },
     "suspicion": {
       "sortable": true,
       "type": "string"
@@ -89,6 +113,22 @@
       "type": "string"
     },
     "taxon_id": {
+      "sortable": true,
+      "type": "string"
+    },
+    "transcript_end": {
+      "sortable": true,
+      "type": "string"
+    },
+    "transcript_end_padded": {
+      "sortable": true,
+      "type": "string"
+    },
+    "transcript_start": {
+      "sortable": true,
+      "type": "string"
+    },
+    "transcript_start_padded": {
       "sortable": true,
       "type": "string"
     },

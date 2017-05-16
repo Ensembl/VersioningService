@@ -1,3 +1,4 @@
+use strict;
 use Test::More;
 use Test::Differences;
 use Test::Deep;
@@ -15,7 +16,7 @@ my $reader = new Bio::EnsEMBL::Mongoose::Parser::ArrayExpress(
 my $num_of_records = 0;
 #first record
 $reader->read_record;
-$record = $reader->record;
+my $record = $reader->record;
 $num_of_records++;
 is($record->id,'ENSG00000000003','ID extraction from first record');
 
@@ -28,47 +29,53 @@ is($record->id,'ENSG00000000005','ID extraction from second record');
 #check xrefs
 my $expected_xref = [
                              bless( {
-                                      'source' => 'entrezgene',
-                                      'creator' => 'ArrayExpress',
-                                      'active' => 1,
-                                      'id' => '64102'
+                                      source => 'HGNC',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => 'TNMD'
+                                    }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref'),
+                             bless( {
+                                      source => 'entrezgene',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => '64102'
                                     }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                              bless( {
-                                      'source' => 'refseq',
-                                      'creator' => 'ArrayExpress',
-                                      'active' => 1,
-                                      'id' => 'NM_022144'
+                                      source => 'refseq',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => 'NM_022144'
                                     }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                              bless( {
-                                      'source' => 'refseq',
-                                      'creator' => 'ArrayExpress',
-                                      'active' => 1,
-                                      'id' => 'NP_071427'
+                                      source => 'refseq',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => 'NP_071427'
                                     }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                              bless( {
-                                      'source' => 'unigene',
-                                      'creator' => 'ArrayExpress',
-                                      'active' => 1,
-                                      'id' => 'Hs.132957'
+                                      source => 'unigene',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => 'Hs.132957'
                                     }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                              bless( {
-                                      'source' => 'uniprot',
-                                      'creator' => 'ArrayExpress',
-                                      'active' => 1,
-                                      'id' => 'Q9H2S6'
+                                      source => 'uniprot',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => 'Q9H2S6'
                                     }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                              bless( {
-                                      'source' => 'interpro',
-                                      'creator' => 'ArrayExpress',
-                                      'active' => 1,
-                                      'id' => 'IPR007084'
+                                      source => 'interpro',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => 'IPR007084'
                                     }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                              bless( {
-                                      'source' => 'ensembl',
-                                      'creator' => 'ArrayExpress',
-                                      'active' => 1,
-                                      'id' => 'ENSG00000000005'
-                                    }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' )
+                                      source => 'ensembl',
+                                      creator => 'ArrayExpress',
+                                      active => 1,
+                                      id => 'ENSG00000000005'
+                                    }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                            ];
 
 my $all_xrefs = $record->xref;

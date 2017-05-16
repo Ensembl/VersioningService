@@ -23,7 +23,8 @@ my $record = $reader->record;
 ++$num_of_records;
 is($record->id, 'XB-GENE-478054', 'First record ID');
 is($record->display_label, 'trnt1', 'First record display label');
-is($record->gene_name, 'trnt1', 'First record gene name');
+is($record->gene_name, undef, 'First record gene name');
+is($record->entry_name, 'trnt1', 'Entry name caught');
 is($record->description, 'tRNA nucleotidyl transferase, CCA-adding, 1', 'First record description');
 is($record->taxon_id, 8364, 'First record tax id');
 my $xrefs = $record->xref;
@@ -46,7 +47,7 @@ for (1 .. 499) {
 my $expected = {
 		id => 'XB-GENE-482885',
 		display_label => 'pappa',
-		gene_name => 'pappa',
+		entry_name => 'pappa',
 		description => 'pregnancy-associated plasma protein A, pappalysin 1',
 		xrefs => [ bless( {
 				   'source' => 'Ensembl',

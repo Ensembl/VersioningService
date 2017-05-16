@@ -1,3 +1,4 @@
+use strict;
 use Test::More;
 use Test::Differences;
 use Test::Deep;
@@ -15,7 +16,7 @@ my $reader = new Bio::EnsEMBL::Mongoose::Parser::EntrezGene(
 my $num_of_records = 0;
 #first record
 $reader->read_record;
-$record = $reader->record;
+my $record = $reader->record;
 $num_of_records++;
 is($record->id,'5692769','ID extraction from first record');
 

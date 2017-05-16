@@ -83,7 +83,6 @@ sub read_record {
   
   $record->id( $reactome_id );
   $record->primary_accession($reactome_id);
-  $record->gene_name($source_db_id) if $source eq 'Ensembl';
   $record->display_label($reactome_id);
   $record->description($description);
   $record->taxon_id($taxon_id);

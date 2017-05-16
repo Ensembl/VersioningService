@@ -337,6 +337,15 @@
       "priority": 60
     },
     {
+      "db_name": "NCBIGene",
+      "example_id": "100125760",
+      "id_namespace": "ncbigene",
+      "URI_type": "http://purl.obolibrary.org/obo/SO_0000704",
+      "bidirectional": true,
+      "feature_type": "gene",
+      "priority": 60
+    },
+    {
       "db_name": "GeneID",
       "example_id": "100125760",
       "id_namespace": "ncbigene",

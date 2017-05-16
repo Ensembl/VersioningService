@@ -263,7 +263,7 @@ method work_with_run ( Str :$source, Str :$run_id) {
 # Useful when triggering a query when the parameters were provided elsewhere, but not yet fetching the results. Awakes lazy-loaders downstream
 sub prep_query {
   my $self = shift;
-  $self->storage_engine->query_parameters($self->query_params);
+  $self->storage_engine->query_parameters($self->query_parameters);
   $self->storage_engine->query();
 }
 

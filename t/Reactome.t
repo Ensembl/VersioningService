@@ -1,3 +1,4 @@
+use Modern::Perl;
 use Test::More;
 use Test::Differences;
 use Test::Deep;
@@ -15,7 +16,7 @@ my $reader = new Bio::EnsEMBL::Mongoose::Parser::Reactome(
 my $num_of_records = 0;
 #first record
 $reader->read_record;
-$record = $reader->record;
+my $record = $reader->record;
 $num_of_records++;
 is($record->id,'R-HSA-162699','ID extraction from first record');
 
@@ -51,7 +52,7 @@ ok(30 == $num_of_records, "Read all the $num_of_records records from the file su
 #checking the last record 
 is($record->id,'R-ATH-556833','ID extraction from last record');
 
-my $all_xrefs = $record->xref;
+$all_xrefs = $record->xref;
 isa_ok($all_xrefs, 'ARRAY' );
 
 $expected_xref = [

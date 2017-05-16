@@ -82,7 +82,7 @@ sub read_record {
     $self->record->id($doc{hgnc_id});
     $self->record->accessions([$doc{hgnc_id}]) if exists $doc{hgnc_id};
     $self->record->display_label($doc{symbol}) if exists $doc{symbol};
-    $self->record->gene_name($doc{name}) if exists $doc{name};
+    $self->record->entry_name($doc{name}) if exists $doc{name};
     my $list;
     $list = $doc{prev_symbol} if exists $doc{prev_symbol};
     push @$list,@{$doc{alias_symbol}} if exists $doc{alias_symbol};

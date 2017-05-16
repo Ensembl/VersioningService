@@ -134,20 +134,29 @@ sub read_record {
     }
 
     my $features = $parser->get_features;
+
+    # Extract links to gene IDs from NCBIGene and protein accessions from RefSeq
+    # Should only fire when parsing a transcript record.
     foreach my $feat (@$features) {
         if ($feat->{header} eq 'gene') {
             if (exists $feat->{db_xref}) {
                 my $source;
                 my @xrefs = @{ $feat->{db_xref} };
                 foreach my $xref (@xrefs) {
-                    if ($xref =~ /^GeneID/) {
+                    if ($xref =~ /^GeneID:(\d+)/) {
                         $source = 'NCBIgene';
+                        $record->gene_name($1);
+                        # It may prove useful to stop creating xrefs to NCBIgene, and just using the relationship to straighten out alignment mis-assignments
                         $record->add_xref(
                             Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $xref)
                         );
-                    } 
+                    }
                 }
-            } 
+            }
+        } elsif ($feat->{header} eq 'CDS') {
+            if (exists $feat->{protein_id}) {
+                $record->protein_name(pop @{$feat->{protein_id}});
+            }
         }
     }
 
@@ -170,7 +179,7 @@ sub chew_description {
     my $self = shift;
     my $description = $self->record->description;
     my ($gene_name) = ($description =~ /\((.+?)\)/);
-    $self->record->gene_name($gene_name) if ($gene_name);
+    $self->record->display_label($gene_name) if ($gene_name);
 }
 
 # Transform a word-based taxonomy into a taxon ID

@@ -31,7 +31,7 @@ my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 $mfetcher->get_records;
 
 # Beware \s at end of header line
-my $desired = "> P15056 9606 1 
+my $desired = ">P15056 9606 1 
 MAALSGGGGGGAEPGQALFNGDMEPEAGAGAGAAASSAADPAIPEEVWNIKQMIKLTQEH
 IEALLDKFGGEHNPPSIYLEAYEEYTSKLDALQQREQQLLESLGNGTDFSVSSSASMDTV
 TSSSSSSLSVLPSSLSVFQNPTDVARSNPKSPQKPIVRVFLPNKQRTVVPARCGVTVRDS
@@ -61,9 +61,9 @@ $params->clear_species_name;
 $params->taxons([8397]); # riparian frogs in NCBI taxonomy (as of Compara 81)
 $mfetcher->get_records_including_descendants;
 
-$desired = "> P0C8T7 395594 1 
+$desired = ">P0C8T7 395594 1 
 GFLDSFKNAMIGVAKSVGKTALSTLACKIDKSC
-> P84858 110109 1 
+>P84858 110109 1 
 FLPLLFGAISHLL
 ";
 is($out,$desired, 'Did taxon descendants return correct sequence combinations?');
@@ -102,7 +102,7 @@ $mfetcher->include_isoforms();
 $mfetcher->get_records();
 
 # Watch out, whitespace at end of header
-$desired = "> P84858 110109 1 
+$desired = ">P84858 110109 1 
 FLPLLFGAISHLL
 ";
 

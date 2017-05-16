@@ -51,7 +51,6 @@ use Bio::EnsEMBL::ApiVersion qw/software_version/;
 use File::Path qw/make_path/;
 use File::Spec;
 use IO::File;
-use Bio::EnsEMBL::Mongoose::IOException;
 
 
 sub fetch_input {
@@ -107,7 +106,7 @@ sub run {
       if(defined $temp_index_folder && -e $temp_index_folder){
         $mapper->calculate_overlap_score({'index_location' => $temp_index_folder , 'species' => $species, 'core_dba' => $core_dba, 'other_dba' => $other_dba,'rdf_writer' => $rdf_writer , 'source' => $source});
       } else {
-        Bio::EnsEMBL::Mongoose::IOException->throw("Failed to generate RefSeq index location $temp_index_folder for overlap calculations");
+        throw("Failed to generate RefSeq index location $temp_index_folder for overlap calculations");
       }
     }else{
       my $index_uri = $broker->get_index_by_name_and_version('UCSC');

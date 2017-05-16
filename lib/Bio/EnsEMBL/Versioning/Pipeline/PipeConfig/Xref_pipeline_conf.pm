@@ -100,7 +100,7 @@ sub pipeline_analyses {
       },
       -rc_name => 'bookkeeping',
       -flow_into => {
-         '2->A' => ['DumpRDF','DumpFASTA'],
+         '2->A' => ['DumpRDF','DumpFASTA','CoordOverlap'],
          'A->1' => ['LogSummaryEnd']
       }
     },
@@ -116,6 +116,17 @@ sub pipeline_analyses {
       -flow_into  => {
          3  => ['LogSummaryEnd']
       },
+    },
+    {
+      -logic_name => 'CoordinateOverlap',
+      -module => 'Bio::EnsEMBL::Versioning::Pipeline::CheckCoordinateOverlap',
+      -parameters => {
+        sources => ['refseq','ucsc']
+        },
+      -max_retry_count => 0, # low to prevent pointless dumping repetition
+      -hive_capacity => 10,
+      -failed_job_tolerance => 25, 
+      -rc_name => 'default'
     },
     {
       -logic_name => 'DumpFASTA',

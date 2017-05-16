@@ -250,18 +250,16 @@ sub print_coordinate_overlap_xrefs {
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);
+
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($ens_id,'ensembl_transcript',$clean_id,$source);
+
   my $namespace = $self->identifier($source);
-
-  my $xref_source = $self->prefix('ensembl').$ens_id;
-  my $xref_link = $self->new_xref('ensembl',$source);
-
-  $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
-  my $xref_target = $namespace.$clean_id;
+
   # Meta about Ensembl ID
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->prefix('ensembl')));
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
-  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), '"'.$ens_id.'"' );
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), qq/"$ens_id"/);
   # Create link
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
   print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));

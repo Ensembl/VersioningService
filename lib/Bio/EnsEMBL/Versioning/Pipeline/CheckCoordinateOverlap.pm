@@ -94,8 +94,8 @@ sub run {
   
   # Coordinate overlap is done only for refseq and ucsc
   foreach my $source(@sources){
-    my $fh = IO::File->new($output_path.'/'.$source.'_coordinate_overlap.ttl','w') or throw("Failed to open ${source}_overlap.ttl for writing");
-    my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $ENV{MONGOOSE}.'/conf/manager.conf');
+    my $fh = IO::File->new($output_path.'/'.$source.'_coordinate_overlap.ttl','w') or $self->throw("Failed to open ${output_path}/${source}_coordinate_overlap.ttl for writing");
+    my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $self->param('broker_conf'));
 
     my $mapper = Bio::EnsEMBL::Versioning::CoordinateMapper->new;
     
@@ -108,7 +108,7 @@ sub run {
       if(defined $temp_index_folder && -e $temp_index_folder){
         $mapper->calculate_overlap_score('index_location' => $temp_index_folder , 'species' => $species, 'core_dba' => $core_dba, 'other_dba' => $other_dba,'rdf_writer' => $rdf_writer , 'source' => $source);
       } else {
-        throw("Failed to generate RefSeq index location $temp_index_folder for overlap calculations");
+        $self->throw("Failed to generate RefSeq index location $temp_index_folder for overlap calculations");
       }
     }else{
       my $index_uri = $broker->get_index_by_name_and_version('UCSC');

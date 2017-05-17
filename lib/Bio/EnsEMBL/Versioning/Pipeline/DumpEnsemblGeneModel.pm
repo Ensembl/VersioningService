@@ -83,7 +83,7 @@ sub run {
       my $translation = $transcript->translate;
       my ($translation_id,$translation_source);
       if ($translation) {
-        $translation_id = $translation->stable_id;
+        $translation_id = $transcript->translation->stable_id;
         $translation_source = 'ensembl_protein';
       }
       $writer->print_gene_model_link($gene->stable_id,'ensembl',$transcript->stable_id,'ensembl_transcript',$translation_id,$translation_source);

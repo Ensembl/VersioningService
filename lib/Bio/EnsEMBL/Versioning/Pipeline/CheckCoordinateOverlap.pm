@@ -108,7 +108,7 @@ sub run {
       if(defined $temp_index_folder && -e $temp_index_folder){
         $mapper->calculate_overlap_score('index_location' => $temp_index_folder , 'species' => $species, 'core_dba' => $core_dba, 'other_dba' => $other_dba,'rdf_writer' => $rdf_writer , 'source' => $source);
       } else {
-        $self->throw("Failed to generate RefSeq index location $temp_index_folder for overlap calculations");
+        next; # No path created implies no otherfeatures database, we can go no further
       }
     }else{
       my $index_uri = $broker->get_index_by_name_and_version('UCSC');

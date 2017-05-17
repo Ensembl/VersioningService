@@ -79,7 +79,7 @@ sub run {
   my $genes = $gene_adaptor->fetch_all;
   while (my $gene = shift @$genes) {
     my $transcripts = $gene->get_all_Transcripts;
-    foreach my $transcript ($transcripts) {
+    foreach my $transcript (@$transcripts) {
       my $translation = $transcript->translate;
       my ($translation_id,$translation_source);
       if ($translation) {

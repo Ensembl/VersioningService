@@ -62,7 +62,7 @@ sub fetch_input {
   my $base_path = $broker->scratch_space;
   # TODO - EG specific pathing suitable for their greater number of species
 
-  my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'gene_model','ensembl','/');
+  my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'gene_model','/');
   make_path($full_path);
   $self->param("ensembl_model_path",$full_path);
 }
@@ -71,7 +71,7 @@ sub run {
   my ($self) = @_;
 
   my $path = $self->param("ensembl_model_path");
-  my $fh = IO::File->new($path ,'w') || throw("Cannot create filehandle $path");
+  my $fh = IO::File->new($path.'ensembl.ttl' ,'w') || throw("Cannot create filehandle $path");
 
   my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $self->param('broker_conf'));
   my $adaptor = $self->get_DBAdaptor('core');

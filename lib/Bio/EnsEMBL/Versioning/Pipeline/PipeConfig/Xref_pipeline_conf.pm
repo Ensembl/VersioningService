@@ -91,7 +91,7 @@ sub pipeline_analyses {
     }, 
     {
       -logic_name => 'ScheduleSpecies',
-      -module     => 'Bio::EnsEMBL::Production::Pipeline::SpeciesFactory',
+      -module     => 'Bio::EnsEMBL::Production::Pipeline::BaseSpeciesFactory',
       -parameters => {
          species     => $self->o('species'),
          antispecies => $self->o('antispecies'),

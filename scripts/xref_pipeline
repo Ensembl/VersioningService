@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script to launch the xref pipeline
-
+# SCRATCH example: /hps/nobackup/production/ensembl/$USR
 source /nfs/software/ensembl/RHEL7/envs/basic.sh
 export PERL5LIB=$PERL5LIB:${HOME}/src/ensembl/modules:${HOME}/src/ensembl-compara/modules:${HOME}/src/VersioningService/lib/:${HOME}/src/ensembl-io/modules/:${HOME}/src/ensembl-hive/modules/
 export MONGOOSE=${HOME}/src/VersioningService
@@ -8,10 +8,12 @@ export BIN=$BIN:${HOME}/src/ensembl-hive/scripts/
 [ -e bsub ] && { echo "Failed to find LSF components"; exit 1; }
 [ -z "$DB_USER" ] && { echo "Environment variable DB_USER required for Versioning DB"; exit 1; }
 [ -z "$DB_PASS" ] && { echo "Environment variable DB_PASS required for Versioning DB"; exit 1; }
+[ -z "$REG_FILE" ] && { echo "Environment variable REG_FILE required for Versioning DB, connecting to all relevant databases"; exit 1; }
+[ -z "$REG_FILE" ] && { echo "Environment variable SCRATCH required to store interim pipeline data"; exit 1; }
 cat "Xref pipeline began at $(date +%y%m%dT%H%M%S)" > ${HOME}/xref_pipeline_running
 
 URL=mysql://${DB_USER}:${DB_PASS}@mysql-gti-xref-prod:4481/xref_pipeline_$(date +%y%m%dT%H%M%S)
-${HOME}/src/ensembl-hive/scripts/init_pipeline.pl Bio::EnsEMBL::Versioning::Pipeline::PipeConfig::Xref_pipeline_conf -pipeline_url $URL
+${HOME}/src/ensembl-hive/scripts/init_pipeline.pl Bio::EnsEMBL::Versioning::Pipeline::PipeConfig::Xref_pipeline_conf -run_all 1 -broker_conf ${MONGOOSE}/conf/manager.conf -registry ${REG_FILE} -base_path $SCRATCH -pipeline_url $URL
 
 ${HOME}/src/ensembl-hive/scripts/beekeeper.pl -url $URL -loop >> ${HOME}/versioning_logs/beekeeper_$(date +%y%m%dT%H%M%S).out
 

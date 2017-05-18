@@ -79,9 +79,9 @@ method create_index_from_database (Object :$dba, Str :$analysis_name, Str :$spec
       
       # Create an  index of all ensembl Transcript as lucy Records
       foreach my $transcript (sort { $a->start() <=> $b->start() } @$transcripts) {
-        if ($transcript->stable_id =~ /H3.X/ || $transcript->stable_id =~ /H3.Y/ || $transcript->stable_id =~ /^3.8/) { next; } #legacy code
-          my $exons = $transcript->get_all_Exons();
-          $self->store_as_record($species_id, $chr_name, $strand, $transcript, $exons, $doc_store );
+        if (!$transcript->stable_id || $transcript->stable_id =~ /H3.X/ || $transcript->stable_id =~ /H3.Y/ || $transcript->stable_id =~ /^3.8/) { next; } #legacy code
+        my $exons = $transcript->get_all_Exons();
+        $self->store_as_record($species_id, $chr_name, $strand, $transcript, $exons, $doc_store );
       }#end foreach
 
      }#end while
@@ -109,7 +109,6 @@ sub store_as_record{
   }
 
   my $record = Bio::EnsEMBL::Mongoose::Persistence::Record->new('id'=>$transcript->stable_id(), 'start'=>$transcript_start, 'end'=>$transcript_end);
-  $record->id($transcript->stable_id());
   $record->taxon_id($species_id) if $species_id;
 
   $record->entry_name($transcript->stable_id());

@@ -52,6 +52,7 @@ use Method::Signatures;
 # In future this module should not be tightly tied to Apache Lucy, but allow
 # any document store to queried in this fashion, at least within the Lucene family.
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
+use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use Bio::EnsEMBL::Versioning::Broker;
 
@@ -59,7 +60,18 @@ use Bio::EnsEMBL::Mongoose::SearchEngineException;
 use Bio::EnsEMBL::Mongoose::IOException;
 
 # Contains information about the index Lucy will use, either by file or hash.
-has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file');
+has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file', trigger => \&_validate_path);
+
+sub _validate_path {
+  my ($self,$new_value,$old_value) = @_;
+  if ($new_value) {
+    $self->log->debug("Changing config file from $new_value to $new_value");
+  }
+  if ($new_value) {
+    Bio::EnsEMBL::Mongoose::IOException->throw('Cannot configure IndexReader due to unreadable config file: $new_value') unless (-r $new_value);
+  } 
+}
+
 has storage_engine_conf => (isa => 'HashRef', is => 'rw');
 has index_conf => ( isa => 'HashRef', is => 'rw');
 has storage_engine => (
@@ -239,17 +251,24 @@ method work_with_index ( Str :$source, Str :$version? ) {
 
 method work_with_run ( Str :$source, Str :$run_id) {
   my $version = $self->versioning_service->get_version_for_run_source($run_id,$source);
+  unless ($version) {
+    Bio::EnsEMBL::Mongoose::SearchEngineException->throw("Run ID $run_id and source $source cannot be found in versioning service");
+  }
   my $path = $version->index_uri;
   $self->index_conf({ index_location => $path, source => $source, version => $version->revision});
   $self->storage_engine();
   $self->source($source);
 }
 
+# Useful when triggering a query when the parameters were provided elsewhere, but not yet fetching the results. Awakes lazy-loaders downstream
 sub prep_query {
   my $self = shift;
+  $self->storage_engine->query_parameters($self->query_params);
   $self->storage_engine->query();
 }
 
+# Note no return value. For that there is next_record();
+# QueryParameters object is sent to the query engine, and the results can be retrieved with next_record()
 sub query {
   my $self = shift;
   my $query_params = shift;

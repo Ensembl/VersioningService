@@ -61,7 +61,7 @@ sub read_record {
 
   $record->id($rgd); # RGD gene ID
   $record->display_label($symbol); # official gene symbol
-  $record->gene_name($symbol); # which is also the gene name
+  $record->entry_name($symbol); # which is also the gene name
   $record->description($name); # gene name is sufficiently verbose to appear as a description
   $record->add_synonym(split /;/, $old_name) if $old_name; # old name alias(es)
 

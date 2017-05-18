@@ -12,3 +12,5 @@ target/
 *.conf
 /viewer/node_modules
 /t/run
+Reg.pm
+t/data/test_index_ucsc

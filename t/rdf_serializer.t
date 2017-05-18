@@ -67,7 +67,7 @@ $rdf_writer->print_record($loopy_record, 'flybase_transcript_id');
 my $checksum_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
   id => 'MrHex'
 });
-$rdf_writer->print_checksum_xrefs('ENST1',$checksum_record,'RNACentral');
+$rdf_writer->print_checksum_xrefs('ENST1','transcript',$checksum_record,'RNACentral');
 
 
 note $dummy_content;
@@ -88,7 +88,7 @@ my $sparql = 'select ?hop ?source ?label where {
   }';
 
 my $query = RDF::Query->new($prefixes.$sparql);
-$query->error;
+note(RDF::Query->error);
 my $iterator = $query->execute($model);
 my @results = $iterator->get_all;
 note join "\n",@results;
@@ -101,7 +101,7 @@ $sparql = 'select ?id where {
 
 # Check on checksum-typed xrefs
 $query = RDF::Query->new($prefixes.$sparql);
-$query->error;
+note(RDF::Query->error);
 $iterator = $query->execute($model);
 @results = $iterator->get_all;
 cmp_deeply([map { $_->{id}->as_string} @results],bag(qw/"Testy" "NM1" "MrCyclic" "NM2" "100" "MrHex" "ENST1"/),'null1 not included in results, and NM1 does not appear twice');
@@ -115,7 +115,7 @@ $sparql = 'select ?id ?target_id where {
   }';
 
 $query = RDF::Query->new($prefixes.$sparql);
-$query->error;
+note(RDF::Query->error);
 $iterator = $query->execute($model);
 my $result = $iterator->next;
 
@@ -127,10 +127,45 @@ $sparql = 'select ?comment where {
   }';
 
 $query = RDF::Query->new($prefixes.$sparql);
-$query->error;
+note(RDF::Query->error);
 $iterator = $query->execute($model);
 $result = $iterator->next;
 
 is($result->{comment}->as_string,'"Lengthy description for humans"','Comments correctly expressed in RDF');
 
+# Check serialisation of gene-transcript-protein links
+
+$dummy_content = '';
+$dummy_fh->setpos(0);
+$model->remove_statements(undef,undef,undef);
+ok($model->size == 0,'Model emptied propertly');
+$rdf_writer->print_gene_model_link('1','EntrezGene','2','RefSeq_mrna','3','Refseq_peptide');
+$parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/',$dummy_content,$model);
+$sparql = 'select ?gene ?transcript ?protein where {
+  ?gene obo:SO_transcribed_to ?transcript .
+  ?transcript obo:SO_translates_to ?protein .
+}';
+
+$query = RDF::Query->new($prefixes.$sparql);
+note(RDF::Query->error);
+$iterator = $query->execute($model);
+$result = $iterator->next;
+is($result->{gene}->as_string, '<http://identifiers.org/ncbigene/1>', 'NCBIGene connected to RefSeq transcript');
+is($result->{transcript}->as_string,'<http://identifiers.org/refseq/2>' ,'Refseq transcript present as expected');
+is($result->{protein}->as_string, '<http://identifiers.org/refseq/3>', 'Refseq protein connected to transcript');
+
+$rdf_writer->print_gene_model_link(undef,undef,'4','RefSeq_mrna','5','Refseq_peptide');
+$rdf_writer->print_gene_model_link('6','EntrezGene','4','RefSeq_mrna',undef,undef);
+$parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/',$dummy_content,$model);
+
+$sparql = 'select ?gene ?transcript where {
+  ?gene obo:SO_transcribed_to ?transcript .
+}';
+
+$query = RDF::Query->new($prefixes.$sparql);
+note(RDF::Query->error);
+$iterator = $query->execute($model);
+@results = $iterator->get_all;
+cmp_deeply(['<http://identifiers.org/ncbigene/1>','<http://identifiers.org/ncbigene/6>'],bag(map { $_->{gene}->as_string } @results),'Testing partial setting of print_gene_model_link() with two hits for genes linked to transcripts');
+cmp_deeply(['<http://identifiers.org/refseq/4>','<http://identifiers.org/refseq/2>'],bag(map { $_->{transcript}->as_string } @results),'Testing partial setting of print_gene_model_link() with both transcripts linked to genes');
 done_testing();

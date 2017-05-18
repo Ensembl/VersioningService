@@ -34,6 +34,7 @@ sub print_record {
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);
+  $source = uri_escape($source);
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$clean_id;
@@ -57,10 +58,19 @@ sub print_record {
   if ($record->comment) {
     print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('rdfs').'comment'),'"'.$self->escape($record->comment).'"');
   }
+  # For when a transcript-based-record references a protein from the same source. A bit fragile I suppose, but mainly only required for RefSeq data
+  if ($record->protein_name) {
+    $self->print_gene_model_link(undef,undef,$record->id,$source,$record->protein_name,$source);
+  }
+  # For when a RefSeq record references a gene, it is always referring to NCBIGene, aka EntrezGene
+  if ($record->gene_name && $source =~ /refseq/i) {
+    my $gene_source = 'EntrezGene';
+    $self->print_gene_model_link($record->gene_name,$gene_source,$record->id,$source,undef,undef);
+  }
 
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
-    my $xref_source = $self->identifier($xref->source);
+    my $xref_source = $self->identifier(uri_escape($xref->source));
     my $clean_id = uri_escape($xref->id);
     my $xref_uri = $xref_source.$clean_id;
     my $xref_link = $self->new_xref($source,$xref->source);
@@ -75,12 +85,6 @@ sub print_record {
     print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
     # xref links to target ID
     print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
-    # reverse links
-    # Enable if it proves necessary to have reverse links for sources
-    # if ( $self->identifier_mapping->is_bidirectional($xref->source)) {
-    #   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-from'),$self->u($base_entity));
-    #   print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('term').'refers-from'),$self->u($xref_link));
-    # }
     # xref type
     print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Direct'));
     # Scope here to describe evidence codes and such (associated xrefs indeed) to qualify the xref itself.
@@ -91,8 +95,8 @@ sub print_record {
   }
 }
 
-# Create a transitive network of simple xrefs and resources. No annotated middle node, no labels, just URIs and more URIs
-# This will be much more efficient to traverse in all directions so that we can find the entire set of interlinked URIs
+# Create a transitive network of simple xrefs and resources. No annotated middle node, just URIs, labels and sources.
+# This will be much more efficient to traverse in all directions so that we can find all the connected sets of URIs
 sub print_slimline_record {
   my $self = shift;
   my $record = shift;
@@ -102,10 +106,15 @@ sub print_slimline_record {
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);
+  # $source = uri_escape($source);
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$clean_id;
-
+  
+  # Label annotations for finding best IDs in a given scenario
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
+  
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     my $xref_source = $self->identifier($xref->source);
@@ -115,6 +124,7 @@ sub print_slimline_record {
     if ($allowed) {
       print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
       print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
+      print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('dcterms').'source'), $self->u( $xref_source ));
     }
   }
 }
@@ -122,25 +132,26 @@ sub print_slimline_record {
 sub print_checksum_xrefs {
   my $self = shift;
   my $ens_id = shift;
+  my $ens_type = shift; # Basically transcript or peptide. Leave unset for gene
   my $record = shift;
   my $source = shift;
 
-  my $fh = $self->handle;
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
-  my $clean_id = uri_escape($id);
-  my $namespace = $self->identifier($source);
 
-  my $xref_source = $self->prefix('ensembl').$ens_id;
-  my $xref_link = $self->new_xref('ensembl',$source);
-
-  $namespace = $self->identifier($source);
-  $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
-  my $xref_target = $namespace.$clean_id;
+  # Where a non-gene feature type, use a different prefix for the feature URI
+  my $ens_namespace = 'ensembl';
+  if ($ens_type ) {
+    $ens_namespace = $ens_type;
+  }
+  
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($ens_id,$ens_namespace,$id,$source,'checksum');
+  
+  my $fh = $self->handle;
   # Meta about Ensembl ID
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->prefix('ensembl')));
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
-  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), '"'.$ens_id.'"' );
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), qq/"$ens_id"/ );
   # Create link
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
   print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
@@ -150,6 +161,116 @@ sub print_checksum_xrefs {
 }
 
 sub print_slimline_checksum_xrefs {
+  my $self = shift;
+  my $ens_id = shift;
+  my $ens_type = shift;
+  my $record = shift;
+  my $source = shift;
+
+  my $ens_namespace = 'ensembl';
+  if ($ens_type ) {
+    $ens_namespace = $ens_type;
+  }
+
+  my $id = $record->id;
+  unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
+  my ($xref_source,undef,$xref_target) = $self->generate_uris($ens_id,$ens_namespace,$id,$source);
+  
+  my $fh = $self->handle;
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('term').'refers-to'), $self->u($xref_source) );
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
+}
+
+sub print_alignment_xrefs {
+  my ($self,$source_id,$source,$target_id,$target_source,$score) = @_;
+  
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($source_id,$source,$target_id,$target_source,'align');
+  
+  my $fh = $self->handle;
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Alignment'));
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
+}
+
+sub print_slimline_alignment_xrefs {
+  my ($self,$source_id,$source,$target_id,$target_source) = @_;
+
+  my ($xref_source,undef,$xref_target) = $self->generate_uris($source_id,$source,$target_id,$target_source);
+
+  my $fh = $self->handle;
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('term').'refers-to'), $self->u($xref_source));
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$source_id"/);
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$target_id"/);
+}
+
+# Generates a triad of URIs for a two-step Xref link, i.e. source_id refers-to xref refers-to target_id
+# $label parameter allows additional disambiguation of the xref link, for data generated by different processes
+sub generate_uris {
+  my ($self,$source_id,$source,$target_id,$target_source,$label) = @_;
+
+  my $start = $self->identifier($source).$source_id;
+
+  my $middle = $self->new_xref($source,$target_source,$label);
+  # $middle = $self->prefix('ensembl').'/'.$label.'/'.$source.'/' unless $middle;
+  my $clean_id = uri_escape($target_id);
+  my $namespace = $self->identifier($target_source);
+  my $end = $namespace.$clean_id;
+  return ($start,$middle,$end);
+}
+
+
+# Write triples which attach source labels to sources, handy for pretty printing or maybe text search
+sub print_source_meta {
+  my $self = shift;
+  my $fh = $self->handle;
+  my $mappings = $self->identifier_mapping->get_all_name_mapping;
+  foreach my $source (keys %$mappings) {
+    print $fh $self->triple( 
+      $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), qq/"$source"/
+    );
+    my $full_map = $self->identifier_mapping->get_mapping($source);
+    if (exists $full_map->{priority}) {
+      print $fh $self->triple(
+        $self->u($mappings->{$source}), $self->u($self->prefix('term').'priority'), $full_map->{priority}
+      );
+    }
+  }
+}
+
+sub print_coordinate_overlap_xrefs {
+  my $self = shift;
+  my $ens_id = shift;
+  my $record = shift;
+  my $source = shift;
+  my $score = shift;
+
+  my $fh = $self->handle;
+  my $id = $record->id;
+  unless ($id) {$id = $record->primary_accession}
+  my $clean_id = uri_escape($id);
+
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($ens_id,'ensembl_transcript',$clean_id,$source,'overlap');
+
+  # Meta about Ensembl ID
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->prefix('ensembl')));
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('rdfs').'label'), '"'.$ens_id.'"' );
+  # Create link
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
+  print $fh $self->triple($self->u($xref_link), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
+  # Annotate link
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Coordinate_overlap'));
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
+}
+
+sub print_slimline_coordinate_overlap_xrefs {
   my $self = shift;
   my $ens_id = shift;
   my $record = shift;
@@ -169,18 +290,38 @@ sub print_slimline_checksum_xrefs {
   my $xref_target = $namespace.$clean_id;
 
   print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'refers-to'), $self->u($xref_target) );
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('term').'refers-to'), $self->u($xref_source) );
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$ens_id"/);
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
 }
 
-
-# Write triples which attach source labels to sources, handy for pretty printing or maybe text search
-sub print_source_meta {
+sub print_gene_model_link {
   my $self = shift;
+  my $gene_id = shift;
+  my $gene_source = shift;
+  my $transcript_id = shift;
+  my $transcript_source = shift;
+  my $protein_id = shift;
+  my $protein_source = shift;
+
   my $fh = $self->handle;
-  my $mappings = $self->identifier_mapping->get_all_name_mapping;
-  foreach my $source (keys %$mappings) {
-    print $fh $self->triple( 
-      $self->u($mappings->{$source}), $self->u($self->prefix('rdfs').'label'), '"'.$source.'"'
-    );
+  my ($namespace,$gene_uri,$transcript_uri,$protein_uri);
+
+  $namespace = $self->identifier($transcript_source);
+  $transcript_uri = $namespace.$transcript_id;
+  
+  if ($gene_id) {
+    $namespace = $self->identifier($gene_source);
+    $gene_uri = $namespace.$gene_id;
+    print $fh $self->triple($self->u($gene_uri), $self->u($self->prefix('obo').'SO_transcribed_to'), $self->u($transcript_uri));
+    print $fh $self->triple($self->u($transcript_uri), $self->u($self->prefix('obo').'SO_transcribed_from'), $self->u($gene_uri));
+  }
+
+  if ($protein_id) {
+    $namespace = $self->identifier($protein_source);
+    $protein_uri = $namespace.$protein_id;
+    print $fh $self->triple($self->u($transcript_uri), $self->u($self->prefix('obo').'SO_translates_to'), $self->u($protein_uri));
+    print $fh $self->triple($self->u($protein_uri), $self->u($self->prefix('obo').'SO_translation_of'), $self->u($transcript_uri));
   }
 }
 

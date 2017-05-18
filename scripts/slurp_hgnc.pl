@@ -38,7 +38,7 @@ while ($parser->read_record) {
     my $record = $parser->record;
     print Dumper $record;
     printf "Main accession: %s, Gene name: %s, Taxon: %s\n",
-         $record->primary_accession,$record->gene_name ? $record->gene_name : '', 9606;
+         $record->primary_accession,$record->entry_name ? $record->entry_name : '', 9606;
     $buffer++;
     
     if ($record->has_taxon_id && ($record->has_accessions || defined $record->id)) {

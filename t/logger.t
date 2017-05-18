@@ -22,11 +22,9 @@ use warnings;
 
 use Test::More;
 use Time::HiRes qw (sleep);
-
-BEGIN { 
-  use FindBin qw/$Bin/;
-  $ENV{MONGOOSE} = "$Bin/..";
-}
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
 
 use Bio::EnsEMBL::Versioning::Logger;
 use Bio::EnsEMBL::Versioning::TestDB qw/broker get_conf_location/;

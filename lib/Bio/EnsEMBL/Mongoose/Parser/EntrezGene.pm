@@ -67,7 +67,7 @@ sub read_record {
     my $fields = $self->fields;
     my @linecolumns = split( /\t/, $content );
     $record->id( $linecolumns[ $fields->{"GeneID"} ] );
-    $record->gene_name( $linecolumns[ $fields->{"Symbol"} ] );
+    $record->entry_name( $linecolumns[ $fields->{"Symbol"} ] );
     $record->display_label($linecolumns[ $fields->{"Symbol"} ] );
     $record->description($linecolumns[ $fields->{"description"} ] );
     $record->taxon_id($linecolumns[ $fields->{"tax_id"} ] );

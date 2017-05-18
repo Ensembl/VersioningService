@@ -24,6 +24,8 @@ EnsemblToIdentifierMappings - Module to help map Ensembl Xrefs to Identifiers.or
   print $mapper->identifier_org_translation('uniprot')
   # http://identifiers.org/uniprot
 
+  # Optionally attempts to validate the config file if given a JSON schema file
+
 =head1 DESCRIPTION
 
   This module takes Ensembl internal names for things and converts them into identifiers.org URIs,
@@ -37,14 +39,29 @@ package Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings;
 use strict;
 use JSON qw/decode_json/;
 use IO::File;
+use Carp qw/confess/;
 
 sub new {
-  my ($class,$xref_mapping_file) = @_;
+  my ($class,$xref_mapping_file,$schema_file) = @_;
   local $/;
   my $fh = IO::File->new($xref_mapping_file,'r');
   unless ($fh) { die "Disaster! No xref config JSON file found $@"}
   my $json = <$fh>;
   my $doc = decode_json($json);
+
+  if ($schema_file) {
+    require JSON::Validator;
+    my $schema_fh = IO::File->new($schema_file,'r') || confess ("Cannot read schema file $schema_file");
+    my $schema = <$schema_fh>;
+    my $validator = JSON::Validator->new();
+    $validator->schema(decode_json($schema));
+    my @result = $validator->validate($doc);
+    if (@result) {
+      # This only works because JSON::Schema has some strange overloaded functions - intended usage pattern
+      confess("Validation error on JSON config file $xref_mapping_file with schema $schema_file.\n".join("\n",map { $_->message .':'.$_->path } @result));
+    }
+  }
+
   my %xref_mapping;
   map { $xref_mapping{ lc $_->{db_name} } = $_ } @{ $doc->{mappings} };
   bless({ xref_mapping => \%xref_mapping },$class);

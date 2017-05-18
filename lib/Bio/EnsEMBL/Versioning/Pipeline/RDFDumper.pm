@@ -33,7 +33,7 @@ Bio::EnsEMBL::Versioning::Pipeline::RDFDumper
 
 =head1 DESCRIPTION
 
-eHive pipeline module for RDF Dumping
+eHive pipeline module for RDF Xref Dumping
 
 =cut
 
@@ -61,13 +61,9 @@ use List::Compare;
 sub run {
   my ($self) = @_;
 
-  my $species = $self->param('species');
-  my $run_id = $self->param('run_id');
-  my $base_path = $self->param('base_path');
-
-  my $message = { run_id => $run_id };
-  $self->dataflow_output_id($message,3);
-  
+  my $species = $self->param_required('species');
+  my $run_id = $self->param_required('run_id');
+  my $base_path = $self->param_required('base_path');
   
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
 
@@ -75,21 +71,21 @@ sub run {
   $base_path ||= '/tmp';
   my $species_without_underscore = $species;
   $species_without_underscore =~ s/_/ /g;
-  $base_path = File::Spec->join( $base_path, "xref_rdf_dumps", $run_id, $species);
+  my $full_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps");
   
-  if (!-d $base_path) {
-    make_path $base_path or die "Failed to create path: $base_path";
+  if (!-d $full_path) {
+    make_path $full_path or die "Failed to create path: $full_path";
   }
   
   my $fh;
   my @final_source_list = map { $_->name } @$valid_source_list;
   foreach my $source (@final_source_list) {
   	print ("Source $source");
-    $fh = IO::File->new(File::Spec->catfile($base_path,$source.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
+    $fh = IO::File->new(File::Spec->catfile($full_path,$source.'.ttl'), 'w') || die "Cannot write to $full_path: $!";
     try {
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
         output_format => 'RDF',
-        storage_engine_conf_file => $ENV{MONGOOSE}.'/conf/manager.conf',
+        storage_engine_conf_file => $self->param('broker_conf'),
         species => $species_without_underscore,
         handle => $fh,
       );
@@ -107,12 +103,11 @@ sub run {
 }
 
   # Dump generic labels to attach to all possible sources for presentation. e.g. purl.uniprot.org/uniprot rdfs:label "Uniprot"
-  my $source_fh = IO::File->new(File::Spec->catfile($base_path,'sources'.'.ttl'), 'w') || die "Cannot write to $base_path: $!";
-  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $source_fh, config_file => "$ENV{MONGOOSE}/conf/manager.conf");
+  my $source_fh = IO::File->new(File::Spec->catfile($full_path,'sources'.'.ttl'), 'w') || die "Cannot write to $full_path: $!";
+  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $source_fh, config_file => $self->param('broker_conf'));
   $writer->print_source_meta;
   $source_fh->close;
 
-  $self->dataflow_output_id({},4);
 
 }
 

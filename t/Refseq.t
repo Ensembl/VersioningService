@@ -1,3 +1,4 @@
+use Modern::Perl;
 use Test::More;
 use Test::Differences;
 
@@ -23,12 +24,14 @@ is($record->accessions->[0], 'XM_005579308', 'primary_accession check');
 cmp_ok($record->sequence_length, '==', 6102, 'sequence_length check');
 is($record->taxon_id, '9541','Taxon correctly extracted');
 is($record->id, 'XM_005579308','ID correctly extracted');
-is($record->gene_name, 'CTSC','Gene name correctly extracted');
+is($record->gene_name, '102137896','NCBIGene name correctly extracted');
+# is($record->entry_name, 'CTSC','Gene name correctly extracted');
 cmp_ok(length($record->comment), '==', 665, 'Check comment block extracted whole as an array');
 
 # Feature extraction
 
 is_deeply([map { $_->id } @{$ref_seq_reader->record->xref}],['GeneID:102137896'] , 'Entrezgene/NCBIGene ID extracted from feature block');
+is($record->protein_name,'XP_005579365.1', 'Where possible a protein accession is extracted from CDS entries');
 # Next/last record
 $ref_seq_reader->read_record;
 #print ref($record->xref)."\n";
@@ -52,8 +55,5 @@ my $evidence = $ref_seq_reader->determine_evidence('XM_005579308');
 is_deeply($evidence, ['predicted','mRNA'], 'Evidence extraction from accession');
 $evidence = $ref_seq_reader->determine_evidence('XP_005579308');
 is_deeply($evidence, ['predicted','protein'], 'Evidence extraction from accession');
-
-
-
 
 done_testing;

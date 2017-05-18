@@ -133,6 +133,21 @@ has isoforms => (
     }
 );
 
+# allow custom filtering subroutines to prevent the exporting of unwanted datatypes.
+# Sample:
+# sub { my $record = shift; return 1 if $record =~ /NiceId/}
+# This would be faster if implemented directly into the queries, but Lucy needs custom extension for wildcard matching
+has filter => (
+    isa => 'CodeRef',
+    is => 'rw',
+    traits => ['Code'],
+    predicate => 'custom_filter',
+    handles => {
+        include_record => 'execute'
+    },
+    clearer => 'disable_filter'
+);
+
 with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient';
 
 
@@ -156,7 +171,7 @@ sub get_records {
     $self->storage_engine->query();
     
     while (my $record = $self->next_record) {
-
+        next unless ($self->custom_filter && $self->include_record($record)) || !$self->custom_filter;
         $self->writer->print_record($record, $source);
         if ($self->isoforms) {
             $self->log->debug("Adding isoforms from Uniprot website");

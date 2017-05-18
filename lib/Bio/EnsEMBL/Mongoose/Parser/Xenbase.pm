@@ -59,7 +59,7 @@ sub read_record {
 
   $record->id($acc);
   $record->display_label($label);
-  $record->gene_name($label); 
+  $record->entry_name($label); 
   $record->description($desc);
 
   $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'Ensembl', creator => 'Xenbase', id => $ensembl_id));

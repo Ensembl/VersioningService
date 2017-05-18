@@ -123,7 +123,7 @@ sub protein_name {
     my $depth = $reader->depth;
     $reader->read until ($reader->localName eq 'fullName');
     $reader->read;
-    $self->record->protein_name($reader->value);
+    $self->record->display_label($reader->value);
     $reader->read until $reader->depth == $depth;
 }
 

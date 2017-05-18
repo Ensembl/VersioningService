@@ -72,11 +72,11 @@ sub fetch_input {
   my $indexer = Bio::EnsEMBL::Mongoose::IndexReader->new(species => $species);
 
   $self->param('indexer',$indexer);
-  $self->param_required('cdna_path');
-  $self->param_required('pep_path');
+  $self->param_required('cdna_checksum_path');
+  $self->param_required('pep_checksum_path');
   
   # Define where the RDF output will go and create the folder
-  my $output_path = File::Spec->join( $self->param('base_path'), "xref_rdf_dumps", $self->param('run_id'), $species, 'checksum');
+  my $output_path = File::Spec->join( $self->param('base_path'), 'xref',$self->param('run_id'), $species, 'xref_rdf_dumps','checksum');
   if (!-d $output_path) {
     make_path $output_path or die "Failed to create path: $output_path";
   }
@@ -90,21 +90,35 @@ sub run {
   
   my %ens_checksum;
   # convert Ensembl ID\tchecksum into () id1 => checksum1, ...)
-  my %transcript_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('cdna_path')) };
-  $self->search_source_by_checksum('RefSeq',\%transcript_checksum,$run_id);
+  my %transcript_checksum;
+  my %peptide_checksum;
+  foreach my $path (qw/cdna_checksum_path pep_checksum_path/) {
+    my $checksum_hash;
+    if ($path eq 'cdna_checksum_path') {
+      $checksum_hash = \%transcript_checksum;
+    } else {
+      $checksum_hash = \%peptide_checksum;
+    }
+    foreach my $line ( @{ slurp_to_array($self->param($path)) } ) {
+      my ($id,$checksum) = split "\t",$line;
+      $checksum_hash->{$id} = $checksum;
+    };
+  }
+  throw('No Ensembl transcript checksums extracted from '.$self->param('cdna_checksum_path')) if (scalar(keys %transcript_checksum) == 0);
+  throw('No Ensembl protein checksums extracted from '.$self->param('pep_checksum_path')) if (scalar(keys %peptide_checksum) == 0);
+  $self->search_source_by_checksum('RefSeq',\%transcript_checksum,'ensembl_transcript',$run_id);
   # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
-  my %peptide_checksum = map { my ($id,$checksum) = split "\t"; ($checksum,$id); } @{ slurp_to_array($self->param('pep_path')) };
-  $self->search_source_by_checksum('UniprotSwissprot',\%peptide_checksum);
+  $self->search_source_by_checksum('Swissprot',\%peptide_checksum,'ensembl_protein',$run_id);
 }
 
 
 sub search_source_by_checksum {
-  my ($self,$source,$checksum_hash,$run_id) = @_;
+  my ($self,$source,$checksum_hash,$type,$run_id) = @_;
   my $indexer = $self->param('indexer');
   my $path = $self->param('output_path');
-  my $fh = IO::File->new($path.$source.'_checksum.ttl','w') or throw("Failed to open ${source}_checksum.ttl for writing");
-  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh);
-  $indexer->work_with_run($source,$run_id);
+  my $fh = IO::File->new($path.'/'.$source.'_checksum.ttl','w') or throw("Failed to open $path/${source}_checksum.ttl for writing");
+  my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $self->param('broker_conf'));
+  $indexer->work_with_run(source => $source,run_id => $run_id);
   
   foreach my $ens_id (keys %$checksum_hash) {
     $indexer->query(
@@ -116,7 +130,7 @@ sub search_source_by_checksum {
       )
     ); 
     while (my $record = $indexer->next_record) {
-      $writer->print_checksum_xrefs($ens_id,$record,$source);
+      $writer->print_checksum_xrefs($ens_id,$type,$record,$source);
     }
   }
   $fh->close;

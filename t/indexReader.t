@@ -3,7 +3,6 @@ use Test::More;
 use Test::Differences;
 use Test::Exception;
 
-use Log::Log4perl;
 use FindBin qw/$Bin/;
 use lib "$Bin";
 use TestDefaults;

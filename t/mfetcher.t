@@ -1,3 +1,4 @@
+use strict;
 use Test::More;
 use Test::Differences;
 use Test::Exception;
@@ -30,7 +31,7 @@ my $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 $mfetcher->get_records;
 
 # Beware \s at end of header line
-my $desired = "> P15056 9606 1 
+my $desired = ">P15056 9606 1 
 MAALSGGGGGGAEPGQALFNGDMEPEAGAGAGAAASSAADPAIPEEVWNIKQMIKLTQEH
 IEALLDKFGGEHNPPSIYLEAYEEYTSKLDALQQREQQLLESLGNGTDFSVSSSASMDTV
 TSSSSSSLSVLPSSLSVFQNPTDVARSNPKSPQKPIVRVFLPNKQRTVVPARCGVTVRDS
@@ -50,7 +51,7 @@ $out = '';
 $fh->setpos(0);
 $params->ids([]);
 $params->taxons([]);
-# $params->species_name('Hylarana picturata');
+
 $params->species_name('Pulchrana picturata');
 
 $mfetcher->convert_name_to_taxon;
@@ -60,9 +61,9 @@ $params->clear_species_name;
 $params->taxons([8397]); # riparian frogs in NCBI taxonomy (as of Compara 81)
 $mfetcher->get_records_including_descendants;
 
-$desired = "> P0C8T7 395594 1 
+$desired = ">P0C8T7 395594 1 
 GFLDSFKNAMIGVAKSVGKTALSTLACKIDKSC
-> P84858 110109 1 
+>P84858 110109 1 
 FLPLLFGAISHLL
 ";
 is($out,$desired, 'Did taxon descendants return correct sequence combinations?');
@@ -87,7 +88,7 @@ $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 );
 
 $mfetcher->get_records;
-is($out,'{"evidence_level":1,"xref":[],"sequence":"FLPLLFGAISHLL","sequence_length":13,"taxon_id":"110109","checksum":"D70518BB9A83D879","protein_name":"Temporin-GH","entry_name":"TEMP_RANGU","accessions":["P84858"],"sequence_version":"1","tag":["protein"]}','JSON output plus evidence level filter');
+is($out,'{"evidence_level":1,"xref":[],"sequence":"FLPLLFGAISHLL","sequence_length":13,"taxon_id":"110109","checksum":"0c350c4aea8c7f6aef44bd64a81d95e9","entry_name":"TEMP_RANGU","accessions":["P84858"],"display_label":"Temporin-GH","sequence_version":"1","tag":["protein"]}','JSON output plus evidence level filter');
 
 $out = '';
 $fh = IO::String->new($out);
@@ -101,7 +102,7 @@ $mfetcher->include_isoforms();
 $mfetcher->get_records();
 
 # Watch out, whitespace at end of header
-$desired = "> P84858 110109 1 
+$desired = ">P84858 110109 1 
 FLPLLFGAISHLL
 ";
 
@@ -121,7 +122,7 @@ throws_ok( sub { $mfetcher->get_records() }, 'Bio::EnsEMBL::Mongoose::SearchEngi
 # Test for checksums via accessors
 
 $params = Bio::EnsEMBL::Mongoose::Persistence::QueryParameters->new(
-    checksum => "0798C2AAB487E813"
+    checksum => "74c9b69323bd112084c1b5b385e7e6c5"
 );
 $out = '';
 $fh = IO::String->new($out);
@@ -135,6 +136,7 @@ $mfetcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
 );
 
 $mfetcher->get_records;
+# note $out;
 ok($out =~ /BRAF_HUMAN/, 'Output contains the desired gene with checksum');
 
 done_testing;

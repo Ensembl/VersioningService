@@ -88,12 +88,12 @@ sub protein_name {
     my $protein_name=$self->xpath_to_value('/uni:uniprot/uni:entry/uni:protein/uni:recommendedName/uni:fullName');
     #All of the Swissprot and some of the Trembl records have a recommendedName tag
     if (defined($protein_name)) {
-        $self->record->protein_name($protein_name);
+        $self->record->display_label($protein_name);
     }
     #Most of the Trembl records seems to have a submittedName tag
     else {
         $protein_name=$self->xpath_to_value('/uni:uniprot/uni:entry/uni:protein/uni:submittedName/uni:fullName');
-        $self->record->protein_name($protein_name);
+        $self->record->display_label($protein_name);
     }
 }
 

@@ -95,9 +95,7 @@ sub read_record {
     
     my $gene_name = $linecolumns[ $fields->{"hgnc_symbol"} ];
     if($gene_name){
-      $record->gene_name($gene_name);
-    }else{
-      $record->gene_name($id);
+      $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'HGNC',creator => 'ArrayExpress',id => $gene_name));
     }
     # Strip out specific xrefs from columns, unpack them and add them to the record
     foreach my $source (qw/entrezgene mirbase_id refseq unigene uniprot interpro/) {

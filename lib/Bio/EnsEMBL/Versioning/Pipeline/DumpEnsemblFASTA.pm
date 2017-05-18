@@ -45,7 +45,7 @@ use strict;
 use warnings;
 
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
-use Bio::EnsEMBL::ApiVersion qw/software_version/;
+
 use Bio::EnsEMBL::Utils::IO::FASTASerializer;
 use Bio::EnsEMBL::Utils::Exception qw/throw/;
 use Bio::EnsEMBL::Versioning::Broker;
@@ -58,12 +58,7 @@ use Digest::MD5 qw/md5_hex/;
 sub fetch_input {
   my $self = shift;
   my $eg = $self->param('eg');
-  my $release;
-  if ($eg) {
-     $release = $self->param('eg_version');
-  } else {
-    $release = software_version;
-  }
+  
   # See Bio::EnsEMBL::Production::Pipeline::FASTA::DumpFile for determining whether we can reuse the previous release dumps
   # if($self->param('check_intentions')==1 && $self->param('requires_new_dna')==0){ 
   #    delete $sequence_types{'dna'};
@@ -74,7 +69,7 @@ sub fetch_input {
   my $base_path = $broker->scratch_space;
   # TODO - EG specific pathing suitable for their greater number of species
   foreach my $type (qw/cdna pep/) {
-    my $full_path = File::Spec->catfile($base_path,'xref',$release,$species,'fasta',$type,'/');
+    my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'fasta','ensembl',$type,'/');
     make_path($full_path);
     $self->param("${type}_path",$full_path);
   }
@@ -83,36 +78,67 @@ sub fetch_input {
 
 sub run {
   my ($self) = @_;
-  
-  my $fh = IO::File->new($self->param('cdna_path').'transcripts.fa' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'transcripts.fa');
-  my $fasta_writer = Bio::EnsEMBL::Utils::IO::FASTASerializer->new($fh);
-  my $checksum_fh = IO::File->new($self->param('cdna_path').'transcripts.md5' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'transcripts.md5');
+  # Check if dumping has been done for this run before, to speed up development by not having to re-dump sequence.
+  my $cdna_path = $self->param('cdna_path').'transcripts.fa';
+  my $pep_path = $self->param('pep_path').'peptides.fa';
+  return if -e $cdna_path and -e $pep_path and -s $cdna_path and -s $pep_path; # Add a bypass to the process to force redumping over this
 
-  my $pep_fh = IO::File->new($self->param('pep_path').'peptides.fa' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'transcripts.fa');
+  my $fh = IO::File->new($cdna_path ,'w') || throw("Cannot create filehandle $cdna_path");
+  my $fasta_writer = Bio::EnsEMBL::Utils::IO::FASTASerializer->new($fh);
+  my $cdna_checksum_path = $self->param('cdna_path').'transcripts.md5';
+  my $checksum_fh = IO::File->new($cdna_checksum_path ,'w') || throw("Cannot create filehandle ".$cdna_checksum_path);
+  $self->param('cdna_checksum_path',$cdna_checksum_path);
+
+  my $pep_fh = IO::File->new($pep_path ,'w') || throw("Cannot create filehandle $pep_path");
   my $pep_writer = Bio::EnsEMBL::Utils::IO::FASTASerializer->new($pep_fh);
-  my $pep_checksum_fh = IO::File->new($self->param('pep_path').'peptides.md5' ,'w') || throw("Cannot create filehandle ".$self->param('cdna').'peptides.crc');
+  my $pep_checksum_path = $self->param('pep_path').'peptides.md5';
+  my $pep_checksum_fh = IO::File->new($pep_checksum_path ,'w') || throw("Cannot create filehandle ".$pep_checksum_path);
+  $self->param('pep_checksum_path', $pep_checksum_path);
 
   my $adaptor = $self->get_DBAdaptor('core');
   my $transcript_adaptor = $adaptor->get_adaptor('Transcript');
   my $transcript_list = $transcript_adaptor->fetch_all();
   while (my $transcript = shift @$transcript_list) {
-    $fasta_writer->print_Seq($transcript->spliced_seq);
+    $fasta_writer->print_Seq($transcript->seq);
     printf $checksum_fh "%s\t%s\n",$transcript->stable_id,md5_hex($transcript->seq->seq);
-    my $translation = $transcript->translate;
+    my $translation = $transcript->translation;
     if ($translation) {
-      $pep_writer->print_Seq($translation);
-      printf $pep_checksum_fh "%s\t%s\n",$transcript->stable_id,md5_hex($translation->seq);
+      $pep_writer->print_Seq($transcript->translate);
+      printf $pep_checksum_fh "%s\t%s\n",$translation->stable_id,md5_hex($translation->seq);
     }
   }
 
-
+  # Preserve the filenames for transcript and peptide fasta files for handing downstream to aligner
+  $self->param('pep_file',$pep_path);
+  $self->param('cdna_file',$cdna_path);
   $fh->close;
   $checksum_fh->close;
   $pep_fh->close;
   $pep_checksum_fh->close;
 
-  # Send checksum locations onto next process
-  $self->dataflow_output_id({ cdna_path => $self->param('cdna_path'), pep_path => $self->param('pep_path')}, 2);
+}
+
+sub write_output {
+  my ($self) = @_;
+
+# Send checksum locations onto next process
+  $self->dataflow_output_id({ 
+    species => $self->param('species'), 
+    cdna_checksum_path => $self->param('cdna_checksum_path'), 
+    pep_checksum_path => $self->param('pep_checksum_path')
+  }, 2);
+
+  $self->warning('pep_file = '.$self->param('pep_file'). ' and cdna_file = '.$self->param('cdna_file') ,'INFO');
+  # Seed sequence types to per-species-per-xref-source FASTA dumping
+  foreach my $type (qw/cdna pep/){
+    $self->dataflow_output_id({ 
+      species => $self->param('species'), 
+      seq_type => $type ,
+      fasta_path => $self->param("${type}_file")
+    }, 3); 
+  }
+
+
 }
 
 1;

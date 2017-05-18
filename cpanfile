@@ -9,6 +9,7 @@ requires 'Crypt::SSLeay';
 requires 'JSON::XS';
 requires 'JSON::Any';
 requires 'JSON::SL';
+requires 'JSON::Validator';
 requires 'XML::LibXML';
 requires 'Log::Log4perl';
 requires 'Compress::Snappy';
@@ -20,6 +21,7 @@ requires 'Proc::Background';
 # Moose dependencies
 
 requires 'Moose';
+requires 'Any::Moose', '0.26';
 requires 'Moose::Role';
 requires 'MooseX::Log::Log4perl';
 requires 'MooseX::Storage';

@@ -64,7 +64,7 @@ sub identify_file {
 
 sub extract_id {
   my $self = shift;
-  return unless $self->charged_buffer;
+  return unless $self->charged_buffer && defined $self->peek_buffer;
   my ($id) = split "\t",$self->peek_buffer;
   return $id;
 }

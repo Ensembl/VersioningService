@@ -36,6 +36,7 @@ use Moose;
 use Bio::EnsEMBL::Mongoose::NetException;
 use Bio::EnsEMBL::Mongoose::IOException;
 use Bio::EnsEMBL::Mongoose::DBException;
+use Bio::EnsEMBL::Mongoose::UsageException;
 use Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery;
 use Try::Tiny;
 
@@ -59,6 +60,7 @@ sub start_server {
   $self->command('java');
   # Note, cannot mix java opts with process opts without the option hash getting shuffled
   $self->args->{'-Xmx10000M'} = undef;
+  unless (defined $ENV{FUSEKI_HOME}) { Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot run Fuseki without FUSEKI_HOME environment variable set")}
   $self->args->{'-jar'} = $ENV{FUSEKI_HOME}.'fuseki-server.jar';
   $self->tail_end(sprintf "--update --port %s --mem %s ",$self->port,'/'.$self->graph_name);
   # print "Fuseki options: ".join ',',$self->unpack_args,"\n";
@@ -75,6 +77,7 @@ sub load_data {
   my $self = shift;
   my $data_files = shift;
 
+  $self->start_server unless $self->background_process_alive;
   my @files = @$data_files;
   try {
     foreach my $file (@files) {

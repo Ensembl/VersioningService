@@ -110,7 +110,7 @@ sub pipeline_analyses {
       -parameters => {
        },
       -max_retry_count => 0, # low to prevent pointless dumping repetition
-      -hive_capacity => 10,
+      -analysis_capacity => 10,
       -failed_job_tolerance => 25, 
       -rc_name => 'default',
       -flow_into  => {
@@ -124,7 +124,7 @@ sub pipeline_analyses {
         sources => ['refseq','ucsc']
         },
       -max_retry_count => 0, # low to prevent pointless dumping repetition
-      -hive_capacity => 10,
+      -analysis_capacity => 10,
       -failed_job_tolerance => 25, 
       -rc_name => 'default'
     },
@@ -132,14 +132,14 @@ sub pipeline_analyses {
       -logic_name => 'DumpEnsemblGeneModel',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpEnsemblGeneModel',
       -max_retry_count => 1,
-      -hive_capacity => 4,
+      -analysis_capacity => 4,
       -failed_job_tolerance => 0,
     },
     {
       -logic_name => 'DumpFASTA',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpEnsemblFASTA',
       -max_retry_count => 0,
-      -hive_capacity => 4,
+      -analysis_capacity => 4,
       -failed_job_tolerance => 25,
       -flow_into => {
         2 => ['CheckCheckSum'],
@@ -150,7 +150,7 @@ sub pipeline_analyses {
       -logic_name => 'CheckCheckSum',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::CheckCheckSum',
       -max_retry_count => 0,
-      -hive_capacity => 10,
+      -analysis_capacity => 10,
       -failed_job_tolerance => 20,
       -rc_name => 'greedy_process'
     },
@@ -165,7 +165,7 @@ sub pipeline_analyses {
     {
       -logic_name => 'DumpXrefFASTA',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpXrefFASTA',
-      -hive_capacity => 10,
+      -analysis_capacity => 10,
       -failed_job_tolerance => 25,
       -flow_into => {
         2 => ['SpawnAlignments'],
@@ -174,7 +174,7 @@ sub pipeline_analyses {
     {
       -logic_name => 'SpawnAlignments',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::AlignmentFactory',
-      -hive_capacity => 4,
+      -analysis_capacity => 4,
       -failed_job_tolerance => 0,
       -rc_name => 'bookkeeping',
       -flow_into => {
@@ -184,7 +184,8 @@ sub pipeline_analyses {
     {
       -logic_name => 'RunAlignment',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::Alignment',
-      -hive_capacity => 100,
+      -analysis_capacity => 100,
+      -batch_size => 5,
       -max_retry_count => 3,
       -failed_job_tolerance => 30,
       -rc_name => 'alignment'

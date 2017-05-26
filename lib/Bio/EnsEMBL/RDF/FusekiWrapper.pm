@@ -43,6 +43,10 @@ use Try::Tiny;
 has port => ( isa => 'Int', is => 'rw', default => sub {{ return int(rand(1000)) +3000 }});
 has graph_name => ( isa => 'Str', is => 'rw', default => 'xref');
 has server_url => ( isa => 'Str', is => 'rw');
+sub graph_url {
+  my $self = shift;
+  return $self->server_url.$self->graph_name;
+}
 # Port randomly selected between 3000 and 4000 to try to avoid collision if two processes launch on the same machine
 has sparql => ( is => 'rw', lazy => 1, builder => '_init_sparql_client');
 
@@ -76,6 +80,7 @@ sub start_server {
   return $self->server_url;
 }
 
+# Load a listeref of file names into the same graph, then return the fully resolved graph name.
 sub load_data {
   my $self = shift;
   my $data_files = shift;
@@ -90,12 +95,13 @@ sub load_data {
       my $response = system(@commands);
       # if response is favourable?
       if ($response != 0) {
-        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data into Fuseki failed with error $?");    
+        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data from $file into Fuseki failed with error $?");    
       }
     }
   } catch {
     Bio::EnsEMBL::Mongoose::DBException->throw("Attempting to load files into server on ".$self->port.":".join(',',@files)." but failed with error $_");
   };
+  return $self->graph_url;
 }
 
 sub query {
@@ -112,11 +118,19 @@ sub query {
   return;
 }
 
+# Specify graph name or full graph URI, the namespace is prepended automatically. This is mainly because Fuseki doesn't believe in non-server-based URLs
 sub delete_data {
   my $self = shift;
   my $graph_name = shift;
-  Bio::EnsEMBL::Mongoose::DBException->throw("Cannot delete $graph_name from Fuseki, server not running.") unless $self->background_process_alive;
-  my @commands = ('s-update', '--service',sprintf('%supdate',$self->server_url),"CLEAR GRAPH <$graph_name>");
+  my $graph_url;
+  if ($graph_name =~/^http/) {
+    $graph_url = $graph_name;
+  } else {
+    $graph_url = $self->server_url.$graph_name;
+  }
+
+  Bio::EnsEMBL::Mongoose::DBException->throw("Cannot delete $graph_url from Fuseki, server not running.") unless $self->background_process_alive;
+  my @commands = ('s-update', '--service',sprintf('%supdate',$self->server_url),"CLEAR GRAPH <${graph_url}>");
   my $response = system(@commands);
   if ($response != 0) {
     Bio::EnsEMBL::Mongoose::DBException->throw("Delete did not go as planned, $?");

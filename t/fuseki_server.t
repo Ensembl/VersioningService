@@ -17,16 +17,17 @@ SKIP: {
   my $server_url = $fuseki->start_server();
   note "Server started on $server_url?";
   $fuseki->load_data(["$Bin/data/test_graph.ttl"],'xref');
+  my $graph_url = $fuseki->graph_url;
   note "Data loaded";
   my $row_count = 0;
-  my $sparql = "SELECT ?s ?p ?o FROM <${server_url}xref> WHERE { ?s ?p ?o . }";
+  my $sparql = "SELECT ?s ?p ?o FROM <${graph_url}> WHERE { ?s ?p ?o . }";
   $fuseki->query($sparql) if $fuseki->background_process_alive;
   while (my $row = $fuseki->sparql->next_result) {
     $row_count++;
   }
   
   cmp_ok($row_count, '==', 9, 'Data was both loaded and queried');
-  $fuseki->delete_data($server_url.$fuseki->graph_name);
+  $fuseki->delete_data($fuseki->graph_name);
   $fuseki->query($sparql);
   $row_count = 0;
   while (my $row = $fuseki->sparql->next_result) {

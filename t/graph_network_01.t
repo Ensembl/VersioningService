@@ -112,7 +112,7 @@ foreach my $write_me (@records) {
 }
 $rdf_writer->print_source_meta;
 $other_rdf_writer->print_source_meta;
-# TODO: Add alignment links, overlap links and so on.
+
 
 my $store = RDF::Trine::Store::Memory->new();
 my $model = RDF::Trine::Model->new($store);

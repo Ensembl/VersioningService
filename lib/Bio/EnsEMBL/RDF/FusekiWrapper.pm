@@ -42,6 +42,7 @@ use Try::Tiny;
 
 has port => ( isa => 'Int', is => 'rw', default => sub {{ return int(rand(1000)) +3000 }});
 has graph_name => ( isa => 'Str', is => 'rw', default => 'xref');
+has server_url => ( isa => 'Str', is => 'rw');
 # Port randomly selected between 3000 and 4000 to try to avoid collision if two processes launch on the same machine
 has sparql => ( is => 'rw', lazy => 1, builder => '_init_sparql_client');
 
@@ -50,7 +51,7 @@ with 'Bio::EnsEMBL::Mongoose::Utils::BackgroundLauncher';
 sub _init_sparql_client {
   my $self = shift;
   Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery->new(
-    triplestore_url => sprintf ("http://127.0.0.1:%s/%s/sparql", $self->port, $self->graph_name), 
+    triplestore_url => sprintf ("%ssparql", $self->server_url), 
     graph => $self->graph_name
   )
 }
@@ -62,26 +63,30 @@ sub start_server {
   $self->args->{'-Xmx10000M'} = undef;
   unless (defined $ENV{FUSEKI_HOME}) { Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot run Fuseki without FUSEKI_HOME environment variable set")}
   $self->args->{'-jar'} = $ENV{FUSEKI_HOME}.'fuseki-server.jar';
-  $self->tail_end(sprintf "--update --port %s --mem %s ",$self->port,'/'.$self->graph_name);
+  $self->tail_end(sprintf "--update --port %s --mem %s ",$self->port,'/'.'xref');
   # print "Fuseki options: ".join ',',$self->unpack_args,"\n";
   try {
     $self->run_command();
-    sleep 2; # Wait a bit while the VM lurches into life
+    sleep 3; # Wait a bit while the VM lurches into life
     print "Started Fuseki instance on port ".$self->port if $self->background_process_alive;
   } catch {
     Bio::EnsEMBL::Mongoose::DBException->throw("Unable to start Fuseki server: \n$_ \n");
   };
+  $self->server_url(sprintf "http://0.0.0.0:%s/xref/",$self->port);
+  return $self->server_url;
 }
 
 sub load_data {
   my $self = shift;
   my $data_files = shift;
-
+  my $optional_graph_name = shift;
+  $optional_graph_name ||= $self->graph_name;
+  $self->graph_name($optional_graph_name) if $optional_graph_name;
   $self->start_server unless $self->background_process_alive;
   my @files = @$data_files;
   try {
     foreach my $file (@files) {
-      my @commands = ('s-put', sprintf('http://127.0.0.1:%s/%s/',$self->port,$self->graph_name), 'default',$file);
+      my @commands = ('s-put', sprintf('%s',$self->server_url,'xref'), $optional_graph_name,$file);
       my $response = system(@commands);
       # if response is favourable?
       if ($response != 0) {
@@ -105,6 +110,17 @@ sub query {
     Bio::EnsEMBL::Mongoose::DBException->throw("Unable to query Fuseki graph ".$self->graph_name." with error $_");
   };
   return;
+}
+
+sub delete_data {
+  my $self = shift;
+  my $graph_name = shift;
+  Bio::EnsEMBL::Mongoose::DBException->throw("Cannot delete $graph_name from Fuseki, server not running.") unless $self->background_process_alive;
+  my @commands = ('s-update', '--service',sprintf('%supdate',$self->server_url),"CLEAR GRAPH <$graph_name>");
+  my $response = system(@commands);
+  if ($response != 0) {
+    Bio::EnsEMBL::Mongoose::DBException->throw("Delete did not go as planned, $?");
+  }
 }
 
 __PACKAGE__->meta->make_immutable;

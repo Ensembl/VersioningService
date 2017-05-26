@@ -60,8 +60,7 @@ sub query {
   my $sparql = RDF::Query::Client->new($query);
   my $result_iterator = $sparql->execute($self->triplestore_url);
   my $error = $sparql->error();
-  # print "Server returned:".$sparql->http_response;
-  if ($error) { Bio::EnsEMBL::Mongoose::DBException->throw($error) }
+  if ($error) { Bio::EnsEMBL::Mongoose::DBException->throw($error.' '.$sparql->http_response) }
   $self->result_set($result_iterator);
 }
 

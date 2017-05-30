@@ -159,4 +159,139 @@ sub generate_graph_name {
   return $graph_name;
 }
 
+# Loop through ordered results picking the best from each group
+sub extract_max_values {
+  my ($self,$graph_name) = @_;
+  my $prefixes = compatible_name_spaces();
+  my $sparql = "SELECT ?refseq_uri ?score ?ens_uri FROM <$graph_name> WHERE {
+    ?ens_uri term:refers-to ?xref ;
+          obo:SO_transcribed_from ?ensgene .
+    ?xref rdf:type term:Alignment ;
+          term:score ?score ;
+          term:refers-to ?refseq_uri .
+  } ORDER BY ?refseq_uri DESC(?score)";
+
+  $self->query($prefixes.$sparql);
+  my @results = $self->result_set->get_all;
+  my @best_results;
+  my $last_id = '';
+  my $last_score = 0;
+  foreach my $hit (@results) {
+    my $current_id = $hit->{ens_uri}->value;
+    my $score = $hit->{score}->value;
+    my $uri = $hit->{refseq_uri}->value;
+    if ($last_id eq $current_id) {
+      next if ($score < $last_score);
+      $last_score = $score;
+      push @best_results,[$current_id,$uri,$score];
+    } else {
+      $last_id = $current_id;
+      push @best_results,[$current_id,$uri,$score]; # new top hit
+    }
+  }
+  return \@best_results;
+}
+
+# transcript pairs come directly from extract_max_values() but are used for more than just picking the best protein
+# These are final matches, i.e. more than one per ID is possible and intended.
+sub pick_best_protein {
+  my ($self,$graph_name,$transcript_pairs) = @_;
+
+  my $prefixes = compatible_name_spaces();
+
+  my $sparql = "SELECT ?refseq_uri ?refseq_transcript ?score ?ens_uri ?ens_transcript FROM <$graph_name> WHERE {
+    ?ens_uri obo:SO_translation_of ?ens_transcript .
+    ?ens_uri term:refers-to ?xref .
+    ?xref rdf:type term:Alignment ;
+          term:score ?score ;
+          term:refers-to ?refseq_uri .
+    ?refseq_uri obo:SO_translation_of ?refseq_transcript . 
+
+  } ORDER BY ?refseq_uri DESC(?score)";
+
+  $self->query($prefixes.$sparql);
+
+  my $protein_pairs = $self->sparql->get_all;
+  
+  my @best;
+  my $last_id;
+  my $last_score;
+  my $ens_uri;
+  my %transcripts;
+
+  # build a lookup for ensembl->refseq transcript links
+  foreach my $result (@$transcript_pairs) {
+    my $ens_uri = $result->[0];
+    my $refseq_uri = $result->[1];
+    my $score = $result->[2];
+    
+    $transcripts{$ens_uri}->{$refseq_uri} = $score ;
+  }
+  # now scan through the protein hits, cross-checking against the transcripts for matches
+
+  my @buffer;
+  foreach my $hit (@$protein_pairs) {
+    my $refseq_protein = $hit->{refseq_uri}->value;
+
+    if ($last_id eq $refseq_protein || @buffer == 0) {
+      push @buffer, {
+        ens_transcript => $hit->{ens_transcript}->value,
+        ens_protein => $hit->{ens_uri}->value,
+        score => $hit->{score}->value,
+        refseq_transcript => $hit->{refseq_transcript}->value,
+        refseq_protein => $refseq_protein
+      };
+      $last_id = $refseq_protein;
+    } else {
+      $last_id = $refseq_protein;
+      # sort buffer
+      my @best_in_protein = $self->pick_best(\@buffer,\%transcripts);
+      # record best entries
+      push @best, @best_in_protein;
+      # flush buffer
+      @buffer = ();
+    }
+  }
+  my @best_in_protein = $self->pick_best(\@buffer,\%transcripts);
+  # record best entries
+  push @best, @best_in_protein;
+  return \@best;
+}
+
+
+# Given output of pick_best_protein and a list of best transcripts from extract_max_values
+# Look for supporting evidence and rank the results to provide a list of preferred links
+sub pick_best {
+  my $self = shift;
+  my $candidates = shift; # protein matches for a given ensembl protein
+  my $transcripts = shift; # All transcript pairs plus scores
+
+  # Add an evidence code so as to know whether there is a transcript xref to match the protein xref
+  # 2 = fully supported by transcripts
+  # 1 = no support
+  # 0 = contrary evidence, i.e. transcript links to a completely different transcript
+  foreach my $candidate (@$candidates) {
+    if (exists $transcripts->{ $candidate->{ens_transcript} }) {
+      if ( grep { $_ eq $candidate->{refseq_transcript} }
+              keys %{ $transcripts->{$candidate->{ens_transcript}} } ) {
+        $candidate->{evidence} = 2
+      } else {
+        $candidate->{evidence} = 0
+      }
+    } else {
+      $candidate->{evidence} = 1;
+    }
+  }
+
+  # Now order candidates by their evidence
+  $candidates = [sort { $b->{evidence} <=> $a->{evidence} || $b->{score} <=> $a->{score} } @$candidates];
+  # note(Dumper $candidates);
+  # Pick out any hits that make the cutoff and have equal merit
+  my $cutoff = $candidates->[0]->{evidence};
+  my $high_score = $candidates->[0]->{score};
+  return if ($cutoff == 0); # None are good enough
+  return grep { $_->{evidence} == $cutoff && $_->{score} == $high_score } @$candidates;
+}
+
+
 1;

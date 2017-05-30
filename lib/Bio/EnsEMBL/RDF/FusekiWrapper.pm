@@ -43,6 +43,9 @@ use Try::Tiny;
 has port => ( isa => 'Int', is => 'rw', default => sub {{ return int(rand(1000)) +3000 }});
 has graph_name => ( isa => 'Str', is => 'rw', default => 'xref');
 has server_url => ( isa => 'Str', is => 'rw');
+has debug => ( isa => 'Bool', is => 'rw',default => 0); # state of Fuseki instance, whether to keep the data in a DB or not, or attempt to hold it all in memory
+has disk_location => ( isa => 'Str', is => 'ro',lazy => 1, default => '/tmp/'); # only needed when debug is set to 1
+
 sub graph_url {
   my $self = shift;
   return $self->server_url.$self->graph_name;
@@ -67,7 +70,12 @@ sub start_server {
   $self->args->{'-Xmx10000M'} = undef;
   unless (defined $ENV{FUSEKI_HOME}) { Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot run Fuseki without FUSEKI_HOME environment variable set")}
   $self->args->{'-jar'} = $ENV{FUSEKI_HOME}.'fuseki-server.jar';
-  $self->tail_end(sprintf "--update --port %s --mem %s ",$self->port,'/'.'xref');
+  if ($self->debug) {
+    $self->tail_end(sprintf "--update --port %s --loc=%s %s ",$self->port,$self->disk_location,'/'.'xref');
+  }
+  else {
+    $self->tail_end(sprintf "--update --port %s --mem %s ",$self->port,'/'.'xref');
+  }
   # print "Fuseki options: ".join ',',$self->unpack_args,"\n";
   try {
     $self->run_command();

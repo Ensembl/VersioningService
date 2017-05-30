@@ -46,6 +46,8 @@ has process => (
   clearer => 'stop_background_process'
 );
 
+has keepalive => ( isa => 'Bool', is => 'rw', default => 0); # should the server shut down again when the process quits?
+
 sub run_command {
   my $self = shift;
   unless ($self->command) { 
@@ -56,9 +58,10 @@ sub run_command {
 
   # use Data::Dumper;
   # print Dumper \@opts;
-  
+  my $proc_ops;
+  $proc_ops = {die_upon_destroy => 1} unless $self->keepalive();
   my $proc = Proc::Background->new(
-      {die_upon_destroy => 1},
+      $proc_ops,
       $self->command,
       @opts
   );

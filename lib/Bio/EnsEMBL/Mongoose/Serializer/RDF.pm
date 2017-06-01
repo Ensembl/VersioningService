@@ -185,9 +185,9 @@ sub print_slimline_checksum_xrefs {
 }
 
 sub print_alignment_xrefs {
-  my ($self,$source_id,$source,$target_id,$target_source,$score) = @_;
-  
-  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($source_id,$source,$target_id,$target_source,'align');
+  my ($self,$source_id,$source,$target_id,$target_source,$score,$special_label) = @_;
+  # use $special_label where necessary for parallel processes not being aware of each other
+  my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($source_id,$source,$target_id,$target_source,'align'.$special_label);
   
   my $fh = $self->handle;
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('term').'refers-to'), $self->u($xref_link));

@@ -88,8 +88,8 @@ sub run {
       my $source_identity = $hits->{$alignment}->{query_identity};
       my $target_identity = $hits->{$alignment}->{target_identity};
 
-      $writer->print_alignment_xrefs($source_id,'ensembl',$target_id,$target_source,$source_identity);
-      $writer->print_alignment_xrefs($target_id,$target_source,$source_id,'ensembl',$target_identity);
+      $writer->print_alignment_xrefs($source_id,'ensembl',$target_id,$target_source,$source_identity,'lot'.$chunk);
+      $writer->print_alignment_xrefs($target_id,$target_source,$source_id,'ensembl',$target_identity,'lot'.$chunk);
     }
   }
   $fh->close;

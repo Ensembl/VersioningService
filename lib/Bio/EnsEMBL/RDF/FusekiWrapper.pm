@@ -99,7 +99,7 @@ sub load_data {
   my @files = @$data_files;
   try {
     foreach my $file (@files) {
-      my @commands = ('s-put', sprintf('%s',$self->server_url,'xref'), $optional_graph_name,$file);
+      my @commands = ('s-post', sprintf('%s',$self->server_url,'xref'), $optional_graph_name,$file);
       my $response = system(@commands);
       # if response is favourable?
       if ($response != 0) {

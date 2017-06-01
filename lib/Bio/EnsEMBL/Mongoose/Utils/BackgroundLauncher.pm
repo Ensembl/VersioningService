@@ -58,7 +58,7 @@ sub run_command {
 
   # use Data::Dumper;
   # print Dumper \@opts;
-  my $proc_ops;
+  my $proc_ops = {};
   $proc_ops = {die_upon_destroy => 1} unless $self->keepalive();
   my $proc = Proc::Background->new(
       $proc_ops,

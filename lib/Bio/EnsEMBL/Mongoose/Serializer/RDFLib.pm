@@ -71,7 +71,7 @@ sub new_xref {
   my $label = shift; # Additional string to prevent xrefs of different types sharing the same xref ID
   $self->another_xref;
   my $xref_uri = $self->prefix('ensembl').'xref/connection/'.$source.'/'.$target.'/';
-  $xref_uri .= $label if $label;
+  $xref_uri .= $label.'/' if $label;
   $xref_uri .= $self->xref_id();
   return $xref_uri;
 }

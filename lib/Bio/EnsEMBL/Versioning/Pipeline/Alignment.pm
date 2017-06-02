@@ -69,6 +69,15 @@ sub run {
   my $source = $self->param('source_file');
   my $target = $self->param('target_file');
   my $target_source = $self->param('target_source');
+  my $seq_type = $self->param('seq_type');
+  my $ensembl_source;
+  if ($seq_type eq 'cdna') {
+    $ensembl_source = 'ensembl_transcript';
+  } elsif ($seq_type eq 'pep') {
+    $ensembl_source = 'ensembl_protein';
+  } else {
+    $self->log("Spurious sequence type requested in alignment: $seq_type");
+  }
 
   my $fh = IO::File->new($self->param('output_path'),'w') or throw("Couldn't open". $self->param('output_path') ." for writing: $!\n");
 
@@ -88,8 +97,8 @@ sub run {
       my $source_identity = $hits->{$alignment}->{query_identity};
       my $target_identity = $hits->{$alignment}->{target_identity};
 
-      $writer->print_alignment_xrefs($source_id,'ensembl',$target_id,$target_source,$source_identity,'lot'.$chunk);
-      $writer->print_alignment_xrefs($target_id,$target_source,$source_id,'ensembl',$target_identity,'lot'.$chunk);
+      $writer->print_alignment_xrefs($source_id,$ensembl_source,$target_id,$target_source,$source_identity,'lot'.$chunk);
+      $writer->print_alignment_xrefs($target_id,$target_source,$source_id,$ensembl_source,$target_identity,'lot'.$chunk);
     }
   }
   $fh->close;

@@ -89,7 +89,8 @@ sub run {
       source_file => $source_file, 
       target_file => $target_file, 
       target_source => $self->param('source'),
-      output_path => $output_path_chunk
+      output_path => $output_path_chunk,
+      seq_type => $seq_type
     },2);
   }
 }

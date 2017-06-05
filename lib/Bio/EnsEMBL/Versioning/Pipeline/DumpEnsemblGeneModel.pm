@@ -62,7 +62,7 @@ sub fetch_input {
   my $base_path = $broker->scratch_space;
   # TODO - EG specific pathing suitable for their greater number of species
 
-  my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'gene_model','/');
+  my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'xref_rdf_dumps','gene_model','/');
   make_path($full_path);
   $self->param("ensembl_model_path",$full_path);
 }

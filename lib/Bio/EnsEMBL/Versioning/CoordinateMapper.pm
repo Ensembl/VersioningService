@@ -174,7 +174,7 @@ method calculate_overlap_score (Str :$index_location, Str :$species, Object :$co
   $species =~ s/_/ /;
   my $species_id = $taxonomizer->fetch_taxon_id_by_name($species);
 
-  Bio::EnsEMBL::Mongoose::UsageException->throw("No species taxonomy ID for $species_id") unless $species_id;
+  Bio::EnsEMBL::Mongoose::UsageException->throw("No species taxonomy ID for $species") unless $species;
   Bio::EnsEMBL::Mongoose::UsageException->throw("Index at $index_location does not seem to be there") unless defined $index_location and -e $index_location;
   
   my $lucy_query = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => { index_location => $index_location });

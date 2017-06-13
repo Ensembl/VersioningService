@@ -30,8 +30,11 @@ use Bio::EnsEMBL::Mongoose::DBException;
 has triplestore_url => (
   is => 'rw',
   isa => 'Str',
-  default => 'http://127.0.0.1:8890/sparql'
+  default => 'http://127.0.0.1:8890/'
 );
+
+has query_endpoint => ( is => 'ro', isa => 'Str', default => 'sparql');
+has update_endpoint => ( is => 'ro', isa => 'Str', default => 'update');
 
 has result_set => (
     is => 'rw',
@@ -58,10 +61,20 @@ sub query {
   # print "Query received: $query\n";
   # print "Sending query to: ".$self->triplestore_url."\n";
   my $sparql = RDF::Query::Client->new($query);
-  my $result_iterator = $sparql->execute($self->triplestore_url);
+  my $result_iterator = $sparql->execute($self->triplestore_url.$self->query_endpoint);
   my $error = $sparql->error();
   if ($error) { Bio::EnsEMBL::Mongoose::DBException->throw($error.' '.$sparql->http_response) }
   $self->result_set($result_iterator);
+}
+
+sub update {
+  my $self = shift;
+  my $query = shift;
+  my $config = $self->query_parameters;
+  my $sparql = RDF::Query::Client->new($query);
+  my $result_iterator = $sparql->execute($self->triplestore_url.$self->update_endpoint, { ContentType => 'application/sparql-update' });
+  my $error = $sparql->error();
+  if ($sparql->http_response->code != 204 && $error) { Bio::EnsEMBL::Mongoose::DBException->throw($error.' '.$sparql->http_response->code) }
 }
 
 sub next_result {

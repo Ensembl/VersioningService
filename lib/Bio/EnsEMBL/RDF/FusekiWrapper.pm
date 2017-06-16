@@ -58,7 +58,7 @@ with 'Bio::EnsEMBL::Mongoose::Utils::BackgroundLauncher';
 sub _init_sparql_client {
   my $self = shift;
   Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery->new(
-    triplestore_url => sprintf ("%ssparql", $self->server_url), 
+    triplestore_url => sprintf ("%s", $self->server_url), 
     graph => $self->graph_name
   )
 }
@@ -119,6 +119,18 @@ sub query {
   # print "Sending query in FusekiWrapper to: ".$self->sparql->triplestore_url."\n";
   try {
     $self->sparql->query($query);
+    # $self->sparql($sparqler);
+  } catch {
+    Bio::EnsEMBL::Mongoose::DBException->throw("Unable to query Fuseki graph ".$self->graph_name." with error $_");
+  };
+  return;
+}
+
+sub update {
+  my $self = shift;
+  my $query = shift;
+  try {
+    $self->sparql->update($query);
     # $self->sparql($sparqler);
   } catch {
     Bio::EnsEMBL::Mongoose::DBException->throw("Unable to query Fuseki graph ".$self->graph_name." with error $_");

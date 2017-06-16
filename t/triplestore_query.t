@@ -51,6 +51,7 @@ while (my $hit = $query_agent->result_set->next) {
 }
 cmp_ok($counter, '==', 9, 'All triples extracted via generic query');
 
+# Cannot test update() function because Trine does not support query-based creation, via Construct or Load Data.
 
 # Prove we can ask sensible questions of an xref graph
 

@@ -1,7 +1,7 @@
 =head1 LICENSE
 
 Copyright [1999-2015] Wellcome Trust Sanger Institute and the EMBL-European Bioinformatics Institute
-Copyright [2016] EMBL-European Bioinformatics Institute
+Copyright [2016-2017] EMBL-European Bioinformatics Institute
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -68,6 +68,7 @@ sub get_version
     Bio::EnsEMBL::Mongoose::NetException->throw('Failed to retrieve version from '.$url);
   };
 
+  #expected format: RNAcentral Release 7, 16/05/2017
   if ($file =~ /RNACentral Release (\d+), \d{1,2}\/\d{1,2}\/\d{4}/gi) {
     $version = $1;
   }

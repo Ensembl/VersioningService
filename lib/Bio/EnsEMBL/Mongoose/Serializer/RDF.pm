@@ -25,6 +25,7 @@ use URI::Escape;
 extends 'Bio::EnsEMBL::Mongoose::Serializer::RDFLib';
 
 has handle => ('is' => 'ro', required => 1, isa => 'Ref');
+has gene_model_handle => ('is' => 'ro', isa => 'Ref', predicate => 'model_elsewhere'); # Specify this to put RefSeq Gene models in another place
 
 sub print_record {
   my $self = shift;
@@ -305,6 +306,9 @@ sub print_gene_model_link {
   my $protein_source = shift;
 
   my $fh = $self->handle;
+  if ($self->model_elsewhere) {
+    $fh = $self->gene_model_handle;
+  }
   my ($namespace,$gene_uri,$transcript_uri,$protein_uri);
 
   $namespace = $self->identifier($transcript_source);

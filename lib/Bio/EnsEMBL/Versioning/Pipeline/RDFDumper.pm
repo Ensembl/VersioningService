@@ -91,6 +91,7 @@ sub run {
     );
     if ($source =~ /refseq/i) {
       my $gene_model_path = File::Spec->join( $base_path, 'xref',$run_id,$species,'gene_model','/'); # for RefSeq links to genes and proteins
+      make_path $gene_model_path or die "Failed to create path: $gene_model_path";;
       $gene_fh = IO::File->new(File::Spec->catfile($gene_model_path,$source.'ttl' ), 'w') || die "Cannot write to $gene_model_path: $!";;
       $search_conf{gene_model_handle} = $gene_fh;
     }

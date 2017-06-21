@@ -71,6 +71,13 @@ sub run {
   $base_path ||= '/tmp';
   my $species_without_underscore = $species;
   $species_without_underscore =~ s/_/ /g;
+  # Specific workaround for mouse strains. More systematic solution is welcome in future
+  if ($species_without_underscore eq 'mus musculus casteij') {
+    $species_without_underscore = 'mus musculus castaneus';
+  } elsif ($species_without_underscore eq 'mus_spretus_spreteij') {
+    $species_without_underscore = 'mus spretus';
+  }
+
   my $full_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps");
   
   if (!-d $full_path) {

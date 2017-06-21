@@ -88,6 +88,11 @@ has handle => (
     predicate => 'straight_to_file'
 );
 
+has other_handle => (
+    isa => 'Ref',
+    is => 'rw',
+); # Exists for when output must be split into different places
+
 sub DEMOLISH {
     my $self = shift;
     close $self->handle;
@@ -118,7 +123,7 @@ sub _select_writer {
     my $self = shift;
     my $format = $self->output_format;
     my $writer = "Bio::EnsEMBL::Mongoose::Serializer::$format";
-    return $writer->new(handle => $self->handle, config => $self->writer_conf);
+    return $writer->new(handle => $self->handle, config => $self->writer_conf, gene_model_handle => $self->other_handle);
 }
 
 # To indicate whether to use Uniprot Web service to get additional data

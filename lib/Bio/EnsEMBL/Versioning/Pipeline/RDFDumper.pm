@@ -103,6 +103,7 @@ sub run {
       $search_conf{other_handle} = $gene_fh;
     }
     try {
+      $self->warning(%search_conf);
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
         %search_conf
       );

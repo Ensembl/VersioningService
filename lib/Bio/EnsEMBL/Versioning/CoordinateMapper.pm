@@ -339,7 +339,7 @@ sub write_to_rdf_store{
     $transcript_source = 'ucsc'
   }
 
-  my $source_xref_transcript_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({id => $best_id, accessions => [qw/$acc/], });
+  my $source_xref_transcript_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({id => $source eq 'refseq' ? $acc: $best_id, accessions => [qq/$acc/], });
   $rdf_writer->print_coordinate_overlap_xrefs($ens_stable_id,$source_xref_transcript_record,$transcript_source,$best_score);
 
   # Also store refseq protein as direct xref for ensembl translation, if translation exists.
@@ -357,7 +357,7 @@ sub write_to_rdf_store{
       if ($tl_of->seq eq $tl->seq) {
         ($acc, $version) = split(/\./, $tl_of->stable_id());
 
-        my $xref_translation_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({id => $tl_of->stable_id(), accessions => [qw/$acc/], });
+        my $xref_translation_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({id => $source eq 'refseq' ? $acc : $tl_of->stable_id() , accessions => [qq/$acc/], });
         $rdf_writer->print_coordinate_overlap_xrefs($tl->stable_id(),$xref_translation_record,$protein_source,$best_score);
 
       }

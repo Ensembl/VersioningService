@@ -78,16 +78,26 @@ sub run {
   }
   
   my $fh;
+  my $gene_fh;
   my @final_source_list = map { $_->name } @$valid_source_list;
   foreach my $source (@final_source_list) {
-  	print ("Source $source");
     $fh = IO::File->new(File::Spec->catfile($full_path,$source.'.ttl'), 'w') || die "Cannot write to $full_path: $!";
+    
+    my %search_conf = (
+      output_format => 'RDF',
+      storage_engine_conf_file => $self->param('broker_conf'),
+      species => $species_without_underscore,
+      handle => $fh,
+    );
+    if ($source =~ /refseq/i) {
+      my $gene_model_path = File::Spec->join( $base_path, 'xref',$run_id,$species,'gene_model','/'); # for RefSeq links to genes and proteins
+      make_path $gene_model_path or die "Failed to create path: $gene_model_path";;
+      $gene_fh = IO::File->new(File::Spec->catfile($gene_model_path,$source.'ttl' ), 'w') || die "Cannot write to $gene_model_path: $!";;
+      $search_conf{gene_model_handle} = $gene_fh;
+    }
     try {
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
-        output_format => 'RDF',
-        storage_engine_conf_file => $self->param('broker_conf'),
-        species => $species_without_underscore,
-        handle => $fh,
+        %search_conf
       );
       
       #get version for a given run_id and source_name
@@ -108,7 +118,7 @@ sub run {
   $writer->print_source_meta;
   $source_fh->close;
 
-
+  undef $gene_fh; # May or may not be open
 }
 
 1;

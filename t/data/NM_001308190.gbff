@@ -1,0 +1,268 @@
+LOCUS       NM_001308190            2606 bp    mRNA    linear   PRI 10-JUN-2017
+DEFINITION  Homo sapiens glycophorin A (MNS blood group) (GYPA), transcript
+            variant 3, mRNA.
+ACCESSION   NM_001308190
+VERSION     NM_001308190.1
+KEYWORDS    RefSeq.
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 2606)
+  AUTHORS   Giger K, Habib I, Ritchie K and Low PS.
+  TITLE     Diffusion of glycophorin A in human erythrocytes
+  JOURNAL   Biochim. Biophys. Acta 1858 (11), 2839-2845 (2016)
+   PUBMED   27580023
+  REMARK    GeneRIF: While weak interactions between glycophorin and band 3
+            undoubtedly exist, glycophorin A and band 3 must have separate
+            interactions in the membrane that control their lateral mobility.
+REFERENCE   2  (bases 1 to 2606)
+  AUTHORS   El-Menshawy N, Eissa M, Farag R and Aboalyazed A.
+  TITLE     CD235a (Glycophorin-A) Is the Most Predictive Value Among Different
+            Circulating Cellular Microparticles in Thrombocytopenic Human
+            Immunodeficiency Virus Type 1
+  JOURNAL   J. Clin. Lab. Anal. 30 (3), 235-243 (2016)
+   PUBMED   25716234
+  REMARK    GeneRIF: CD235a could be the most sensitive predictor similar to
+            CD4.
+REFERENCE   3  (bases 1 to 2606)
+  AUTHORS   Suades R, Padro T, Vilahur G, Martin-Yuste V, Sabate M,
+            Sans-Rosello J, Sionis A and Badimon L.
+  TITLE     Growing thrombi release increased levels of CD235a(+)
+            microparticles and decreased levels of activated platelet-derived
+            microparticles. Validation in ST-elevation myocardial infarction
+            patients
+  JOURNAL   J. Thromb. Haemost. 13 (10), 1776-1786 (2015)
+   PUBMED   26239059
+  REMARK    GeneRIF: Glycophorin-A-rich microparticles are released from
+            evolving growing thrombi into the distal perfusing blood, and can
+            be measured in peripheral blood. CD235a(+) cMPs may constitute a
+            novel systemic biomarker of ongoing thrombosis.
+REFERENCE   4  (bases 1 to 2606)
+  AUTHORS   Baldwin MR, Li X, Hanada T, Liu SC and Chishti AH.
+  TITLE     Merozoite surface protein 1 recognition of host glycophorin A
+            mediates malaria parasite invasion of red blood cells
+  JOURNAL   Blood 125 (17), 2704-2711 (2015)
+   PUBMED   25778531
+  REMARK    GeneRIF: GPA-deficient band 3 null erythrocytes are resistant to
+            malaria infection.
+REFERENCE   5  (bases 1 to 2606)
+  AUTHORS   Shih MC, Yang LH, Wang NM and Chang JG.
+  TITLE     Genomic typing of human red cell miltenberger glycophorins in a
+            Taiwanese population
+  JOURNAL   Transfusion 40 (1), 54-61 (2000)
+   PUBMED   10644812
+REFERENCE   6  (bases 1 to 2606)
+  AUTHORS   Hassoun H, Hanada T, Lutchman M, Sahr KE, Palek J, Hanspal M and
+            Chishti AH.
+  TITLE     Complete deficiency of glycophorin A in red blood cells from mice
+            with targeted inactivation of the band 3 (AE1) gene
+  JOURNAL   Blood 91 (6), 2146-2151 (1998)
+   PUBMED   9490702
+REFERENCE   7  (bases 1 to 2606)
+  AUTHORS   Huang CH, Skov F, Daniels G, Tippett P and Blumenfeld OO.
+  TITLE     Molecular analysis of human glycophorin MiIX gene shows a silent
+            segment transfer and untemplated mutation resulting from gene
+            conversion via sequence repeats
+  JOURNAL   Blood 80 (9), 2379-2387 (1992)
+   PUBMED   1421409
+REFERENCE   8  (bases 1 to 2606)
+  AUTHORS   Huang CH, Spruell P, Moulds JJ and Blumenfeld OO.
+  TITLE     Molecular basis for the human erythrocyte glycophorin specifying
+            the Miltenberger class I (MiI) phenotype
+  JOURNAL   Blood 80 (1), 257-263 (1992)
+   PUBMED   1611092
+REFERENCE   9  (bases 1 to 2606)
+  AUTHORS   Lemmon MA, Flanagan JM, Hunt JF, Adair BD, Bormann BJ, Dempsey CE
+            and Engelman DM.
+  TITLE     Glycophorin A dimerization is driven by specific interactions
+            between transmembrane alpha-helices
+  JOURNAL   J. Biol. Chem. 267 (11), 7683-7689 (1992)
+   PUBMED   1560003
+REFERENCE   10 (bases 1 to 2606)
+  AUTHORS   Tomita,M. and Marchesi,V.T.
+  TITLE     Amino-acid sequence and oligosaccharide attachment sites of human
+            erythrocyte glycophorin
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 72 (8), 2964-2968 (1975)
+   PUBMED   1059087
+COMMENT     REVIEWED REFSEQ: This record has been curated by NCBI staff. The
+            reference sequence was derived from DA539682.1, EU338234.1,
+            BG497403.1, AC107223.5, BX649043.1 and AI123404.1.
+            
+            Summary: Glycophorins A (GYPA) and B (GYPB) are major
+            sialoglycoproteins of the human erythrocyte membrane which bear the
+            antigenic determinants for the MN and Ss blood groups. In addition
+            to the M or N and S or s antigens that commonly occur in all
+            populations, about 40 related variant phenotypes have been
+            identified. These variants include all the variants of the
+            Miltenberger complex and several isoforms of Sta, as well as Dantu,
+            Sat, He, Mg, and deletion variants Ena, S-s-U- and Mk. Most of the
+            variants are the result of gene recombinations between GYPA and
+            GYPB. [provided by RefSeq, Jul 2008].
+            
+            Transcript Variant: This variant (3) lacks an alternate in-frame
+            exon compared to variant 1. It encodes isoform 3, which is shorter
+            than isoform 1.
+            
+            Publication Note:  This RefSeq record includes a subset of the
+            publications that are available for this gene. Please see the Gene
+            record to access additional publications.
+            
+            ##Evidence-Data-START##
+            Transcript exon combination :: BU657007.1, EU338234.1 [ECO:0000332]
+            RNAseq introns              :: single sample supports all introns
+                                           SAMN03267766 [ECO:0000348]
+            ##Evidence-Data-END##
+            COMPLETENESS: complete on the 3' end.
+PRIMARY     REFSEQ_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
+            1-112               DA539682.1         2-113
+            113-555             EU338234.1         5-447
+            556-727             BG497403.1         100-271
+            728-728             AC107223.5         9611-9611           c
+            729-1083            BX649043.1         712-1066
+            1084-1095           AC107223.5         9244-9255           c
+            1096-1841           BX649043.1         1067-1812
+            1842-1845           AC107223.5         8494-8497           c
+            1846-2350           BX649043.1         1818-2322
+            2351-2351           AC107223.5         7988-7988           c
+            2352-2591           BX649043.1         2324-2563
+            2592-2606           AI123404.1         1-15                c
+FEATURES             Location/Qualifiers
+     source          1..2606
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="4"
+                     /map="4q31.21"
+     gene            1..2606
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /note="glycophorin A (MNS blood group)"
+                     /db_xref="GeneID:2993"
+                     /db_xref="HGNC:HGNC:4702"
+                     /db_xref="MIM:111300"
+     exon            1..188
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /inference="alignment:Splign:1.39.8"
+     STS             118..504
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /standard_name="GDB:409935"
+                     /db_xref="UniSTS:157192"
+     misc_feature    122..124
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /note="upstream in-frame stop codon"
+     CDS             152..505
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /note="isoform 3 is encoded by transcript variant 3;
+                     glycophorin A (MN blood group); glycophorin SAT;
+                     glycophorin A, GPA; erythroid-lineage-specific membrane
+                     sialoglycoprotein; glycophorin MiI; glycophorin MiV;
+                     glycophorin Erik; glycophorin Sta type C; recombinant
+                     glycophorin A-B Miltenberger-DR; Mi.V glycoprotein (24
+                     AA); MN sialoglycoprotein; sialoglycoprotein alpha"
+                     /codon_start=1
+                     /product="glycophorin-A isoform 3"
+                     /protein_id="NP_001295119.1"
+                     /db_xref="CCDS:CCDS82959.1"
+                     /db_xref="GeneID:2993"
+                     /db_xref="HGNC:HGNC:4702"
+                     /db_xref="MIM:111300"
+                     /translation="MYGKIIFVLLLSDTHKRDTYAATPRAHEVSEISVRTVYPPEEET
+                     GERVQLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPDTDV
+                     PLSSVEIENPETSDQ"
+     exon            189..284
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            285..323
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            324..409
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            410..488
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            489..2596
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /inference="alignment:Splign:1.39.8"
+     STS             912..1251
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+                     /standard_name="SHGC-12331"
+                     /db_xref="UniSTS:80489"
+     regulatory      2559..2564
+                     /regulatory_class="polyA_signal_sequence"
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+     polyA_site      2596
+                     /gene="GYPA"
+                     /gene_synonym="CD235a; GPA; GPErik; GPSAT; HGpMiV;
+                     HGpMiXI; HGpSta(C); MN; MNS; PAS-2"
+ORIGIN      
+        1 aaaatgcctc ccctgcctat cagctgatga tggccgcagg aaggtgggcc tggaagataa
+       61 cagctagcag gctaaggtca gacactgaca cttgcagttg tctttggtag tttttttgca
+      121 ctaacttcag gaaccagctc atgatctcag gatgtatgga aaaataatct ttgtattact
+      181 attgtcagat acgcacaaac gggacacata tgcagccact cctagagctc atgaagtttc
+      241 agaaatttct gttagaactg tttaccctcc agaagaggaa accggagaaa gggtacaact
+      301 tgcccatcat ttctctgaac cagagataac actcattatt tttggggtga tggctggtgt
+      361 tattggaacg atcctcttaa tttcttacgg tattcgccga ctgataaaga aaagcccatc
+      421 tgatgtaaaa cctctcccct cacctgacac agacgtgcct ttaagttctg ttgaaataga
+      481 aaatccagag acaagtgatc aatgagaatc tgttcaccaa accaaatgtg gaaagaacac
+      541 aaagaagaca taagacttca gtcaagtgaa aaattaacat gtggactgga cactccaata
+      601 aattatatac ctgcctaagt tgtacaattt cagaatgcaa ttttcattat aatgagttcc
+      661 agtgactcaa tgatggggaa aaaaatctct gctcattaat atttcaagat aaagaacaaa
+      721 tgtttccttg aatgcttgct tttgtgtgtt agcataattt ttagaattgt ttgagaattc
+      781 tgatccaaaa ctttagttga attcatctac gtttgtttaa tattaactta acctattcta
+      841 ttgtattata atgatgattc tgtcaaatga aaggcttgaa atacctagat gaagtttaga
+      901 ttttcttcct attgtaaact tttgagtctg gtttcattgt tttaaataaa ttaaggggac
+      961 actaaagtcc tatcattcat ttccttcatt gctgaacagg caagatataa tattacatga
+     1021 atgattacta tattttgttc acactaataa agcttatgct cagaaatgcc atacacacac
+     1081 acacacacac acacaaacac acacatttat catttaatgc ataaatcaac acaaaaggtt
+     1141 ttcccattaa tatgaaatat tacatatata taagtgccat atttaaaata atttgtctaa
+     1201 cagtagaact gtgtcggagc actcactgaa gcttgcattc cactgaaaga gttatttgtg
+     1261 taagtagagt atccggagaa ggaaaagaac ttacgacctt tctttataac agaaactcaa
+     1321 ctctaaattc aacaagatgt gcaaaccgga catgcaggtg aatattttaa taggttacta
+     1381 taaggttctc aattaaattc tttaatctgt ccagtcccag tttctcttat taataaaact
+     1441 ttggaaattg ctttaaacca tttaaaggaa atttctagat atagaaacta aggactgtga
+     1501 ctatacagct gtcactcatt tgtagtaaaa cttaaaaagc aaaaacaaaa aacaaaaaag
+     1561 accttcctgt gatactttat ttccgaacta ataaaaatct atatgacttt ttattattgt
+     1621 gtgataacca agtaaatgtt ttctattttg catattttca ggcatggtaa cagaaattta
+     1681 ccttttaata aattaaaaaa tctaaatttt aacctacttg tatgttcgga gagtgttttt
+     1741 gtactatatt gactacttaa aatagagaat gagactaaga agggaacatt tctgttgata
+     1801 catgtttttt aaaagtaatt ttaagagcat tattaggtta attaatccaa ttaatgaccc
+     1861 aaatgccaag gtaattttaa atttacattt ttaataaaag caacatgttg aaacaagaga
+     1921 gggtgagatt aacctttttg ctaaagtaat ttacaagtca aagacaggaa gagatcagag
+     1981 tgaatgtgcc ttcttaacca gagctacaga atttagtgaa taattaaagt acaaactgct
+     2041 ttgacctcct tgaacttttc caagcaattt ctctgtactt ctatatatga atgtcttagc
+     2101 caattttctg ctactataac agaatacgac agactgggta atttaaaaag aaaagaaatt
+     2161 tattttcttc ctagttctgg aggctgggaa ggcgaagggc atggcactga catctgcctt
+     2221 gtaactgatg agaaccttct tactgcatga taacaaagca gcaaggcaag caaaagcgta
+     2281 agatgaagag agaggaaatg aagccaaaca catcctttca tcagaagccc attccctcta
+     2341 taaggcgtta ttacatttat gagaatggag tcctcatgac ctaatcgtga ccttaaaggc
+     2401 ccctcccaac actgttacaa tggcaattaa atttcaacaa aggttccaga ggtgacattc
+     2461 gaatcagcaa tgaaattttc atagttaaat ttggtattcg tgggggaaga aatgaccatt
+     2521 tcccttgtat ttttataatt aaatcagcaa aatattgtaa taaagaaatc tttcctgtga
+     2581 agataccatg accccaaaaa aaaaaa
+//

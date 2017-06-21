@@ -153,6 +153,11 @@ sub read_record {
                     }
                 }
             }
+            if (exists $feat->{gene}) {
+                my @lines = @{$feat->{gene}}; # though there only be one here
+                my $gene_name = $lines[0];
+                $record->display_label($gene_name);
+            }
         } elsif ($feat->{header} eq 'CDS') {
             if (exists $feat->{protein_id}) {
                 $record->protein_name(pop @{$feat->{protein_id}});
@@ -174,12 +179,10 @@ sub _ready_parser {
 # Pulls gene name from the lines of DEFINITION
 # PREDICTED: Macaca fascicularis cathepsin C (CTSC), transcript
 #            variant X3, mRNA.
-# It's in brackets, not at all ambiguous..
+
 sub chew_description {
     my $self = shift;
     my $description = $self->record->description;
-    my ($gene_name) = ($description =~ /\((.+?)\)/);
-    $self->record->display_label($gene_name) if ($gene_name);
 }
 
 # Transform a word-based taxonomy into a taxon ID

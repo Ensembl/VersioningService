@@ -56,4 +56,19 @@ is_deeply($evidence, ['predicted','mRNA'], 'Evidence extraction from accession')
 $evidence = $ref_seq_reader->determine_evidence('XP_005579308');
 is_deeply($evidence, ['predicted','protein'], 'Evidence extraction from accession');
 
+# Check gene name extraction from a troublesome record
+
+$ref_seq_reader = undef;
+
+$source = $ENV{MONGOOSE}."/t/data/NM_001308190.gbff";
+$ref_seq_reader = Bio::EnsEMBL::Mongoose::Parser::RefSeq->new(
+    source_file => $source,
+);
+
+$ref_seq_reader->read_record;
+$record = $ref_seq_reader->record;
+
+is($record->gene_name, '2993', 'Gene ID for GYPA found in NM_001308190');
+is($record->display_label, 'GYPA', 'GYPA assigned to display_label in NM_001308190');
+
 done_testing;

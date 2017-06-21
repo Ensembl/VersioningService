@@ -103,7 +103,6 @@ sub run {
       $search_conf{other_handle} = $gene_fh;
     }
     try {
-      $self->warning(%search_conf);
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
         %search_conf
       );
@@ -115,7 +114,7 @@ sub run {
       $searcher->get_records();
       $fh->close;    
     } catch {
-      warn('Warning ' . $_. ' while dumping RDF for source '.$source);
+      $self->warning('Warning ' . $_. ' while dumping RDF for source '.$source);
       $fh->close;
     };
 }

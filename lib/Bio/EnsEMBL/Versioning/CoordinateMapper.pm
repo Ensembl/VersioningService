@@ -171,7 +171,6 @@ sub store_as_record{
 method calculate_overlap_score (Str :$index_location, Str :$species, Object :$core_dba, Object :$other_dba, :$rdf_writer, :$source) {
   
   my $taxonomizer = Bio::EnsEMBL::Mongoose::Taxonomizer->new();
-  $species =~ s/_/ /;
   my $species_id = $taxonomizer->fetch_taxon_id_by_name($species);
 
   Bio::EnsEMBL::Mongoose::UsageException->throw("No species taxonomy ID for $species") unless $species;

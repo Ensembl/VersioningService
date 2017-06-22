@@ -81,7 +81,7 @@ sleep(2);
 
 
 my $run_rs = $broker->schema->resultset('Run')->search->first;
-cmp_ok(($run_rs->end - $run_rs->start)->seconds, '==', 2, "Got the right time difference between start and end");
+cmp_ok(($run_rs->end - $run_rs->start)->seconds, '>=', 2, "Found a suitable time difference between start and end");
 
 #prefix run_id with me otherwise you will get DBI exception
 #DBI Exception: DBD::SQLite::db prepare_cached failed: ambiguous column name: run_id

@@ -41,7 +41,6 @@ method create_index_from_database (Object :$dba, Str :$analysis_name, Str :$spec
 
   # Use taxonomizer to convert name to taxid (homo_sapiens to 9606)
   my $taxonomizer = Bio::EnsEMBL::Mongoose::Taxonomizer->new();
-  $species =~ s/_/ /;
   my $species_id = $taxonomizer->fetch_taxon_id_by_name($species);
   Bio::EnsEMBL::Mongoose::UsageException->throw("Species $species did not resolve to a taxonomy") unless defined $species_id;
   

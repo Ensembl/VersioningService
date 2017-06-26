@@ -88,7 +88,7 @@ sub jobs {
     };
   }
   my $id = $analysis->dbID();
-  @jobs = @{$aja->fetch_all_by_analysis_id_status($logic_name)};
+  @jobs = @{$aja->fetch_all_by_analysis_id_status([$analysis])};
 
   return {
     analysis => $analysis,

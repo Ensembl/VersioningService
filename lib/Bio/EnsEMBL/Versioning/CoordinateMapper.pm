@@ -78,7 +78,7 @@ method create_index_from_database (Object :$dba, Str :$analysis_name, Str :$spec
       
       # Create an  index of all ensembl Transcript as lucy Records
       foreach my $transcript (sort { $a->start() <=> $b->start() } @$transcripts) {
-        if (!$transcript->stable_id || $transcript->stable_id !~ /^(NR|XR|NM|NP)/) {next} # filter out anything which doesn't look like a RefSeq transcript
+        if (!$transcript->stable_id || $transcript->stable_id !~ /^(NR|XR|NM|NP|XM)/) {next} # filter out anything which doesn't look like a RefSeq transcript
         my $exons = $transcript->get_all_Exons();
         $self->store_as_record($species_id, $chr_name, $strand, $transcript, $exons, $doc_store );
       }#end foreach

@@ -105,7 +105,7 @@ my $hits_species = $searcher->hits(
     );
 
 my $hit_count_transcripts = $hits_species->total_hits;  # get the hit count here
-cmp_ok($hit_count_transcripts, '==', 16, 'All 16 transcripts made it to the index');
+cmp_ok($hit_count_transcripts, '==', 15, 'All transcripts (15) made it to the index, one with a non-RefSeq name was excluded');
 
 my $dummy_content;
 my $dummy_fh = IO::String->new($dummy_content);

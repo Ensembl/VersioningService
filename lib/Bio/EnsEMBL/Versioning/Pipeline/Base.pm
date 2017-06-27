@@ -47,7 +47,7 @@ use warnings;
 # use Try::Tiny;
 # use Class::Inspector;
 
-use parent qw/Bio::EnsEMBL::Production::Pipeline::Base/;
+use parent qw/Bio::EnsEMBL::Production::Pipeline::Common::Base/;
 
 # sub get_module {
 #   my $self = shift;

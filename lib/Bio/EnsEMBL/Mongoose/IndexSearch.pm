@@ -155,18 +155,6 @@ has filter => (
 
 with 'MooseX::Log::Log4perl','Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient';
 
-
-sub _build_blacklist {
-    my $self = shift;
-    my $fh = IO::File->new($self->blacklist_source) 
-        || Bio::EnsEMBL::Mongoose::IOException->throw( message => "Couldn't open supplied blacklist ".$self->blacklist_source);
-    while (my $banned = <$fh>) {
-        chomp($banned);
-        $self->blacklist->set($banned => 1);
-    }
-    $self->use_blacklist;
-}
-
 my $counter = 0;
 sub get_records {
     my $self = shift;

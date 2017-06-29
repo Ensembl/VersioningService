@@ -31,28 +31,17 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader::RefSeq;
 
 use Moose;
 use Try::Tiny;
+use Bio::EnsEMBL::Mongoose::NetException;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader';
+with 'MooseX::Log::Log4perl';
 
-has uri => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => 'complete\.\d+(\.\d+)?\.(protein|rna)\.g[bp]ff.gz',
-);
-
-has version_uri => ( 
-  isa => 'Str', 
-  is => 'ro', 
-  default => 'ftp://ftp.ncbi.nlm.nih.gov/refseq/release/release-notes/',
-);
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
+sub BUILD {
+  my $self = shift;
+  $self->uri('ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/');
+  $self->file_pattern('complete\.\d+(\.\d+)?\.(protein|rna)\.g[bp]ff.gz');
+  $self->version_uri('ftp://ftp.ncbi.nlm.nih.gov/refseq/release/release-notes/');
+}
 
 sub get_version
 {
@@ -67,16 +56,6 @@ sub get_version
     }
   }
   Bio::EnsEMBL::Mongoose::NetException->throw("Version not found");
-}
-
-sub _get_remote {
-  my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path);
-  $self->log->debug('Downloaded Refseq FTP files: '.join("\n",@$result));
-  return $result if (scalar @$result > 0);
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from RefSeq source");
 }
 
 __PACKAGE__->meta->make_immutable;

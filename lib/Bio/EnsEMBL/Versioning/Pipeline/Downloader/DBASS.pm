@@ -28,29 +28,16 @@ A module for DBASS data specific downloading methods
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::DBASS;
 
 use Moose;
-use Try::Tiny;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::RESTDownloader';
 
-has host => (
-  isa => 'Str',
-  is => 'ro',
-  default => 'http://www.dbass.soton.ac.uk/'
-);
-
-has remote_path => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'dbass5/download.aspx?item=genes',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => 'xref.php',
-);
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient','MooseX::Log::Log4perl';
+sub BUILD {
+  my $self = shift;
+  $self->host('http://www.dbass.soton.ac.uk/');
+  $self->remote_path('dbass5/download.aspx?item=genes');
+  $self->file_pattern('xref.php');
+  $self->file_name('dbass.csv');
+}
 
 sub get_version
 {
@@ -58,23 +45,6 @@ sub get_version
   return $self->timestamp; 
 }
 
-sub _get_remote {
-  my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->call(
-    host => $self->host,
-    path => $self->remote_path,
-    file_path => $path,
-    accepts => 'text/plain',
-    file_name => 'dbass.csv');
-  
-  $self->log->debug('Downloaded DBASS file: ' . join("\n",  @$result));
-
-  return $result if (scalar @$result > 0);
-
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from DBASS site");
-}
 
 __PACKAGE__->meta->make_immutable;
 

@@ -30,44 +30,19 @@ A module for OMIM specific downloading methods
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::MIM2GeneMedGen;
 
 use Moose;
-use Try::Tiny;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader';
 
-has uri => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => 'mim2gene_medgen',
-);
-
-has version_uri => (
-  isa => 'Str',
-  is =>'ro',
-  default => 'ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/'
-);
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
-
-sub get_version
-{
+sub BUILD {
   my $self = shift;
-  return $self->get_timestamp($self->version_uri,$self->file_pattern);
+  $self->uri('ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/');
+  $self->file_pattern('mim2gene_medgen');
+  $self->version_uri('ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/');
 }
 
-sub _get_remote {
+sub get_version {
   my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path);
-  $self->log->debug('Downloaded MIM FTP files: '.join("\n",@$result));
-  return $result if (scalar @$result > 0);
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from MIM site");
+  return $self->get_timestamp($self->version_uri,$self->file_pattern);
 }
 
 __PACKAGE__->meta->make_immutable;

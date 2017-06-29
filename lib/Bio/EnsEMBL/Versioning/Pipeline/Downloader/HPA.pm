@@ -30,50 +30,20 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader::HPA;
 use Moose;
 use Try::Tiny;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::RESTDownloader';
 
-has host => (
-  isa => 'Str',
-  is => 'ro',
-  default => 'http://www.proteinatlas.org/'
-);
-
-has remote_path => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'download/',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => 'xref.php',
-);
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient','MooseX::Log::Log4perl';
+sub BUILD {
+  my $self = shift;
+  $self->host('http://www.proteinatlas.org/');
+  $self->remote_path('download/');
+  $self->file_pattern('xref.php');
+  $self->file_name('hpa.csv');
+}
 
 sub get_version
 {
   my $self = shift;
   return $self->timestamp; 
-}
-
-sub _get_remote {
-  my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->call(
-    host => $self->host,
-    path => $self->remote_path . $self->file_pattern,
-    file_path => $path,
-    accepts => 'text/plain',
-    file_name => 'hpa.csv');
-  
-  $self->log->debug('Downloaded HPA file: ' . join("\n", @$result));
-
-  return $result if (scalar @$result > 0);
-
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from MIM site");
 }
 
 __PACKAGE__->meta->make_immutable;

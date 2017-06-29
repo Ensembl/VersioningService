@@ -31,39 +31,18 @@ Limiting to only ens(gene|protein|transcript).tsv files
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::ArrayExpress;
 
 use Moose;
-use Try::Tiny;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader';
 
-has uri => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/atlas/bioentity_properties/ensembl/',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => '\w+_\w+\.ens(gene|protein|transcript)\.tsv'
-  
-);
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
-
-sub get_version
-{
+sub BUILD {
   my $self = shift;
-  return $self->timestamp;
+  $self->uri('ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/atlas/bioentity_properties/ensembl/');
+  $self->file_pattern('\w+_\w+\.ens(gene|protein|transcript)\.tsv');
 }
 
-sub _get_remote {
+sub get_version {
   my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path);
-  $self->log->debug('Downloaded ArrayExpress FTP files: '.join("\n",@$result));
-  return $result if (scalar @$result > 0);
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from ArrayExpress source");
+  return $self->timestamp;
 }
 
 __PACKAGE__->meta->make_immutable;

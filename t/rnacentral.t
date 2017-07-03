@@ -1,5 +1,9 @@
 use Test::More;
 
+use FindBin qw/$Bin/;
+use lib "$Bin";
+use TestDefaults;
+
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 use Bio::EnsEMBL::Mongoose::Parser::RNAcentral;

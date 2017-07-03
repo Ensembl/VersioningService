@@ -25,51 +25,9 @@ use Bio::EnsEMBL::Mongoose::IOException qw(throw);
 use Bio::EnsEMBL::Mongoose::Persistence::Record;
 use Bio::EnsEMBL::Mongoose::Persistence::RecordXref;
 
-use JSON::SL; # streaming! woo!
+use JSON::SL;
 
-has json_document => (
-  is => 'rw',
-  isa => 'JSON::SL',
-  builder => '_prepare_stream',
-
-);
-
-# buffer of complete json fragments
-has buffer => (
-  traits => ['Array'],
-  is => 'rw',
-  isa => 'ArrayRef[HashRef]',
-  default => sub {[]},
-  handles => { add_record => 'push', next_record => 'shift'},
-  predicate => 'content_available'
-);
-
-with 'Bio::EnsEMBL::Mongoose::Parser::Parser','MooseX::Log::Log4perl';
-
-sub _prepare_stream {
-  my $stream = JSON::SL->new();
-  # Google JSON path
-  $stream->set_jsonpointer( ["/response/docs/^"]);
-  return $stream;
-}
-
-sub get_data {
-  my $self = shift;
-  my $fh = $self->source_handle;
-  my $record = $self->next_record;
-  # Slurping by bytes, the JSON parser fishes out sections that match the pattern above.
-  # These are buffered here, so no slurping occurs until we have run out of parsed JSON
-  # elements. It's not fast, but should keep memory consumption down.
-  until (defined $record && exists $record->{Value}) {
-    local $/ = \1024;
-    my $fragment = <$fh>;
-    return unless $fragment;
-    my @matches = $self->json_document->feed($fragment);
-    $self->add_record(@matches) if ($#matches > 0);
-    $record = $self->next_record;
-  }
-  return $record;
-}
+with 'Bio::EnsEMBL::Mongoose::Parser::JSONParser','MooseX::Log::Log4perl';
 
 # Consumes HGNC file and emits Mongoose::Persistence::Records
 sub read_record {

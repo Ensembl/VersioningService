@@ -22,6 +22,10 @@ SKIP: {
   my $list = $tax->fetch_nested_taxons(9606);
   cmp_deeply($list, bag(9606, 63221, 741158), 'Test Human taxon relatives');
 
+  is($tax->clean_species_name('homo_sapiens'),'homo sapiens','Species name cleaning in place');
+  is($tax->clean_species_name('mus_musculus_casteij'),'mus musculus castaneus','Mouse strains get renamed to something you can look up in the NCBI DB');
+  is($tax->clean_species_name('mus_spretus_spreteij'),'mus spretus','Mouse strains get renamed to something you can look up in the NCBI DB');
+
 }
 
 done_testing;

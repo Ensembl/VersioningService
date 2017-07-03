@@ -123,7 +123,7 @@ sub query {
   } catch {
     Bio::EnsEMBL::Mongoose::DBException->throw("Unable to query Fuseki graph ".$self->graph_name." with error $_");
   };
-  return;
+  return $self->sparql->result_set;
 }
 
 sub update {

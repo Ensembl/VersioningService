@@ -49,6 +49,7 @@ use Bio::EnsEMBL::Mongoose::IndexSearch;
 use Bio::EnsEMBL::Versioning::Broker;
 use Bio::EnsEMBL::Mongoose::Persistence::QueryParameters;
 use Bio::EnsEMBL::Mongoose::Serializer::RDF;
+use Bio::EnsEMBL::Mongoose::Taxonomizer;
 use IO::File;
 use File::Spec;
 use File::Path qw( make_path );
@@ -69,8 +70,9 @@ sub run {
 
   my $valid_source_list = $broker->get_active_sources;
   $base_path ||= '/tmp';
-  my $species_without_underscore = $species;
-  $species_without_underscore =~ s/_/ /g;
+  
+  my $species_name = Bio::EnsEMBL::Mongoose::Taxonomizer->clean_species_name($species);
+  
   my $full_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps");
   
   if (!-d $full_path) {
@@ -86,14 +88,14 @@ sub run {
     my %search_conf = (
       output_format => 'RDF',
       storage_engine_conf_file => $self->param('broker_conf'),
-      species => $species_without_underscore,
+      species => $species_name,
       handle => $fh,
     );
-    if ($source =~ /refseq/i) {
+    if ($source =~ /RefSeq/i) {
       my $gene_model_path = File::Spec->join( $base_path, 'xref',$run_id,$species,'gene_model','/'); # for RefSeq links to genes and proteins
-      make_path $gene_model_path or die "Failed to create path: $gene_model_path";;
-      $gene_fh = IO::File->new(File::Spec->catfile($gene_model_path,$source.'ttl' ), 'w') || die "Cannot write to $gene_model_path: $!";;
-      $search_conf{gene_model_handle} = $gene_fh;
+      make_path $gene_model_path or die "Failed to create path: $gene_model_path";
+      $gene_fh = IO::File->new(File::Spec->catfile($gene_model_path,$source.'.ttl' ), 'w') || die "Cannot write to $gene_model_path: $!";
+      $search_conf{other_handle} = $gene_fh;
     }
     try {
       my $searcher = Bio::EnsEMBL::Mongoose::IndexSearch->new(
@@ -107,7 +109,7 @@ sub run {
       $searcher->get_records();
       $fh->close;    
     } catch {
-      warn('Warning ' . $_. ' while dumping RDF for source '.$source);
+      $self->warning('Warning ' . $_. ' while dumping RDF for source '.$source);
       $fh->close;
     };
 }

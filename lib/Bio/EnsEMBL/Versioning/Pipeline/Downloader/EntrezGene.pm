@@ -30,24 +30,14 @@ For more info about gene_info file, please refer: ftp://ftp.ncbi.nlm.nih.gov/gen
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::EntrezGene;
 
 use Moose;
-use Try::Tiny;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader';
 
-has uri => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => 'gene_info.gz',
-);
-
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
+sub BUILD {
+  my $self = shift;
+  $self->uri('ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/');
+  $self->file_pattern('gene_info.gz');
+}
 
 # EntrezGene continually updates its data, no releases. Therefore the version is a timestamp of now
 # Ref: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/README (gene_info recalculated daily)
@@ -55,16 +45,6 @@ sub get_version
 {
   my $self = shift;
   return $self->timestamp;
-}
-
-sub _get_remote {
-  my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path);
-  $self->log->debug('Downloaded EntrezGene FTP files: '.join("\n",@$result));
-  return $result if (scalar @$result > 0);
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from EntrezGene source");
 }
 
 __PACKAGE__->meta->make_immutable;

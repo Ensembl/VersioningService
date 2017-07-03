@@ -85,7 +85,7 @@ method call (
   }, $retry_attempts,$retry_delay);
 
   if ($file_path && $response) {
-    my $extension;
+    my $extension = '';
     # crudely limited to json vs xml at the mo.
     # print $accepts."\n";
     $extension = '.json' if $accepts =~ /json/;

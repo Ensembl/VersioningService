@@ -189,7 +189,6 @@ sub BUILD {
   if ($self->source_file) {
     my $source_file = $self->source_file;
     my ($species_name, $feature_type, $suffix) = fileparse($source_file, qr/\..*/);
-    $species_name =~ s/_/ /g;
     my $taxon_id = $self->taxonomizer->fetch_taxon_id_by_name($species_name);
     if($taxon_id){
       $self->taxon_id($taxon_id);

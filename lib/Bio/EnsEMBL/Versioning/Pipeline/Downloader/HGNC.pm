@@ -37,33 +37,24 @@ This data is now available from a REST endpoint based on Solr.
 package Bio::EnsEMBL::Versioning::Pipeline::Downloader::HGNC;
 
 use Moose;
-use Try::Tiny;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::RESTDownloader';
 
-has uri => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'http://rest.genenames.org/',
-);
+sub BUILD {
+  my $self = shift;
+  $self->host('http://rest.genenames.org/');
+  $self->remote_path('fetch/status/Approved');
+  $self->file_name('hgnc');
+  $self->file_pattern('');
+  $self->accepts('application/json');
+}
 
-with 'MooseX::Log::Log4perl', 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient';
 
 # HGNC continually updates its data, no releases. Therefore the version is a timestamp of now
 sub get_version
 {
   my $self = shift;
   return $self->timestamp;
-}
-
-sub _get_remote {
-  my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result;
-  $result = $self->call(host => $self->uri, path => 'fetch/status/Approved', file_path => $path, file_name => 'hgnc', retry_delay => 30);
-  unless (scalar @$result) { Bio::EnsEMBL::Mongoose::NetException->throw("Failed to download HGNC file") }
-  return $result;
 }
 
 __PACKAGE__->meta->make_immutable;

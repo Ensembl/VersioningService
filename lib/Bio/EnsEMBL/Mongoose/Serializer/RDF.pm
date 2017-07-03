@@ -306,7 +306,7 @@ sub print_gene_model_link {
   my $protein_source = shift;
 
   my $fh = $self->handle;
-  if ($self->model_elsewhere) {
+  if ($self->gene_model_handle) {
     $fh = $self->gene_model_handle;
   }
   my ($namespace,$gene_uri,$transcript_uri,$protein_uri);

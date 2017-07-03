@@ -17,37 +17,40 @@ limitations under the License.
 
 =cut
 
-=head1 NAME
+# FTP-specialised class
 
-Bio::EnsEMBL::Versioning::Pipeline::Downloader::MIM2Gene
-
-=head1 DESCRIPTION
-
-A module for OMIM specific downloading methods
-
-=cut
-
-package Bio::EnsEMBL::Versioning::Pipeline::Downloader::MIM2Gene;
+package Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader;
 
 use Moose;
-
 extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
 
-sub BUILD {
-  my $self = shift;
-  $self->host('http://omim.org/');
-  $self->remote_path('static/omim/data/');
-  $self->file_pattern('mim2gene.txt');
-  $self->accepts('application/octet-stream');
-  $self->file_name('mim2gene.txt');
-}
+has uri => (
+  isa => 'Str', 
+  is => 'rw'
+);
 
-sub get_version
-{
+has file_pattern => (
+  isa => 'Str',
+  is => 'rw'
+);
+
+has version_uri => (
+  isa => 'Str',
+  is => 'rw'
+);
+
+# A useful default _get_remote implementation
+sub _get_remote {
   my $self = shift;
-  return $self->timestamp;
+  my $path = shift; # path is already checked as valid.
+
+  my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path);
+  $self->log->debug(sprintf 'Downloaded %s FTP files: %s', $self->meta->name , join("\n", @$result));
+  return $result if (scalar @$result > 0);
+  
+  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from source ".$self->meta->name);
 }
 
 __PACKAGE__->meta->make_immutable;
-
 1;

@@ -28,9 +28,9 @@ SKIP: {
   
   cmp_ok($row_count, '==', 9, 'Data was both loaded and queried');
   $fuseki->delete_data($fuseki->graph_name);
-  $fuseki->query($sparql);
+  my $result = $fuseki->query($sparql);
   $row_count = 0;
-  while (my $row = $fuseki->sparql->next_result) {
+  while (my $row = $result->next_result) {
     $row_count++;
   }
 

@@ -84,4 +84,5 @@ sub _get_remote {
     ...
 }
 
+__PACKAGE__->meta->make_immutable;
 1;

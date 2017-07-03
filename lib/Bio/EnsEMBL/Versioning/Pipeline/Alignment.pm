@@ -76,7 +76,7 @@ sub run {
   } elsif ($seq_type eq 'pep') {
     $ensembl_source = 'ensembl_protein';
   } else {
-    $self->log("Spurious sequence type requested in alignment: $seq_type");
+    $self->warning("Spurious sequence type requested in alignment: $seq_type");
   }
 
   my $fh = IO::File->new($self->param('output_path'),'w') or throw("Couldn't open". $self->param('output_path') ." for writing: $!\n");

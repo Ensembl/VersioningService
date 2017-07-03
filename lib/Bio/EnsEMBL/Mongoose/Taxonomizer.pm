@@ -109,7 +109,7 @@ sub fetch_nested_taxons {
 sub fetch_taxon_id_by_name {
     my $self = shift;
     my $name = shift;
-    $name =~ s/_/ /g; # sanitise production names and the like into search strings
+    $name = $self->clean_species_name($name);
     my $adaptor = $self->ncbi_taxon_adaptor;
     my $node = $adaptor->fetch_by_taxon_name($name);
     if ($node) {
@@ -118,7 +118,18 @@ sub fetch_taxon_id_by_name {
     return;
 }
 
-
+sub clean_species_name {
+    my $self = shift;
+    my $name = shift;
+    $name =~ s/_/ /g; # sanitise production names and the like into search strings
+    # Specific workaround for mouse strains. More systematic solution is welcome in future
+    if ($name eq 'mus musculus casteij') {
+        $name = 'mus musculus castaneus';
+    } elsif ($name eq 'mus spretus spreteij') {
+        $name = 'mus spretus';
+    }
+    return $name;
+}
 
 
 

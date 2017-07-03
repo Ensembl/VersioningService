@@ -41,7 +41,6 @@ method create_index_from_database (Object :$dba, Str :$analysis_name, Str :$spec
 
   # Use taxonomizer to convert name to taxid (homo_sapiens to 9606)
   my $taxonomizer = Bio::EnsEMBL::Mongoose::Taxonomizer->new();
-  $species =~ s/_/ /;
   my $species_id = $taxonomizer->fetch_taxon_id_by_name($species);
   Bio::EnsEMBL::Mongoose::UsageException->throw("Species $species did not resolve to a taxonomy") unless defined $species_id;
   
@@ -79,7 +78,7 @@ method create_index_from_database (Object :$dba, Str :$analysis_name, Str :$spec
       
       # Create an  index of all ensembl Transcript as lucy Records
       foreach my $transcript (sort { $a->start() <=> $b->start() } @$transcripts) {
-        if (!$transcript->stable_id || $transcript->stable_id =~ /H3.X/ || $transcript->stable_id =~ /H3.Y/ || $transcript->stable_id =~ /^3.8/) { next; } #legacy code
+        if (!$transcript->stable_id || $transcript->stable_id !~ /^(NR|XR|NM|NP|XM)/) {next} # filter out anything which doesn't look like a RefSeq transcript
         my $exons = $transcript->get_all_Exons();
         $self->store_as_record($species_id, $chr_name, $strand, $transcript, $exons, $doc_store );
       }#end foreach
@@ -171,7 +170,6 @@ sub store_as_record{
 method calculate_overlap_score (Str :$index_location, Str :$species, Object :$core_dba, Object :$other_dba, :$rdf_writer, :$source) {
   
   my $taxonomizer = Bio::EnsEMBL::Mongoose::Taxonomizer->new();
-  $species =~ s/_/ /;
   my $species_id = $taxonomizer->fetch_taxon_id_by_name($species);
 
   Bio::EnsEMBL::Mongoose::UsageException->throw("No species taxonomy ID for $species") unless $species;

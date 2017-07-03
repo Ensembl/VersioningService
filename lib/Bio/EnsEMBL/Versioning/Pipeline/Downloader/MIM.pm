@@ -32,51 +32,21 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader::MIM;
 use Moose;
 use Try::Tiny;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::RESTDownloader';
 
-has host => (
-  isa => 'Str',
-  is => 'ro',
-  default => 'http://data.omim.org/'
-);
-
-has remote_path => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'downloads/s4mpHKpNRgugjDKWuUAJMw/',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => 'omim.txt.gz',
-);
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::RESTClient','MooseX::Log::Log4perl';
+sub BUILD {
+  my $self = shift;
+  $self->host('http://data.omim.org/');
+  $self->remote_path('downloads/s4mpHKpNRgugjDKWuUAJMw/'); # change the key here when MIM licensing updates
+  $self->file_pattern('omim.txt.gz');
+  $self->accepts('application/octet-stream');
+  $self->file_name('omim.txt.gz');
+}
 
 sub get_version
 {
   my $self = shift;
   return $self->timestamp; # MIM updates daily
-}
-
-sub _get_remote {
-  my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->call(
-    host => $self->host,
-    path => $self->remote_path.$self->file_pattern,
-    file_path => $path,
-    accepts => 'application/octet-stream',
-    file_name => $self->file_pattern
-  );
-  if ($result and scalar @$result > 0) {
-    $self->log->debug('Downloaded MIM FTP files: '.join("\n",@$result));
-    return $result
-    } else {
-      Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from MIM site");
-    }
 }
 
 __PACKAGE__->meta->make_immutable;

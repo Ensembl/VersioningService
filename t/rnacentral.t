@@ -4,11 +4,11 @@ use FindBin qw/$Bin/;
 use lib "$Bin";
 use TestDefaults;
 
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
-
 use Bio::EnsEMBL::Mongoose::Parser::RNAcentral;
 use JSON;
 use Data::Dumper;
+
+use_ok 'Bio::EnsEMBL::Mongoose::Parser::RNAcentral';
 
 my $reader = new Bio::EnsEMBL::Mongoose::Parser::RNAcentral(
     source_file => "$ENV{MONGOOSE}/t/data/rnacentral.json",

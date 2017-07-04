@@ -35,7 +35,7 @@ sub BUILD {
   my $self = shift;
   $self->host('http://www.dbass.soton.ac.uk/');
   $self->remote_path('dbass5/download.aspx?item=genes');
-  $self->file_pattern('xref.php');
+  $self->file_pattern('');
   $self->file_name('dbass.csv');
 }
 

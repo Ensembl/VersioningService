@@ -58,6 +58,7 @@ use Bio::EnsEMBL::Versioning::Broker;
 
 use Bio::EnsEMBL::Mongoose::SearchEngineException;
 use Bio::EnsEMBL::Mongoose::IOException;
+use Bio::EnsEMBL::Mongoose::UsageException;
 
 # Contains information about the index Lucy will use, either by file or hash.
 has storage_engine_conf_file => ( isa => 'Str', is => 'rw', predicate => 'using_conf_file', trigger => \&_validate_path);
@@ -94,6 +95,9 @@ sub _init_storage {
             $self->index_conf({index_location => $opts{index_location}, data_location => $opts{data_location} });
         }
     } else {
+      unless (defined $self->index_conf) {
+        Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot access index unless a storage_engine_conf_file is given, or index_conf is set directly with key 'index_location'.");
+      }
       %opts = %{$self->index_conf};
     }
     $self->log->debug("Activating Lucy index ".$opts{index_location}); 

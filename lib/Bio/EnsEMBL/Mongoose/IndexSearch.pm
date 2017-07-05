@@ -123,7 +123,11 @@ sub _select_writer {
     my $self = shift;
     my $format = $self->output_format;
     my $writer = "Bio::EnsEMBL::Mongoose::Serializer::$format";
-    return $writer->new(handle => $self->handle, config => $self->writer_conf, gene_model_handle => $self->other_handle);
+    if ($self->other_handle) {
+        return $writer->new(handle => $self->handle, config => $self->writer_conf, gene_model_handle => $self->other_handle);
+    } else {
+        return $writer->new(handle => $self->handle, config => $self->writer_conf);
+    }
 }
 
 # To indicate whether to use Uniprot Web service to get additional data

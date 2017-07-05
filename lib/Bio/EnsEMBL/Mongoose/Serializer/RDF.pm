@@ -217,9 +217,9 @@ sub print_slimline_alignment_xrefs {
 sub generate_uris {
   my ($self,$source_id,$source,$target_id,$target_source,$label) = @_;
 
-  my $start = $self->identifier($source).$source_id;
+  my $start = $self->identifier($source).uri_escape($source_id);
 
-  my $middle = $self->new_xref($source,$target_source,$label);
+  my $middle = $self->new_xref(uri_escape($source),uri_escape($target_source),$label);
   # $middle = $self->prefix('ensembl').'/'.$label.'/'.$source.'/' unless $middle;
   my $clean_id = uri_escape($target_id);
   my $namespace = $self->identifier($target_source);

@@ -31,7 +31,7 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader::MIM2Gene;
 
 use Moose;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::RESTDownloader';
 
 sub BUILD {
   my $self = shift;

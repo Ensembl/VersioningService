@@ -31,29 +31,16 @@ package Bio::EnsEMBL::Versioning::Pipeline::Downloader::RNAcentral;
 
 use Moose;
 use Try::Tiny;
+use Bio::EnsEMBL::Mongoose::NetException;
 
-extends 'Bio::EnsEMBL::Versioning::Pipeline::Downloader';
+extends 'Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader';
 
-has uri => (
-  isa => 'Str', 
-  is => 'ro',
-  default => 'ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral/current_release/json/',
-);
-
-has version_uri => ( 
-  isa => 'Str', 
-  is => 'ro', 
-  default => 'ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral/current_release/release_notes.txt',
-);
-
-has file_pattern => (
-  isa => 'Str',
-  is => 'rw', # to allow test runs
-  default => 'ensembl-xrefs-\d+-\d+\.json',
-);
-
-
-with 'Bio::EnsEMBL::Versioning::Pipeline::Downloader::FTPClient','MooseX::Log::Log4perl';
+sub BUIlD {
+  my $self = shift;
+  $self->uri('ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral/current_release/json/');
+  $self->version_uri('ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral/current_release/release_notes.txt');
+  $self->file_pattern('ensembl-xrefs-\d+-\d+\.json');
+}
 
 sub get_version
 {
@@ -76,15 +63,6 @@ sub get_version
   return $version;
 }
 
-sub _get_remote {
-  my $self = shift;
-  my $path = shift; # path is already checked as valid.
-
-  my $result = $self->get_ftp_files($self->uri,$self->file_pattern,$path);
-  $self->log->debug('Downloaded RNACentral FTP files: '.join("\n",@$result));
-  return $result if (scalar @$result > 0);
-  Bio::EnsEMBL::Mongoose::NetException->throw("No files downloaded from RNAcentral source");
-}
 
 __PACKAGE__->meta->make_immutable;
 

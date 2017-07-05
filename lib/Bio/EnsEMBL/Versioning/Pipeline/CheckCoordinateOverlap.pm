@@ -72,7 +72,7 @@ sub fetch_input {
   $self->param('indexer',$indexer);
   
   # Define where the RDF output will go and create the folder
-  my $output_path = File::Spec->join($base_path , 'xref', $run_id, $species, "xref_rdf_dumps", 'coordinate_overlap');
+  my $output_path = File::Spec->join($base_path , 'xref', $run_id, $species, 'xref_rdf_dumps', 'coordinate_overlap');
   if (!-d $output_path) {
     make_path $output_path or die "Failed to create path: $output_path";
   }

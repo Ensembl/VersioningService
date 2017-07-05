@@ -74,8 +74,8 @@ sub print_record {
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     my $xref_source = $self->identifier(uri_escape($xref->source));
-    my $clean_id = uri_escape($xref->id);
-    my $xref_uri = $xref_source.$clean_id;
+    my $clean_id = $xref->id;
+    my $xref_uri = uri_escape($xref_source.$clean_id);
     my $xref_link = $self->new_xref($source,$xref->source);
 
     # xref is from data source... but not necessarily asserted by them. See creator below.

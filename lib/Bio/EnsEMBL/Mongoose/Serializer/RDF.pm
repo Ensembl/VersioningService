@@ -74,8 +74,8 @@ sub print_record {
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
     my $xref_source = $self->identifier(uri_escape($xref->source));
-    my $clean_id = $xref->id;
-    my $xref_uri = uri_escape($xref_source.$clean_id);
+    my $clean_id = uri_escape($xref->id);
+    my $xref_uri = $xref_source.$clean_id;
     my $xref_link = $self->new_xref($source,$xref->source);
 
     # xref is from data source... but not necessarily asserted by them. See creator below.
@@ -219,9 +219,9 @@ sub generate_uris {
 
   my $start = $self->identifier($source).uri_escape($source_id);
 
-  my $middle = $self->new_xref(uri_escape($source),uri_escape($target_source),$label);
+  my $middle = $self->new_xref($source,$target_source,$label);
   # $middle = $self->prefix('ensembl').'/'.$label.'/'.$source.'/' unless $middle;
-  my $clean_id = $target_id;
+  my $clean_id = uri_escape($target_id);
   my $namespace = $self->identifier($target_source);
   my $end = uri_escape($namespace.$clean_id);
   return ($start,$middle,$end);

@@ -28,6 +28,7 @@ use Bio::EnsEMBL::RDF::RDFlib;
 use Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings;
 use Bio::EnsEMBL::Mongoose::UsageException;
 use Config::General;
+use URI::Escape;
 
 has identifier_mapping => (is => 'ro', isa => 'Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings', builder => '_load_mapper');
 has config_file => (is => 'rw', isa =>'Str');
@@ -70,7 +71,7 @@ sub new_xref {
   my $target = shift;
   my $label = shift; # Additional string to prevent xrefs of different types sharing the same xref ID
   $self->another_xref;
-  my $xref_uri = $self->prefix('ensembl').'xref/connection/'.$source.'/'.$target.'/';
+  my $xref_uri = $self->prefix('ensembl').'xref/connection/'.uri_escape($source).'/'.uri_escape($target).'/';
   $xref_uri .= $label.'/' if $label;
   $xref_uri .= $self->xref_id();
   return $xref_uri;

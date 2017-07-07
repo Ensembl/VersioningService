@@ -62,4 +62,20 @@ $iterator = $query->execute($model);
 
 cmp_ok($results[0]->{score}->value, '==', 0.823, 'Overlap score of 0.823 calculated and reported');
 
+
+# Regression test for awkward source names with spaces in them, e.g. Project 12455
+# Spaces needed to be encoded for URIs
+
+$test_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({
+  id => 'space in name',
+  accessions => [qw/uc060qbx.1/],
+});
+
+my ($a,$b,$c) = $rdf_writer->generate_uris(' Vacuum', 'Spacious subject', 'pain in bum', 'Project 12455');
+
+is($a, 'http://rdf.ebi.ac.uk/resource/ensembl/xref/Spacious%20subject/%20Vacuum', 'Source URI is whitespace-resilient');
+is($b, 'http://rdf.ebi.ac.uk/resource/ensembl/xref/connection/Spacious%20subject/Project%2012455/2', 'Xref URI is whitespace-resilient');
+is($c, 'http://rdf.ebi.ac.uk/resource/ensembl/xref/Project%2012455/pain%20in%20bum', 'Target URI is whitespace-resilient');
+
+
 done_testing();

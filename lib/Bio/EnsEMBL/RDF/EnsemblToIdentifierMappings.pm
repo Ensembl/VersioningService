@@ -40,6 +40,7 @@ use strict;
 use JSON qw/decode_json/;
 use IO::File;
 use Carp qw/confess/;
+use URI::Escape;
 
 sub new {
   my ($class,$xref_mapping_file,$schema_file) = @_;
@@ -152,7 +153,7 @@ sub identifier {
     return $id_org;
   } else {
     $id_org = $self->identifier_org_translation($source);
-    unless ($id_org) { $id_org = 'http://rdf.ebi.ac.uk/resource/ensembl/xref/'.$source.'/'}
+    unless ($id_org) { $id_org = 'http://rdf.ebi.ac.uk/resource/ensembl/xref/'.uri_escape($source).'/'}
     return $id_org;
   }
 }

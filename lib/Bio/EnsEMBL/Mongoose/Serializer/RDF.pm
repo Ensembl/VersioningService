@@ -220,10 +220,8 @@ sub generate_uris {
   my $start = $self->identifier($source).uri_escape($source_id);
 
   my $middle = $self->new_xref($source,$target_source,$label);
-  # $middle = $self->prefix('ensembl').'/'.$label.'/'.$source.'/' unless $middle;
-  my $clean_id = uri_escape($target_id);
-  my $namespace = $self->identifier($target_source);
-  my $end = uri_escape($namespace.$clean_id);
+
+  my $end = $self->identifier($target_source).uri_escape($target_id);
   return ($start,$middle,$end);
 }
 

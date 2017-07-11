@@ -76,7 +76,7 @@ sub run {
   my $full_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps");
   
   if (!-d $full_path) {
-    make_path $full_path or die "Failed to create path: $full_path";
+    make_path $full_path or die "Failed to create path: $full_path. $!";
   }
   
   my $fh;
@@ -93,7 +93,9 @@ sub run {
     );
     if ($source =~ /RefSeq/i) {
       my $gene_model_path = File::Spec->join( $base_path, 'xref',$run_id,$species,'xref_rdf_dumps','gene_model','/'); # for RefSeq links to genes and proteins
-      make_path $gene_model_path or die "Failed to create path: $gene_model_path";
+      if (!-d $gene_model_path) { 
+        make_path $gene_model_path or die "Failed to create path: $gene_model_path. $!";
+      }
       $gene_fh = IO::File->new(File::Spec->catfile($gene_model_path,$source.'.ttl' ), 'w') || die "Cannot write to $gene_model_path: $!";
       $search_conf{other_handle} = $gene_fh;
     }

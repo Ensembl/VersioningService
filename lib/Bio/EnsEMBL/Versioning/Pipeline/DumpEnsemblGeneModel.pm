@@ -63,7 +63,9 @@ sub fetch_input {
   # TODO - EG specific pathing suitable for their greater number of species
 
   my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'xref_rdf_dumps','gene_model','/');
-  make_path($full_path);
+  if (!-d $full_path) {
+    make_path($full_path) || "Failed to create path: $gene_model_path. $!";
+  }
   $self->param("ensembl_model_path",$full_path);
 }
 

@@ -21,7 +21,8 @@ limitations under the License.
 
   my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new();
   $fuseki->load_data([$ttl_file1, $ttl_file2, $ttl_file3]);
-  $query($sparql);
+  my $result_set = $fuseki->query($sparql);
+  my @all = $result_set->get_all;
   
 =head1 DESCRIPTION
 

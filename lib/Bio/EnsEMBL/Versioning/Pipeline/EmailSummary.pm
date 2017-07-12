@@ -94,8 +94,8 @@ sub jobs {
     analysis => $analysis,
     name => $logic_name,
     jobs => \@jobs,
-    successful_jobs => scalar grep { $_->status eq 'DONE' } @jobs,
-    failed_jobs => scalar grep { $_->status eq 'FAILED' } @jobs,
+    successful_jobs => scalar(grep { $_->status eq 'DONE' } @jobs),
+    failed_jobs => scalar(grep { $_->status eq 'FAILED' } @jobs),
   };
 }
 

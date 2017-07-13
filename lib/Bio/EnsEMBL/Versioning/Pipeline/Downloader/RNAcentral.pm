@@ -35,11 +35,11 @@ use Bio::EnsEMBL::Mongoose::NetException;
 
 extends 'Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader';
 
-sub BUIlD {
+sub BUILD {
   my $self = shift;
   $self->uri('ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral/current_release/json/');
-  $self->version_uri('ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral/current_release/release_notes.txt');
   $self->file_pattern('ensembl-xrefs-\d+-\d+\.json');
+  $self->version_uri('ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral/current_release/release_notes.txt');
 }
 
 sub get_version

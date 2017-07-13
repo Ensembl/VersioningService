@@ -51,4 +51,11 @@ has format => (
   documentation => 'Decide which format to dump the data as. Examples: RDF, JSON, FASTA'
 );
 
+has db => (is => 'rw', isa => 'Str', documentation => 'Database name on server');
+has driver => (is => 'rw',isa => 'Str',default => 'mysql', documentation => 'Database driver, usually mysql but could also be sqlite or postgres');
+has host => (is => 'rw', isa => 'Str', documentation => 'Hostname of database server');
+has port => (is => 'rw', isa => 'Int', default => 3306, documentation => 'Port on database server (default 3306)');
+has user => (is => 'rw', isa => 'Str', documentation => 'Username to log into database server');
+has pass => (is => 'rw', isa => 'Str', documentation => 'Password for -user to access database');
+
 1;

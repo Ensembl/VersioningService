@@ -17,6 +17,7 @@
 # perl schema_update.pl --host $host --port 3306 --user me -pass $pass  --db $host
 # The script picks up default configuration from /conf/manager.conf , but command line options override these
 # Use --help for a list of possible options, not all of which are necessarily required.
+# Technically redundant next to dbicadmin, but makes it easier to find the server by auto-configuring most options
 
 use Modern::Perl;
 use MongooseHelper;

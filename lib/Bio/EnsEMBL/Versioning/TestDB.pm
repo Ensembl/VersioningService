@@ -23,11 +23,13 @@ limitations under the License.
 
 package Bio::EnsEMBL::Versioning::TestDB;
 
+use strict;
+use warnings;
 use Bio::EnsEMBL::Versioning::Broker;
 use Env;
 require Exporter;
 use parent 'Exporter';
-@EXPORT_OK = qw(broker get_conf_location);
+our @EXPORT_OK = qw(broker get_conf_location);
 
 my $broker = Bio::EnsEMBL::Versioning::Broker->new(config_file => get_conf_location(), create => 1);
 # $broker->schema->deploy(); # auto create schema in test DB
@@ -43,10 +45,33 @@ sub broker {
 }
 
 # Insert cleanup of test database depending on driver here, or get Test::DBIx::Class configured before it is used.
-# DESTROY {
-#   $broker->schema->
-
-# }
+sub END {
+  $broker->schema->storage->dbh_do(sub {
+    my ($storage,$dbh,@args) = @_;
+    # lifted from DBIx::Class::TableNames which has fallen into disrepair
+    my @tables = $storage->dbh->tables(undef, undef, undef, 'TABLE'); 
+    s/\Q`\E//g for @tables; 
+    s/\Q"\E//g for @tables;
+    s/.+\.(.+)/$1/g for @tables;
+    # Now that table names are cleaned, we can drop them all.
+    my $db_name = $dbh->{Name};
+    print "cleanup $db_name\n";
+    my $table_names = join ',',@tables;
+    
+    if ($broker->config->{driver} eq 'SQLite') {
+      # SQLite DBs are disk based, and must be removed manually
+      my $sqlite_file = $broker->config->{file};
+      unlink $sqlite_file if -e $sqlite_file;
+    } else {
+      $dbh->do(
+      "SET foreign_key_checks = 0; 
+       DROP TABLE $table_names;
+       SET foreign_key_checks = 1;
+       DROP DATABASE $db_name;
+      ");  
+    }
+  });
+}
 
 
 1;

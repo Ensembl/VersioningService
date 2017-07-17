@@ -190,7 +190,7 @@ sub shunt_to_fast_disk {
 # Move downloaded files from temp folder to a more permanent location, and update the versioning service to match.
 method finalise_download (Source $source, Str $revision, Str $temp_location){
     my $final_location = $self->location($source,$revision);
-    $self->log->debug(sprintf "Moving new %s index from %s to %s",$temp_location,$final_location);
+    $self->log->debug(sprintf "Moving new %s index from %s to %s",$source->name,$temp_location,$final_location);
     for my $file (glob $temp_location."/*") {
       `mv $file $final_location/`;
       if ($? >> 8 != 0) {Bio::EnsEMBL::Mongoose::IOException->throw('Error moving files from temp space:'.$temp_location.' to '.$final_location.'. '.$!)};
@@ -207,10 +207,10 @@ method finalise_download (Source $source, Str $revision, Str $temp_location){
 }
 
 method get_current_version_of_source ( Str $source_name ) {
-    my $source_rs = $self->schema->resultset('Source')->search(
+    my $source_rs = $self->schema->resultset('Source')->find(
       { name => $source_name },
-      { join => 'current_version', rows => 1 }
-    )->first;
+      { prefetch => 'current_version', rows => 1 }
+    );
     my $version;
     if ($source_rs) {
       $version = $source_rs->current_version;
@@ -218,6 +218,21 @@ method get_current_version_of_source ( Str $source_name ) {
       return $version;
     }
     return;
+}
+
+method set_current_version_of_source ( Str $source_name, Str $revision) {
+  # Update the "current version" when all sub-indexes have been added to the set, not after each and every one.
+  my $source = $self->schema->resultset('Source')->find(
+    { name => $source_name },
+  );
+
+  my $version = $self->schema->resultset('Version')->find(
+    { revision => $revision, 'sources.name' => $source_name },
+    { join => 'sources' }
+  );
+  $self->log->debug("Current version = ".$source->current_version);
+  $self->log->debug("New version = ".$version->uri);
+  $source->update_from_related('current_version', $version);
 }
 
 sub list_versions_by_source {
@@ -260,10 +275,10 @@ method get_index_by_name_and_version (Str $source_name, Maybe[Str] $version? ){
 sub get_source {
   my $self = shift;
   my $source_name = shift;
-  my $result = $self->schema->resultset('Source')->search(
+  my $result = $self->schema->resultset('Source')->find(
     { name => $source_name }
   );
-  return $result->first;
+  return $result;
 }
 
 sub get_active_sources {
@@ -322,6 +337,7 @@ sub document_store {
 }
 
 # finalise_index moves the index out of temp and into a permanent location
+# Can be one of several indexes for the same source when generated in parallel
 method finalise_index (Source $source, Str $revision, $doc_store, Int $record_count){
   my $temp_path = $doc_store->index;
   my $temp_location = IO::Dir->new($temp_path);
@@ -329,32 +345,49 @@ method finalise_index (Source $source, Str $revision, $doc_store, Int $record_co
   my $index_location = File::Spec->catfile($final_location,'index');
   $self->log->debug("Somehow indexing of ".$source->name.":$revision finished without parsing any records: $record_count") if $record_count < 1;
   $self->log->debug("Moving index from $temp_path to $final_location");
-  if (-e $index_location) {
-    remove_tree($index_location); # delete any existing attempts
-  }
+  # Can no longer count on a pre-existing folder implying a failed previous attempt
+  # if (-e $index_location) {
+  #   remove_tree($index_location); # delete any existing attempts
+  # }
+
+  # Generate a safe sub-folder to put the new index in. Has to be resilient to race-conditions from multiple pipeline workers
+  make_path($index_location, { mode => 0774 });
+  my $index_subdir = tempdir(DIR => $index_location, CLEANUP => 0); # Please don't delete the not-so-temporary output
+  
   while (my $file = $temp_location->read) {
     next if $file =~ /^\.+$/;
-    make_path($index_location, { mode => 0774 });
-    my $source = File::Spec->catfile($temp_path,$file);
-    my $target = File::Spec->catfile($index_location,$file);
-    my $result = `mv $source $target`; # File::Copy cannot move folders between file systems
+    my $source_dir = File::Spec->catfile($temp_path,$file);
+    my $target = File::Spec->catfile($index_subdir,$file);
+    my $result = `mv $source_dir $target`; # File::Copy cannot move folders between file systems
     if ($? >> 8 != 0) {
       Bio::EnsEMBL::Mongoose::IOException->throw("File moving failed: ".$!);
-    } 
+    }
   }
-  my $version_set = $self->schema->resultset('Version')->find(
+  $self->log->debug(sprintf "Fetching existing version %s for source %s\n",$revision,$source->name);
+  my $version = $self->schema->resultset('Version')->find(
       { revision => $revision,
-        'sources.name' => $source->name 
+        'sources.name' => $source->name
       },
       { join => 'sources' }
   );
-  $version_set->index_uri(File::Spec->catfile($final_location,'index'));
-  $version_set->record_count($record_count);
-  $self->log->debug("Saved index to $final_location with $record_count entries");
-  $version_set->update->discard_changes();
+  $self->log->debug("Adding $record_count to index record count\n");
+  $version->index_uri(File::Spec->catfile($final_location,'index')); # Set link to outer folder.
+  # Increment record count by the new number. This may not be thread safe?
+  $self->log->debug(sprintf "Existing record_count is %d\n",$version->record_count);
+  if (defined $version->record_count) {
+    $version->record_count($record_count + $version->record_count());
+    $self->log->debug(sprintf "New record_count for index = %d\n",$version->record_count);
+  } else {
+    $version->record_count($record_count);
+  }
+  $self->log->debug("Added an index to $final_location with $record_count entries");
 
-  $source->current_version($version_set);
-  $source->update;
+  $version->version_indexes->create({
+    record_count => $record_count,
+    index_uri => $index_subdir
+  });
+
+  $version->update();
 }
 
 method add_new_source (Str $name,Str $group_name,Bool $active,PackageName $downloader,PackageName $parser) { 
@@ -370,7 +403,7 @@ method add_new_source (Str $name,Str $group_name,Bool $active,PackageName $downl
 sub get_downloader {
   my $self = shift;
   my $name = shift;
-  my $source_rs = $self->schema->resultset('Source')->search( { name => $name } )->first;
+  my $source_rs = $self->schema->resultset('Source')->find( { name => $name } );
   unless ($source_rs) { Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot find source $name to supply downloader module") }
   return $source_rs->downloader;
 }

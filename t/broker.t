@@ -101,7 +101,9 @@ my $docstore = Test::MockObject->new();
 $docstore->mock( 'index', sub { return tempdir() });
 
 $broker->finalise_index($uniprot_source, '2015_06', $docstore, 666);
-is($broker->get_current_version_of_source('UniProt/SWISSPROT')->revision, '2015_06', 'finalise_index() sets new current version');
+$broker->set_current_version_of_source('UniProt/SWISSPROT','2015_06');
+
+is($broker->get_current_version_of_source('UniProt/SWISSPROT')->revision, '2015_06', 'New version set after finalise_index()');
 
 # Fetch the location of the index we've just 'created'
 
@@ -131,14 +133,20 @@ my $hgnc_source = $hgnc_group->create_related('sources', {name => 'HGNC', parser
 my $mim_group = $broker->schema->resultset('SourceGroup')->create({ name => 'MIMGroup' });
 my $mim_source = $mim_group->create_related('sources', {name => 'MIM', parser => 'MIMParser', active=> 1});
 
-my $third_version = $hgnc_source->create_related('versions', {revision => '07092016', uri => '/HGNC/hgnc.json', count_seen => 1, record_count => 1});
-my $fourth_version = $mim_source->create_related('versions', {revision => '07092016', uri => '/MIM/MIM.txt',count_seen => 1});
+my $hgnc_version = $hgnc_source->create_related('versions', {revision => '07092016', uri => '/HGNC/hgnc.json', count_seen => 1, record_count => 1});
+my $mim_version = $mim_source->create_related('versions', {revision => '07092016', uri => '/MIM/MIM.txt',count_seen => 1});
 
-$hgnc_source->update( {current_version => $third_version});
-$mim_source->update( {current_version => $fourth_version});
+$hgnc_source->update( {current_version => $hgnc_version});
+# $mim_source->update( {current_version => $mim_version});
 
+# Now add a new (sub-)index to the MIM version, with 100 more records (than zero)
 $broker->finalise_index($mim_source, '07092016', $docstore, 100); # if bug present, this should modify the HGNC version instead of the MIM version
-is($broker->get_current_version_of_source('MIM')->record_count, '100', 'Correct source gets updated with ambiguous revision number');
-is($broker->get_current_version_of_source('HGNC')->record_count, '1', 'Other source does not get updated');
+$broker->set_current_version_of_source('MIM', '07092016');
+
+cmp_ok($broker->get_current_version_of_source('MIM')->record_count,'==', 100, 'Correct source gets updated with ambiguous revision number');
+cmp_ok($broker->get_current_version_of_source('HGNC')->record_count, '==', 1, 'Other source does not get updated');
+
+$broker->finalise_index($mim_source, '07092016', $docstore, 100); # add a second index. Normally we wouldn't have set the current version yet, but it's needed for testing
+cmp_ok($broker->get_current_version_of_source('MIM')->record_count,'==', 200, 'Record count has been updated along with a second index');
 
 done_testing;

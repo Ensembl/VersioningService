@@ -143,6 +143,11 @@ __PACKAGE__->belongs_to(
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:liBzUdy+yZqxkpR2MwONpA
 
 
+sub sqlt_deploy_hook {
+  my ($self, $sqlt_table) = @_;
+  $sqlt_table->add_index(name => 'active_idx', fields => ['active']);
+}
+
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 1;

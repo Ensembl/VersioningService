@@ -198,6 +198,17 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.07042 @ 2015-02-19 11:36:49
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KitGSPDXGQRzRPa5rD0pkg
 
+__PACKAGE__->has_many(
+  "version_indexes",
+  "Bio::EnsEMBL::Versioning::ORM::Schema::Result::VersionManifest",
+  { "foreign.version_id" => "self.version_id" },
+  { cascade_copy => 0, cascade_delete => 1 },
+);
+
+sub sqlt_deploy_hook {
+  my ($self, $sqlt_table) = @_;
+  $sqlt_table->add_index(name => 'revision_idx', fields => ['revision'])
+}
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;

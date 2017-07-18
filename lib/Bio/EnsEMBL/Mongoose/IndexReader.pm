@@ -90,6 +90,9 @@ sub _init_storage {
         $self->log->debug("Reading config file ".$self->storage_engine_conf_file);
         my $conf = Config::General->new($self->storage_engine_conf_file);
         %opts = $conf->getall();
+        if (ref $opts{index_location} ne 'ARRAY') {
+          $opts{index_location} = [$opts{index_location}];
+        }
         $self->storage_engine_conf(\%opts);
         if (exists $opts{index_location}) {
             $self->index_conf({index_location => $opts{index_location}, data_location => $opts{data_location} });
@@ -100,7 +103,7 @@ sub _init_storage {
       }
       %opts = %{$self->index_conf};
     }
-    $self->log->debug("Activating Lucy index ".$opts{index_location}); 
+    $self->log->debug("Activating Lucy index ".join (',', @{ $opts{index_location} }) ); 
     $store = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config=>$self->index_conf);
     return $store;
 }
@@ -246,9 +249,10 @@ sub convert_name_to_taxon {
 
 method work_with_index ( Str :$source, Str :$version? ) {
   # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
-  my $path = $self->versioning_service->get_index_by_name_and_version($source,$version);
-  $self->log->debug("Switching to index: $path from source $source and version $version");
-  $self->index_conf({ index_location => $path, source => $source, version => $version});
+  my $paths = $self->versioning_service->get_index_by_name_and_version($source,$version);
+  # TODO branch to polysearcher here if necessary
+  $self->log->debug(sprintf "Switching to index: %s from source %s and version %s",join (',',$paths), $source, $version);
+  $self->index_conf({ index_location => $paths, source => $source, version => $version});
   $self->storage_engine();
   $self->source($source);
 }
@@ -258,8 +262,8 @@ method work_with_run ( Str :$source, Str :$run_id) {
   unless ($version) {
     Bio::EnsEMBL::Mongoose::SearchEngineException->throw("Run ID $run_id and source $source cannot be found in versioning service");
   }
-  my $path = $version->index_uri;
-  $self->index_conf({ index_location => $path, source => $source, version => $version->revision});
+  my $paths = $version->get_all_index_paths;
+  $self->index_conf({ index_location => $paths, source => $source, version => $version->revision});
   $self->storage_engine();
   $self->source($source);
 }

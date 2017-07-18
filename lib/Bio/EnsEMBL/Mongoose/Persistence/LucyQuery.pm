@@ -26,6 +26,7 @@ package Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
 use Moose;
 
 use Lucy::Search::IndexSearcher;
+use Lucy::Search::PolySearcher;
 use Lucy::Search::QueryParser;
 use Search::Query;
 use Search::Query::Parser;
@@ -40,16 +41,33 @@ use Data::Dumper;
 use Sereal::Decoder qw/decode_sereal/;
 
 has search_engine => (
-    isa => 'Lucy::Search::IndexSearcher',
+    isa => 'Lucy::Search::Searcher',
     is => 'ro',
     required => 1,
     lazy => 1,
     default => sub {
         my $self = shift;
         $self->log->debug(Dumper $self->config);
-        return Lucy::Search::IndexSearcher->new(
-            index => $self->config->{index_location},
-        );
+        my $indexes = $self->config->{index_location};
+        if (ref $indexes eq 'ARRAY') {
+          if (scalar @$indexes > 1) {
+            my @searchers = map { Lucy::Search::IndexSearcher->new(index => $_)} @$indexes;
+            return Lucy::Search::PolySearcher->new(
+              searchers => \@searchers,
+              schema => $searchers[0]->get_schema
+            );
+          } elsif ( scalar @$indexes == 1 ) {
+            return Lucy::Search::IndexSearcher->new(
+              index => $indexes->[0]
+            );
+          }
+        } elsif (-d $indexes) {
+          return Lucy::Search::IndexSearcher->new(
+              index => $indexes
+          );
+        } else {
+          Bio::EnsEMBL::Mongoose::SearchEngineException->throw('No index location provided for search engine');
+        }
     }
 );
 
@@ -148,7 +166,7 @@ sub build_query {
             message => 'Lucy requires at least some query parameters',
         );
     }
-    $self->query_string($query);    
+    $self->query_string($query);
 }
 
 # query() also works with an argument which circumvents the query_builder

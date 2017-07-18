@@ -109,9 +109,11 @@ is($broker->get_current_version_of_source('UniProt/SWISSPROT')->revision, '2015_
 
 my $index_uri = $broker->get_index_by_name_and_version('UniProt/SWISSPROT','2015_06');
 my $other_index_uri = $broker->get_index_by_name_and_version('UniProt/SWISSPROT');
+# This changes ever since it became possible to return multiple indexes.
 ok($index_uri,'Index URI returned');
 ok($other_index_uri,'Index returned via current');
-is($index_uri,$other_index_uri,'Same URI retrieved by different routes');
+
+is_deeply($index_uri,$other_index_uri,'Same URI sets retrieved by different routes');
 
 my @sources = @{ $broker->get_active_sources };
 ok(scalar @sources == 2, 'Found two active sources');

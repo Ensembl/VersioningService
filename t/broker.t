@@ -149,4 +149,6 @@ cmp_ok($broker->get_current_version_of_source('HGNC')->record_count, '==', 1, 'O
 $broker->finalise_index($mim_source, '07092016', $docstore, 100); # add a second index. Normally we wouldn't have set the current version yet, but it's needed for testing
 cmp_ok($broker->get_current_version_of_source('MIM')->record_count,'==', 200, 'Record count has been updated along with a second index');
 
+my $index_collection = $broker->get_current_version_of_source('MIM')->get_all_index_paths;
+cmp_ok(scalar @$index_collection, '==', 2, 'Two paths returned for two sub-indexes of MIM version');
 done_testing;

@@ -210,6 +210,14 @@ sub sqlt_deploy_hook {
   $sqlt_table->add_index(name => 'revision_idx', fields => ['revision'])
 }
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+sub get_all_index_paths {
+  my ($self) = @_;
+  my @versions = $self->version_indexes->all;
+  my @paths;
+  @paths = map { $_->index_uri } @versions;
+  return \@paths;
+}
+
+
 __PACKAGE__->meta->make_immutable;
 1;

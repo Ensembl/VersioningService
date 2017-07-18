@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::Exception;
 use Data::Dumper;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder;
 use Bio::EnsEMBL::Mongoose::Persistence::LucyQuery;
@@ -85,5 +86,39 @@ foreach my $record(@$final_results){
   ok($record->transcript_end <= $end, "transcript_end " . $record->transcript_end . " is <= " . $end);
 }
 
+# Test multi-index searching
+# Build a second index from the ucsc data above
+my $second_index_path = $ENV{MONGOOSE}.'/t/data/test_poly_index_ucsc';
+if(-e $second_index_path) {
+  rmtree $second_index_path;
+}
+
+my $second_indexer = Bio::EnsEMBL::Mongoose::Persistence::LucyFeeder->new(
+  index => $second_index_path,
+);
+for (1..10) {
+  $reader->read_record;
+  $second_indexer->store_record($reader->record);
+}
+$second_indexer->commit;
+
+my $poly_searcher = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => { index_location => [$index_path,$second_index_path] });
+@results = ();
+$poly_searcher->query($query);
+while (my $hit = $poly_searcher->next_result) {
+  my $record = $poly_searcher->convert_result_to_record($hit);
+  push @results,$record;
+}
+cmp_ok(scalar @results, '==', 20, 'PolySearcher queries both indexes of 10 records (totalling 20)');
+
+throws_ok( sub {
+  $interlocutor = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => { index_location => [] });
+  $interlocutor->search_engine(); # trigger lazy load
+}, qr/Empty array of index paths, cannot query no indexes/, 'Empty array of index paths, cannot query no indexes');
+
+throws_ok(sub {
+  $interlocutor = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => {});
+  $interlocutor->search_engine(); # trigger lazy load
+}, qr/No index location provided for search engine/, 'No index location provided for search engine');
 
 done_testing();

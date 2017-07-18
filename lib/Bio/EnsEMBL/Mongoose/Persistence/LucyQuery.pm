@@ -45,31 +45,33 @@ has search_engine => (
     is => 'ro',
     required => 1,
     lazy => 1,
-    default => sub {
-        my $self = shift;
-        $self->log->debug(Dumper $self->config);
-        my $indexes = $self->config->{index_location};
-        if (ref $indexes eq 'ARRAY') {
-          if (scalar @$indexes > 1) {
-            my @searchers = map { Lucy::Search::IndexSearcher->new(index => $_)} @$indexes;
-            return Lucy::Search::PolySearcher->new(
-              searchers => \@searchers,
-              schema => $searchers[0]->get_schema
-            );
-          } elsif ( scalar @$indexes == 1 ) {
-            return Lucy::Search::IndexSearcher->new(
-              index => $indexes->[0]
-            );
-          }
-        } elsif (-d $indexes) {
-          return Lucy::Search::IndexSearcher->new(
-              index => $indexes
-          );
-        } else {
-          Bio::EnsEMBL::Mongoose::SearchEngineException->throw('No index location provided for search engine');
-        }
-    }
+    builder => '_configure_search_engine'
 );
+
+sub _configure_search_engine {
+  my $self = shift;
+  $self->log->debug(Dumper $self->config);
+  my $indexes = $self->config->{index_location};
+  if (ref $indexes eq 'ARRAY') {
+
+    if (scalar @$indexes > 1) {
+      my @searchers = map { Lucy::Search::IndexSearcher->new(index => $_)} @$indexes;
+      return Lucy::Search::PolySearcher->new(
+        searchers => \@searchers,
+        schema => $searchers[0]->get_schema
+      );
+    } elsif ( scalar @$indexes == 1 ) {
+      return Lucy::Search::IndexSearcher->new( index => $indexes->[0] );
+    } else {
+      Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Empty array of index paths, cannot query no indexes');
+    }
+    
+  } elsif (-d $indexes) {
+    return Lucy::Search::IndexSearcher->new( index => $indexes );
+  } else {
+    Bio::EnsEMBL::Mongoose::SearchEngineException->throw('No index location provided for search engine');
+  }
+}
 
 has query_parser => (
     isa => 'Search::Query::Parser',

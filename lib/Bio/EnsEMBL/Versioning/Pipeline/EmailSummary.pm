@@ -46,30 +46,13 @@ sub fetch_input {
   # Compose content
   my $msg = "Your Versioning Pipeline has finished. We have:\n\n";
 
-  foreach my $analysis (qw/CheckLatest DownloadSource ParseSource/) {
-    my %errors = $self->logs($analysis);
-    
-    foreach my $key (keys %errors) {
-      $msg .= $key . $errors{$key} . "\n";
-    }
-    $msg .= sprintf(<<'MSG', @args);
-  * %d sources checked for latest version (%d failed)
-  * %d sources with downloaded file (%d failed)
-  * %d sources with parsed data (%d failed)
-%s
+  my $job_summary = $self->summary($check_latest);
+  $job_summary .= $self->summary($download);
+  $job_summary .= $self->summary($parse_source);
 
-===============================================================================
-
-Full breakdown follows ...
-
-%s
-
-%s
-
-MSG
-  }
-  
-  $self->param('text', $msg);
+  my $failures = $self->failed();
+   
+  $self->param('text', $msg.$job_summary.$failures);
   return;
 }
 
@@ -104,18 +87,18 @@ sub failed {
   my $failed = $self->db()->get_AnalysisJobAdaptor()->fetch_all_by_analysis_id_status(undef, 'FAILED');
   if(! @{$failed}) {
     return 'No jobs failed. Congratulations!';
-  }
-  my $output = <<'MSG';
-The following jobs have failed during this run. Please check your hive's error msg table for the following jobs:
+  } else {
 
-MSG
-  foreach my $job (@{$failed}) {
-    my $analysis = $job->analysis();
-    my $line = sprintf(q{  * job_id=%d %s(%5d) input_id='%s'}, $job->dbID(), $analysis->logic_name(), $analysis->dbID(), $job->input_id());
-    $output .= $line;
-    $output .= "\n";
+    my $output = "The following jobs have failed during this run. Please check your hive's error msg table for the following jobs:\n";
+
+    foreach my $job (@{$failed}) {
+      my $analysis = $job->analysis();
+      my $line = sprintf(q{  * job_id=%d %s(%5d) input_id='%s'}, $job->dbID(), $analysis->logic_name(), $analysis->dbID(), $job->input_id());
+      $output .= $line;
+      $output .= "\n";
+    }
+    return $output;
   }
-  return $output;
 }
 
 my $sorter = sub {

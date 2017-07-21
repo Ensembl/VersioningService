@@ -52,44 +52,36 @@ sub run {
   my ($self) = @_;
   my $source_name = $self->param('source_name');
   my $specific_version = $self->param('version');
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+  my $file_path = $self->param_required('file');
 
-  my $source = $broker->get_source($source_name);
-  my $version;
-  if (defined $specific_version) {
-    $version = $broker->get_version_of_source($source_name,$specific_version);
-  } else {
-    $self->warning("ParseSource attempted to run without knowing which version of a $source_name to parse");
-    return;
-  }
   # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($source->parser);
-  my $files = $broker->get_file_list_for_version($version);
-  $files = $broker->shunt_to_fast_disk($files);
+
+  $file = $broker->shunt_to_fast_disk($file_path);
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
   my $doc_store;
-  foreach my $file (@$files) {
-    my $parser = $parser_name->new(source_file => $file);
-    
-    $doc_store = $broker->document_store($temp);
-    my $buffer = 0; 
 
-    while($parser->read_record) {
-      my $record = $parser->record;
-      # validate record for key fields. No accession or ID makes it pretty useless to us
-      if ($record->has_taxon_id && ($record->has_accessions || defined $record->id)) {
-        $doc_store->store_record($record);
-        $buffer++;
-      }
-      if ($buffer % 10000 == 0) {
-          $doc_store->commit;
-          $doc_store = $broker->document_store($temp);
-      }
+  my $parser = $parser_name->new(source_file => $file);
+    
+  $doc_store = $broker->document_store($temp);
+  my $buffer = 0;
+
+  while($parser->read_record) {
+    my $record = $parser->record;
+    # validate record for key fields. No accession or ID makes it pretty useless to us
+    if ($record->has_taxon_id && ($record->has_accessions || defined $record->id)) {
+      $doc_store->store_record($record);
+      $buffer++;
     }
-    $total_records += $buffer;
-    $doc_store->commit;
+    if ($buffer % 10000 == 0) {
+        $doc_store->commit;
+        $doc_store = $broker->document_store($temp);
+    }
   }
+  $total_records += $buffer;
+  $doc_store->commit;
+  
   # Copy finished index to desired location managed by Broker
   $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
   $self->warning(sprintf "Source %s,%s parsed with %d records",$source_name,$specific_version,$total_records);

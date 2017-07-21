@@ -94,8 +94,20 @@ sub pipeline_analyses {
         -hive_capacity    => 100,
         -rc_name          => 'normal',
         -flow_into  => {
-          2 => ['ParseSource'],
+          2 => ['JobPerFile'],
         },
+      },
+      {
+        -logic_name => 'JobPerFile',
+        -module => 'Bio::EnsEMBL::Versioning::Pipeline::JobPerFile',
+        -max_retry_count => 0,
+        -hive_capacity => 100,
+        -rc_name => 'normal',
+        -flow_into => {
+          '2->A' => ['ParseSource'],
+          'A->1' => ['CollateIndexes'],
+          1 => ['?accu_name=sourcery&accu_address={source}&accu_input_variable=source']
+        }
       },
 
       {
@@ -109,7 +121,13 @@ sub pipeline_analyses {
         -failed_job_tolerance => 25, # percent of jobs that can fail while allowing the pipeline to complete.
         -rc_name => 'mem',
       },
-
+      {
+        -logic_name => 'CollateIndexes',
+        -module => 'Bio::EnsEMBL::Versioning::Pipeline::CollateIndexes',
+        -max_retry_count => 0,
+        -hive_capacity => 100,
+        -rc_name => 'normal'
+      },
 
       ####### NOTIFICATION
       
@@ -121,7 +139,7 @@ sub pipeline_analyses {
           email   => $self->o('email'),
           subject => $self->o('pipeline_name').' has finished',
         },
-        -wait_for   => [ qw/ScheduleSources CheckLatest DownloadSource ParseSource/ ],
+        -wait_for   => [ qw/ScheduleSources CheckLatest DownloadSource ParseSource CollateIndexes/ ],
       }
     
     ];

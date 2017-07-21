@@ -30,54 +30,33 @@ limitations under the License.
 
 =head1 NAME
 
-Bio::EnsEMBL::Versioning::Pipeline::DownloadSource
+Bio::EnsEMBL::Versioning::Pipeline::CollateIndexes
 
 =head1 DESCRIPTION
 
-A module which downloads a given source and saves it as a file
-
+Given a folder full of files, generate a fan of one job per file
+Also potentially branch to alternative resource classes for unusually sized jobs
 
 =cut
 
-package Bio::EnsEMBL::Versioning::Pipeline::DownloadSource;
+package Bio::EnsEMBL::Versioning::Pipeline::CollateIndexes;
 
 use strict;
 use warnings;
-
 use Bio::EnsEMBL::Versioning::Broker;
-use Try::Tiny;
-use Log::Log4perl;
-Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
-  my $latest_version = $self->param('version');
-  my $source_name = $self->param('source_name');
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
-  my $source = $broker->get_source($source_name);
-  my $downloader = $broker->get_module($broker->get_downloader($source_name))->new;
-  my $result;
-  my $temp_location = $broker->temp_location;
-  try {
-    $result = $downloader->download_to($temp_location);
-  } catch {
-    my $input_id = {
-      error => "Files could not be downloaded for ".$source_name.". Exception: ".$_->message,
-      source_name => $source_name
-    };
-    $self->warning(sprintf 'Download failed for %s for %s', $source_name, 'update_pipeline');
-    return;
-  };
-  $broker->finalise_download($source,$latest_version,$temp_location);
 
-  $self->warning("Downloaded resource $source_name to be forked into parsing jobs");
-  my $message = { source_name => $source_name , version => $latest_version };
-  $self->dataflow_output_id($message, 2);
+  my $source_name = $self->param('source'); # This comes from an accumulator
+
+  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+  my $latest_version = $broker->get_version_of_source($source_name,$version);
+  $broker->set_current_version_of_source( $source_name, $latest_version->revision);
   
   return;
-
 }
 
 

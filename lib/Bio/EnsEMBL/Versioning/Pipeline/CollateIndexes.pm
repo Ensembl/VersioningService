@@ -34,8 +34,7 @@ Bio::EnsEMBL::Versioning::Pipeline::CollateIndexes
 
 =head1 DESCRIPTION
 
-Given a folder full of files, generate a fan of one job per file
-Also potentially branch to alternative resource classes for unusually sized jobs
+Once all parsing jobs for one source have completed, finalise the index in the Versioning Service
 
 =cut
 
@@ -51,6 +50,7 @@ sub run {
   my ($self) = @_;
 
   my $source_name = $self->param('source'); # This comes from an accumulator
+  my $version = $self->param('version'); # This comes from an accumulator
 
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
   my $latest_version = $broker->get_version_of_source($source_name,$version);

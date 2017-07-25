@@ -58,7 +58,7 @@ sub run {
   foreach my $file (@$file_list) {
     my $message = { source_name => $source_name , version => $unindexed_version, file => $file};
     $self->dataflow_output_id($message, 2);
-    $self->dataflow_output_id({source => $source_name}, 1);
+    $self->dataflow_output_id({source => $source_name, version => $version}, 1);
   }
   return;
 }

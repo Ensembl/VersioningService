@@ -49,14 +49,14 @@ use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
-  my $latest_version = $self->param_required('version');
+  my $version = $self->param_required('version');
   my $source_name = $self->param_required('source_name');
   my $broker = Bio::EnsEMBL::Versioning::Broker->new;
-  my $latest_version = $broker->get_version_of_source($source_name,$version);
-  my $file_list = $broker->get_file_list_for_version($latest_version);
+  my $unindexed_version = $broker->get_version_of_source($source_name,$version);
+  my $file_list = $broker->get_file_list_for_version($unindexed_version);
   # This is where we can choose a different parse process to do more efficient resource management
   foreach my $file (@$file_list) {
-    my $message = { source_name => $source_name , version => $latest_version, file => $file};
+    my $message = { source_name => $source_name , version => $unindexed_version, file => $file};
     $self->dataflow_output_id($message, 2);
     $self->dataflow_output_id({source => $source_name}, 1);
   }

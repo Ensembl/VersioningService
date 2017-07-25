@@ -54,6 +54,7 @@ sub run {
   my $specific_version = $self->param('version');
   my $file_path = $self->param_required('file');
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
+  my $source = $broker->get_source;
   # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($source->parser);
 

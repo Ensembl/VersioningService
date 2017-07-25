@@ -106,7 +106,6 @@ sub pipeline_analyses {
         -flow_into => {
           '2->A' => ['ParseSource'],
           'A->1' => ['CollateIndexes'],
-          1 => ['?accu_name=sourcery&accu_address={source}&accu_input_variable=source']
         }
       },
 

@@ -53,11 +53,11 @@ sub run {
   my $source_name = $self->param('source_name');
   my $specific_version = $self->param('version');
   my $file_path = $self->param_required('file');
-
+  my $broker = Bio::EnsEMBL::Versioning::Broker->new();
   # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($source->parser);
 
-  $file = $broker->shunt_to_fast_disk($file_path);
+  my $file = $broker->shunt_to_fast_disk($file_path);
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
   my $doc_store;

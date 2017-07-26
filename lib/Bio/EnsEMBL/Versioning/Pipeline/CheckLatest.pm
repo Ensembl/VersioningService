@@ -44,8 +44,6 @@ package Bio::EnsEMBL::Versioning::Pipeline::CheckLatest;
 use strict;
 use warnings;
 
-use Bio::EnsEMBL::Versioning::Broker;
-
 use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
@@ -53,7 +51,7 @@ Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 sub run {
   my ($self) = @_;
   my $source_name = $self->param_required('source_name');
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new();
+  my $broker = $self->configure_broker_from_pipeline();
   my $local_version = $broker->get_current_version_of_source($source_name);
   my $downloader;
   if ($local_version) {

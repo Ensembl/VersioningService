@@ -41,7 +41,6 @@ package Bio::EnsEMBL::Versioning::Pipeline::ScheduleSources;
 
 use strict;
 use warnings;
-use Bio::EnsEMBL::Versioning::Broker;
 use Log::Log4perl;
 Log::Log4perl::init("$ENV{MONGOOSE}/conf/logger.conf");
 
@@ -56,9 +55,9 @@ sub param_defaults {
 
 sub fetch_input {
   my ($self) = @_;
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+  my $broker = $self->configure_broker_from_pipeline();
   my $sources = $broker->get_active_sources;
-  $self->warning(sprintf 'Found %d active sources(s) to process', scalar(@{$sources}));
+  $self->warning(sprintf 'Found %d active source(s) to process', scalar(@{$sources}));
   $self->param('sources', $sources);
   return;
 }

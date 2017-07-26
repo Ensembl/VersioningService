@@ -49,20 +49,23 @@ use warnings;
 
 use parent qw/Bio::EnsEMBL::Production::Pipeline::Common::Base/;
 
-# sub get_module {
-#   my $self = shift;
-#   my $name = shift;
 
-#   try {
-#     (my $file = $name) =~ s|::|/|g;
-#     if (!(Class::Inspector->loaded($name))) {
-#       require $file . '.pm';
-#       $name->import();
-#     }
-#     return $name;
-#   } catch {
-#     Bio::EnsEMBL::Mongoose::UsageException->throw("Module $name could not be found. $_");
-#   };
-# }
+# The broker self-configures from a default file, but these can be overridden with values at instantiation
+sub configure_broker_from_pipeline {
+  my $self = shift;
+  
+  my %conf; # For direct setting of properties from pipeline rather than config file.
+  # Extend here to import more options from pipeline input
+  for my $var_name (qw/config_file scratch_space type driver db file host user pass port create/) {
+    my $temp = $self->param($var_name);
+    if (defined $temp) {
+      $conf{$var_name} = $temp;
+    }
+  }
+  
+  my $broker = Bio::EnsEMBL::Versioning::Broker->new(config => \%conf);
+
+  return $broker;
+}
 
 1;

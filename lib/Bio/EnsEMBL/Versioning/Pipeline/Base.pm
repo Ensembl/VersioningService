@@ -57,9 +57,11 @@ sub configure_broker_from_pipeline {
   my %conf; # For direct setting of properties from pipeline rather than config file.
   # Extend here to import more options from pipeline input
   for my $var_name (qw/config_file scratch_space type driver db file host user pass port create/) {
-    my $temp = $self->param($var_name);
-    if (defined $temp) {
-      $conf{$var_name} = $temp;
+    if ($self->param_is_defined($var_name)) {
+      my $temp = $self->param($var_name);
+      if (defined $temp) {
+        $conf{$var_name} = $temp;
+      }
     }
   }
   

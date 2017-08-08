@@ -43,6 +43,7 @@ package Bio::EnsEMBL::Versioning::Pipeline::Base;
 use strict;
 use warnings;
 
+use Bio::EnsEMBL::Versioning::Broker;
 # use Bio::EnsEMBL::Mongoose::UsageException;
 # use Try::Tiny;
 # use Class::Inspector;

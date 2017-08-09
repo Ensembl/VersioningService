@@ -80,7 +80,7 @@ sub pipeline_analyses {
         -rc_name          => 'normal',
         -flow_into  => {
           2 => ['DownloadSource'],
-          3 => ['ParseSource'],
+          3 => ['JobPerFile'],
         },
       },
 
@@ -138,7 +138,7 @@ sub pipeline_analyses {
           email   => $self->o('email'),
           subject => $self->o('pipeline_name').' has finished',
         },
-        -wait_for   => [ qw/ScheduleSources CheckLatest DownloadSource ParseSource CollateIndexes/ ],
+        -wait_for   => [ qw/ScheduleSources CheckLatest DownloadSource JobPerFile ParseSource CollateIndexes/ ],
       }
     
     ];

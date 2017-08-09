@@ -55,7 +55,7 @@ sub run {
   my ($self) = @_;
   my $latest_version = $self->param('version');
   my $source_name = $self->param('source_name');
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+  my $broker = $self->configure_broker_from_pipeline();
   my $source = $broker->get_source($source_name);
   my $downloader = $broker->get_module($broker->get_downloader($source_name))->new;
   my $result;

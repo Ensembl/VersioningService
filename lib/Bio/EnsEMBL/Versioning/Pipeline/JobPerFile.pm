@@ -51,7 +51,7 @@ sub run {
   my ($self) = @_;
   my $version = $self->param_required('version');
   my $source_name = $self->param_required('source_name');
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+  my $broker = $self->configure_broker_from_pipeline();
   my $unindexed_version = $broker->get_version_of_source($source_name,$version);
   my $file_list = $broker->get_file_list_for_version($unindexed_version);
   # This is where we can choose a different parse process to do more efficient resource management

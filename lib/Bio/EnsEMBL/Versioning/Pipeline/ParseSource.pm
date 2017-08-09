@@ -53,7 +53,7 @@ sub run {
   my $source_name = $self->param('source_name');
   my $specific_version = $self->param('version');
   my $file_path = $self->param_required('file');
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new();
+  my $broker = $self->configure_broker_from_pipeline();
   my $source = $broker->get_source;
   # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($source->parser);
@@ -86,6 +86,7 @@ sub run {
   # Copy finished index to desired location managed by Broker
   $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
   $self->warning(sprintf "Source %s,%s parsed with %d records",$source_name,$specific_version,$total_records);
+  
 }
 
 1;

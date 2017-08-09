@@ -55,14 +55,23 @@ sub run {
   my $unindexed_version = $broker->get_version_of_source($source_name,$version);
   my $file_list = $broker->get_file_list_for_version($unindexed_version);
   # This is where we can choose a different parse process to do more efficient resource management
+
+  # Spawn a job that waits for all parse jobs to complete before assigning the latest version of a source 
+  # to the newly completed indexes
+  $self->dataflow_output_id({
+    source_name => $source_name, 
+    version => $unindexed_version
+  },1);
+  # Now spawn the parse job on each file we found
   foreach my $file (@$file_list) {
-    my $message = { source_name => $source_name , version => $unindexed_version, file => $file};
-    $self->dataflow_output_id($message, 2);
-    $self->dataflow_output_id({source => $source_name, version => $version}, 1);
+    $self->dataflow_output_id({ 
+      source_name => $source_name, 
+      version => $unindexed_version, 
+      file => $file
+    }, 2);
+
   }
   return;
 }
-
-
 
 1;

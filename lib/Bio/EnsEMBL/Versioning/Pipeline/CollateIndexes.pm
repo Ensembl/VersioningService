@@ -48,11 +48,13 @@ use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
+  my $broker = $self->configure_broker_from_pipeline();
+  my $source_name = $self->param_required('source_name');
+  my $version = $self->param_required('version');
 
-  my $source_name = $self->param('source'); # This comes from an accumulator
-  my $version = $self->param('version'); # This comes from an accumulator
-
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new;
+  # Semaphore released means this job can infer the parse jobs for this source were all successful
+  # Therefore we can set the new latest version for the source
+  
   my $latest_version = $broker->get_version_of_source($source_name,$version);
   $broker->set_current_version_of_source( $source_name, $latest_version->revision);
   

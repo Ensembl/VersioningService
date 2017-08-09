@@ -57,16 +57,23 @@ sub configure_broker_from_pipeline {
   
   my %conf; # For direct setting of properties from pipeline rather than config file.
   # Extend here to import more options from pipeline input
+  my $options_set = 0;
   for my $var_name (qw/config_file scratch_space type driver db file host user pass port create/) {
     if ($self->param_is_defined($var_name)) {
       my $temp = $self->param($var_name);
       if (defined $temp) {
         $conf{$var_name} = $temp;
+        $options_set = 1;
       }
     }
   }
   
-  my $broker = Bio::EnsEMBL::Versioning::Broker->new(config => \%conf);
+  my $broker;
+  if ($options_set) {
+    $broker = Bio::EnsEMBL::Versioning::Broker->new(config => \%conf);
+  } else {
+    $broker = Bio::EnsEMBL::Versioning::Broker->new();
+  }
 
   return $broker;
 }

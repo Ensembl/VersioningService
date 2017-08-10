@@ -58,7 +58,7 @@ sub run {
   # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($source->parser);
 
-  my $file = $broker->shunt_to_fast_disk($file_path);
+  my $file = @{ $broker->shunt_to_fast_disk($file_path) };
   my $temp = $broker->temp_location.'/'.$source_name.'.index';
   my $total_records = 0;
   my $doc_store;

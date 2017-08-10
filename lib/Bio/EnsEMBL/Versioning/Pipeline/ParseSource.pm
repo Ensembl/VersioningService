@@ -52,7 +52,7 @@ sub run {
   my ($self) = @_;
   my $source_name = $self->param('source_name');
   my $specific_version = $self->param('version');
-  my $file_path = $self->param_required('file');
+  my $file_path = $self->param_required('file_to_parse');
   my $broker = $self->configure_broker_from_pipeline();
   my $source = $broker->get_source($source_name);
   # Choose parser from DB entry for this source

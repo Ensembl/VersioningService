@@ -61,7 +61,7 @@ sub run {
     $self->dataflow_output_id({ 
       source_name => $source_name, 
       version => $version, 
-      file => $file
+      file_to_parse => $file
     }, 2);
   }
 

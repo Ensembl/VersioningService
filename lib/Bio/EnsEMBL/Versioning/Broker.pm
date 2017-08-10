@@ -166,14 +166,20 @@ sub location {
 # returns a list of paths to files that have been copied to scratch space. By default the copies
 # will be cleaned up after the process terminates.
 sub shunt_to_fast_disk {
-  my ($self,$file_list,$do_not_delete) = @_;
+  my ($self,$things_to_move,$do_not_delete) = @_;
   my $conf = $self->config;
 
+  my @file_list;
+  if (ref $things_to_move eq 'ARRAY') {
+    @file_list = @$things_to_move;
+  } else {
+    push @file_list,$things_to_move;
+  }
   my $scratch = $self->scratch_space;
   my @copies;
   if (-d $scratch && -w $scratch) {
     my $tmp_dir = tempdir(DIR => $scratch, CLEANUP => !$do_not_delete);
-    foreach my $file (@$file_list) {
+    foreach my $file (@file_list) {
       my ($vol,$dir,$filename) = File::Spec->splitpath($file);
       my $copy_name = File::Spec->catfile($tmp_dir,$filename);
       copy($file,$copy_name) || Bio::EnsEMBL::Mongoose::IOException->throw("Unable to copy to scratch space for parsing $!");
@@ -183,7 +189,7 @@ sub shunt_to_fast_disk {
     return \@copies;
   } else {
     $self->log->warn('No configuration for fast disk, leaving files where they are');
-    return $file_list;
+    return $things_to_move;
   }
 }
 

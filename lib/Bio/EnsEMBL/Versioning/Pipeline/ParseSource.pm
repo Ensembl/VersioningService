@@ -54,7 +54,7 @@ sub run {
   my $specific_version = $self->param('version');
   my $file_path = $self->param_required('file');
   my $broker = $self->configure_broker_from_pipeline();
-  my $source = $broker->get_source;
+  my $source = $broker->get_source($source_name);
   # Choose parser from DB entry for this source
   my $parser_name = $broker->get_module($source->parser);
 

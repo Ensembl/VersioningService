@@ -60,16 +60,16 @@ sub run {
   foreach my $file (@$file_list) {
     $self->dataflow_output_id({ 
       source_name => $source_name, 
-      version => $unindexed_version, 
+      version => $version, 
       file => $file
     }, 2);
   }
-  
+
   # Spawn a job that waits for all parse jobs to complete before assigning the latest version of a source 
   # to the newly completed indexes
   $self->dataflow_output_id({
     source_name => $source_name, 
-    version => $unindexed_version
+    version => $version
   },1);
   return;
 }

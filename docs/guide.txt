@@ -55,8 +55,8 @@ Determine xref connections
 3. /viewer - Node application with SPARQL client for rendering graphs, not well developed
 4. /scripts/dump_all_xref_sources.pl - turns all active indexes into RDF for a single species
 
-Shema versioning
-________________
+Schema versioning
+-----------------
 
 See DBIx::Class::Migration
 

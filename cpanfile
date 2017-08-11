@@ -55,6 +55,7 @@ requires 'Search::Query::Dialect::Lucy';
 
 requires 'DBIx::Class';
 requires 'DBIx::Class::TimeStamp';
+requires 'DBIx::Class::Migration';
 requires 'MooseX::MarkAsMethods'; # needed for Moosed DBICs
 requires 'MooseX::NonMoose'; # needed for Moosed DBICs
 

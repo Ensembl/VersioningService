@@ -1,0 +1,41 @@
+{
+   "sets" : [
+      {
+         "quantity" : "all",
+         "class" : "Process"
+      },
+      {
+         "quantity" : "all",
+         "class" : "VersionRun"
+      },
+      {
+         "quantity" : "all",
+         "class" : "SourceGroup"
+      },
+      {
+         "quantity" : "all",
+         "class" : "VersionManifest"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Version"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Source"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Run"
+      }
+   ],
+   "might_have" : {
+      "fetch" : 0
+   },
+   "belongs_to" : {
+      "fetch" : 0
+   },
+   "has_many" : {
+      "fetch" : 0
+   }
+}

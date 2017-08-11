@@ -54,3 +54,12 @@ Determine xref connections
 2. Bio::EnsEMBL::Versioning::Broker - gives access to indexes of xref sources
 3. /viewer - Node application with SPARQL client for rendering graphs, not well developed
 4. /scripts/dump_all_xref_sources.pl - turns all active indexes into RDF for a single species
+
+Shema versioning
+________________
+
+See DBIx::Class::Migration
+
+https://metacpan.org/pod/distribution/DBIx-Class-Migration/lib/DBIx/Class/Migration/Tutorial/FirstMigration.pod
+
+dbic-migration --dsn "dbi:mysql:host=$HOST;port=$PORT;dbname=$DBNAME" --username $USER --password $PASS --schema_class Bio::EnsEMBL::Versioning::ORM::Schema upgrade

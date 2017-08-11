@@ -1,0 +1,609 @@
+---
+schema:
+  procedures: {}
+  tables:
+    process:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - process_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - name
+          match_type: ''
+          name: name_idx
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - run_id
+          match_type: ''
+          name: process_fk_run_id
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - run_id
+          reference_table: run
+          type: FOREIGN KEY
+      fields:
+        created_date:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: created_date
+          order: 4
+          size:
+            - 0
+        name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: name
+          order: 3
+          size:
+            - 128
+        process_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: process_id
+          order: 1
+          size:
+            - 0
+        run_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: run_id
+          order: 2
+          size:
+            - 0
+      indices:
+        - fields:
+            - run_id
+          name: process_idx_run_id
+          options: []
+          type: NORMAL
+      name: process
+      options: []
+      order: 1
+    run:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - run_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        end:
+          data_type: timestamp
+          default_value: 0000-00-00 00:00:00
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: end
+          order: 3
+          size:
+            - 0
+        run_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: run_id
+          order: 1
+          size:
+            - 0
+        start:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: start
+          order: 2
+          size:
+            - 0
+      indices: []
+      name: run
+      options: []
+      order: 2
+    source:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - source_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - name
+          match_type: ''
+          name: name_idx
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - current_version
+          match_type: ''
+          name: source_fk_current_version
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - version_id
+          reference_table: version
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - source_group_id
+          match_type: ''
+          name: source_fk_source_group_id
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - source_group_id
+          reference_table: source_group
+          type: FOREIGN KEY
+      fields:
+        active:
+          data_type: tinyint
+          default_value: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: active
+          order: 4
+          size:
+            - 0
+        created_date:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: created_date
+          order: 5
+          size:
+            - 0
+        current_version:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: current_version
+          order: 8
+          size:
+            - 0
+        downloader:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: downloader
+          order: 6
+          size:
+            - 128
+        name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: name
+          order: 2
+          size:
+            - 128
+        parser:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: parser
+          order: 7
+          size:
+            - 128
+        source_group_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: source_group_id
+          order: 3
+          size:
+            - 0
+        source_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: source_id
+          order: 1
+          size:
+            - 0
+      indices:
+        - fields:
+            - current_version
+          name: source_idx_current_version
+          options: []
+          type: NORMAL
+        - fields:
+            - source_group_id
+          name: source_idx_source_group_id
+          options: []
+          type: NORMAL
+      name: source
+      options: []
+      order: 6
+    source_group:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - source_group_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - name
+          match_type: ''
+          name: name_idx
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        created_date:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: created_date
+          order: 3
+          size:
+            - 0
+        name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: name
+          order: 2
+          size:
+            - 128
+        source_group_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: source_group_id
+          order: 1
+          size:
+            - 0
+      indices: []
+      name: source_group
+      options: []
+      order: 3
+    version:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - version_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - source_id
+          match_type: ''
+          name: version_fk_source_id
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - source_id
+          reference_table: source
+          type: FOREIGN KEY
+      fields:
+        count_seen:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: count_seen
+          order: 5
+          size:
+            - 0
+        created_date:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: created_date
+          order: 4
+          size:
+            - 0
+        index_uri:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: index_uri
+          order: 8
+          size:
+            - 255
+        record_count:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: record_count
+          order: 6
+          size:
+            - 0
+        revision:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: revision
+          order: 3
+          size:
+            - 255
+        source_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: source_id
+          order: 2
+          size:
+            - 0
+        uri:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: uri
+          order: 7
+          size:
+            - 255
+        version_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: version_id
+          order: 1
+          size:
+            - 0
+      indices:
+        - fields:
+            - source_id
+          name: version_idx_source_id
+          options: []
+          type: NORMAL
+      name: version
+      options: []
+      order: 4
+    version_run:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - version_run_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - run_id
+          match_type: ''
+          name: version_run_fk_run_id
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - run_id
+          reference_table: run
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - version_id
+          match_type: ''
+          name: version_run_fk_version_id
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - version_id
+          reference_table: version
+          type: FOREIGN KEY
+      fields:
+        run_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: run_id
+          order: 3
+          size:
+            - 0
+        version_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: version_id
+          order: 2
+          size:
+            - 0
+        version_run_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: version_run_id
+          order: 1
+          size:
+            - 0
+      indices:
+        - fields:
+            - run_id
+          name: version_run_idx_run_id
+          options: []
+          type: NORMAL
+        - fields:
+            - version_id
+          name: version_run_idx_version_id
+          options: []
+          type: NORMAL
+      name: version_run
+      options: []
+      order: 5
+  triggers: {}
+  views: {}
+translator:
+  add_drop_table: 0
+  filename: ~
+  no_comments: 0
+  parser_args:
+    sources:
+      - Process
+      - Run
+      - Source
+      - SourceGroup
+      - Version
+      - VersionRun
+  parser_type: SQL::Translator::Parser::DBIx::Class
+  producer_args: {}
+  producer_type: SQL::Translator::Producer::YAML
+  show_warnings: 0
+  trace: 0
+  version: 0.11021

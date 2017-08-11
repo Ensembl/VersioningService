@@ -116,7 +116,7 @@ sub pipeline_analyses {
 
         },
         -max_retry_count => 0, # low to prevent pointless parsing repetition until someone can get attend to the problem.
-        -hive_capacity => 10,
+        -hive_capacity => 20,
         -failed_job_tolerance => 25, # percent of jobs that can fail while allowing the pipeline to complete.
         -rc_name => 'mem',
       },

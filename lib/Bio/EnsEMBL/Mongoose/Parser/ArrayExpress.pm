@@ -193,7 +193,7 @@ sub BUILD {
     if($taxon_id){
       $self->taxon_id($taxon_id);
     }else{
-      Bio::EnsEMBL::Mongoose::IOException->throw ("Must supply source_file argument");
+      Bio::EnsEMBL::Mongoose::IOException->throw ("Must supply source_file argumen, or encountered an unexpected file name format");
     }
   }
 

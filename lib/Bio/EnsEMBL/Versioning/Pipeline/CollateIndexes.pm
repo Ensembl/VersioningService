@@ -48,19 +48,30 @@ use parent qw/Bio::EnsEMBL::Versioning::Pipeline::Base/;
 
 sub run {
   my ($self) = @_;
-  my $broker = $self->configure_broker_from_pipeline();
+
+  my $failure_state = $self->param('error_bucket');
   my $source_name = $self->param_required('source_name');
-  my $version = $self->param_required('version');
 
-  # Semaphore released means this job can infer the parse jobs for this source were all successful
-  # Therefore we can set the new latest version for the source
-  
-  my $latest_version = $broker->get_version_of_source($source_name,$version);
-  $broker->set_current_version_of_source( $source_name, $latest_version->revision);
-  
-  return;
+  if (exists $failure_state->{$source_name}) {
+    # some parse jobs failed for this source
+    # We must not finalise the output.
+    $self->warning("Not finalising $source_name indexes, because ".scalar @{ $failure_state->{$source_name} }." parse jobs failed" );
+    return; 
+  } else {
+    my $broker = $self->configure_broker_from_pipeline();
+    my $version = $self->param_required('version');
+
+    # Semaphore released without any logged errors means this job can infer the parse jobs for this source were all successful
+    # Therefore we can set the new latest version for the source
+    
+    my $latest_version = $broker->get_version_of_source($source_name,$version);
+    $broker->set_current_version_of_source( $source_name, $latest_version->revision);
+    
+    return;
+    
+  }
+
 }
-
 
 
 1;

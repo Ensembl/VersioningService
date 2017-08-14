@@ -27,48 +27,26 @@ use Bio::EnsEMBL::Hive::Utils qw/destringify/;
 sub fetch_input {
   my $self = shift;
   
-  my $check_latest = $self->jobs('CheckLatest');  
-  my $parse_source = $self->jobs('ParseSource');
-  my $download = $self->jobs('DownloadSource');
-
-  my @args = (
-    $check_latest->{failed_jobs},
-    $check_latest->{successful_jobs},
-    $download->{failed_jobs},
-    $download->{successful_jobs},
-    $parse_source->{failed_jobs},
-    $parse_source->{successful_jobs},
-    $self->failed(),
-    $self->summary($download),
-    $self->summary($parse_source)
-  );
-
   # Compose content
-  my $msg = "Your Versioning Pipeline has finished. We have:\n\n";
-
-  foreach my $analysis (qw/CheckLatest DownloadSource ParseSource/) {
-    my %errors = $self->logs($analysis);
-    
-    foreach my $key (keys %errors) {
-      $msg .= $key . $errors{$key} . "\n";
-    }
-    $msg .= sprintf(<<'MSG', @args);
-  * %d sources checked for latest version (%d failed)
-  * %d sources with downloaded file (%d failed)
-  * %d sources with parsed data (%d failed)
-%s
-
-===============================================================================
-
-Full breakdown follows ...
-
-%s
-
-%s
-
-MSG
-  }
+  my $msg = "Your Versioning Pipeline has finished. Results as follows:\n\n";
   
+  for my $job_type (qw/ScheduleSources CheckLatest DownloadSource JobPerFile CollateIndexes/) {
+    my $report = $self->jobs($job_type);
+    $msg .= sprintf "Job type %s    Succeeded: %d    Failed: %d\n",$report->{name},$report->{successful_jobs},$report->{failed_jobs};
+  }
+
+  # Check for individual parsing job errors, as reported by accu
+  my $parse_error_hashref = $self->param('error_bucket');
+  if (defined $parse_error_hashref) {
+    my %parse_errors = %{ $parse_error_hashref };
+    foreach my $source (keys %parse_errors) {
+      $msg .= "\n\n PARSING JOBS FAILED FOR $source. Index for source not updated\n";
+      foreach my $err (@{ $parse_errors{$source} }) {
+        $msg .= $err ."\n";
+      }
+    }
+  }
+
   $self->param('text', $msg);
   return;
 }
@@ -97,54 +75,6 @@ sub jobs {
     successful_jobs => scalar(grep { $_->status eq 'DONE' } @jobs),
     failed_jobs => scalar(grep { $_->status eq 'FAILED' } @jobs),
   };
-}
-
-sub failed {
-  my ($self) = @_;
-  my $failed = $self->db()->get_AnalysisJobAdaptor()->fetch_all_by_analysis_id_status(undef, 'FAILED');
-  if(! @{$failed}) {
-    return 'No jobs failed. Congratulations!';
-  }
-  my $output = <<'MSG';
-The following jobs have failed during this run. Please check your hive's error msg table for the following jobs:
-
-MSG
-  foreach my $job (@{$failed}) {
-    my $analysis = $job->analysis();
-    my $line = sprintf(q{  * job_id=%d %s(%5d) input_id='%s'}, $job->dbID(), $analysis->logic_name(), $analysis->dbID(), $job->input_id());
-    $output .= $line;
-    $output .= "\n";
-  }
-  return $output;
-}
-
-my $sorter = sub {
-  my $status_to_int = sub {
-    my ($v) = @_;
-    return ($v->status() eq 'FAILED') ? 0 : 1;
-  };
-  my $status_sort = $status_to_int->($a) <=> $status_to_int->($b);
-  return $status_sort if $status_sort != 0;
-  return $a->{input}->{source_name} cmp $b->{input}->{source_name};
-};
-
-sub summary {
-  my ($self, $data) = @_;
-  my $name = $data->{name};
-  my $underline = '~'x(length($name));
-  my $output = "$name\n$underline\n\n";
-  my @jobs = @{$data->{jobs}};
-  if(@jobs) {
-    foreach my $job (sort $sorter @{$data->{jobs}}) {
-      my $source_name = $job->{input}->{source_name};
-      $output .= sprintf("  * %s - job_id=%d %s\n", $source_name, $job->dbID(), $job->status());
-    }
-  }
-  else {
-    $output .= "No jobs run for this analysis\n";
-  }
-  $output .= "\n";
-  return $output;
 }
 
 1;

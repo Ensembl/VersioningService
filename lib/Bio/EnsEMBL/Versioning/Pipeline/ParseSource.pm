@@ -50,42 +50,53 @@ use Try::Tiny;
 
 sub run {
   my ($self) = @_;
-  my $source_name = $self->param('source_name');
-  my $specific_version = $self->param('version');
+  my $source_name = $self->param_required('source_name');
+  my $specific_version = $self->param_required('version');
   my $file_path = $self->param_required('file_to_parse');
   my $broker = $self->configure_broker_from_pipeline();
   my $source = $broker->get_source($source_name);
-  # Choose parser from DB entry for this source
-  my $parser_name = $broker->get_module($source->parser);
 
-  my ($file) = @{ $broker->shunt_to_fast_disk($file_path) };
-  my $temp = $broker->temp_location.'/'.$source_name.'.index';
-  my $total_records = 0;
-  my $doc_store;
 
-  my $parser = $parser_name->new(source_file => $file);
+  try {
+    # Choose parser from DB entry for this source
+    my $parser_name = $broker->get_module($source->parser);
+
+    my ($file) = @{ $broker->shunt_to_fast_disk($file_path) };
+    my $temp = $broker->temp_location.'/'.$source_name.'.index';
+    my $total_records = 0;
+    my $doc_store;
+
+    my $parser = $parser_name->new(source_file => $file);
+      
+    $doc_store = $broker->document_store($temp);
+    my $buffer = 0;
+
+    while($parser->read_record) {
+      my $record = $parser->record;
+      # validate record for key fields. No accession or ID makes it pretty useless to us
+      if ($record->has_taxon_id && ($record->has_accessions || defined $record->id)) {
+        $doc_store->store_record($record);
+        $buffer++;
+      }
+      if ($buffer % 10000 == 0) {
+          $doc_store->commit;
+          $doc_store = $broker->document_store($temp);
+      }
+    }
+    $total_records += $buffer;
+    $doc_store->commit;
     
-  $doc_store = $broker->document_store($temp);
-  my $buffer = 0;
+    # Copy finished index to desired location managed by Broker
+    $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
+    $self->warning(sprintf "Source %s,%s parsed with %d records",$source_name,$specific_version,$total_records);
+  } catch {
+    my $error_message = sprintf "%s - FAILED with input params [ source_name => %s, version => %s, file_to_parse => %s]\n and error %s",
+                                ref $self,$source_name,$specific_version,$file_path,$_;
 
-  while($parser->read_record) {
-    my $record = $parser->record;
-    # validate record for key fields. No accession or ID makes it pretty useless to us
-    if ($record->has_taxon_id && ($record->has_accessions || defined $record->id)) {
-      $doc_store->store_record($record);
-      $buffer++;
-    }
-    if ($buffer % 10000 == 0) {
-        $doc_store->commit;
-        $doc_store = $broker->document_store($temp);
-    }
-  }
-  $total_records += $buffer;
-  $doc_store->commit;
-  
-  # Copy finished index to desired location managed by Broker
-  $broker->finalise_index($source,$specific_version,$doc_store,$total_records);
-  $self->warning(sprintf "Source %s,%s parsed with %d records",$source_name,$specific_version,$total_records);
+    $self->warning($error_message);
+    $self->flow_output_id(2, {source => $source_name, error_bucket => $error_message});
+
+  };
   
 }
 

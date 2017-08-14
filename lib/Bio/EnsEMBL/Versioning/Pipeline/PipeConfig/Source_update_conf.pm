@@ -119,6 +119,9 @@ sub pipeline_analyses {
         -hive_capacity => 20,
         -failed_job_tolerance => 25, # percent of jobs that can fail while allowing the pipeline to complete.
         -rc_name => 'mem',
+        -flow_into => {
+          2 => ['?accu_name=error_bucket&accu_address={source}[]']
+        }
       },
       {
         -logic_name => 'CollateIndexes',

@@ -67,7 +67,8 @@ sub pipeline_analyses {
         -input_ids  => [ {} ],
         -max_retry_count  => 10,
         -flow_into  => {
-          2  => ['CheckLatest']
+          '2->A'  => ['CheckLatest'],
+          'A->1' => ['Notify']
         },
       },
 
@@ -79,9 +80,8 @@ sub pipeline_analyses {
         -hive_capacity    => 100,
         -rc_name          => 'normal',
         -flow_into  => {
-          '2->A' => ['DownloadSource'],
-          '3->A' => ['JobPerFile'],
-          'A->1' => ['Notify']
+          2 => ['DownloadSource'],
+          3 => ['JobPerFile']
         },
       },
 

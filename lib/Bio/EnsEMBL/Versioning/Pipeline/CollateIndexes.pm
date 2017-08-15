@@ -52,7 +52,7 @@ sub run {
   my $failure_state = $self->param('error_bucket');
   my $source_name = $self->param_required('source_name');
 
-  if (scalar @{ $failure_state } > 0) {
+  if ($failure_state && scalar @{ $failure_state } > 0) {
     # some parse jobs failed for this source
     # We must not finalise the output.
     $self->warning("Not finalising $source_name indexes, because ".scalar @{ $failure_state }." parse jobs failed" );

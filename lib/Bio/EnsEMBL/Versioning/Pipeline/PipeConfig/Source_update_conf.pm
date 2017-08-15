@@ -79,8 +79,9 @@ sub pipeline_analyses {
         -hive_capacity    => 100,
         -rc_name          => 'normal',
         -flow_into  => {
-          2 => ['DownloadSource'],
-          3 => ['JobPerFile'],
+          '2->A' => ['DownloadSource'],
+          '3->A' => ['JobPerFile'],
+          'A->1' => ['Notify']
         },
       },
 
@@ -112,15 +113,12 @@ sub pipeline_analyses {
       {
         -logic_name => 'ParseSource',
         -module => 'Bio::EnsEMBL::Versioning::Pipeline::ParseSource',
-        -parameters => {
-
-        },
         -max_retry_count => 0, # low to prevent pointless parsing repetition until someone can get attend to the problem.
         -hive_capacity => 20,
         -failed_job_tolerance => 25, # percent of jobs that can fail while allowing the pipeline to complete.
         -rc_name => 'mem',
         -flow_into => {
-          2 => ['?accu_name=error_bucket&accu_address={source}[]']
+          2 => ['?accu_name=error_bucket&accu_address=[]']
         }
       },
       {
@@ -128,7 +126,10 @@ sub pipeline_analyses {
         -module => 'Bio::EnsEMBL::Versioning::Pipeline::CollateIndexes',
         -max_retry_count => 0,
         -hive_capacity => 100,
-        -rc_name => 'normal'
+        -rc_name => 'normal',
+        -flow_into => {
+          2 => ['?accu_name=error_bucket&accu_address={source_name}']  
+        },
       },
 
       ####### NOTIFICATION
@@ -136,12 +137,10 @@ sub pipeline_analyses {
       {
         -logic_name => 'Notify',
         -module     => 'Bio::EnsEMBL::Versioning::Pipeline::EmailSummary',
-        -input_ids  => [ {} ],
         -parameters => {
           email   => $self->o('email'),
           subject => $self->o('pipeline_name').' has finished',
         },
-        -wait_for   => [ qw/ScheduleSources CheckLatest DownloadSource JobPerFile ParseSource CollateIndexes/ ],
       }
     
     ];

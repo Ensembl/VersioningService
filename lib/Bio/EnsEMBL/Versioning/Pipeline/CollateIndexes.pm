@@ -52,10 +52,12 @@ sub run {
   my $failure_state = $self->param('error_bucket');
   my $source_name = $self->param_required('source_name');
 
-  if (exists $failure_state->{$source_name}) {
+  if (scalar @{ $failure_state } > 0) {
     # some parse jobs failed for this source
     # We must not finalise the output.
-    $self->warning("Not finalising $source_name indexes, because ".scalar @{ $failure_state->{$source_name} }." parse jobs failed" );
+    $self->warning("Not finalising $source_name indexes, because ".scalar @{ $failure_state }." parse jobs failed" );
+    $self->dataflow_output_id({'source_name' => $source_name,
+                               'error_bucket' => $failure_state}, 2);
     return; 
   } else {
     my $broker = $self->configure_broker_from_pipeline();

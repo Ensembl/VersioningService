@@ -94,7 +94,7 @@ sub run {
                                 ref $self,$source_name,$specific_version,$file_path,$_;
 
     $self->warning($error_message);
-    $self->dataflow_output_id(2, {source => $source_name, error_bucket => $error_message});
+    $self->dataflow_output_id(2, {error_bucket => $error_message});
 
   };
   

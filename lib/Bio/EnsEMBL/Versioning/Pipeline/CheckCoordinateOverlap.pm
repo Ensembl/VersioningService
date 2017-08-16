@@ -106,15 +106,13 @@ sub run {
       next unless defined $other_dba;
       my $temp_index_folder = $mapper->create_index_from_database('species' => $species, 'dba' => $other_dba, 'analysis_name' => $source."_import");
       if(defined $temp_index_folder && -e $temp_index_folder){
-        $mapper->calculate_overlap_score('index_location' => $temp_index_folder , 'species' => $species, 'core_dba' => $core_dba, 'other_dba' => $other_dba,'rdf_writer' => $rdf_writer , 'source' => $source);
+        $mapper->calculate_overlap_score('index_location' => [$temp_index_folder] , 'species' => $species, 'core_dba' => $core_dba, 'other_dba' => $other_dba,'rdf_writer' => $rdf_writer , 'source' => $source);
       } else {
         next; # No path created implies no otherfeatures database, we can go no further
       }
     }else{
       my $indexes = $broker->get_index_by_name_and_version('UCSC');
-      foreach my $index_uri (@$indexes) {
-        $mapper->calculate_overlap_score('index_location' => $index_uri , 'species' => $species, 'core_dba' => $core_dba, 'rdf_writer' => $rdf_writer , 'source' => $source);
-      }
+      $mapper->calculate_overlap_score('index_location' => $indexes , 'species' => $species, 'core_dba' => $core_dba, 'rdf_writer' => $rdf_writer , 'source' => $source);
     }
   }
  

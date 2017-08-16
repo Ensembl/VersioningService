@@ -167,13 +167,15 @@ sub store_as_record{
 =cut
 
 
-method calculate_overlap_score (Str :$index_location, Str :$species, Object :$core_dba, Object :$other_dba, :$rdf_writer, :$source) {
+method calculate_overlap_score (ArrayRef :$index_location, Str :$species, Object :$core_dba, Object :$other_dba, :$rdf_writer, :$source) {
   
   my $taxonomizer = Bio::EnsEMBL::Mongoose::Taxonomizer->new();
   my $species_id = $taxonomizer->fetch_taxon_id_by_name($species);
 
   Bio::EnsEMBL::Mongoose::UsageException->throw("No species taxonomy ID for $species") unless $species;
-  Bio::EnsEMBL::Mongoose::UsageException->throw("Index at $index_location does not seem to be there") unless defined $index_location and -e $index_location;
+  foreach my $path (@$index_location) {
+    Bio::EnsEMBL::Mongoose::UsageException->throw("Index at $path does not seem to be there") unless defined $path and -e $path;
+  }
   
   my $lucy_query = Bio::EnsEMBL::Mongoose::Persistence::LucyQuery->new(config => { index_location => $index_location });
   

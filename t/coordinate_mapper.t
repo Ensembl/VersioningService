@@ -112,7 +112,7 @@ my $dummy_fh = IO::String->new($dummy_content);
 my $rdf_writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $dummy_fh ,config_file => "$Bin/../conf/test.conf");
 
 # test the mapper for refseq
-$mapper->calculate_overlap_score(index_location => $temp_index_folder , species => $species, core_dba => $core_dba, other_dba => $other_dba,rdf_writer => $rdf_writer , source => "refseq");
+$mapper->calculate_overlap_score(index_location => [$temp_index_folder] , species => $species, core_dba => $core_dba, other_dba => $other_dba,rdf_writer => $rdf_writer , source => "refseq");
 #print Dumper($dummy_content);
 
 use RDF::Trine;
@@ -153,7 +153,7 @@ foreach my $result (@sparql_results) {
 # # test the mapper for ucsc
 # Rest triplestore to prevent contamination from previous testing
 $store = RDF::Trine::Store::Memory->new();
-$mapper->calculate_overlap_score(index_location => $index_path , species => $species, core_dba => $core_dba, rdf_writer => $rdf_writer_ucsc , source => "ucsc");
+$mapper->calculate_overlap_score(index_location => [$index_path] , species => $species, core_dba => $core_dba, rdf_writer => $rdf_writer_ucsc , source => "ucsc");
 $model = RDF::Trine::Model->new($store);
 $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ucsc/', $dummy_content_ucsc, $model);
 

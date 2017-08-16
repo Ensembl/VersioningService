@@ -111,8 +111,10 @@ sub run {
         next; # No path created implies no otherfeatures database, we can go no further
       }
     }else{
-      my $index_uri = $broker->get_index_by_name_and_version('UCSC');
-      $mapper->calculate_overlap_score('index_location' => $index_uri , 'species' => $species, 'core_dba' => $core_dba, 'rdf_writer' => $rdf_writer , 'source' => $source);
+      my $indexes = $broker->get_index_by_name_and_version('UCSC');
+      foreach my $index_uri (@$indexes) {
+        $mapper->calculate_overlap_score('index_location' => $index_uri , 'species' => $species, 'core_dba' => $core_dba, 'rdf_writer' => $rdf_writer , 'source' => $source);
+      }
     }
   }
  

@@ -107,13 +107,13 @@ is($broker->get_current_version_of_source('UniProt/SWISSPROT')->revision, '2015_
 
 # Fetch the location of the index we've just 'created'
 
-my $index_uri = $broker->get_index_by_name_and_version('UniProt/SWISSPROT','2015_06');
-my $other_index_uri = $broker->get_index_by_name_and_version('UniProt/SWISSPROT');
+my $index_uris = $broker->get_index_by_name_and_version('UniProt/SWISSPROT','2015_06');
+my $other_index_uris = $broker->get_index_by_name_and_version('UniProt/SWISSPROT');
 # This changes ever since it became possible to return multiple indexes.
-ok($index_uri,'Index URI returned');
-ok($other_index_uri,'Index returned via current');
+ok($index_uris,'Index URI returned');
+ok($other_index_uris,'Index returned via current');
 
-is_deeply($index_uri,$other_index_uri,'Same URI sets retrieved by different routes');
+is_deeply($index_uris,$other_index_uris,'Same URI sets retrieved by different routes');
 
 my @sources = @{ $broker->get_active_sources };
 ok(scalar @sources == 2, 'Found two active sources');
@@ -153,4 +153,6 @@ cmp_ok($broker->get_current_version_of_source('MIM')->record_count,'==', 200, 'R
 
 my $index_collection = $broker->get_current_version_of_source('MIM')->get_all_index_paths;
 cmp_ok(scalar @$index_collection, '==', 2, 'Two paths returned for two sub-indexes of MIM version');
+
+
 done_testing;

@@ -64,7 +64,7 @@ sub fetch_input {
 
   my $full_path = File::Spec->catfile($base_path,'xref',$self->param('run_id'),$species,'xref_rdf_dumps','gene_model','/');
   if (!-d $full_path) {
-    make_path($full_path) || "Failed to create path: $gene_model_path. $!";
+    make_path($full_path) || die "Failed to create path: $full_path. $!";
   }
   $self->param("ensembl_model_path",$full_path);
 }

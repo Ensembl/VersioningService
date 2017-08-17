@@ -55,18 +55,26 @@ sub _configure_search_engine {
   if (ref $indexes eq 'ARRAY') {
 
     if (scalar @$indexes > 1) {
-      my @searchers = map { Lucy::Search::IndexSearcher->new(index => $_)} @$indexes;
+      my @searchers;
+      foreach my $index (@$indexes) {
+        if (!defined $index) {
+          Bio::EnsEMBL::SearchEngineException->throw('Index path not defined. Disaster! Received '.join ',',@$indexes);
+        }
+        push @searchers,Lucy::Search::IndexSearcher->new(index => $index); 
+      }
       return Lucy::Search::PolySearcher->new(
         searchers => \@searchers,
         schema => $searchers[0]->get_schema
       );
     } elsif ( scalar @$indexes == 1 ) {
+      # PolySearcher is less efficient than a single one, so remove it for single index cases
       return Lucy::Search::IndexSearcher->new( index => $indexes->[0] );
     } else {
       Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Empty array of index paths, cannot query no indexes');
     }
     
   } elsif (-d $indexes) {
+    # When given a single argument it should be a path to single index
     return Lucy::Search::IndexSearcher->new( index => $indexes );
   } else {
     Bio::EnsEMBL::Mongoose::SearchEngineException->throw('No index location provided for search engine');

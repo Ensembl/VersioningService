@@ -87,7 +87,6 @@ sub run {
     
     my %search_conf = (
       output_format => 'RDF',
-      storage_engine_conf_file => $self->param('broker_conf'),
       species => $species_name,
       handle => $fh,
     );

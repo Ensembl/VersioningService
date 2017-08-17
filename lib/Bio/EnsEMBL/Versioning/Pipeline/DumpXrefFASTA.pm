@@ -84,7 +84,8 @@ sub run {
   my $search = Bio::EnsEMBL::Mongoose::IndexSearch->new(
     handle => $fh, 
     output_format => 'FASTA', 
-    species => $self->param('species')
+    species => $self->param('species'),
+    writer_conf => $self->broker_conf
   );
   $search->work_with_run(source => $source,run_id => $self->param('run_id'));
 

@@ -89,6 +89,7 @@ sub run {
       output_format => 'RDF',
       species => $species_name,
       handle => $fh,
+      writer_conf => { $self->param('broker_conf') }
     );
     if ($source =~ /RefSeq/i) {
       my $gene_model_path = File::Spec->join( $base_path, 'xref',$run_id,$species,'xref_rdf_dumps','gene_model','/'); # for RefSeq links to genes and proteins

@@ -251,7 +251,7 @@ method work_with_index ( Str :$source, Str :$version? ) {
   # unless ($self->versioning_service_ready() ) { Bio::EnsEMBL::Mongoose::SearchEngineException->throw('Versioning service not initialised.') }
   my $paths = $self->versioning_service->get_index_by_name_and_version($source,$version);
   # TODO branch to polysearcher here if necessary
-  $self->log->debug(sprintf "Switching to index: %s from source %s and version %s",join (',',$paths), $source, $version);
+  $self->log->debug(sprintf "Switching to index: %s from source %s and version %s",join (',',@$paths), $source, $version);
   $self->index_conf({ index_location => $paths, source => $source, version => $version});
   $self->storage_engine();
   $self->source($source);

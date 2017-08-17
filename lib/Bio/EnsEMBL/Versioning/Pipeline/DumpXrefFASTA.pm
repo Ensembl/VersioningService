@@ -85,7 +85,7 @@ sub run {
     handle => $fh, 
     output_format => 'FASTA', 
     species => $self->param('species'),
-    writer_conf => $self->broker_conf
+    writer_conf => { LOD_location => "$ENV{MONGOOSE}/conf/xref_LOD_mapping.json" };
   );
   $search->work_with_run(source => $source,run_id => $self->param('run_id'));
 

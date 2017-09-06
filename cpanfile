@@ -17,6 +17,7 @@ requires 'Sereal';
 requires 'Digest::CRC';
 requires 'Algorithm::Diff', '>= 1.1903';
 requires 'Proc::Background';
+requires 'File::Slurp';
 
 # Moose dependencies
 

@@ -90,8 +90,13 @@ sub next_result {
 sub recurse_xrefs {
   my $self = shift;
   my $id = shift;
+  my $graph_name = shift;
+  if ($graph_name) {
+    $graph_name = 'FROM <'.$graph_name.'>';
+  } else {
+    $graph_name = $self->generate_graph_name;
+  }
   my $result_hash = {};
-  my $graph_name = $self->generate_graph_name;
   my $query = sprintf qq(%s\nSELECT DISTINCT ?xref_label %s {
     ?o dc:identifier "%s" .
     ?o term:refers-to+ ?e .

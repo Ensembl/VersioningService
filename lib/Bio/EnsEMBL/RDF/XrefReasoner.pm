@@ -216,7 +216,12 @@ sub pretty_print_stats {
 sub extract_transitive_xrefs_for_id {
   my $self = shift;
   my $id = shift;
-  return $self->triplestore->sparql->recurse_xrefs($id);
+  my $graph_url = $self->triplestore->graph_url;
+  my $condensed_graph = $graph_url;
+  $condensed_graph =~ s/xref$//;
+  $condensed_graph .= 'condensed';
+
+  return $self->triplestore->sparql->recurse_xrefs($id,$condensed_graph);
 }
 
 

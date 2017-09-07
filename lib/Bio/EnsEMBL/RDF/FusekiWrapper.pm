@@ -72,10 +72,10 @@ sub start_server {
   unless (defined $ENV{FUSEKI_HOME}) { Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot run Fuseki without FUSEKI_HOME environment variable set")}
   $self->args->{'-jar'} = $ENV{FUSEKI_HOME}.'fuseki-server.jar';
   if ($self->debug) {
-    $self->tail_end(sprintf "--update --jetty-config=jetty.xml --port %s --loc=%s %s ",$self->port,$self->disk_location,'/'.'xref');
+    $self->tail_end(sprintf "--update --port %s --loc=%s %s ",$self->port,$self->disk_location,'/'.'xref');
   }
   else {
-    $self->tail_end(sprintf "--update --jetty-config=jetty.xml --port %s --mem %s ",$self->port,'/'.'xref');
+    $self->tail_end(sprintf "--update --port %s --mem %s ",$self->port,'/'.'xref');
   }
   # print "Fuseki options: ".join ',',$self->unpack_args,"\n";
   try {

@@ -66,7 +66,7 @@ sub load_alignments {
   my $self = shift;
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs
   my @files = read_dir($alignment_path, prefix => 1);
-  @files = grep { /^RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
+  @files = grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
   printf "Loading ALIGNMENT files: %s\n",join(',',@files);
   $self->triplestore->load_data([@files]);
 }
@@ -82,13 +82,15 @@ sub nominate_transitive_xrefs {
   print "Putting connected xrefs from $graph_url into $condensed_graph\n\n";
   # Start and end URIs are cosntrained to be genes by the SO_transcribed_to relation. Otherwise we xrefs for transcripts to any other type, e.g. ncbigene IDs
   my $sparql_select_best = "
-    SELECT ?ens_uri ?link_type ?score ?other_uri FROM <$graph_url> WHERE {
+    SELECT ?ens_uri ?ens_label ?link_type ?score ?other_uri ?other_label FROM <$graph_url> WHERE {
       ?ens_gene obo:SO_transcribed_to ?ens_uri .
       ?ens_uri term:refers-to ?xref .
+      ?ens_uri dc:identifier ?ens_label .
       ?xref rdf:type ?link_type ;
             term:refers-to ?other_uri .
       OPTIONAL { ?xref term:score ?score }
       ?other_uri ^obo:SO_transcribed_to ?another_gene .
+      ?other_uri dc:identifier ?other_label
     }
     ORDER BY ?ens_uri DESC(?link_type) DESC(?score)
     ";
@@ -117,14 +119,14 @@ sub pick_winners {
       push @candidates,$iterator->next;
       $original_total++;
     }
-    if (@candidates) {
-    print "####################\n";
-    print "-\n";
-    for my $thing (@candidates) {
-      no warnings 'uninitialized';
-      printf "ens_uri %s\nscore %s\nlink type %s\nother_uri %s\n",$thing->{ens_uri},$thing->{score},$thing->{link_type},$thing->{other_uri};
-    }
-    print "####################\n";
+    # if (@candidates) {
+    # print "####################\n";
+    # print "-\n";
+    # for my $thing (@candidates) {
+    #   no warnings 'uninitialized';
+    #   printf "ens_uri %s\nscore %s\nlink type %s\nother_uri %s\n",$thing->{ens_uri},$thing->{score},$thing->{link_type},$thing->{other_uri};
+    # }
+    # print "####################\n";
   }
     # Examine the competition for equal contenders
     my $candidate = $first;
@@ -133,8 +135,10 @@ sub pick_winners {
     my $best_type = $candidate->{link_type}->value;
     $best_score = $candidate->{score}->value if exists $candidate->{score};
     my $our_uri = $candidate->{ens_uri}->value;
+    my $our_label = $candidate->{ens_label}->value;
     my $other_uri = $candidate->{other_uri}->value;
-    push @winners,[$our_uri,$other_uri]; # Sorted results means top one is always a winner
+    my $other_label = $candidate->{other_label}->value;
+    push @winners,[$our_uri,$our_label,$other_uri,$other_label]; # Sorted results means top one is always a winner
     $selected_items++;
     # Find any joint-winners
     while (my $candidate = shift @candidates) {
@@ -143,7 +147,7 @@ sub pick_winners {
         || ( exists $candidate->{score} && $candidate->{score}->value < $best_score) # scores must be equal
       );
       
-      push @winners,[$our_uri,$candidate->{other_uri}->value];
+      push @winners,[$our_uri,$our_label,$candidate->{other_uri}->value,$candidate->{other_label}->value];
       $selected_items++;
     }
     # And reset for the next ID in the buffer.
@@ -173,7 +177,7 @@ sub bulk_insert {
     my $hit;
     my $triples = '';
     while ($hit = shift @$hit_collection ) {
-      $triples .= sprintf "<%s> term:refers-to <%s> .\n <%s> term:refers-to <%s> .\n", $hit->[0],$hit->[1],$hit->[1],$hit->[0]; # Ensembl points to Refseq and the converse
+      $triples .= sprintf qq(<%s> term:refers-to <%s> .\n <%s> term:refers-to <%s> .\n <%s> dc:identifier "%s" .\n <%s> dc:identifier "%s" .\n), $hit->[0],$hit->[2],$hit->[2],$hit->[0],$hit->[0],$hit->[1],$hit->[2],$hit->[3]; # Ensembl points to Refseq and the converse
       $j++;
       last if $j == 5000;
       $new_links++;

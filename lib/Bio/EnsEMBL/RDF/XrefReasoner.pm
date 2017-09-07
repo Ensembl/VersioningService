@@ -114,33 +114,34 @@ sub pick_winners {
     my $first = $iterator->next;
     $original_total++;
     my $ens_uri = $first->{ens_uri}->value;
-
+    # Collect all results pertaining to the same ID into a candidate buffer
     while (!$iterator->finished && $iterator->peek->{ens_uri}->value eq $ens_uri) {
       push @candidates,$iterator->next;
       $original_total++;
     }
-    # if (@candidates) {
-    # print "####################\n";
-    # print "-\n";
-    # for my $thing (@candidates) {
-    #   no warnings 'uninitialized';
-    #   printf "ens_uri %s\nscore %s\nlink type %s\nother_uri %s\n",$thing->{ens_uri},$thing->{score},$thing->{link_type},$thing->{other_uri};
-    # }
-    # print "####################\n";
-  }
+    # Debug
+    if (@candidates) {
+      print "####################\n";
+      printf "Considering: %s\t%s\t%s\t%s\n",$first->{ens_label}->value, $first->{link_type}->value, ( exists $first->{score}) ? $first->{score}->value : '-',$first->{other_label}->value;
+      print "-\n";
+      for my $thing (@candidates) {
+        no warnings 'uninitialized';
+        printf "ens_uri %s\tscore %s\tlink type %s\tother_uri %s\n",$thing->{ens_label}->value, ( exists $thing->{score}) ? $thing->{score}->value : '-',$thing->{link_type}->value,$thing->{other_label}->value;
+      }
+      print "####################\n";
+    }
     # Examine the competition for equal contenders
-    my $candidate = $first;
     # value takes the literal and extracts the value from its xsd:datatype and any quotes
     my $best_score;
-    my $best_type = $candidate->{link_type}->value;
-    $best_score = $candidate->{score}->value if exists $candidate->{score};
-    my $our_uri = $candidate->{ens_uri}->value;
-    my $our_label = $candidate->{ens_label}->value;
-    my $other_uri = $candidate->{other_uri}->value;
-    my $other_label = $candidate->{other_label}->value;
+    my $best_type = $first->{link_type}->value;
+    $best_score = $first->{score}->value if exists $first->{score};
+    my $our_uri = $first->{ens_uri}->value;
+    my $our_label = $first->{ens_label}->value;
+    my $other_uri = $first->{other_uri}->value;
+    my $other_label = $first->{other_label}->value;
     push @winners,[$our_uri,$our_label,$other_uri,$other_label]; # Sorted results means top one is always a winner
     $selected_items++;
-    # Find any joint-winners
+    # Find any joint winners
     while (my $candidate = shift @candidates) {
       last if (
            $candidate->{link_type}->value ne $best_type # types must be the same to join the bandwagon

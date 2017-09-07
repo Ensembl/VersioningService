@@ -120,7 +120,7 @@ sub pick_winners {
       $original_total++;
     }
     # Debug
-    if (@candidates) {
+    if (@candidates > 0) {
       print "####################\n";
       printf "Considering: %s\t%s\t%s\t%s\n",$first->{ens_label}->value, $first->{link_type}->value, ( exists $first->{score}) ? $first->{score}->value : '-',$first->{other_label}->value;
       print "-\n";
@@ -152,6 +152,7 @@ sub pick_winners {
       $selected_items++;
     }
     # And reset for the next ID in the buffer.
+    @candidates = ();
   }
   
   printf "Selected %s best xrefs from %s overlaps, checksums and alignment matches\n",$selected_items,$original_total;

@@ -83,6 +83,7 @@ sub run {
   }
   
   my $fh;
+  my $transitive_fh;
   my $gene_fh;
   my @final_source_list = map { $_->name } @$valid_source_list;
   foreach my $source (@final_source_list) {

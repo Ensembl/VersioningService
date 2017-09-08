@@ -62,6 +62,16 @@ sub load_general_data {
   $self->triplestore->load_data([@paths]);
 }
 
+sub load_transitive_data {
+  my $self = shift;
+  my $paths = shift;
+  my $graph_url = $self->triplestore->graph_url;
+  my $condensed_graph = $graph_url;
+  $condensed_graph =~ s/xref$//;
+  $condensed_graph .= 'condensed';
+  $self->triplestore->load_data($paths,$condensed_graph);
+}
+
 sub load_alignments {
   my $self = shift;
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs

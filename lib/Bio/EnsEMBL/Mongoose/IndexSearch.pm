@@ -180,6 +180,19 @@ sub get_records {
         }
     }
 }
+sub get_slimline_records {
+    my $self = shift;
+    my $fh = shift;
+    my $source = $self->source();
+
+    $self->storage_engine->query_parameters($self->query_params);
+    $self->storage_engine->query();
+    
+    while (my $record = $self->next_record) {
+        next unless ($self->custom_filter && $self->include_record($record)) || !$self->custom_filter;
+        $self->writer->print_slimline_record($record, $source, $fh);
+    }
+}
 
 sub get_records_by_species_name {
     my $self = shift;

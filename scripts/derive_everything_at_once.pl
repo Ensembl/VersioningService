@@ -22,6 +22,7 @@ use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use Time::HiRes qw/gettimeofday tv_interval/;
 use Bio::EnsEMBL::RDF::XrefReasoner;
 use Bio::EnsEMBL::Registry;
+use File::Slurp;
 
 my $species = shift;
 my $ttl_path = shift;
@@ -32,15 +33,20 @@ my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 1);
 # PHASE 1, process the coordinate overlaps into default model
 
 my $overlap_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','coordinate_overlap','refseq_coordinate_overlap.ttl');
-my $refseq_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','RefSeq.ttl');
+# my $refseq_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','RefSeq.ttl');
 my $e_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_model','ensembl.ttl');
 my $refseq_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_model','RefSeq.ttl');
 my $checksum_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','checksum','RefSeq_checksum.ttl');
 my $alignment_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','alignment');
 
+my @loadables = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps', prefix => 1));
+@loadables = grep { /.ttl/ } @loadables;
+my @transitive = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps','transitive', prefix => 1));
+
 my $start_time = [gettimeofday];
-$reasoner->load_general_data($overlap_source,$refseq_source,$e_gene_model,$refseq_gene_model,$checksum_source);
+$reasoner->load_general_data($overlap_source,$e_gene_model,$refseq_gene_model,$checksum_source,@loadables);
 $reasoner->load_alignments($alignment_source);
+$reasoner->load_transitive_data(\@transitive);
 my $done_time = tv_interval($start_time,[gettimeofday]);
 print "Alignments, checksums, overlaps and gene model loaded\n";
 print "Loaded all data in $done_time seconds\n";

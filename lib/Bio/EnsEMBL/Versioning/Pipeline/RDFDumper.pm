@@ -74,9 +74,12 @@ sub run {
   my $species_name = Bio::EnsEMBL::Mongoose::Taxonomizer->clean_species_name($species);
   
   my $full_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps");
-  
+  my $transitive_path = File::Spec->join( $base_path, 'xref', $run_id, $species, "xref_rdf_dumps",'transitive');
   if (!-d $full_path) {
     make_path $full_path or die "Failed to create path: $full_path. $!";
+  }
+  if (!-d $transitive_path) {
+    make_path $transitive_path or die "Failed to create path: $transitive_path. $!";
   }
   
   my $fh;
@@ -84,7 +87,7 @@ sub run {
   my @final_source_list = map { $_->name } @$valid_source_list;
   foreach my $source (@final_source_list) {
     $fh = IO::File->new(File::Spec->catfile($full_path,$source.'.ttl'), 'w') || die "Cannot write to $full_path: $!";
-    
+    $transitive_fh = IO::File->new(File::Spec->catfile($transitive_path,$source.'.ttl'), 'w') || die "Cannot write to $transitive_path: $!";
     my %search_conf = (
       output_format => 'RDF',
       species => $species_name,
@@ -109,11 +112,20 @@ sub run {
       
       $searcher->work_with_index(source => $source, version => $version->revision);
       $searcher->get_records();
-      $fh->close;    
+      $searcher->get_slimline_records($transitive_fh); # tell it to use another function
+      $fh->close;
+      $transitive_fh->close;
     } catch {
       $self->warning('Warning ' . $_. ' while dumping RDF for source '.$source);
       $fh->close;
     };
+    # Now dumping twice per iteration, once to the "condensed" transitive graph of Direct-type xrefs
+    # This could be done much more cleanly if the filehandle can be 
+    # reset on $searcher and the nested RDF writer to print somewhere else. Currently 
+    # the writer is configured to use a filehandle at $searcher instantiation, 
+    # and not dynamically as it needs to be here. As a result I've had to clone
+    # get_records to give a corresponding get_slimline_records()
+
 }
 
   # Dump generic labels to attach to all possible sources for presentation. e.g. purl.uniprot.org/uniprot rdfs:label "Uniprot"

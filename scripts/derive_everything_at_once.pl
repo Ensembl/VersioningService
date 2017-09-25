@@ -22,7 +22,7 @@ use Bio::EnsEMBL::Mongoose::Serializer::RDF;
 use Time::HiRes qw/gettimeofday tv_interval/;
 use Bio::EnsEMBL::RDF::XrefReasoner;
 use Bio::EnsEMBL::Registry;
-use File::Slurp;
+use File::Slurper 'read_dir';
 
 my $species = shift;
 my $ttl_path = shift;
@@ -39,9 +39,9 @@ my $refseq_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_mod
 my $checksum_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','checksum','RefSeq_checksum.ttl');
 my $alignment_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','alignment');
 
-my @loadables = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps'), prefix => 1);
+my @loadables = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps'));
 @loadables = grep { /.ttl/ } @loadables;
-my @transitive = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps','transitive'), prefix => 1);
+my @transitive = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps','transitive'));
 
 my $start_time = [gettimeofday];
 $reasoner->load_general_data($overlap_source,$e_gene_model,$refseq_gene_model,$checksum_source,@loadables);

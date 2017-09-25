@@ -34,7 +34,7 @@ a formal reasoner, but the name seemed fitting.
 package Bio::EnsEMBL::RDF::XrefReasoner;
 
 use Moose;
-use File::Slurp;
+use File::Slurper 'read_dir';
 use Bio::EnsEMBL::RDF::FusekiWrapper;
 use Bio::EnsEMBL::Mongoose::DBException;
 
@@ -75,7 +75,7 @@ sub load_transitive_data {
 sub load_alignments {
   my $self = shift;
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs
-  my @files = read_dir($alignment_path, prefix => 1);
+  my @files = read_dir($alignment_path);
   @files = grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
   printf "Loading ALIGNMENT files: %s\n",join(',',@files);
   $self->triplestore->load_data([@files]);

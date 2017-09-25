@@ -104,7 +104,7 @@ sub load_data {
       my $response = system(@commands);
       # if response is favourable?
       if ($response != 0) {
-        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data from $file into Fuseki failed with error $?");    
+        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data from $file into Fuseki failed with error $?, $!");    
       }
     }
   } catch {

@@ -110,7 +110,7 @@ has preset_methods => (
 sub get_method_by_species_and_source {
   my ($self,$species, $source) = @_;
   my $method;
-  if ($self->are_you_there($source) ) {
+  if ($self->are_you_there(lc $source) ) {
     # species-specific mode choice
     my $methods = $self->get_methods_by_source(lc $source);
     if (exists $methods->{$species}) {

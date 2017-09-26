@@ -48,7 +48,7 @@ has reader => (
 has bad_list => (
     isa => 'HashRef',
     is => 'ro',
-    default => sub{ {genetree => 1, go => 1, ensembl => 1 } },
+    default => sub{ {genetree => 1, go => 1, orthodb => 1 } },
     traits => ['Hash'],
     handles => {
         exclude => 'exists'
@@ -250,6 +250,10 @@ sub xrefs {
                 if ($reader->localName eq 'property' && $reader->getAttribute('type') eq 'evidence') {
                     $evidence = $reader->getAttribute('value');
                     ($code,$creator) = $evidence =~ /(\w+:)(.*)/; # code not currently captured in xref record
+                }
+                # Hack to replace Uniprot links to Ensembl transcripts, with links to the Ensembl protein they referenced.
+                if ($source eq 'Ensembl' && $reader->localName eq 'property' && $reader->getAttribute('type') eq 'protein sequence ID') {
+                    $id = $reader->getAttribute('value');
                 }
             }
             my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);

@@ -35,8 +35,8 @@ extends 'Bio::EnsEMBL::Versioning::Pipeline::FTPDownloader';
 
 sub BUILD {
   my $self = shift;
-  $self->uri('ftp://ftp.ebi.ac.uk/pub/databases/genenames/vgnc/tsv/chimpanzee/');
-  $self->file_pattern('chimpanzee_vgnc_gene_set_All.txt');
+  $self->uri('ftp://ftp.ebi.ac.uk/pub/databases/genenames/vgnc/tsv/');
+  $self->file_pattern('vgnc_gene_set_All.txt.gz');
 }
 # Version is a timestamp of now
 sub get_version {

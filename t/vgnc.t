@@ -12,7 +12,7 @@ use TestDefaults;
 use_ok 'Bio::EnsEMBL::Mongoose::Parser::VGNC';
 
 my $reader =
-  Bio::EnsEMBL::Mongoose::Parser::VGNC->new(source_file => "$ENV{MONGOOSE}/t/data/chimpanzee_vgnc_gene_set_All.txt");
+  Bio::EnsEMBL::Mongoose::Parser::VGNC->new(source_file => "$ENV{MONGOOSE}/t/data/vgnc_gene_set_All.txt.gz");
 isa_ok($reader, 'Bio::EnsEMBL::Mongoose::Parser::VGNC');
 
 my $num_of_records = 0;
@@ -22,19 +22,20 @@ $reader->read_record;
 my $record = $reader->record;
 
 ++$num_of_records;
-is($record->id, 'VGNC:3019', 'First record ID');
-is($record->primary_accession, 'VGNC:3019', 'First record accession');
-is($record->display_label, 'ALKAL1', 'First record display label');
-is($record->entry_name, 'ALK and LTK ligand 1', 'First record gene name');
-is($record->taxon_id, 9598, 'Correct tax id');
-cmp_deeply($record->synonyms, [ 'FAM150A' ], 'First record synonyms');
+is($record->taxon_id, '9598', 'ID is from chimp');
+is($record->id, 'VGNC:8530', 'First record ID');
+is($record->primary_accession, 'VGNC:8530', 'First record accession');
+is($record->display_label, 'ELOA', 'First record display label');
+is($record->entry_name, 'elongin A', 'First record gene name');
+
+cmp_deeply($record->synonyms, [ 'TCEB3' ], 'First record synonyms');
 my $xrefs = $record->xref;
 my $expected_xrefs = [ bless( {
-			       'source' => 'Ensembl',
-			       'creator' => 'VGNC',
-			       'active' => 1,
-			       'id' => 'ENSPTRG00000024172'
-			      }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
+             'source' => 'Ensembl',
+             'creator' => 'VGNC',
+             'active' => 1,
+             'id' => 'ENSPTRG00000000335'
+            }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ];
 cmp_deeply($xrefs, $expected_xrefs, "First record xrefs");
 my $xref = shift $xrefs;
 isa_ok($xref, "Bio::EnsEMBL::Mongoose::Persistence::RecordXref");
@@ -46,18 +47,18 @@ for (1 .. 49) {
 }
 
 my $expected = {
-		id => 'VGNC:5662',
-		display_label => 'ABCA3',
-		entry_name => 'ATP binding cassette subfamily A member 3',
-		synonyms => undef,
-		taxon_id => 9598,
-		xrefs => [ bless( {
-				   'source' => 'Ensembl',
-				   'creator' => 'VGNC',
-				   'active' => 1,
-				   'id' => 'ENSPTRG00000007647'
-				  }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
-	       };
+    id => 'VGNC:8084',
+    display_label => 'NUCKS1',
+    entry_name => 'nuclear casein kinase and cyclin dependent kinase substrate 1',
+    synonyms => undef,
+    taxon_id => 9598,
+    xrefs => [ bless( {
+       'source' => 'Ensembl',
+       'creator' => 'VGNC',
+       'active' => 1,
+       'id' => 'ENSPTRG00000001904'
+      }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ) ]
+           };
 
 my $got = $reader->record;
 

@@ -182,6 +182,9 @@ method calculate_overlap_score (ArrayRef :$index_location, Str :$species, Object
   my $sa = $core_dba->get_SliceAdaptor();
   my $chromosomes_ens = $sa->fetch_all('chromosome', undef, 1);
   
+  my %all_transcript_result;
+  my %all_tl_transcript_result;
+  my %all_mapping_result;
   # get all chromosomes from ensembl core db and iterate through them
   foreach my $chromosome_ens (@{$chromosomes_ens}) {
     my $chr_name = $chromosome_ens->seq_region_name();
@@ -232,21 +235,62 @@ method calculate_overlap_score (ArrayRef :$index_location, Str :$species, Object
             $id = $hit->{id};
             $transcript_result{$id} = $score;
             $tl_transcript_result{$id} = $tl_score;
-            # print STDERR "Exon match score for $id:".$score."\n";
-            # print STDERR "Translateable Exon match score for $id:".$tl_score."\n";
+
+            if($score > 0.75){
+              $all_transcript_result{$id}{$transcript_ens->stable_id} = $score;
+            }
+            if($tl_score > 0.75){
+              $all_tl_transcript_result{$id}{$transcript_ens->stable_id} = $tl_score;
+            }
+
            } #end of foreach hits
 
-        my ($best_score, $best_id) = $self->get_best_score_id(\%transcript_result, \%tl_transcript_result);
-        
-        # If a best match was defined for the transcript, store it as an "overlap" xref for the ensembl transcript
-        if ($best_id) {
-          $self->write_to_rdf_store($transcript_ens->stable_id, $best_id, $best_score, $species_id, $rdf_writer, $source, $core_dba, $other_dba);
-        }
       }
-     
+
      }#end of whilefor $chromosome_of
   } #end of outer foreach for $chromosome 
+
+  while ( my ($refid, $ensids) = each( %all_transcript_result ) ) {
+
+   my $ens_stable_id = (keys  %{$all_transcript_result{$refid} })[0];
+   my $best_score = $all_transcript_result{$refid}{$ens_stable_id};
+
+   $self->write_to_rdf_store($ens_stable_id, $refid, $best_score, $species_id, $rdf_writer, $source, $core_dba, $other_dba);
+  }
+  ##Dump results
+
 } #end of the routine
+
+sub compute_assignments{
+  my $self = shift;
+  my ($all_transcript_result, $all_tl_transcript_result) = @_;
+
+  while ( my ($refid, $ensids) = each( %$all_transcript_result ) ) {
+
+    #if there are more than one ensembl transcript assignment to one refseq id, then choose the best one based on the score
+    #if the score is the same then decide based on the translated score for that particular ensembl transcript
+    if(scalar(keys %$ensids) > 1){
+
+      my $highest_score_id =  (sort { $ensids->{$b} <=> $ensids->{$a} } keys(%$ensids) )[0];
+
+      if(exists $all_tl_transcript_result->{$refid}){
+        my %transcript_result;
+        my %tl_transcript_result;
+
+        %transcript_result = map { $_, $all_transcript_result->{$refid}->{$_} } keys %{$all_transcript_result->{$refid}};
+        %tl_transcript_result = map { $_, $all_tl_transcript_result->{$refid}->{$_} } keys %{$all_tl_transcript_result->{$refid}};
+
+        my ($best_score, $best_id) = $self->get_best_score_id(\%transcript_result, \%tl_transcript_result);
+        $all_transcript_result->{$refid} = { $best_id => $best_score};
+      }else{
+        $all_transcript_result->{$refid} = { $highest_score_id => $ensids->{$highest_score_id}};
+      }
+    }
+  } #end while
+
+
+return ($all_transcript_result, $all_tl_transcript_result);
+}
 
 
 sub calculate_score {
@@ -300,7 +344,7 @@ sub calculate_score {
 sub get_best_score_id{
   my $self = shift;
   my ($transcript_result, $tl_transcript_result) = @_;
-  
+
   my $transcript_score_threshold = 0.75;
   my $tl_transcript_score_threshold = 0.75;
   my $best_score = 0;
@@ -310,15 +354,16 @@ sub get_best_score_id{
 
   my @options = sort { $b->[2] <=> $a->[2] || $b->[1] <=> $a->[1] }
                 grep { $_->[1] > $tl_transcript_score_threshold || $_->[2] > $transcript_score_threshold }
-                map { [$_, $tl_transcript_result->{$_}, $transcript_result->{$_}] } 
+                map { [$_, $tl_transcript_result->{$_} || 0, $transcript_result->{$_} || 0] }
                 keys %$transcript_result;
   return unless @options;
 
-  ($best_id,$tl_exon_score,$exon_score) = @{pop @options};
+  ($best_id,$tl_exon_score,$exon_score) = @{shift @options};
   $best_score = $exon_score;
 
   return ($best_score, $best_id);
 }
+
 
 # Write the overlap xrefs to rdf store
 sub write_to_rdf_store{

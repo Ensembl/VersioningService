@@ -185,6 +185,42 @@ foreach my $result (@sparql_results) {
   }
 }
 
+# Test get_best_score_id
+#If there is a stalemate, choose the one with the best translateable exon overlap score
+my %transcript_result = ("NM1" => 0.98, "NM2" => 0.98);
+my %tl_transcript_result = ("NM2" => 1);
+
+#We should expect NM2
+my ($best_score, $best_id)  = $mapper->get_best_score_id(\%transcript_result, \%tl_transcript_result);
+cmp_ok($best_score, "==", 0.98, "Got the right score");
+cmp_ok($best_id, "eq", 'NM2', "Got the right id");
+
+#Test compute assignments
+use Data::Dumper;
+my %all_transcript_result;
+$all_transcript_result{"R1"}{"E1"} = 0.99;
+
+$all_transcript_result{"R2"}{"E1"} = 0.98;
+$all_transcript_result{"R2"}{"E2"} = 0.99;
+
+$all_transcript_result{"R3"}{"E3"} = 1;
+
+$all_transcript_result{"R4"}{"E2"} = 0.58;
+$all_transcript_result{"R4"}{"E3"} = 0.78;
+$all_transcript_result{"R4"}{"E4"} = 0.78;
+$all_transcript_result{"R4"}{"E5"} = 0.78;
+
+my %all_tl_transcript_result;
+$all_tl_transcript_result{"R4"}{"E4"} = 1;
+
+#expected assignments "R1" => "E1", "R2" => "E2" , "R3" => "E3", "R4" => "E4"
+my ($all_transcript_result_computed, $all_tl_transcript_result_computed) =  $mapper->compute_assignments(\%all_transcript_result, \%all_tl_transcript_result);
+print Dumper ($all_transcript_result_computed);
+ok($all_transcript_result_computed->{"R1"}->{"E1"} == 0.99 );
+ok($all_transcript_result_computed->{"R2"}->{"E2"} == 0.99 );
+ok($all_transcript_result_computed->{"R3"}->{"E3"} == 1 );
+ok($all_transcript_result_computed->{"R4"}->{"E4"} == 0.78 );
+
 # Post-test cleanup
 if(-e $index_path) {
   rmtree $index_path;

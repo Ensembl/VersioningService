@@ -27,8 +27,9 @@ use File::Slurper 'read_dir';
 my $species = shift;
 my $ttl_path = shift;
 die "Point to the ttl files location, not $ttl_path" unless $ttl_path and -e $ttl_path;
-
-my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 1);
+my $output_file = shift;
+$output_file ||= 'identity_matches.tsv';
+my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 0, memory => 30);
 
 # PHASE 1, process the coordinate overlaps into default model
 
@@ -61,7 +62,7 @@ my $ens_host = 'mysql-ensembl-mirror.ebi.ac.uk';
 my $ens_port = 4240;
 my $ens_user = 'anonymous';
 
-my $matches_fh = IO::File->new('identity_matches.tsv','w');
+my $matches_fh = IO::File->new($output_file,'w');
 
 # Consult Ensembl staging DB for this release' list of valid stable IDs
 Bio::EnsEMBL::Registry->load_registry_from_db( -host => $ens_host, -port => $ens_port, -user => $ens_user, -db_version => 89);

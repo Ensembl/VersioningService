@@ -42,8 +42,11 @@ has triplestore => ( isa => 'Object', is => 'ro', lazy => 1, builder => '_init_t
 sub _init_triplestore {
   my $self = shift;
   # add a keepalive => 1 to allow the server to last beyond script duration. For debug
-  return Bio::EnsEMBL::RDF::FusekiWrapper->new();
+  return Bio::EnsEMBL::RDF::FusekiWrapper->new(keepalive => $self->keepalive, heap => $self->memory);
 }
+
+has keepalive => ( isa => 'Bool', is => 'ro', default => 0);
+has memory => ( isa => 'Int', is => 'ro', default => 16);
 
 has prefixes => ( isa => 'Str', is => 'ro', 
   default => "PREFIX term: <http://rdf.ebi.ac.uk/terms/ensembl/>

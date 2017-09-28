@@ -40,9 +40,12 @@ my $refseq_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_mod
 my $checksum_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','checksum','RefSeq_checksum.ttl');
 my $alignment_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','alignment');
 
-my @loadables = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps'));
-@loadables = grep { /.ttl/ } @loadables;
-my @transitive = read_dir(File::Spec->catfile($ttl_path,'xref_rdf_dumps','transitive'));
+my $data_root = File::Spec->catfile($ttl_path,'xref_rdf_dumps');
+my @loadables = read_dir($data_root);
+@loadables = map { $data_root.'/'.$_ } grep { /.ttl/ } @loadables;
+my $transitive_data = File::Spec->catfile($ttl_path,'xref_rdf_dumps','transitive');
+my @transitive = read_dir($transitive_data);
+@transitive = map { $transitive_data.'/'.$_} @transitive;
 
 my $start_time = [gettimeofday];
 $reasoner->load_general_data($overlap_source,$e_gene_model,$refseq_gene_model,$checksum_source,@loadables);

@@ -79,7 +79,7 @@ sub load_alignments {
   my $self = shift;
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs
   my @files = read_dir($alignment_path);
-  @files = grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
+  @files = map { $alignment_path.'/'.$_ } grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
   printf "Loading ALIGNMENT files: %s\n",join(',',@files);
   $self->triplestore->load_data([@files]);
 }

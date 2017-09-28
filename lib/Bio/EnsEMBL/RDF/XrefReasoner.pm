@@ -228,7 +228,12 @@ sub pretty_print_stats {
 
   printf "%20s %20s %s\n",'From','To','Count';
   while ( my $stat = shift @$stats) {
-    printf "%20s %20s %d\n",$stat->{source_a}->value,$stat->{source_b}->value,$stat->{count}->value;
+    if (defined $stat && defined $stat->{source_a} && $stat->{source_b} && $stat->{count}) {
+      printf "%20s %20s %d\n",$stat->{source_a}->value,$stat->{source_b}->value,$stat->{count}->value;
+    } else {
+      use Data::Dumper;
+      warn "Issue printing stats: ".Dumper($stat);
+    }
   }
 }
 

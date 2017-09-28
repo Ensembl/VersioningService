@@ -24,6 +24,7 @@ representing VGNC data for chimp.
 
 The parsed file contains the following entries:
 
+0)  taxon_id
 1)  vgnc_id 
 2)  symbol
 3)  name	
@@ -61,14 +62,13 @@ sub read_record {
   my $self = shift;
   $self->clear_record;
   my $record  = $self->record;
-  $record->taxon_id(9598); # this is chimp data
   
   my $fh = $self->source_handle;
   my $content = <$fh>;
   return unless $content; # skip if empty record
 
   # if header advance to next record
-  if ($content =~ /^vgnc_id/) {
+  if ($content =~ /^taxon_id/) {
     $content = <$fh>;
     return unless $content;
   }
@@ -76,10 +76,11 @@ sub read_record {
   chomp($content);
   $content =~ s/\s*$//;
   my @fields = split /\t/, $content;
-  my ($vgnc_id, $symbol, $name, $alias_symbol, $prev_symbol, $ensembl_gene_id) = ($fields[0], $fields[1], $fields[2], $fields[8], $fields[10], $fields[19]);
+  my ($taxon_id, $vgnc_id, $symbol, $name, $alias_symbol, $prev_symbol, $ensembl_gene_id) = ($fields[0], $fields[1], $fields[2], $fields[3], $fields[9], $fields[11], $fields[20]);
+  $record->taxon_id($taxon_id);
   
   Bio::EnsEMBL::Mongoose::IOException->throw ('Insufficient data in VGNC line: ' . $content)
-      unless $vgnc_id and $symbol and $name;
+      unless $taxon_id and $vgnc_id and $symbol and $name;
 
   $record->id($vgnc_id);
   $record->accessions([ $vgnc_id ]);

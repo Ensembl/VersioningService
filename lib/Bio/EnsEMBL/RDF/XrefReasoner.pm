@@ -34,7 +34,7 @@ a formal reasoner, but the name seemed fitting.
 package Bio::EnsEMBL::RDF::XrefReasoner;
 
 use Moose;
-use File::Slurp;
+use File::Slurper 'read_dir';
 use Bio::EnsEMBL::RDF::FusekiWrapper;
 use Bio::EnsEMBL::Mongoose::DBException;
 
@@ -42,8 +42,11 @@ has triplestore => ( isa => 'Object', is => 'ro', lazy => 1, builder => '_init_t
 sub _init_triplestore {
   my $self = shift;
   # add a keepalive => 1 to allow the server to last beyond script duration. For debug
-  return Bio::EnsEMBL::RDF::FusekiWrapper->new();
+  return Bio::EnsEMBL::RDF::FusekiWrapper->new(keepalive => $self->keepalive, heap => $self->memory);
 }
+
+has keepalive => ( isa => 'Bool', is => 'ro', default => 0);
+has memory => ( isa => 'Int', is => 'ro', default => 16);
 
 has prefixes => ( isa => 'Str', is => 'ro', 
   default => "PREFIX term: <http://rdf.ebi.ac.uk/terms/ensembl/>
@@ -62,10 +65,20 @@ sub load_general_data {
   $self->triplestore->load_data([@paths]);
 }
 
+sub load_transitive_data {
+  my $self = shift;
+  my $paths = shift;
+  my $graph_url = $self->triplestore->graph_url;
+  my $condensed_graph = $graph_url;
+  $condensed_graph =~ s/xref$//;
+  $condensed_graph .= 'condensed';
+  $self->triplestore->load_data($paths,$condensed_graph);
+}
+
 sub load_alignments {
   my $self = shift;
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs
-  my @files = read_dir($alignment_path, prefix => 1);
+  my @files = read_dir($alignment_path);
   @files = grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
   printf "Loading ALIGNMENT files: %s\n",join(',',@files);
   $self->triplestore->load_data([@files]);

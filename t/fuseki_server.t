@@ -13,9 +13,10 @@ SKIP: {
     unless defined $ENV{FUSEKI_HOME};
   
   note "Starting Fuseki Java process";
-  my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new();
+  my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new(heap => 2);
   my $server_url = $fuseki->start_server();
   note "Server started on $server_url?";
+  sleep 2;
   $fuseki->load_data(["$Bin/data/test_graph.ttl"],'xref');
   my $graph_url = $fuseki->graph_url;
   note "Data loaded";

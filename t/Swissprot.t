@@ -35,6 +35,12 @@ my @go_xref = grep {$_->id eq 'GO:0005829'} @xrefs;
 cmp_ok(scalar @go_xref, '==', 0, 'GO xrefs purposefully ignored');
 # is($go_xref[0]->source,'GO','Check correct extraction of author of xref');
 
+my @e_xref = grep {$_->id eq 'ENSP00000288602'} @xrefs;
+cmp_ok(scalar @e_xref, '==', 1, 'A single Uniprot to Ensembl xref links ONLY to the protein');
+@e_xref = grep {$_->id eq 'ENST00000288602'} @xrefs;
+cmp_ok(scalar @e_xref, '==', 0, 'A single Uniprot to Ensembl xref links ONLY to the protein');
+
+
 my $iso_list = $record->isoforms;
 is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');
 

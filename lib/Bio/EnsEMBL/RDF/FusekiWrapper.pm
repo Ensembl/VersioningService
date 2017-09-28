@@ -46,6 +46,7 @@ has graph_name => ( isa => 'Str', is => 'rw', default => 'xref');
 has server_url => ( isa => 'Str', is => 'rw');
 has debug => ( isa => 'Bool', is => 'rw',default => 0); # state of Fuseki instance, whether to keep the data in a DB or not, or attempt to hold it all in memory
 has disk_location => ( isa => 'Str', is => 'ro',lazy => 1, default => '/tmp/'); # only needed when debug is set to 1
+has heap => ( isa => 'Int', is => 'rw', default => 16);
 
 sub graph_url {
   my $self = shift;
@@ -68,7 +69,10 @@ sub start_server {
   my $self = shift;
   $self->command('java');
   # Note, cannot mix java opts with process opts without the option hash getting shuffled
-  $self->args->{'-Xmx10000M'} = undef;
+  my $heap = sprintf "-Xmx%dG",$self->heap;
+  $self->args->{$heap} = undef; # Set max heap
+  $heap = sprintf "-Xms%dG",$self->heap;
+  $self->args->{$heap} = undef; # Set miminum heap. Required or Fuseki gets very grumpy above 16GB
   unless (defined $ENV{FUSEKI_HOME}) { Bio::EnsEMBL::Mongoose::UsageException->throw("Cannot run Fuseki without FUSEKI_HOME environment variable set")}
   $self->args->{'-jar'} = $ENV{FUSEKI_HOME}.'fuseki-server.jar';
   if ($self->debug) {
@@ -100,11 +104,12 @@ sub load_data {
   my @files = @$data_files;
   try {
     foreach my $file (@files) {
-      my @commands = ('s-post', sprintf('%s',$self->server_url,'xref'), $optional_graph_name,$file);
+      my @commands = ('s-post', sprintf('%s',$self->server_url), $optional_graph_name,$file);
+      print "Command: @commands\n";
       my $response = system(@commands);
       # if response is favourable?
       if ($response != 0) {
-        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data from $file into Fuseki failed with error $?");    
+        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data from $file into Fuseki failed with error $?, $!");    
       }
     }
   } catch {

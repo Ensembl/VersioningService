@@ -104,8 +104,9 @@ sub print_slimline_record {
   my $self = shift;
   my $record = shift;
   my $source = shift;
+  my $fh = shift; # To bypass default filehandle
+  $fh ||= $self->handle;
   # gratuitous copy paste from print_record()
-  my $fh = $self->handle;
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
   my $clean_id = uri_escape($id);

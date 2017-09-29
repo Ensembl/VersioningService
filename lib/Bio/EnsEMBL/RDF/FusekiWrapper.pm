@@ -99,7 +99,7 @@ sub load_data {
   my $data_files = shift;
   my $optional_graph_name = shift;
   $optional_graph_name ||= $self->graph_name;
-  $self->graph_name($optional_graph_name) if $optional_graph_name;
+  # $self->graph_name($optional_graph_name) if $optional_graph_name; # If you don't want your graph name changing, you must specify it in every invocation
   $self->start_server unless $self->background_process_alive;
   my @files = @$data_files;
   try {

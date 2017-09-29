@@ -79,7 +79,7 @@ sub load_alignments {
   my $self = shift;
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs
   my @files = read_dir($alignment_path);
-  @files = map { $alignment_path.'/'.$_ } grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
+  @files = grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
   printf "Loading ALIGNMENT files: %s\n",join(',',@files);
   $self->triplestore->load_data([@files]);
 }
@@ -105,7 +105,7 @@ sub nominate_transitive_xrefs {
       ?other_uri ^obo:SO_transcribed_to ?another_gene .
       ?other_uri dc:identifier ?other_label
     }
-    ORDER BY ?ens_uri DESC(?link_type) DESC(?score)
+    ORDER BY ?other_uri DESC(?link_type) DESC(?score)
     ";
   my $potentials_iterator = $self->triplestore->query($self->prefixes.$sparql_select_best);
   my $best = $self->pick_winners($potentials_iterator);

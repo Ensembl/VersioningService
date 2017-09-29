@@ -250,12 +250,15 @@ method calculate_overlap_score (ArrayRef :$index_location, Str :$species, Object
      }#end of whilefor $chromosome_of
   } #end of outer foreach for $chromosome 
 
-  while ( my ($refid, $ensids) = each( %all_transcript_result ) ) {
+  my ($all_transcript_result_assigned, $all_tl_transcript_result_assigned) = 
+    $self->compute_assignments(\%all_transcript_result, \%all_tl_transcript_result);
+  
+  while ( my ($refid, $ensids) = each( %$all_transcript_result_assigned ) ) {
 
-   my $ens_stable_id = (keys  %{$all_transcript_result{$refid} })[0];
-   my $best_score = $all_transcript_result{$refid}{$ens_stable_id};
+    my $ens_stable_id = (keys %{$all_transcript_result_assigned->{$refid} })[0];
+    my $best_score = $all_transcript_result_assigned->{$refid}->{$ens_stable_id};
 
-   $self->write_to_rdf_store($ens_stable_id, $refid, $best_score, $species_id, $rdf_writer, $source, $core_dba, $other_dba);
+    $self->write_to_rdf_store($ens_stable_id, $refid, $best_score, $species_id, $rdf_writer, $source, $core_dba, $other_dba);
   }
   ##Dump results
 

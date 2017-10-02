@@ -80,7 +80,7 @@ sub load_alignments {
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs
   my @files = read_dir($alignment_path);
   @files = map { $alignment_path.'/'.$_ } grep { /RefSeq/ } @files; # not interested in Uniprot alignments right now. They are only supporting information
-  printf "Loading ALIGNMENT files: %s\n",join(',',@files);
+  # printf "Loading ALIGNMENT files: %s\n",join(',',@files);
   $self->triplestore->load_data([@files]);
 }
 
@@ -93,7 +93,8 @@ sub nominate_transitive_xrefs {
   $condensed_graph =~ s/xref$//;
   $condensed_graph .= 'condensed'; # Where the transitive links will go
   print "Putting connected xrefs from $graph_url into $condensed_graph\n\n";
-  # Start and end URIs are cosntrained to be genes by the SO_transcribed_to relation. Otherwise we xrefs for transcripts to any other type, e.g. ncbigene IDs
+  # Start and end URIs are constrained to be genes by the SO_transcribed_to relation. 
+  #Otherwise we get xrefs for transcripts to other feature types, e.g. ncbigene IDs
   my $sparql_select_best = "
     SELECT ?ens_uri ?ens_label ?link_type ?score ?other_uri ?other_label FROM <$graph_url> WHERE {
       ?ens_gene obo:SO_transcribed_to ?ens_uri .

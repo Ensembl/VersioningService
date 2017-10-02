@@ -241,6 +241,7 @@ method calculate_overlap_score (ArrayRef :$index_location, Str :$species, Object
             }
             if($tl_score > 0.75){
               $all_tl_transcript_result{$id}{$transcript_ens->stable_id} = $tl_score;
+              $all_transcript_result{$id}{$transcript_ens->stable_id} = $score; # If the CDS overlap is great, we keep the regular overlap, even if it is low
             }
 
            } #end of foreach hits
@@ -348,16 +349,17 @@ sub get_best_score_id{
   my $self = shift;
   my ($transcript_result, $tl_transcript_result) = @_;
 
-  my $transcript_score_threshold = 0.75;
-  my $tl_transcript_score_threshold = 0.75;
   my $best_score = 0;
   my $best_id;
   my $exon_score;
   my $tl_exon_score;
 
-  my @options = sort { $b->[2] <=> $a->[2] || $b->[1] <=> $a->[1] }
-                grep { $_->[1] > $tl_transcript_score_threshold || $_->[2] > $transcript_score_threshold }
-                map { [$_, $tl_transcript_result->{$_} || 0, $transcript_result->{$_} || 0] }
+  my @options = sort { $b->[1] <=> $a->[1] || $b->[2] <=> $a->[2] }
+                map { [
+                        $_, 
+                        $tl_transcript_result->{$_} || 0, 
+                        $transcript_result->{$_} || 0
+                    ] }
                 keys %$transcript_result;
   return unless @options;
 

@@ -210,16 +210,22 @@ $all_transcript_result{"R4"}{"E3"} = 0.78;
 $all_transcript_result{"R4"}{"E4"} = 0.78;
 $all_transcript_result{"R4"}{"E5"} = 0.78;
 
+$all_transcript_result{R5}{E6} = 0.6; # R5 fails standard overlap filter
+$all_transcript_result{R5}{E7} = 0.76; # R5 Good regular score, but bad translating score
+
 my %all_tl_transcript_result;
 $all_tl_transcript_result{"R4"}{"E4"} = 1;
+$all_tl_transcript_result{R5}{E6} = 0.99; # but R5 does well on translating overlap
+$all_tl_transcript_result{R5}{E7} = 0.90;
 
-#expected assignments "R1" => "E1", "R2" => "E2" , "R3" => "E3", "R4" => "E4"
+#expected assignments "R1" => "E1", "R2" => "E2" , "R3" => "E3", "R4" => "E4", "R5" => "R6"
 my ($all_transcript_result_computed, $all_tl_transcript_result_computed) =  $mapper->compute_assignments(\%all_transcript_result, \%all_tl_transcript_result);
-print Dumper ($all_transcript_result_computed);
-ok($all_transcript_result_computed->{"R1"}->{"E1"} == 0.99 );
-ok($all_transcript_result_computed->{"R2"}->{"E2"} == 0.99 );
-ok($all_transcript_result_computed->{"R3"}->{"E3"} == 1 );
-ok($all_transcript_result_computed->{"R4"}->{"E4"} == 0.78 );
+note(Dumper ($all_transcript_result_computed));
+ok($all_transcript_result_computed->{"R1"}->{"E1"} == 0.99, 'Only one choice of assignment from perspective of RefSeq' );
+ok($all_transcript_result_computed->{"R2"}->{"E2"} == 0.99 , 'Best score of overlap wins');
+ok($all_transcript_result_computed->{"R3"}->{"E3"} == 1 , 'Only one possible choice from any perspective');
+ok($all_transcript_result_computed->{"R4"}->{"E4"} == 0.78, 'Many equal candidates, decided by coding overlap' );
+ok($all_transcript_result_computed->{R5}->{E6} == 0.6, 'Low overlap, but excellent coding overlap' );
 
 # Post-test cleanup
 if(-e $index_path) {

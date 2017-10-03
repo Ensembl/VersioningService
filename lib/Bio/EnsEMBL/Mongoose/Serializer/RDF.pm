@@ -99,7 +99,8 @@ sub print_record {
 }
 
 # Create a transitive network of simple xrefs and resources. No annotated middle node, just URIs, labels and sources.
-# This will be much more efficient to traverse in all directions so that we can find all the connected sets of URIs
+# This will be much more efficient to traverse in all directions so that we can find all the connected sets of URIs.
+# Restricted by allowed_xrefs function to limit links to between objects of the same type, e.g. gene->gene, transcript->transcript
 sub print_slimline_record {
   my $self = shift;
   my $record = shift;
@@ -137,8 +138,8 @@ sub print_checksum_xrefs {
   my $self = shift;
   my $ens_id = shift;
   my $ens_type = shift; # Basically transcript or peptide. Leave unset for gene
-  my $record = shift;
-  my $source = shift;
+  my $record = shift; # record from index that contains the checksum we matched previously
+  my $source = shift; # source of the thing the checksum matches to, namely refseq and a limited few others
 
   my $id = $record->id;
   unless ($id) {$id = $record->primary_accession}
@@ -162,8 +163,10 @@ sub print_checksum_xrefs {
   # Annotate link
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Checksum'));
   print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
+  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($self->identifier($source)));
 }
 
+# Not useful for production. Checksums are not chosen by default.
 sub print_slimline_checksum_xrefs {
   my $self = shift;
   my $ens_id = shift;
@@ -194,6 +197,14 @@ sub print_alignment_xrefs {
   my ($xref_source,$xref_link,$xref_target) = $self->generate_uris($source_id,$source,$target_id,$target_source,'align'.$special_label);
   
   my $fh = $self->handle;
+  # Attach sources (redundantly) to all IDs to allow controlled subsets.
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($source) ));
+  print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dcterms').'source'), $self->u( $self->identifier($target_source) ));
+  # We may have trouble with labels on every single one, as they will aggregate in the graph (unlike URIs do), when merged with data from, e.g. overlap.
+  # Then we get multiple hits for the same literal but yielding just one node.
+  print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$source_id"/);
+  print $fh $self->triple($self->u($target_source),$self->u($self->prefix('dc').'identifier'), qq/"$target_id"/);
+
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-to'), $self->u($xref_target));
 
@@ -201,6 +212,8 @@ sub print_alignment_xrefs {
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
 }
 
+
+# Not useful at this time. The "slimline" graph is generated from queries, not directly from unfiltered alignments
 sub print_slimline_alignment_xrefs {
   my ($self,$source_id,$source,$target_id,$target_source) = @_;
 
@@ -245,6 +258,7 @@ sub print_source_meta {
   }
 }
 
+
 sub print_coordinate_overlap_xrefs {
   my $self = shift;
   my $ens_id = shift;
@@ -272,6 +286,7 @@ sub print_coordinate_overlap_xrefs {
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
 }
 
+# Not useful at this time. The "slimline" graph is generated from queries, not directly from unfiltered alignments
 sub print_slimline_coordinate_overlap_xrefs {
   my $self = shift;
   my $ens_id = shift;
@@ -297,6 +312,7 @@ sub print_slimline_coordinate_overlap_xrefs {
   print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
 }
 
+# Creates a gene->transcript->translation relation so that we can find the related transcript to a translation and so on
 sub print_gene_model_link {
   my $self = shift;
   my $gene_id = shift;

@@ -69,9 +69,7 @@ sub load_transitive_data {
   my $self = shift;
   my $paths = shift;
   my $graph_url = $self->triplestore->graph_url;
-  my $condensed_graph = $graph_url;
-  $condensed_graph =~ s/xref$//;
-  $condensed_graph .= 'condensed';
+  my $condensed_graph = $self->condensed_graph_name($graph_url);
   $self->triplestore->load_data($paths,$condensed_graph);
 }
 
@@ -89,9 +87,8 @@ sub nominate_transitive_xrefs {
   my $self = shift;
 
   my $graph_url = $self->triplestore->graph_url;
-  my $condensed_graph = $graph_url;
-  $condensed_graph =~ s/xref$//;
-  $condensed_graph .= 'condensed'; # Where the transitive links will go
+  my $condensed_graph = $self->condensed_graph_name($graph_url);
+
   print "Putting connected xrefs from $graph_url into $condensed_graph\n\n";
   # Start and end URIs are constrained to be genes by the SO_transcribed_to relation. 
   #Otherwise we get xrefs for transcripts to other feature types, e.g. ncbigene IDs
@@ -153,7 +150,6 @@ sub pick_winners {
     $best_score = $first->{score}->value if exists $first->{score};
     my $our_uri = $first->{ens_uri}->value;
     my $our_label = $first->{ens_label}->value;
-    my $other_uri = $first->{other_uri}->value;
     my $other_label = $first->{other_label}->value;
     push @winners,[$our_uri,$our_label,$other_uri,$other_label]; # Sorted results means top one is always a winner
     $selected_items++;
@@ -244,11 +240,17 @@ sub extract_transitive_xrefs_for_id {
   my $self = shift;
   my $id = shift;
   my $graph_url = $self->triplestore->graph_url;
-  my $condensed_graph = $graph_url;
-  $condensed_graph =~ s/xref$//;
-  $condensed_graph .= 'condensed';
+  my $condensed_graph = $self->condensed_graph_name($graph_url);
 
   return $self->triplestore->sparql->recurse_xrefs($id,$condensed_graph);
+}
+
+sub condensed_graph_name {
+  my $self = shift;
+  my $condensed_graph = shift;
+  $condensed_graph =~ s/xref$//;
+  $condensed_graph .= 'condensed';
+  return $condensed_graph;
 }
 
 

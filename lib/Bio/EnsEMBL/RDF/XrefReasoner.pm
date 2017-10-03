@@ -113,7 +113,7 @@ sub nominate_transitive_xrefs {
   $self->bulk_insert($condensed_graph,$best);
 }
 
-# Choose the best alignments for each Ensembl ID
+# Choose the best matches for each RefSeq ID
 # Only have to spot where equal candidates appear, or pick only the top one
 sub pick_winners {
   my $self = shift;
@@ -124,12 +124,12 @@ sub pick_winners {
   my $selected_items = 0;
   my $original_total = 0;
   while (!$iterator->finished) {
-    # Buffer the set of xref options for one Ensembl ID
+    # Buffer the set of xref options for one RefSeq ID
     my $first = $iterator->next;
     $original_total++;
-    my $ens_uri = $first->{ens_uri}->value;
+    my $other_uri = $first->{other_uri}->value;
     # Collect all results pertaining to the same ID into a candidate buffer
-    while (!$iterator->finished && $iterator->peek->{ens_uri}->value eq $ens_uri) {
+    while (!$iterator->finished && $iterator->peek->{other_uri}->value eq $other_uri) {
       push @candidates,$iterator->next;
       $original_total++;
     }

@@ -203,7 +203,7 @@ sub print_alignment_xrefs {
   # We may have trouble with labels on every single one, as they will aggregate in the graph (unlike URIs do), when merged with data from, e.g. overlap.
   # Then we get multiple hits for the same literal but yielding just one node.
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('dc').'identifier'), qq/"$source_id"/);
-  print $fh $self->triple($self->u($target_source),$self->u($self->prefix('dc').'identifier'), qq/"$target_id"/);
+  print $fh $self->triple($self->u($self->identifier($target_source)),$self->u($self->prefix('dc').'identifier'), qq/"$target_id"/);
 
   print $fh $self->triple($self->u($xref_source),$self->u($self->prefix('term').'refers-to'), $self->u($xref_link));
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'refers-to'), $self->u($xref_target));

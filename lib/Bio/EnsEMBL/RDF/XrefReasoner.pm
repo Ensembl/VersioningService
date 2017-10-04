@@ -95,7 +95,7 @@ sub nominate_transitive_xrefs {
   my $sparql_select_best = "
     SELECT ?ens_uri ?ens_label ?link_type ?score ?other_uri ?other_label FROM <$graph_url> WHERE {
       ?ens_gene obo:SO_transcribed_to ?ens_uri .
-      ?ens_uri dcterms:source <http://rdf.ebi.ac.uk/resource/ensembl/> .
+      ?ens_uri dcterms:source <http://rdf.ebi.ac.uk/resource/ensembl.transcript/> .
       ?ens_uri term:refers-to ?xref .
       ?ens_uri dc:identifier ?ens_label .
       ?xref rdf:type ?link_type ;

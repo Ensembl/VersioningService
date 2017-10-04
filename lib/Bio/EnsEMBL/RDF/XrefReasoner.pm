@@ -96,16 +96,16 @@ sub nominate_transitive_xrefs {
   #Otherwise we get xrefs for transcripts to other feature types, e.g. ncbigene IDs
   my $sparql_select_best = "
     SELECT ?ens_uri ?ens_label ?link_type ?score ?other_uri ?other_label FROM <$graph_url> WHERE {
-      ?ens_gene obo:SO_transcribed_to ?ens_uri .
-      ?ens_uri dcterms:source <http://rdf.ebi.ac.uk/resource/ensembl.transcript/> .
-      ?ens_uri term:refers-to ?xref .
-      ?ens_uri dc:identifier ?ens_label .
-      ?xref rdf:type ?link_type ;
-            term:refers-to ?other_uri .
       ?other_uri dcterms:source <http://identifiers.org/refseq/> .
-      OPTIONAL { ?xref term:score ?score }
       ?other_uri ^obo:SO_transcribed_to ?another_gene .
       ?other_uri dc:identifier ?other_label
+      ?other_uri term:refers-to ?xref .
+      ?xref rdf:type ?link_type ;
+            term:refers-to ?ens_uri .
+      OPTIONAL { ?xref term:score ?score }
+      ?ens_uri dc:identifier ?ens_label .
+      ?ens_uri dcterms:source <http://rdf.ebi.ac.uk/resource/ensembl.transcript/> .
+      ?ens_gene obo:SO_transcribed_to ?ens_uri .
     }
     ORDER BY ?other_uri DESC(?link_type) DESC(?score)
     ";

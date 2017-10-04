@@ -154,7 +154,7 @@ sub pick_winners {
     my $our_label = $first->{ens_label}->value;
     my $other_label = $first->{other_label}->value;
     push @winners,[$our_uri,$our_label,$other_uri,$other_label]; # Sorted results means top one is always a winner
-    $self->dump_decision_table($first,1) if $self->debugging;
+    $self->dump_decision_table($first,1) if $self->debug_fh;
     $selected_items++;
     # Find any joint winners
     while (my $candidate = shift @candidates) {
@@ -164,10 +164,10 @@ sub pick_winners {
       );
       
       push @winners,[$our_uri,$our_label,$candidate->{other_uri}->value,$candidate->{other_label}->value];
-      $self->dump_decision_table($candidate,1) if $self->debugging;
+      $self->dump_decision_table($candidate,1) if $self->debug_fh;
       $selected_items++;
     }
-    if ($self->debugging) {
+    if ($self->debug_fh) {
       foreach my $leftover (@candidates) { 
         $self->dump_decision_table($leftover,0);
       }

@@ -58,6 +58,8 @@ has prefixes => ( isa => 'Str', is => 'ro',
               PREFIX obo: <http://purl.obolibrary.org/obo/>
 ");
 
+has debug_fh => ( is => 'ro', predicate => 'debugging');
+
 
 sub load_general_data {
   my $self = shift;
@@ -152,6 +154,7 @@ sub pick_winners {
     my $our_label = $first->{ens_label}->value;
     my $other_label = $first->{other_label}->value;
     push @winners,[$our_uri,$our_label,$other_uri,$other_label]; # Sorted results means top one is always a winner
+    $self->dump_decision_table($first,1) if $self->debugging;
     $selected_items++;
     # Find any joint winners
     while (my $candidate = shift @candidates) {
@@ -161,7 +164,13 @@ sub pick_winners {
       );
       
       push @winners,[$our_uri,$our_label,$candidate->{other_uri}->value,$candidate->{other_label}->value];
+      $self->dump_decision_table($candidate,1) if $self->debugging;
       $selected_items++;
+    }
+    if ($self->debugging) {
+      foreach my $leftover (@candidates) { 
+        $self->dump_decision_table($leftover,0);
+      }
     }
     # And reset for the next ID in the buffer.
     @candidates = ();
@@ -251,6 +260,20 @@ sub condensed_graph_name {
   $condensed_graph =~ s/xref$//;
   $condensed_graph .= 'condensed';
   return $condensed_graph;
+}
+
+sub dump_decision_table {
+  my $self = shift;
+  my $result = shift;
+  my $winner = shift;
+  my $fh = $self->debug_fh;
+  printf $fh "%s\t%s\t%d\t%s\t%s\t%s\n",
+    $result->{refseq_label}->value, 
+    $result->{refseq_uri}->value, 
+    $result->{score}->value, 
+    $result->{ens_label}->value, 
+    $result->{ens_uri}->value,
+    ($winner) ? 'x': '' ;
 }
 
 

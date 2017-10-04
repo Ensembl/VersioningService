@@ -23,13 +23,19 @@ use Time::HiRes qw/gettimeofday tv_interval/;
 use Bio::EnsEMBL::RDF::XrefReasoner;
 use Bio::EnsEMBL::Registry;
 use File::Slurper 'read_dir';
+use IO::File;
 
 my $species = shift;
 my $ttl_path = shift;
 die "Point to the ttl files location, not $ttl_path" unless $ttl_path and -e $ttl_path;
 my $output_file = shift;
 $output_file ||= 'identity_matches.tsv';
-my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 0, memory => 30);
+my $debug_file = shift;
+$debug_file ||= 'decision_table.tsv';
+
+my $debug_fh = IO::File->new($debug_file ,'w');
+
+my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 0, memory => 30, debug_fh => $debug_fh);
 
 # PHASE 1, process the coordinate overlaps into default model
 
@@ -58,6 +64,7 @@ print "Loaded all data in $done_time seconds\n";
 $reasoner->pretty_print_stats($reasoner->calculate_stats());
 print "Stats finished, now select transitive xrefs into a new graph\n";
 $reasoner->nominate_transitive_xrefs();
+$reasoner->assign_refseq_proteins();
 print "Transitive xrefs placed in new graph. Now compare with Ensembl\n";
 
 
@@ -80,3 +87,4 @@ foreach my $type (qw/gene transcript translation/) {
 }
 
 $matches_fh->close;
+$debug_fh->close;

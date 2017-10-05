@@ -268,9 +268,9 @@ sub dump_decision_table {
   my $winner = shift;
   my $fh = $self->debug_fh;
   no warnings 'uninitialized';
-  printf $fh "%s\t%s\t%d\t%s\t%s\t%s\n",
-    $result->{refseq_label}->value, 
-    $result->{refseq_uri}->value, 
+  printf $fh "%s\t%s\t%.2f\t%s\t%s\t%s\n",
+    $result->{other_label}->value, 
+    $result->{other_uri}->value, 
     (exists $result->{score}) ? $result->{score}->value : undef, 
     $result->{ens_label}->value, 
     $result->{ens_uri}->value,

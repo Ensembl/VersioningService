@@ -267,10 +267,13 @@ sub dump_decision_table {
   my $result = shift;
   my $winner = shift;
   my $fh = $self->debug_fh;
+  my $type = $result->{link_type}->value;
+  $type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
   no warnings 'uninitialized';
-  printf $fh "%s\t%s\t%.2f\t%s\t%s\t%s\n",
+  printf $fh "%s\t%s\t%s\t%.2f\t%s\t%s\t%s\n",
     $result->{other_label}->value, 
-    $result->{other_uri}->value, 
+    $result->{other_uri}->value,
+    $type,
     (exists $result->{score}) ? $result->{score}->value : undef, 
     $result->{ens_label}->value, 
     $result->{ens_uri}->value,

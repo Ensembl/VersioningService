@@ -333,6 +333,7 @@ sub print_gene_model_link {
   
   if ($gene_id) {
     $namespace = $self->identifier($gene_source);
+    $gene_id =~ s/\.\d+$//; # Forcibly remove version numbers from accessions that come this way
     $gene_uri = $namespace.$gene_id;
     print $fh $self->triple($self->u($gene_uri), $self->u($self->prefix('obo').'SO_transcribed_to'), $self->u($transcript_uri));
     print $fh $self->triple($self->u($transcript_uri), $self->u($self->prefix('obo').'SO_transcribed_from'), $self->u($gene_uri));
@@ -340,6 +341,7 @@ sub print_gene_model_link {
 
   if ($protein_id) {
     $namespace = $self->identifier($protein_source);
+    $protein_id =~ s/\.\d+$//; # Forcibly remove version numbers from accessions that come this way
     $protein_uri = $namespace.$protein_id;
     print $fh $self->triple($self->u($transcript_uri), $self->u($self->prefix('obo').'SO_translates_to'), $self->u($protein_uri));
     print $fh $self->triple($self->u($protein_uri), $self->u($self->prefix('obo').'SO_translation_of'), $self->u($transcript_uri));

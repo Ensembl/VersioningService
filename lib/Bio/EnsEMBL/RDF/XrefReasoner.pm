@@ -154,11 +154,11 @@ sub nominate_refseq_proteins {
   my $original_total = 0;
   while (!$iterator->finished) {
     my $first = $iterator->peek;
+    @candidates = ();
 
     # Get the initially winning options
     my $refseq_uri = $first->{other_uri}->value;
     my $refseq_transcript_label = $first->{refseq_transcript_id}->value;
-    
     # Collect all results pertaining to the same ID into a candidate buffer
     while (!$iterator->finished && $iterator->peek->{other_uri}->value eq $refseq_uri) {
       my $candidate = $iterator->next;

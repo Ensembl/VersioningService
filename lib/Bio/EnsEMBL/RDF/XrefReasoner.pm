@@ -146,7 +146,7 @@ sub nominate_refseq_proteins {
   } 
   ORDER BY ?refseq_uri DESC(?score)
     ";
-  my $iterator = $self->triplestore->query($self->prefixes,$sparql);
+  my $iterator = $self->triplestore->query($self->prefixes.$sparql);
 
   my @winners;
   my @candidates;

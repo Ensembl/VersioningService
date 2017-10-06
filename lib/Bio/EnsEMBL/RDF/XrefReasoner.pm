@@ -112,7 +112,104 @@ sub nominate_transitive_xrefs {
   my $potentials_iterator = $self->triplestore->query($self->prefixes.$sparql_select_best);
   my $best = $self->pick_winners($potentials_iterator);
   $self->bulk_insert($condensed_graph,$best);
+  my $best_proteins = $self->nominate_refseq_proteins($best);
+  $self->bulk_insert($condensed_graph, $best_proteins);
 }
+
+sub nominate_refseq_proteins {
+  my $self = shift;
+  my $best_transcripts = shift;
+  my $graph_url = $self->triplestore->graph_url;
+
+  # Build a lookup for transcript pairings we want to match using the output of the transcript assignment
+  my %transcript_lookup;
+  foreach my $pairing (@$best_transcripts) {
+    $transcript_lookup{$pairing->{other_label} }->{ $pairing->{ens_label} } = 1 ;
+  }
+  
+  # Select protein match possibilities. These should be only alignments
+  print "Deciding which proteins to link together from RefSeq to Ensembl\n";
+  my $sparql = "
+  SELECT ?ens_uri ?ens_label ?score ?other_uri ?other_label ?refseq_transcript_id ?ens_transcript_id FROM <$graph_url> WHERE {
+    ?ens_uri obo:SO_translation_of ?ens_transcript .
+    ?ens_transcript dc:identifier ?ens_transcript_id .
+    ?ens_uri dcterms:source <http://rdf.ebi.ac.uk/resource/ensembl.protein/> .
+    ?ens_uri dc:identifier ?ens_label .
+    ?ens_uri term:refers-to ?xref .
+    ?xref rdf:type term:Alignment ;
+          term:score ?score ;
+          term:refers-to ?refseq_uri .
+    ?other_uri obo:SO_translation_of ?refseq_transcript .
+    ?refseq_transcript dc:identifier ?refseq_transcript_id .
+    ?other_uri dcterms:source <http://identifiers.org/refseq/> .
+    ?other_uri dc:identifier ?other_label .
+  } 
+  ORDER BY ?refseq_uri DESC(?score)
+    ";
+  my $iterator = $self->triplestore->query($self->prefixes,$sparql);
+
+  my @winners;
+  my @candidates;
+  my $selected_items = 0;
+  my $original_total = 0;
+  while (!$iterator->finished) {
+    my $first = $iterator->peek;
+
+    # Get the initially winning options
+    my $refseq_uri = $first->{other_uri}->value;
+    my $refseq_transcript_label = $first->{refseq_transcript_id}->value;
+    
+    # Collect all results pertaining to the same ID into a candidate buffer
+    while (!$iterator->finished && $iterator->peek->{other_uri}->value eq $refseq_uri) {
+      my $candidate = $iterator->next;
+
+      my $refseq_label = $candidate->{other_label}->value;
+      my $ens_uri = $candidate->{ens_uri}->value;
+      my $ens_label = $candidate->{ens_label}->value;
+      my $score = $candidate->{score}->value; # All protein xrefs are alignments and have scores
+      my $refseq_transcript_label = $candidate->{refseq_transcript_id}->value;
+      my $ens_transcript_label = $candidate->{ens_transcript_id}->value;
+      my $transcript_score; # +ve = transcript pairing supports protein pairing
+
+      if (exists $transcript_lookup{$refseq_transcript_label}) {
+        my $ideal_transcripts = $transcript_lookup{$refseq_transcript_label};
+
+        if (exists $ideal_transcripts->{$ens_transcript_label} ) {
+          $transcript_score = 1; # confirmation this is a good protein pair to make
+        } else {
+          $transcript_score = -1; # there are transcript pairings but not for this protein pairing
+        }
+      } else {
+        $transcript_score = 0; # No evidence exists to support or contradict this protein pairing
+      }
+
+      push @candidates,[$ens_uri,$ens_label,$refseq_uri,$refseq_label,$score,$transcript_score];
+      $original_total++;
+
+    }
+
+    # Re-order candidates by their transcript evidence and of course alignment score
+    @candidates = sort { 
+         $b->[5] <=> $a->[5]  
+      || $b->[4] <=> $b->[4]
+    } @candidates;
+    # And cream off the best
+    for my $candidate (@candidates){
+      printf "%s\t%s\t%.2f\t%d\n",
+        $candidate->[1],
+        $candidate->[3],
+        $candidate->[4],
+        $candidate->[5];
+    }
+
+    my $best_score = $candidates[0]->[4];
+    my $best_transcript_score = $candidates[0]->[5];
+    @winners = grep { $_->[4] == $best_score && $_->[5] == $best_transcript_score} @candidates;
+
+  }
+  return \@winners;
+}
+
 
 # Choose the best matches for each RefSeq ID
 # Only have to spot where equal candidates appear, or pick only the top one
@@ -181,6 +278,7 @@ sub pick_winners {
 }
 
 # Custom insert-builder for best alignments
+# Expects a list like [$uri,$label,$target_uri,$target_label,...]
 sub bulk_insert {
   my $self = shift;
   my $graph = shift;
@@ -200,7 +298,15 @@ sub bulk_insert {
     my $hit;
     my $triples = '';
     while ($hit = shift @$hit_collection ) {
-      $triples .= sprintf qq(<%s> term:refers-to <%s> .\n <%s> term:refers-to <%s> .\n <%s> dc:identifier "%s" .\n <%s> dc:identifier "%s" .\n), $hit->[0],$hit->[2],$hit->[2],$hit->[0],$hit->[0],$hit->[1],$hit->[2],$hit->[3]; # Ensembl points to Refseq and the converse
+      $triples .= sprintf qq(<%s> term:refers-to <%s> .\n <%s> term:refers-to <%s> .\n <%s> dc:identifier "%s" .\n <%s> dc:identifier "%s" .\n), 
+                    $hit->[0],
+                    $hit->[2],
+                    $hit->[2],
+                    $hit->[0],
+                    $hit->[0],
+                    $hit->[1],
+                    $hit->[2],
+                    $hit->[3]; # Ensembl points to Refseq and the converse
       $j++;
       last if $j == 5000;
       $new_links++;

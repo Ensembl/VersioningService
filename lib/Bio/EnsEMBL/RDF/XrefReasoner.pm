@@ -138,13 +138,13 @@ sub nominate_refseq_proteins {
     ?ens_uri term:refers-to ?xref .
     ?xref rdf:type term:Alignment ;
           term:score ?score ;
-          term:refers-to ?refseq_uri .
+          term:refers-to ?other_uri .
     ?other_uri obo:SO_translation_of ?refseq_transcript .
     ?refseq_transcript dc:identifier ?refseq_transcript_id .
     ?other_uri dcterms:source <http://identifiers.org/refseq/> .
     ?other_uri dc:identifier ?other_label .
   } 
-  ORDER BY ?refseq_uri DESC(?score)
+  ORDER BY ?other_uri DESC(?score)
     ";
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
 

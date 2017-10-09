@@ -111,7 +111,8 @@ sub nominate_transitive_xrefs {
     ";
   my $potentials_iterator = $self->triplestore->query($self->prefixes.$sparql_select_best);
   my $best = $self->pick_winners($potentials_iterator);
-  $self->bulk_insert($condensed_graph,$best);
+  my @copy = @$best;
+  $self->bulk_insert($condensed_graph,\@copy);
   my $best_proteins = $self->nominate_refseq_proteins($best);
   $self->bulk_insert($condensed_graph, $best_proteins);
 }
@@ -124,8 +125,9 @@ sub nominate_refseq_proteins {
   # Build a lookup for transcript pairings we want to match using the output of the transcript assignment
   my %transcript_lookup;
   foreach my $pairing (@$best_transcripts) {
-    $transcript_lookup{$pairing->{other_label} }->{ $pairing->{ens_label} } = 1 ;
+    $transcript_lookup{$pairing->[3] }->{ $pairing->[1]} = 1 ;
   }
+  printf "!!!!Built lookup with %d RefSeq labels\n",scalar(keys %transcript_lookup);
   
   # Select protein match possibilities. These should be only alignments
   print "Deciding which proteins to link together from RefSeq to Ensembl\n";
@@ -170,28 +172,30 @@ sub nominate_refseq_proteins {
       my $refseq_transcript_label = $candidate->{refseq_transcript_id}->value;
       my $ens_transcript_label = $candidate->{ens_transcript_id}->value;
       my $transcript_score; # +ve = transcript pairing supports protein pairing
-
+      print "Protein tied to $refseq_transcript_label, check transcript aassignments\n";
       if (exists $transcript_lookup{$refseq_transcript_label}) {
         my $ideal_transcripts = $transcript_lookup{$refseq_transcript_label};
 
         if (exists $ideal_transcripts->{$ens_transcript_label} ) {
           $transcript_score = 1; # confirmation this is a good protein pair to make
+          print "!!!! Transcript pairing [$refseq_label => $ens_label][$refseq_transcript_label => $ens_transcript_label] matches protein pairing\n";
         } else {
           $transcript_score = -1; # there are transcript pairings but not for this protein pairing
+          print "!!!! Transcript pairing [$refseq_label => $ens_label][$refseq_transcript_label => $ens_transcript_label] differs to protein pairing\n";
         }
       } else {
         $transcript_score = 0; # No evidence exists to support or contradict this protein pairing
+        print "!!!! No evidence, pick protein via alignment score\n";
       }
 
       push @candidates,[$ens_uri,$ens_label,$refseq_uri,$refseq_label,$score,$transcript_score];
       $original_total++;
 
     }
-
     # Re-order candidates by their transcript evidence and of course alignment score
     @candidates = sort { 
          $b->[5] <=> $a->[5]  
-      || $b->[4] <=> $b->[4]
+      || $b->[4] <=> $a->[4]
     } @candidates;
     # And cream off the best
     for my $candidate (@candidates){
@@ -204,7 +208,7 @@ sub nominate_refseq_proteins {
 
     my $best_score = $candidates[0]->[4];
     my $best_transcript_score = $candidates[0]->[5];
-    @winners = grep { $_->[4] == $best_score && $_->[5] == $best_transcript_score} @candidates;
+    push @winners, grep { $_->[4] == $best_score && $_->[5] == $best_transcript_score} @candidates;
 
   }
   return \@winners;

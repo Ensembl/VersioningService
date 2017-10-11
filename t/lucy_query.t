@@ -70,7 +70,7 @@ my $rangle_query_include_lower = $interlocutor->build_range_query({field => "tes
 isa_ok($rangle_query_include_lower, 'Lucy::Search::RangeQuery');
 
 my($taxon_id, $chromosome, $strand, $start, $end);
-$taxon_id = '9606', $chromosome = 1, $strand = -1, $start = '17369', $end = '36081';
+$taxon_id = '9606'; $chromosome = 1; $strand = -1; $start = '17369'; $end = '36081';
 
 # pad start and end
 $start = sprintf("%018d", $start), $end = sprintf("%018d", $end);
@@ -85,6 +85,26 @@ foreach my $record(@$final_results){
   ok($record->transcript_start >= $start, "transcript_start ". $record->transcript_start . " is >= " . $start);
   ok($record->transcript_end <= $end, "transcript_end " . $record->transcript_end . " is <= " . $end);
 }
+
+# Test to check the full overlap
+$taxon_id = '9606'; $chromosome = 1; $strand = -1; $start = '17360'; $end = '17440';
+# pad start and end
+$start = sprintf("%018d", $start), $end = sprintf("%018d", $end);
+$final_results = $interlocutor->fetch_region_overlaps($taxon_id, $chromosome, $strand, $start, $end);
+my $first_hit = @$final_results->[0];
+cmp_ok($first_hit->id,'eq','uc031tla.1', 'Got back the expected id');
+ok($first_hit->transcript_start >= $start, "transcript_start ". $first_hit->transcript_start . " is >= " . $start);
+ok($first_hit->transcript_end <= $end, "transcript_end " . $first_hit->transcript_end . " is <= " . $end);
+
+# Test to check the full enclosing sequence
+$taxon_id = '9606'; $chromosome = 1; $strand = -1; $start = '17370'; $end = '17435';
+# pad start and end
+$start = sprintf("%018d", $start), $end = sprintf("%018d", $end);
+$final_results = $interlocutor->fetch_region_overlaps($taxon_id, $chromosome, $strand, $start, $end);
+$first_hit = @$final_results->[0];
+cmp_ok($first_hit->id,'eq','uc031tla.1', 'Got back the expected id');
+ok($first_hit->transcript_start <= $start, "transcript_start ". $first_hit->transcript_start . " is <= " . $start);
+ok($first_hit->transcript_end >= $end, "transcript_end " . $first_hit->transcript_end . " is >= " . $end);
 
 # Test multi-index searching
 # Build a second index from the ucsc data above

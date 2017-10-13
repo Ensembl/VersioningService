@@ -97,7 +97,7 @@ sub nominate_transitive_xrefs {
   my $sparql_select_best = "
     SELECT ?ens_uri ?ens_label ?link_type ?score ?other_uri ?other_label FROM <$graph_url> WHERE {
       ?ens_gene obo:SO_transcribed_to ?ens_uri .
-      ?ens_uri dcterms:source <http://rdf.ebi.ac.uk/resource/ensembl/> .
+      ?ens_uri dcterms:source <http://rdf.ebi.ac.uk/resource/ensembl.transcript/> .
       ?ens_uri term:refers-to ?xref .
       ?ens_uri dc:identifier ?ens_label .
       ?xref rdf:type ?link_type ;
@@ -172,26 +172,24 @@ sub nominate_refseq_proteins {
       my $refseq_transcript_label = $candidate->{refseq_transcript_id}->value;
       my $ens_transcript_label = $candidate->{ens_transcript_id}->value;
       my $transcript_score; # +ve = transcript pairing supports protein pairing
-      print "Protein tied to $refseq_transcript_label, check transcript aassignments\n";
+
       if (exists $transcript_lookup{$refseq_transcript_label}) {
         my $ideal_transcripts = $transcript_lookup{$refseq_transcript_label};
 
         if (exists $ideal_transcripts->{$ens_transcript_label} ) {
           $transcript_score = 1; # confirmation this is a good protein pair to make
-          print "!!!! Transcript pairing [$refseq_label => $ens_label][$refseq_transcript_label => $ens_transcript_label] matches protein pairing\n";
         } else {
           $transcript_score = -1; # there are transcript pairings but not for this protein pairing
-          print "!!!! Transcript pairing [$refseq_label => $ens_label][$refseq_transcript_label => $ens_transcript_label] differs to protein pairing\n";
         }
       } else {
         $transcript_score = 0; # No evidence exists to support or contradict this protein pairing
-        print "!!!! No evidence, pick protein via alignment score\n";
       }
 
       push @candidates,[$ens_uri,$ens_label,$refseq_uri,$refseq_label,$score,$transcript_score];
       $original_total++;
 
     }
+
     # Re-order candidates by their transcript evidence and of course alignment score
     @candidates = sort { 
          $b->[5] <=> $a->[5]  

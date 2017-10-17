@@ -41,6 +41,7 @@ use JSON qw/decode_json/;
 use IO::File;
 use Carp qw/confess/;
 use URI::Escape;
+use URI::Split qw(uri_split uri_join);
 
 sub new {
   my ($class,$xref_mapping_file,$schema_file) = @_;
@@ -64,8 +65,15 @@ sub new {
   }
 
   my %xref_mapping;
+  my %reverse_mapping;
   map { $xref_mapping{ lc $_->{db_name} } = $_ } @{ $doc->{mappings} };
-  bless({ xref_mapping => \%xref_mapping },$class);
+  my $root = 'http://identifiers.org/';
+  for my $record (@{ $doc->{mappings}}) {
+    $reverse_mapping{ $root . $record->{id_namespace} .'/' } = $record->{db_name};
+    $reverse_mapping{ $record->{canonical_LOD} } = $record->{db_name} if exists $record->{canonical_LOD};
+  }
+  
+  bless({ xref_mapping => \%xref_mapping, reverse_mapping => \%reverse_mapping },$class);
 }
 # For a given Ensembl ExternalDB name, gives a hash containing any of:
 # db_name - Ensembl internal name for an external DB
@@ -210,5 +218,86 @@ sub get_feature_type {
     return;
 }
 
+# Hackery required to be able to map IDs into our antique external_db list
+# A dcterms:source tag will differentiate between them, since we cannot do it from ID alone most of the time.
+# With RefSeq IDs we can, so we shoehorn them by ID here.
+sub generate_source_uri {
+  my $self = shift;
+  my $source = shift;
+  my $accession = shift;
+  my $source_uri;
+  my $general_source_uri;
+  # $source = uri_escape($source);
+  my $mappings = $self->{xref_mapping};
+  
+  # Commence refseq-themed hack
+  if ($source =~ /refseq/i) {
+    $source_uri = 'http://rdf.ebi.ac.uk/resource/ensembl/source/';
+    $general_source_uri = $self->identifier('refseq');
+    unless ($accession) {
+      confess "Unable to generate a source URI for $source without an accession to disambiguate" ;
+    }
+    # For RefSeq we cannot always guarantee that we will know which subset an ID belongs to so we must inspect the prefix
+    if ($accession =~ /^NM/) {
+      $source_uri .= $mappings->{refseq_mrna}->{ensembl_db_name};
+    } elsif ($accession =~ /^XM/) {
+      $source_uri .= $mappings->{refseq_mrna_predicted}->{ensembl_db_name};
+    } elsif ($accession =~ /^NR/) {
+      $source_uri .= $mappings->{refseq_ncrna}->{ensembl_db_name};
+    } elsif ($accession =~ /^XR/) {
+      $source_uri .= $mappings->{refseq_ncrna_predicted}->{ensembl_db_name};
+    } elsif ($accession =~ /^(NP|YP)/) {
+      $source_uri .= $mappings->{refseq_peptide}->{ensembl_db_name};
+    } elsif ($accession =~ /^XP/) {
+      $source_uri .= $mappings->{refseq_peptide_predicted}->{ensembl_db_name};
+    } else {
+      $source_uri = $self->identifier($source); # Beaten - resort to blind guesswork  
+    }
+    # most other sources can be handled automatically
+  } elsif (exists $mappings->{lc $source} && exists $mappings->{lc $source}->{ensembl_db_name}) {
+    $source_uri = 'http://rdf.ebi.ac.uk/resource/ensembl/source/'.uri_escape( $mappings->{lc $source}->{ensembl_db_name} );
+    $general_source_uri = $self->identifier($source);
+    # This can be removed when external_db no longer dictates what we call sources in Ensembl
+  } else {
+    $source_uri = $self->identifier($source);
+    $general_source_uri = $source_uri;
+  }
+  return $source_uri,$general_source_uri;
+}
+
+
+
+sub convert_uri_to_external_db_id {
+  my $self = shift;
+  my $uri = shift;
+
+  print "Received $uri\n";
+  $uri =~ s/<|>//g; # Just in case an RDF-style URI has escaped uncleaned
+
+  if ($uri =~ m{http://rdf.ebi.ac.uk/resource/ensembl/source/(.+)}) {
+    my $external_db_name = $1;
+    return uri_unescape($external_db_name);
+  } else {
+    # Unpack what we can from a regular identifiers.org type URL
+    my ($scheme, $auth, $path, $query, $frag) = uri_split($uri);
+    # $auth is "authority", URL
+
+    my $id_free_path = $path;
+    $id_free_path =~ s/([\w:]+)$//;
+    my ($id) = $1; # Don't return the ID unless it proves necessary in future
+    my $namespace = uri_join($scheme,$auth,$id_free_path,undef,undef);
+    my $reverse_mapping = $self->{reverse_mapping};
+    if (exists $reverse_mapping->{$namespace}) {
+      my $external_db_name = $reverse_mapping->{$namespace};
+      return $external_db_name;
+    } else {
+      warn "URI $namespace not recognised as mappable to external db names";
+      return;
+    }
+    
+  }
+
+
+}
 
 1;

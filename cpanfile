@@ -72,7 +72,7 @@ requires 'List::Compare';
 
 requires 'Getopt::Long';
 requires 'Pod::Usage';
-requires 'URI::Escape';
+requires 'URI::Split';
 requires 'LWP::UserAgent';
 requires 'Digest::MD5';
 requires 'URI::Escape'; # XS option available if it is too slow

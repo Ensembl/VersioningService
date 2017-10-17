@@ -47,6 +47,10 @@
         "priority": {
           "description": "A score weighting used to determine which sources to use for naming. High score means to favour this source over others. No score means ignore this source and do not use it for names or descriptions",
           "type": "integer"
+        },
+        "ensembl_db_name": {
+          "description": "The db_name used by Ensembl to refer to this resource. Required for mapping back into old xref schema",
+          "type": "string"
         }
       }
     }

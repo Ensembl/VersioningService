@@ -123,7 +123,7 @@ sub print_slimline_record {
   my $namespace = $self->identifier($source);
   $namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
   my $base_entity = $namespace.$clean_id;
-  my ($source_uri,$generic_source_uri) = $self->generate_source_uri;
+  my ($source_uri,$generic_source_uri) = $self->generate_source_uri($source,$id);
 
   # Label annotations for finding best IDs in a given scenario
   print $fh $self->triple($self->u($base_entity),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
@@ -134,7 +134,7 @@ sub print_slimline_record {
   
   foreach my $xref (@{$record->xref}) {
     next unless $xref->active == 1;
-    my ($xref_source,$generic_xref_source) = $self->generate_source_uri($xref->source);
+    my ($xref_source,$generic_xref_source) = $self->generate_source_uri($xref->source,$xref->id);
     my $clean_id = uri_escape($xref->id);
     my $xref_uri = $xref_source.$clean_id;
     my $allowed = $self->identifier_mapping->allowed_xrefs($source,$xref->source);

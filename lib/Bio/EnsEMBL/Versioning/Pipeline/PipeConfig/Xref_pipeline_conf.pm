@@ -124,7 +124,7 @@ sub pipeline_analyses {
         sources => ['refseq','ucsc']
         },
       -max_retry_count => 0, # low to prevent pointless dumping repetition
-      -analysis_capacity => 10,
+      -analysis_capacity => 8,
       -failed_job_tolerance => 25, 
       -rc_name => 'default'
     },
@@ -150,7 +150,7 @@ sub pipeline_analyses {
       -logic_name => 'CheckCheckSum',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::CheckCheckSum',
       -max_retry_count => 0,
-      -analysis_capacity => 10,
+      -analysis_capacity => 8,
       -failed_job_tolerance => 20,
       -rc_name => 'greedy_process'
     },
@@ -165,7 +165,7 @@ sub pipeline_analyses {
     {
       -logic_name => 'DumpXrefFASTA',
       -module => 'Bio::EnsEMBL::Versioning::Pipeline::DumpXrefFASTA',
-      -analysis_capacity => 10,
+      -analysis_capacity => 8,
       -failed_job_tolerance => 25,
       -flow_into => {
         2 => ['SpawnAlignments'],

@@ -81,10 +81,10 @@ $parser->parse_into_model('http://rdf.ebi.ac.uk/resource/ensembl/', $dummy_conte
 # verify data model
 
 my $prefixes = $rdf_writer->compatible_name_spaces();
-my $sparql = 'select ?hop ?source ?label where {
+my $sparql = 'select ?hop ?label where {
     <http://rdf.ebi.ac.uk/resource/ensembl.transcript/Testy> term:refers-to+ ?hop .
-    ?hop dcterms:source ?source .
     OPTIONAL { ?hop rdfs:label ?label . }
+    FILTER EXISTS { ?hop dcterms:source ?source }
   }';
 
 my $query = RDF::Query->new($prefixes.$sparql);

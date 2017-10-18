@@ -83,6 +83,13 @@ sub identifier {
   my $source = shift;
   return $self->identifier_mapping->identifier($source);
 }
+# Same here
+sub generate_source_uri {
+  my $self = shift;
+  my $source = shift;
+  my $accession = shift;
+  return $self->identifier_mapping->generate_source_uri($source,$accession);
+}
 
 
 # Bunch of accessors for subroutines provided by non-object-based library 

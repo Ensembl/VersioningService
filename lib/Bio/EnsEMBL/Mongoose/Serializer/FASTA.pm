@@ -68,6 +68,7 @@ sub print_record {
     
     my $seq = $record->sequence;
     my $width = $self->linewidth;
+    $seq =~ tr/JO/X/;
     $seq =~ s/(.{1,$width})/$1\n/g;
     print $handle $seq or Bio::EnsEMBL::Mongoose::IOException->throw(message => "Error writing to file handle: $!");
 }

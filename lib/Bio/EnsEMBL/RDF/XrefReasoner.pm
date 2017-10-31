@@ -147,7 +147,7 @@ sub nominate_refseq_proteins {
     ?other_uri dc:identifier ?other_label .
   } 
   ORDER BY ?other_uri DESC(?score)
-    ";
+    "; # http://identifiers.org/refseq/ could be localised above to the protein subsection of RefSeq. http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_peptide
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
 
   my @winners;
@@ -359,7 +359,32 @@ sub extract_transitive_xrefs_for_id {
   my $graph_url = $self->triplestore->graph_url;
   my $condensed_graph = $self->condensed_graph_name($graph_url);
 
-  return $self->triplestore->sparql->recurse_xrefs($id,$condensed_graph);
+  my $sparql = sprintf qq(SELECT DISTINCT ?uri ?xref_label %s {
+    ?o dc:identifier "%s" .
+    ?o term:refers-to+ ?uri .
+    ?uri dc:identifier ?xref_label .
+    }), $condensed_graph,$id;
+
+  my $iterator = $self->triplestore->query($self->prefixes.$sparql);
+  return $iterator;
+}
+
+sub get_related_xrefs {
+  my $self = shift;
+  my $url = shift;
+
+  my $graph_url = $self->triplestore->graph_url;
+
+  my $sparql = sprintf qq(SELECT ?uri ?source ?id ?type ?score FROM <%s> WHERE {
+      <%s> term:refers-to ?xref .
+      ?xref rdf:type ?type .
+      ?xref term:refers-to ?uri .
+      ?uri dcterms:source ?source .
+      ?uri dc:identifier ?id .
+      OPTIONAL { ?xref term:score ?score }
+    }),$graph_url,$url;
+  my $iterator = $self->triplestore->query($self->prefixes.$sparql);
+
 }
 
 sub condensed_graph_name {

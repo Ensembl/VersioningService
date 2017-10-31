@@ -40,7 +40,6 @@ my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 0, memory => 30
 # PHASE 1, process the coordinate overlaps into default model
 
 my $overlap_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','coordinate_overlap','refseq_coordinate_overlap.ttl');
-# my $refseq_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','RefSeq.ttl');
 my $e_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_model','ensembl.ttl');
 my $refseq_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_model','RefSeq.ttl');
 my $checksum_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','checksum','RefSeq_checksum.ttl');
@@ -64,8 +63,9 @@ print "Loaded all data in $done_time seconds\n";
 $reasoner->pretty_print_stats($reasoner->calculate_stats());
 print "Stats finished, now select transitive xrefs into a new graph\n";
 $reasoner->nominate_transitive_xrefs();
-$reasoner->assign_refseq_proteins();
-print "Transitive xrefs placed in new graph. Now compare with Ensembl\n";
+print "Transitive xrefs supplemented with choices from coordinate matches, alignments and such.\n";
+
+
 
 
 my $ens_host = 'mysql-ensembl-mirror.ebi.ac.uk';
@@ -75,14 +75,16 @@ my $ens_user = 'anonymous';
 my $matches_fh = IO::File->new($output_file,'w');
 
 # Consult Ensembl staging DB for this release' list of valid stable IDs
-Bio::EnsEMBL::Registry->load_registry_from_db( -host => $ens_host, -port => $ens_port, -user => $ens_user, -db_version => 89);
+Bio::EnsEMBL::Registry->load_registry_from_db( -host => $ens_host, -port => $ens_port, -user => $ens_user, -db_version => 90);
 
 foreach my $type (qw/gene transcript translation/) {
   my $adaptor = Bio::EnsEMBL::Registry->get_adaptor($species,'core',$type);
   my $features = $adaptor->fetch_all();
   while (my $feature = shift $features) {
+    # Get a list of all IDs that are "the same thing"
     my $identity_matches = $reasoner->extract_transitive_xrefs_for_id($feature->stable_id);
-    printf $matches_fh "%s\t%s\n",$feature->stable_id,join(',',@$identity_matches);
+    # printf $matches_fh "%s\t%s\n",$feature->stable_id,join(',',@$identity_matches);
+
   }
 }
 

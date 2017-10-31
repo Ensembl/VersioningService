@@ -92,8 +92,10 @@ sub nominate_transitive_xrefs {
   my $condensed_graph = $self->condensed_graph_name($graph_url);
 
   print "Putting connected xrefs from $graph_url into $condensed_graph\n\n";
-  # Start and end URIs are constrained to be genes by the SO_transcribed_to relation. 
-  #Otherwise we get xrefs for transcripts to other feature types, e.g. ncbigene IDs
+  
+  # Select Ensembl Transcripts that have xrefs to any RefSeq ID (multiple peptide sources are part of the set)
+  # AND localise to those that have genes as well. This eliminates older data for which there is no gene model remaining
+  # Could stop localising on the Ensembl side, as the constraint is redundant with feature type
   my $sparql_select_best = "
     SELECT ?ens_uri ?ens_label ?link_type ?score ?other_uri ?other_label FROM <$graph_url> WHERE {
       ?ens_gene obo:SO_transcribed_to ?ens_uri .
@@ -102,7 +104,7 @@ sub nominate_transitive_xrefs {
       ?ens_uri dc:identifier ?ens_label .
       ?xref rdf:type ?link_type ;
             term:refers-to ?other_uri .
-      ?other_uri dcterms:source <http://identifiers.org/refseq/> .
+      ?other_uri term:generic-source <http://identifiers.org/refseq/> .
       OPTIONAL { ?xref term:score ?score }
       ?other_uri ^obo:SO_transcribed_to ?another_gene .
       ?other_uri dc:identifier ?other_label
@@ -130,6 +132,8 @@ sub nominate_refseq_proteins {
   printf "!!!!Built lookup with %d RefSeq labels\n",scalar(keys %transcript_lookup);
   
   # Select protein match possibilities. These should be only alignments
+  # Get the Ensembl proteins with links to any RefSeq ID which is also a translation of something
+  # RefSeq proteins are only aligned, no coordinate overlaps or other types
   print "Deciding which proteins to link together from RefSeq to Ensembl\n";
   my $sparql = "
   SELECT ?ens_uri ?ens_label ?score ?other_uri ?other_label ?refseq_transcript_id ?ens_transcript_id FROM <$graph_url> WHERE {
@@ -143,11 +147,11 @@ sub nominate_refseq_proteins {
           term:refers-to ?other_uri .
     ?other_uri obo:SO_translation_of ?refseq_transcript .
     ?refseq_transcript dc:identifier ?refseq_transcript_id .
-    ?other_uri dcterms:source <http://identifiers.org/refseq/> .
+    ?other_uri term:generic-source <http://identifiers.org/refseq/> .
     ?other_uri dc:identifier ?other_label .
   } 
   ORDER BY ?other_uri DESC(?score)
-    "; # http://identifiers.org/refseq/ could be localised above to the protein subsection of RefSeq. http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_peptide
+    "; 
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
 
   my @winners;
@@ -324,12 +328,13 @@ sub calculate_stats {
   my $self = shift;
   my $graph = shift;
   $graph = $self->triplestore->graph_url unless $graph;
+  # Select only most generic source types, to allow RefSeq and other multi-type sources to group together
   my $sparql_stats = "
     SELECT DISTINCT ?source_a ?source_b (COUNT(?source_b) as ?count) FROM <$graph> WHERE {
-          ?entity dcterms:source ?source_a .
+          ?entity term:generic-source ?source_a .
           ?entity term:refers-to ?xref .
           ?xref term:refers-to ?other .
-          ?other dcterms:source ?source_b .
+          ?other term:generic-source ?source_b .
     } 
     GROUP BY ?source_a ?source_b 
     ORDER BY DESC(?count)";
@@ -359,7 +364,7 @@ sub extract_transitive_xrefs_for_id {
   my $graph_url = $self->triplestore->graph_url;
   my $condensed_graph = $self->condensed_graph_name($graph_url);
 
-  my $sparql = sprintf qq(SELECT DISTINCT ?uri ?xref_label %s {
+  my $sparql = sprintf qq(SELECT DISTINCT ?uri ?xref_label FROM <%s> {
     ?o dc:identifier "%s" .
     ?o term:refers-to+ ?uri .
     ?uri dc:identifier ?xref_label .
@@ -372,11 +377,14 @@ sub extract_transitive_xrefs_for_id {
 sub get_related_xrefs {
   my $self = shift;
   my $url = shift;
+  my $previous_winners = shift; # list of IDs
 
   my $graph_url = $self->triplestore->graph_url;
 
-  my $sparql = sprintf qq(SELECT ?uri ?source ?id ?type ?score FROM <%s> WHERE {
-      <%s> term:refers-to ?xref .
+  my $sparql = sprintf qq(SELECT ?root_source ?uri ?source ?id ?type ?score FROM <%s> WHERE {
+      ?root_uri dc:identifier %s
+      ?root_uri term:refers-to ?xref .
+      ?root_uri dcterms:source ?root_source .
       ?xref rdf:type ?type .
       ?xref term:refers-to ?uri .
       ?uri dcterms:source ?source .
@@ -384,7 +392,7 @@ sub get_related_xrefs {
       OPTIONAL { ?xref term:score ?score }
     }),$graph_url,$url;
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
-
+  return $iterator;
 }
 
 sub condensed_graph_name {

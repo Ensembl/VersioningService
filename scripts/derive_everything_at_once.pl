@@ -24,31 +24,32 @@ use Bio::EnsEMBL::RDF::XrefReasoner;
 use Bio::EnsEMBL::Registry;
 use File::Slurper 'read_dir';
 use IO::File;
+use XrefScriptHelper;
 
-my $species = shift;
-my $ttl_path = shift;
-die "Point to the ttl files location, not $ttl_path" unless $ttl_path and -e $ttl_path;
-my $output_file = shift;
-$output_file ||= 'identity_matches.tsv';
-my $debug_file = shift;
-$debug_file ||= 'decision_table.tsv';
 
-my $debug_fh = IO::File->new($debug_file ,'w');
+my $opts = XrefScriptHelper->new_with_options();
 
-my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 0, memory => 30, debug_fh => $debug_fh);
+my $debug_fh;
+if ($opts->debug == 1) {
+  printf "Debug is turned ON and going to %s\n",$opts->debug_file;
+  $debug_fh = IO::File->new($opts->debug_file ,'w') || die "Unable to create debug output:".$opts->debug_file;
+}
+
+my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 0, memory => $opts->fuseki_heap, debug_fh => $debug_fh);
 
 # PHASE 1, process the coordinate overlaps into default model
 
-my $overlap_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','coordinate_overlap','refseq_coordinate_overlap.ttl');
-my $e_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_model','ensembl.ttl');
-my $refseq_gene_model = File::Spec->catfile($ttl_path,'xref_rdf_dumps','gene_model','RefSeq.ttl');
-my $checksum_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','checksum','RefSeq_checksum.ttl');
-my $alignment_source = File::Spec->catfile($ttl_path,'xref_rdf_dumps','alignment');
+my $data_root = File::Spec->catfile($opts->ttl_path,$opts->species,'xref_rdf_dumps');
+my $overlap_source = File::Spec->catfile($data_root,'coordinate_overlap','refseq_coordinate_overlap.ttl');
+my $e_gene_model = File::Spec->catfile($data_root,'gene_model','ensembl.ttl');
+my $refseq_gene_model = File::Spec->catfile($data_root,'gene_model','RefSeq.ttl');
+my $checksum_source = File::Spec->catfile($data_root,'checksum','RefSeq_checksum.ttl');
+my $alignment_source = File::Spec->catfile($data_root,'alignment');
 
-my $data_root = File::Spec->catfile($ttl_path,'xref_rdf_dumps');
+# Get all TTL files in data_root not in a subdirectory
 my @loadables = read_dir($data_root);
 @loadables = map { $data_root.'/'.$_ } grep { /.ttl/ } @loadables;
-my $transitive_data = File::Spec->catfile($ttl_path,'xref_rdf_dumps','transitive');
+my $transitive_data = File::Spec->catfile($data_root,'transitive');
 my @transitive = read_dir($transitive_data);
 @transitive = map { $transitive_data.'/'.$_} @transitive;
 
@@ -65,28 +66,26 @@ print "Stats finished, now select transitive xrefs into a new graph\n";
 $reasoner->nominate_transitive_xrefs();
 print "Transitive xrefs supplemented with choices from coordinate matches, alignments and such.\n";
 
-
-
-
 my $ens_host = 'mysql-ensembl-mirror.ebi.ac.uk';
 my $ens_port = 4240;
 my $ens_user = 'anonymous';
 
-my $matches_fh = IO::File->new($output_file,'w');
+my $matches_fh = IO::File->new($opts->output_file,'w');
 
 # Consult Ensembl staging DB for this release' list of valid stable IDs
 Bio::EnsEMBL::Registry->load_registry_from_db( -host => $ens_host, -port => $ens_port, -user => $ens_user, -db_version => 90);
 
 foreach my $type (qw/gene transcript translation/) {
-  my $adaptor = Bio::EnsEMBL::Registry->get_adaptor($species,'core',$type);
+  my $adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core',$type);
   my $features = $adaptor->fetch_all();
   while (my $feature = shift $features) {
     # Get a list of all IDs that are "the same thing"
     my $identity_matches = $reasoner->extract_transitive_xrefs_for_id($feature->stable_id);
-    # printf $matches_fh "%s\t%s\n",$feature->stable_id,join(',',@$identity_matches);
-
+    if ($opts->debug == 1) {
+      printf $matches_fh "%s\t%s\n",$feature->stable_id,join(',',@$identity_matches);
+    }
   }
 }
 
 $matches_fh->close;
-$debug_fh->close;
+$debug_fh->close if $debug_fh;

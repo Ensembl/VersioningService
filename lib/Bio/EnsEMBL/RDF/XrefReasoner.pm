@@ -383,20 +383,18 @@ sub extract_transitive_xrefs_for_id {
 sub get_related_xrefs {
   my $self = shift;
   my $url = shift;
-  my $previous_winners = shift; # list of IDs
 
   my $graph_url = $self->triplestore->graph_url;
 
   my $sparql = sprintf qq(SELECT ?root_source ?uri ?source ?id ?type ?score FROM <%s> WHERE {
-      ?root_uri dc:identifier %s
-      ?root_uri term:refers-to ?xref .
-      ?root_uri dcterms:source ?root_source .
+      <%s> term:refers-to ?xref .
+      <%s> dcterms:source ?root_source .
       ?xref rdf:type ?type .
       ?xref term:refers-to ?uri .
       ?uri dcterms:source ?source .
       ?uri dc:identifier ?id .
       OPTIONAL { ?xref term:score ?score }
-    }),$graph_url,$url;
+    }),$graph_url,$url,$url;
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
   my @results = map { 
     { root_source => $_->{root_source}->value,

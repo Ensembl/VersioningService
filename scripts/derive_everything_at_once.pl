@@ -97,7 +97,7 @@ foreach my $type (qw/gene transcript translation/) {
 
       foreach my $hit (@$related_set) {
         if ($opts->debug == 1) {
-          printf $matches_fh ',%s:%s',$namespace_mapper->convert_uri_to_external_db_name($_->{source}),$_->{id};
+          printf $matches_fh ',%s:%s',$namespace_mapper->convert_uri_to_external_db_name($hit->{source}),$hit->{id};
         }
       }
       print $matches_fh ',' if $opts->debug == 1;

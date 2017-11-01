@@ -25,9 +25,10 @@ use Bio::EnsEMBL::Registry;
 use File::Slurper 'read_dir';
 use IO::File;
 use XrefScriptHelper;
-
+use Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings;
 
 my $opts = XrefScriptHelper->new_with_options();
+my $namespace_mapper = Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings->new($opts->config_file,$opts->config_schema);
 
 my $debug_fh;
 if ($opts->debug == 1) {
@@ -80,10 +81,28 @@ foreach my $type (qw/gene transcript translation/) {
   my $features = $adaptor->fetch_all();
   while (my $feature = shift $features) {
     # Get a list of all IDs that are "the same thing"
-    my $identity_matches = $reasoner->extract_transitive_xrefs_for_id($feature->stable_id);
+    my $matches = $reasoner->extract_transitive_xrefs_for_id($feature->stable_id);
     if ($opts->debug == 1) {
-      printf $matches_fh "%s\t%s\n",$feature->stable_id,join(',',@$identity_matches);
+      printf $matches_fh "%s\t",$feature->stable_id;
     }
+
+    foreach my $match (@$matches) {
+      my $related_set = $reasoner->get_related_xrefs($match->{uri});
+      my $root_id = $match->{xref_label};
+
+      my $root_source = $related_set->[0]->{root_source}; # Get source of original ID after the fact. It's not in the transitive graph
+      $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
+
+      printf $matches_fh "$root_source:$root_id," if $opts->debug == 1;
+
+      foreach my $hit (@$related_set) {
+        if ($opts->debug == 1) {
+          printf $matches_fh ',%s:%s',$namespace_mapper->convert_uri_to_external_db_name($_->{source}),$_->{id};
+        }
+      }
+      print $matches_fh ',' if $opts->debug == 1;
+    }
+    print $matches_fh "\n" if $opts->debug == 1;
   }
 }
 

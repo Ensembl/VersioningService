@@ -63,6 +63,19 @@ has fuseki_heap => (
   documentation => 'Override for the heap size that is used to launch Fuseki.'
 );
 
+has config_file => (
+  is => 'rw',
+  isa => 'Str',
+  default => '/homes/ktaylor/src/VersioningService/conf/xref_LOD_mapping.json',
+  documentation => 'A JSON LOD config file describing the different sources and conversions required for the xref pipeline'
+);
+
+has config_schema => (
+  is => 'rw',
+  isa => 'Str',
+  default => '/homes/ktaylor/src/VersioningService/conf/xref_LOD_schema.json',
+  documentation => 'The schema constraining the config_file option. The file will be validated on each run'
+);
 
 has ens_host => (
   is => 'rw',

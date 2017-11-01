@@ -65,7 +65,7 @@ sub new {
   }
 
   my %xref_mapping;
-  my %reverse_mapping;
+  my %reverse_mapping; # reverse mapping may be unused
   map { $xref_mapping{ lc $_->{db_name} } = $_ } @{ $doc->{mappings} };
   my $root = 'http://identifiers.org/';
   for my $record (@{ $doc->{mappings}}) {
@@ -267,7 +267,7 @@ sub generate_source_uri {
 
 
 
-sub convert_uri_to_external_db_id {
+sub convert_uri_to_external_db_name {
   my $self = shift;
   my $uri = shift;
 

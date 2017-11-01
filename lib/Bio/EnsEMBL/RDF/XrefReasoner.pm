@@ -371,7 +371,13 @@ sub extract_transitive_xrefs_for_id {
     }), $condensed_graph,$id;
 
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
-  return $iterator;
+  my @results = map { 
+    { 
+      uri => $_->{uri}->value,
+      xref_label => $_->{xref_label}->value
+     }
+    } $iterator->get_all;
+  return \@results;
 }
 
 sub get_related_xrefs {
@@ -392,7 +398,16 @@ sub get_related_xrefs {
       OPTIONAL { ?xref term:score ?score }
     }),$graph_url,$url;
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
-  return $iterator;
+  my @results = map { 
+    { root_source => $_->{root_source}->value,
+      uri => $_->{uri}->value,
+      source => $_->{source}->value,
+      id => $_->{id}->value,
+      type => $_->{type}->value,
+      score => $_->{type}->value
+     }
+    } $iterator->get_all;
+  return \@results;
 }
 
 sub condensed_graph_name {

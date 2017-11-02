@@ -5,7 +5,7 @@
       "example_id": "ENSG00000265094",
       "ignore": true,
       "bidirectional": false,
-      "feature_type": "gene",
+      "feature_type": "annotation",
       "ensembl_db_name": "ArrayExpress"
     },
     {

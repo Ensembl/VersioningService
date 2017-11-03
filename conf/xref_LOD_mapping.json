@@ -222,7 +222,6 @@
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
       "bidirectional": true,
       "feature_type": "gene",
-      "ensembl_db_name": "ENSG"
     },
     {
       "db_name": "ensembl_transcript",

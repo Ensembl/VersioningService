@@ -13,17 +13,19 @@ SKIP: {
     unless defined $ENV{FUSEKI_HOME};
   
   note "Starting Fuseki Java process";
-  my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new(heap => 2);
+  my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new(heap => 2, graph_name => 'xref');
   my $server_url = $fuseki->start_server();
   note "Server started on $server_url?";
   sleep 2;
   $fuseki->load_data(["$Bin/data/test_graph.ttl"],'xref');
   my $graph_url = $fuseki->graph_url;
   note "Data loaded";
+  note $graph_url;
   my $row_count = 0;
   my $sparql = "SELECT ?s ?p ?o FROM <${graph_url}> WHERE { ?s ?p ?o . }";
-  $fuseki->query($sparql) if $fuseki->background_process_alive;
-  while (my $row = $fuseki->sparql->next_result) {
+  my $iterator;
+  $iterator = $fuseki->query($sparql) if $fuseki->background_process_alive;
+  while (my $row = $iterator->next) {
     $row_count++;
   }
   
@@ -31,7 +33,7 @@ SKIP: {
   $fuseki->delete_data($fuseki->graph_name);
   my $result = $fuseki->query($sparql);
   $row_count = 0;
-  while (my $row = $result->next_result) {
+  while (my $row = $result->next) {
     $row_count++;
   }
 

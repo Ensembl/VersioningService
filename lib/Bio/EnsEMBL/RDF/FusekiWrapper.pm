@@ -21,8 +21,8 @@ limitations under the License.
 
   my $fuseki = Bio::EnsEMBL::RDF::FusekiWrapper->new();
   $fuseki->load_data([$ttl_file1, $ttl_file2, $ttl_file3]);
-  my $result_set = $fuseki->query($sparql);
-  my @all = $result_set->get_all;
+  my $iterator = $fuseki->query($sparql);
+  my @all = $iterator->get_all;
   
 =head1 DESCRIPTION
 
@@ -123,13 +123,14 @@ sub query {
   my $query = shift;
   # print "Query received in FusekiWrapper: $query\n";
   # print "Sending query in FusekiWrapper to: ".$self->sparql->triplestore_url."\n";
+  my $iterator;
   try {
-    $self->sparql->query($query);
+    $iterator = $self->sparql->query($query);
     # $self->sparql($sparqler);
   } catch {
     Bio::EnsEMBL::Mongoose::DBException->throw("Unable to query Fuseki graph ".$self->graph_name." with error $_");
   };
-  return $self->sparql->result_set;
+  return $iterator;
 }
 
 sub update {

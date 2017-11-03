@@ -33,19 +33,18 @@ my $mock_query = sub {
   my $query = shift;
   my $query_obj = RDF::Query->new($query);
   my $iterator = $query_obj->execute($model);
-  $query_agent->result_set($iterator);
   return $iterator;
 };
 
 $query_agent->mock(query => $mock_query);
 $query_agent->graph("http://everything/");
 # Prove basic querying is functional
-$query_agent->query(sprintf qq(%s\nSELECT ?s ?p ?o {
+my $iterator = $query_agent->query(sprintf qq(%s\nSELECT ?s ?p ?o {
     ?s ?p ?o .
     }), $query_agent->compatible_name_spaces());
 
 my $counter = 0;
-while (my $hit = $query_agent->result_set->next) {
+while (my $hit = $iterator->next) {
   $counter++;
   # note $hit->{s}, $hit->{p}, $hit->{o};
 }

@@ -36,14 +36,6 @@ has triplestore_url => (
 has query_endpoint => ( is => 'ro', isa => 'Str', default => 'sparql');
 has update_endpoint => ( is => 'ro', isa => 'Str', default => 'update');
 
-has result_set => (
-    is => 'rw',
-    lazy => 1,
-    default => sub {
-        
-    },
-    weak_ref => 1
-);
 # name of named graph in triplestore
 has graph => (
   is => 'rw',
@@ -65,7 +57,7 @@ sub query {
   my $result_iterator = $sparql->execute($self->triplestore_url.$self->query_endpoint);
   my $error = $sparql->error();
   if ($error) { Bio::EnsEMBL::Mongoose::DBException->throw($error.' '.$sparql->http_response) }
-  $self->result_set($result_iterator);
+  return $result_iterator;
 }
 
 sub update {
@@ -78,14 +70,6 @@ sub update {
   if ($sparql->http_response->code != 204 && $error) { Bio::EnsEMBL::Mongoose::DBException->throw($error.' '.$sparql->http_response->code) }
 }
 
-sub next_result {
-  my $self = shift;
-  if ($self->result_set) {
-    return $self->result_set->next;
-  } else {
-    return;
-  }
-}
 
 # Query graph for an ID and all related xrefs (outbound links), returns a list of names
 sub recurse_xrefs {
@@ -104,12 +88,12 @@ sub recurse_xrefs {
     ?e dc:identifier ?xref_label.
     }), compatible_name_spaces(),$graph_name,$id;
   # print $query."\n";
-  $self->query($query);
+  my $iterator = $self->query($query);
 
   my @xrefs = ();
-  return unless defined $self->result_set;
+  return unless defined $iterator;
   # map result objects into array of xref labels
-  while (my $result = $self->next_result) {
+  while (my $result = $iterator->next) {
     # print Dumper $result_iterator;
     my $string = $result->{xref_label}->as_string;
     $string =~ s/"//g;
@@ -127,12 +111,12 @@ sub recurse_mini_graph {
     ?xref_label term:refers-to+ ensembl:%s .
     }), compatible_name_spaces(),$graph_name,$id;
   # print $query."\n";
-  $self->query($query);
+  my $iterator = $self->query($query);
 
   my @xrefs = ();
-  return unless defined $self->result_set;
+  return unless defined $iterator;
   # map result objects into array of xref labels
-  while (my $result = $self->next_result) {
+  while (my $result = $iterator->next) {
     # print Dumper $result_iterator;
     my $string = $result->{xref_label}->as_string;
     # $string =~ s/"//g;
@@ -153,12 +137,12 @@ sub get_all_linking_xrefs {
     ?o dc:identifier ?xref_label.
     }), compatible_name_spaces(),$graph_name,$id;
   # print $query."\n";
-  $self->query($query);
+  my $iterator = $self->query($query);
 
   my @xrefs = ();
-  return unless defined $self->result_set;
+  return unless defined $iterator;
   # map result objects into array of xref labels
-  while (my $result = $self->next_result) {
+  while (my $result = $iterator->next) {
     # print Dumper $result_iterator;
     my $string = $result->{xref_label}->as_string;
     $string =~ s/"//g;
@@ -190,8 +174,8 @@ sub extract_max_values {
           term:refers-to ?refseq_uri .
   } ORDER BY ?refseq_uri DESC(?score)";
 
-  $self->query($prefixes.$sparql);
-  my @results = $self->result_set->get_all;
+  my $iterator = $self->query($prefixes.$sparql);
+  my @results = $iterator->get_all;
   my @best_results;
   my $last_id = '';
   my $last_score = 0;
@@ -228,9 +212,9 @@ sub pick_best_protein {
 
   } ORDER BY ?refseq_uri DESC(?score)";
 
-  $self->query($prefixes.$sparql);
+  my $iterator = $self->query($prefixes.$sparql);
 
-  my $protein_pairs = $self->sparql->get_all;
+  my $protein_pairs = $iterator->get_all;
   
   my @best;
   my $last_id;

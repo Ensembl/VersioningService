@@ -221,7 +221,7 @@
       "id_namespace": "ensembl",
       "canonical_LOD": "http://rdf.ebi.ac.uk/resource/ensembl/",
       "bidirectional": true,
-      "feature_type": "gene",
+      "feature_type": "gene"
     },
     {
       "db_name": "ensembl_transcript",

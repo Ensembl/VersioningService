@@ -69,5 +69,18 @@ is_deeply([$converter->generate_source_uri('RefSeq_mRNA_predicted','XM_1000')],
   ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_mRNA_predicted','http://identifiers.org/refseq/'] ,
   'Test a predicted RefSeq transcript gets binned correctly');
 
+is_deeply([$converter->generate_source_uri('Ensembl','ENSG10')],
+  ['http://rdf.ebi.ac.uk/resource/ensembl/','http://rdf.ebi.ac.uk/resource/ensembl/'],
+  'Test an Ensembl Gene described in another source');
+
+is_deeply([$converter->generate_source_uri('ensembl_transcript','ENST10')],
+  ['http://rdf.ebi.ac.uk/resource/ensembl.transcript/','http://rdf.ebi.ac.uk/resource/ensembl.transcript/'],
+  'Test an Ensembl Transcript described in another source');
+
+is_deeply([$converter->generate_source_uri('ensembl_protein','ENSP10')],
+  ['http://rdf.ebi.ac.uk/resource/ensembl.protein/','http://rdf.ebi.ac.uk/resource/ensembl.protein/'],
+  'Test an Ensembl Translation described in another source');
+
+
 
 done_testing;

@@ -41,7 +41,8 @@ has result_set => (
     lazy => 1,
     default => sub {
         
-    }
+    },
+    weak_ref => 1
 );
 # name of named graph in triplestore
 has graph => (

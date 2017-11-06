@@ -271,7 +271,7 @@ sub convert_uri_to_external_db_name {
   my $self = shift;
   my $uri = shift;
 
-  print "Received $uri\n";
+  # print "Received $uri\n";
   $uri =~ s/<|>//g; # Just in case an RDF-style URI has escaped uncleaned
 
   if ($uri =~ m{http://rdf.ebi.ac.uk/resource/ensembl/source/(.+)}) {

@@ -98,6 +98,12 @@ has ens_user => (
   documentation => 'Database user for staging database. Use with ens_host option'
 );
 
+has ens_pass => (
+  is => 'rw',
+  isa => 'Str',
+  documentation => 'Password for write operations for ens_user'
+);
+
 has ens_db_version => (
   is => 'rw',
   isa => 'Str',

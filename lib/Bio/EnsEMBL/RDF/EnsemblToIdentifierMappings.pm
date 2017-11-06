@@ -300,4 +300,19 @@ sub convert_uri_to_external_db_name {
 
 }
 
+# Given a source name, return the priority score if there is one
+sub get_priority {
+  my $self = shift;
+  my $source = shift;
+  my $mappings = $self->{xref_mapping};
+  if (exists $mappings->{lc $source} ) {
+    if (exists $mappings->{lc $source}->{priority}) {
+      return $mappings->{lc $source}->{priority};
+    }
+  }
+  return;
+}
+
+
+
 1;

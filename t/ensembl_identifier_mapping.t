@@ -81,6 +81,9 @@ is_deeply([$converter->generate_source_uri('ensembl_protein','ENSP10')],
   ['http://rdf.ebi.ac.uk/resource/ensembl.protein/','http://rdf.ebi.ac.uk/resource/ensembl.protein/'],
   'Test an Ensembl Translation described in another source');
 
-
+cmp_ok($converter->get_priority('HGNC'), '==', 100, 'HGNC naming priority is max');
+cmp_ok($converter->get_priority('EntrezGene'), '==', 60, 'NCBIgene, aka EntrezGene priority is lower');
+ok(! defined $converter->get_priority('MIM'), 'No priority response for non-naming authorities');
+ok(! defined $converter->get_priority('Nonsense'), 'No priority response for bogus source');
 
 done_testing;

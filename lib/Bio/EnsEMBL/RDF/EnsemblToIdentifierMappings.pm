@@ -253,9 +253,10 @@ sub generate_source_uri {
     } else {
       $source_uri = $self->identifier($source); # Beaten - resort to blind guesswork  
     }
+    $source_uri .= '/';
     # most other sources can be handled automatically
   } elsif (exists $mappings->{lc $source} && exists $mappings->{lc $source}->{ensembl_db_name}) {
-    $source_uri = 'http://rdf.ebi.ac.uk/resource/ensembl/source/'.uri_escape( $mappings->{lc $source}->{ensembl_db_name} );
+    $source_uri = 'http://rdf.ebi.ac.uk/resource/ensembl/source/'.uri_escape( $mappings->{lc $source}->{ensembl_db_name} ).'/';
     $general_source_uri = $self->identifier($source);
     # This can be removed when external_db no longer dictates what we call sources in Ensembl
   } else {
@@ -274,7 +275,7 @@ sub convert_uri_to_external_db_name {
   # print "Received $uri\n";
   $uri =~ s/<|>//g; # Just in case an RDF-style URI has escaped uncleaned
 
-  if ($uri =~ m{http://rdf.ebi.ac.uk/resource/ensembl/source/(.+)}) {
+  if ($uri =~ m{http://rdf.ebi.ac.uk/resource/ensembl/source/(.+)/?}) {
     my $external_db_name = $1;
     return uri_unescape($external_db_name);
   } else {

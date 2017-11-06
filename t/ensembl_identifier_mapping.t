@@ -41,32 +41,32 @@ is($converter->convert_uri_to_external_db_name('http://rdf.ebi.ac.uk/resource/en
 
 
 is_deeply( [$converter->generate_source_uri('Uniprot/SWISSPROT','P10503')],
-    ['http://rdf.ebi.ac.uk/resource/ensembl/source/Uniprot%2FSWISSPROT','http://purl.uniprot.org/uniprot/'] ,
+    ['http://rdf.ebi.ac.uk/resource/ensembl/source/Uniprot%2FSWISSPROT/','http://purl.uniprot.org/uniprot/'] ,
     'Test a known ensembl_db entry that must get URI-escaped');
 is_deeply([$converter->generate_source_uri('swissprot','P10503')],
-  ['http://rdf.ebi.ac.uk/resource/ensembl/source/Uniprot%2FSWISSPROT','http://purl.uniprot.org/uniprot/'] ,
+  ['http://rdf.ebi.ac.uk/resource/ensembl/source/Uniprot%2FSWISSPROT/','http://purl.uniprot.org/uniprot/'] ,
   'Test a known ensembl_db entry with non-specific external source');
 
 is_deeply([$converter->generate_source_uri('refseq','NM_10')],
-  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_mRNA','http://identifiers.org/refseq/'] ,
+  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_mRNA/','http://identifiers.org/refseq/'] ,
   'Test an evidenced RefSeq transcript gets binned correctly');
 
 dies_ok(sub {$converter->generate_source_uri('refseq',undef)}, 'Ensure a RefSeq transcript without an ID creates an error');
 
 is_deeply([$converter->generate_source_uri('RefSeq_peptide','NP_10')],
-  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_peptide','http://identifiers.org/refseq/'] ,
+  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_peptide/','http://identifiers.org/refseq/'] ,
   'Test an evidenced RefSeq protein gets binned correctly');
 
 is_deeply([$converter->generate_source_uri('RefSeq_peptide_predicted','XP_10')],
-  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_peptide_predicted','http://identifiers.org/refseq/'] ,
+  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_peptide_predicted/','http://identifiers.org/refseq/'] ,
   'Test a predicted RefSeq protein gets binned correctly');
 
 is_deeply([$converter->generate_source_uri('RefSeq_ncRNA','NR')],
-  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_ncRNA','http://identifiers.org/refseq/'] ,
+  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_ncRNA/','http://identifiers.org/refseq/'] ,
   'Test an evidenced non-coding RefSeq transcript gets binned correctly');
 
 is_deeply([$converter->generate_source_uri('RefSeq_mRNA_predicted','XM_1000')],
-  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_mRNA_predicted','http://identifiers.org/refseq/'] ,
+  ['http://rdf.ebi.ac.uk/resource/ensembl/source/RefSeq_mRNA_predicted/','http://identifiers.org/refseq/'] ,
   'Test a predicted RefSeq transcript gets binned correctly');
 
 is_deeply([$converter->generate_source_uri('Ensembl','ENSG10')],

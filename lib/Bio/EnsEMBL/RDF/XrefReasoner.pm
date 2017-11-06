@@ -386,27 +386,54 @@ sub get_related_xrefs {
 
   my $graph_url = $self->triplestore->graph_url;
 
-  my $sparql = sprintf qq(SELECT ?root_source ?uri ?source ?id ?type ?score FROM <%s> WHERE {
+  my $sparql = sprintf qq(SELECT ?uri ?source ?id ?type ?score ?display_label ?description FROM <%s> WHERE {
       <%s> term:refers-to ?xref .
-      <%s> dcterms:source ?root_source .
       ?xref rdf:type ?type .
       ?xref term:refers-to ?uri .
       ?uri dcterms:source ?source .
       ?uri dc:identifier ?id .
+      OPTIONAL { ?uri term:display_label ?display_label }
+      OPTIONAL { ?uri dc:description ?description }
       OPTIONAL { ?xref term:score ?score }
-    }),$graph_url,$url,$url;
+    }),$graph_url,$url;
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
   my @results = map { 
-    { root_source => $_->{root_source}->value,
+    { 
       uri => $_->{uri}->value,
       source => $_->{source}->value,
       id => $_->{id}->value,
       type => $_->{type}->value,
-      score => $_->{type}->value
+      score => $_->{score}->value,
+      display_label => $_->{display_label}->value
      }
     } $iterator->get_all;
   return \@results;
 }
+
+sub get_detail_of_url {
+  my $self = shift;
+  my $url = shift;
+
+  my $graph_url = $self->triplestore->graph_url;
+  my $sparql = sprintf qq(
+    SELECT ?source, ?description, ?display_label FROM <%s> WHERE {
+      <%s> dcterms:source ?source .
+      <%s> dc:identifier ?id .
+      OPTIONAL { <%s> term:description ?description }
+      OPTIONAL { <%s> term:display_label ?display_label }
+    }
+  ), $graph_url, $url, $url, $url, $url;
+  my $iterator = $self->triplestore->query($self->prefixes.$sparql);
+  my @results = map { 
+    { 
+      source => $_->{source}->value,
+      id => $_->{id}->value,
+      display_label => $_->{display_label}->value
+    }
+    } $iterator->get_all;
+  return \@results;
+}
+
 
 sub condensed_graph_name {
   my $self = shift;

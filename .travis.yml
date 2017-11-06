@@ -17,7 +17,7 @@ before_install:
     - git clone -b bioperl-release-1-6-1 --depth 1 https://github.com/bioperl/bioperl-live.git
 
 install:
-    - cpanm --installdeps --with-recommends --notest .
+    - travis_wait cpanm --installdeps --with-recommends --notest .
     - cpanm -n Devel::Cover::Report::Coveralls
     - cpanm -n DBD::mysql DBD::SQLite
 

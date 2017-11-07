@@ -364,17 +364,19 @@ sub extract_transitive_xrefs_for_id {
   my $graph_url = $self->triplestore->graph_url;
   my $condensed_graph = $self->condensed_graph_name($graph_url);
 
-  my $sparql = sprintf qq(SELECT DISTINCT ?uri ?xref_label FROM <%s> {
+  my $sparql = sprintf qq(SELECT DISTINCT ?uri ?xref_source ?xref_label FROM <%s> {
     ?o dc:identifier "%s" .
     ?o term:refers-to+ ?uri .
     ?uri dc:identifier ?xref_label .
+    ?uri dcterms:source ?xref_source
     }), $condensed_graph,$id;
 
   my $iterator = $self->triplestore->query($self->prefixes.$sparql);
   my @results = map { 
     { 
       uri => $_->{uri}->value,
-      xref_label => $_->{xref_label}->value
+      xref_label => $_->{xref_label}->value,
+      xref_source => $_->{xref_source}->value
      }
     } $iterator->get_all;
   return \@results;

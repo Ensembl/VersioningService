@@ -96,18 +96,28 @@ foreach my $type (qw/Gene Transcript Translation/) {
     }
 
     my @labels;
-    my $transitive_sources; # Keep track of all sources used for transitive inference
-    $transitive_sources = [map {$namespace_mapper->convert_uri_to_external_db_name($_->{xref_source}) } @$matches];
+    # my $transitive_sources; # Keep track of all sources used for transitive inference
+    # $transitive_sources = [map { $namespace_mapper->convert_uri_to_external_db_name($_->{xref_source}) } @$matches];
     foreach my $match (@$matches) {
-      next if $match->{xref_label} eq $feature->stable_id; # We don't need to revisit the Ensembl ID. No luck if the stable ID has been reused externally
+      next if (
+           $match->{xref_label} eq $feature->stable_id 
+        && ( $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl/'
+          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript/'
+          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein/'
+          )
+        ); # We don't need to revisit the Ensembl ID. Sometimes Ensembl IDs are externally used so we have to check to the source too
       my $match_set = $reasoner->get_detail_of_uri($match->{uri});
-      my $related_set = $reasoner->get_related_xrefs($match->{uri});
 
       my $root_id = $match->{xref_label}; #Could also get this from $match_set
       my $root_source = $match_set->[0]->{source}; # Get source of original ID after the fact. It's not in the transitive graph
       $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
-      
-      $related_set = remove_duplicates_from_potential_xrefs($related_set,$transitive_sources);
+      if (! defined $root_source) {
+        printf "Failed to resolve %s into external_db for id %s\n",$match_set->[0]->{source},$match_set->[0]->display_label;
+        next;
+      } else {
+        printf "Storing direct xref %s:%s with label %s into Ensembl core DB\n",$root_source,$root_id,$match_set->[0]->{display_label};
+      }
+
       # Insert as Direct Xref
       my $dbentry = Bio::EnsEMBL::DBEntry->new(
         adaptor => $db_entry_adaptor,
@@ -121,12 +131,22 @@ foreach my $type (qw/Gene Transcript Translation/) {
       # dbentry, Ensembl ID, feature type, ignore external DB version
       print $matches_fh "$root_source:$root_id," if $opts->debug == 1;
 
-      
       # Consider local ID for naming
       my $naming_priority = $namespace_mapper->get_priority($root_source);
       if (defined $naming_priority && defined $match_set->[0]->{display_label} ) {
         push @labels,[$dbentry,$naming_priority];
       }
+
+    }
+
+    # Now visit all the xrefs described by the transitively linked xrefs
+    foreach my $match (@$matches) {
+      my $related_set = $reasoner->get_related_xrefs($match->{uri});
+      # $related_set = remove_duplicates_from_potential_xrefs($related_set,$transitive_sources);
+      my $match_set = $reasoner->get_detail_of_uri($match->{uri});
+
+      my $root_source = $match_set->[0]->{source}; # Get source of original ID after the fact. It's not in the transitive graph
+      $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
 
       foreach my $hit (@$related_set) {
         my $external_db_name = $namespace_mapper->convert_uri_to_external_db_name($hit->{source});
@@ -147,8 +167,9 @@ foreach my $type (qw/Gene Transcript Translation/) {
           description => $hit->{description},
           info_type => 'DEPENDENT'
         );
-        # Find a naming authority and apply synonyms
+        $db_entry_adaptor->store($linked_dbentry,$feature->stable_id,$type,1);
 
+        # Find a naming authority and apply synonyms
         my $naming_priority = $namespace_mapper->get_priority($external_db_name);
         if (defined $naming_priority && defined $hit->{label} ) {
           push @labels,[$linked_dbentry,$naming_priority];

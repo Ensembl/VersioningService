@@ -418,10 +418,10 @@ sub get_detail_of_uri {
 
   my $graph_url = $self->triplestore->graph_url;
   my $sparql = sprintf qq(
-    SELECT ?source, ?description, ?display_label FROM <%s> WHERE {
+    SELECT ?id, ?source, ?description, ?display_label FROM <%s> WHERE {
       <%s> dcterms:source ?source .
       <%s> dc:identifier ?id .
-      OPTIONAL { <%s> term:description ?description }
+      OPTIONAL { <%s> term:description ?description } .
       OPTIONAL { <%s> term:display_label ?display_label }
     }
   ), $graph_url, $url, $url, $url, $url;
@@ -430,7 +430,8 @@ sub get_detail_of_uri {
     { 
       source => $_->{source}->value,
       id => $_->{id}->value,
-      display_label => $_->{display_label}->value
+      display_label => $_->{display_label}->value,
+      description => $_->{description}->value,
     }
     } $iterator->get_all;
   return \@results;

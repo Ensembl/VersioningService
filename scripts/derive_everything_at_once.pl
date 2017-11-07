@@ -81,6 +81,13 @@ my $ens_user = 'anonymous';
 
 my $matches_fh = IO::File->new($opts->output_file,'w');
 
+my %uri_to_enum = (
+  'Coordinate_overlap' => 'COORDINATE_OVERLAP',
+  'Alignment' => 'SEQUENCE_MATCH',
+  'Checksum' => 'CHECKSUM',
+  'Direct' => 'DEPENDENT'
+);
+
 
 # Cleanse existing xref table of undesirable xrefs. This means nearly everything except that which is not ours to delete.
 delete_renewable_xrefs($opts);
@@ -157,7 +164,12 @@ foreach my $type (qw/Gene Transcript Translation/) {
         if ($opts->debug == 1) {
           printf $matches_fh ',%s:%s',$external_db_name,$hit->{id};
         }
-        
+
+        # Inspect link to determine xref type
+        $type = $hit->{type};
+        $type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
+        my $info_type = $uri_to_enum{$type};
+
         # Insert as a Dependent Xref
         my $linked_dbentry = Bio::EnsEMBL::DBEntry->new(
           adaptor => $db_entry_adaptor,
@@ -165,7 +177,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
           dbname => $external_db_name,
           display_id => $hit->{display_label},
           description => $hit->{description},
-          info_type => 'DEPENDENT'
+          info_type => $info_type
         );
         $db_entry_adaptor->store($linked_dbentry,$feature->stable_id,$type,1);
 

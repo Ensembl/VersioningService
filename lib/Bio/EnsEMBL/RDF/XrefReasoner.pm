@@ -410,7 +410,7 @@ sub get_related_xrefs {
   return \@results;
 }
 
-sub get_detail_of_url {
+sub get_detail_of_uri {
   my $self = shift;
   my $url = shift;
 

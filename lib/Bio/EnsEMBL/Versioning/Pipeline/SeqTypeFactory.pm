@@ -64,6 +64,8 @@ sub run {
     ['Swissprot', 'pep']
   );
 
+  if ($species eq 'ciona_intestinalis') { push @source_dumping_list,['JGI','pep']}
+
   foreach my $source (grep { $_->[1] eq $seq_type} @source_dumping_list) {
     $self->dataflow_output_id({ 
       species => $species,

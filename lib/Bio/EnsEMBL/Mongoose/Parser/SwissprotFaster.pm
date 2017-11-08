@@ -254,6 +254,7 @@ sub xrefs {
                 # Hack to replace Uniprot links to Ensembl transcripts, with links to the Ensembl protein they referenced.
                 if ($source eq 'Ensembl' && $reader->localName eq 'property' && $reader->getAttribute('type') eq 'protein sequence ID') {
                     $id = $reader->getAttribute('value');
+                    $source = 'ensembl_protein'; # Switch source names to differentiate between Ensembl genes and proteins in xref pipeline
                 }
             }
             my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);

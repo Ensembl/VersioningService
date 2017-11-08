@@ -38,8 +38,9 @@ cmp_ok(scalar @go_xref, '==', 0, 'GO xrefs purposefully ignored');
 my @e_xref = grep {$_->id eq 'ENSP00000288602'} @xrefs;
 cmp_ok(scalar @e_xref, '==', 1, 'A single Uniprot to Ensembl xref links ONLY to the protein');
 @e_xref = grep {$_->id eq 'ENST00000288602'} @xrefs;
-cmp_ok(scalar @e_xref, '==', 0, 'A single Uniprot to Ensembl xref links ONLY to the protein');
-
+cmp_ok(scalar @e_xref, '==', 0, 'A single Uniprot to Ensembl xref links ONLY to the protein, no transcripts here');
+@e_xref = grep { $_->source eq 'ensembl_protein'} @xrefs;
+is ($e_xref[0]->id , 'ENSP00000288602', 'Ensembl protein has an adjusted source');
 
 my $iso_list = $record->isoforms;
 is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');

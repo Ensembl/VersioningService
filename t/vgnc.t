@@ -10,9 +10,9 @@ use lib "$Bin";
 use TestDefaults;
 
 use_ok 'Bio::EnsEMBL::Mongoose::Parser::VGNC';
-
+ok(-e "$ENV{MONGOOSE}/t/data/vgnc_gene_set_ALL.txt.gz", 'Test data is present');
 my $reader =
-  Bio::EnsEMBL::Mongoose::Parser::VGNC->new(source_file => "$ENV{MONGOOSE}/t/data/vgnc_gene_set_All.txt.gz");
+  Bio::EnsEMBL::Mongoose::Parser::VGNC->new(source_file => "$ENV{MONGOOSE}/t/data/vgnc_gene_set_ALL.txt.gz");
 isa_ok($reader, 'Bio::EnsEMBL::Mongoose::Parser::VGNC');
 
 my $num_of_records = 0;

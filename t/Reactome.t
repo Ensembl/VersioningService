@@ -32,7 +32,7 @@ isa_ok($all_xrefs, 'ARRAY' );
 
 my $expected_xref = [
                     bless( {
-                      'source' => 'Ensembl',
+                      'source' => 'ensembl',
                       'creator' => 'Reactome',
                       'active' => 1,
                       'id' => 'ENSG00000000419'
@@ -57,7 +57,7 @@ isa_ok($all_xrefs, 'ARRAY' );
 
 $expected_xref = [
                  bless( {
-                   'source' => 'Uniprot',
+                   'source' => 'Uniprot/SWISSPROT',
                    'creator' => 'Reactome',
                    'active' => 1,
                    'id' => 'Q70DU8'

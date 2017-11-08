@@ -120,6 +120,8 @@ sub read_record {
           $record->display_label($symbol);
           $first = 0;
         }
+        my $source = $self->mode;
+        $source = 'Uniprot/SWISSPROT' if $source eq 'uniprot';
         $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(
           source => $self->mode, id => $xref_id, creator => 'ZFIN'
         ));

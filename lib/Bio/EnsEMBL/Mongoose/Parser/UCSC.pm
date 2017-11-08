@@ -142,7 +142,7 @@ sub read_record {
     if ($protein_id =~ /^[A-Z0-9]{6,10}$/) {
       $source = 'UniProtKB';
     } elsif ($protein_id =~ /^ENS/) {
-      $source = 'Ensembl';
+      $source = 'ensembl_protein';
     } elsif ($protein_id =~ /^NP/) {
       $source = 'RefSeq';
     } else {

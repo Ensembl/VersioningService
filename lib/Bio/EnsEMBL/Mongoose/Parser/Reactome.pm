@@ -71,10 +71,10 @@ sub read_record {
   
   my $source;
   if ($source_db_id =~ /^[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}$/) { #Uniprot accession regex Ref: http://www.uniprot.org/help/accession_numbers
-    $source = 'Uniprot';
+    $source = 'Uniprot/SWISSPROT';
   }
   elsif ($source_db_id =~ /^ENS[GTP][0-9]*$/) { 
-    $source = 'Ensembl';
+    $source = 'ensembl'; # This will only work for human, but for the time being, it is not clear how to fix this. Most of the value is in the description
   }
   else {
     # Does not match Uniprot or Ensembl stable id format

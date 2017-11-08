@@ -69,7 +69,7 @@ sub read_record {
 
   $record->id($antibody_id);
   $record->display_label($antibody);
-  $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'Ensembl', creator => 'HPA', id => $ensembl_peptide_id));
+  $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'ensembl_protein', creator => 'HPA', id => $ensembl_peptide_id));
 
   return 1;
 }

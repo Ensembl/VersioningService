@@ -170,7 +170,9 @@ sub split_value{
 #
 sub add_ae_xref{
   my ($self, $record, $xref_ids, $source)  = @_;
-  
+  $source = 'mirbase' if $source eq 'mirbase_id'; # convert ArrayExpress source name to match other sources
+  $source = 'Uniprot/SPTREMBL' if $source eq 'uniprot'; # convert uniprot source to a more recognisable source name
+
   foreach my $id (@$xref_ids){
     $record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source,creator => 'ArrayExpress',id => $id));
   }

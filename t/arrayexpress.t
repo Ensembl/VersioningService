@@ -59,7 +59,7 @@ my $expected_xref = [
                                       id => 'Hs.132957'
                                     }, 'Bio::EnsEMBL::Mongoose::Persistence::RecordXref' ),
                              bless( {
-                                      source => 'Uniprot/SWISSPROT',
+                                      source => 'Uniprot/SPTREMBL',
                                       creator => 'ArrayExpress',
                                       active => 1,
                                       id => 'Q9H2S6'

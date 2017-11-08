@@ -405,8 +405,9 @@ sub get_related_xrefs {
       source => $_->{source}->value,
       id => $_->{id}->value,
       type => $_->{type}->value,
-      score => $_->{score}->value,
-      display_label => $_->{display_label}->value
+      score => ($_->{score}->value) ? exists $_->{score} : undef,
+      display_label => ($_->{display_label}->value) ? exists $_->{display_label} : undef,
+      description => ($_->{description}->value) ? exists $_->{description} : undef
      }
     } $iterator->get_all;
   return \@results;
@@ -430,8 +431,8 @@ sub get_detail_of_uri {
     { 
       source => $_->{source}->value,
       id => $_->{id}->value,
-      display_label => $_->{display_label}->value,
-      description => $_->{description}->value,
+      display_label => ($_->{display_label}->value) ? exists $_->{display_label} : undef,
+      description => ($_->{description}->value) ? exists $_->{description} : undef
     }
     } $iterator->get_all;
   return \@results;

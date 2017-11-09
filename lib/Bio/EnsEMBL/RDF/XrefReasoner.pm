@@ -405,7 +405,7 @@ sub get_related_xrefs {
       source => $_->{source}->value,
       id => $_->{id}->value,
       type => $_->{type}->value,
-      score => ($_->{score}->value) ? exists $_->{score} : undef,
+      score => (exists $_->{score}) ? $_->{score}->value : undef,
       display_label => (exists $_->{display_label}) ? $_->{display_label}->value : undef,
       description => (exists $_->{description}) ? $_->{description}->value : undef
      }

@@ -75,10 +75,6 @@ print "Stats finished, now select transitive xrefs into a new graph\n";
 $reasoner->nominate_transitive_xrefs();
 print "Transitive xrefs supplemented with choices from coordinate matches, alignments and such.\n";
 
-my $ens_host = 'mysql-ensembl-mirror.ebi.ac.uk';
-my $ens_port = 4240;
-my $ens_user = 'anonymous';
-
 my $matches_fh = IO::File->new($opts->output_file,'w');
 
 my %uri_to_enum = (
@@ -127,14 +123,13 @@ foreach my $type (qw/Gene Transcript Translation/) {
 
       # Insert as Direct Xref
       my $dbentry = Bio::EnsEMBL::DBEntry->new(
-        adaptor => $db_entry_adaptor,
-        primary_id => $root_id,
-        dbname => $root_source,
-        display_id => $match_set->[0]->{display_label},
-        description => $match_set->[0]->{description},
-        info_type => 'DIRECT'
+        -primary_id => $root_id,
+        -dbname => $root_source,
+        -display_id => $match_set->[0]->{display_label},
+        -description => $match_set->[0]->{description},
+        -info_type => 'DIRECT'
         );
-      $db_entry_adaptor->store($dbentry,$feature->stable_id,$type,1);
+      $db_entry_adaptor->store($dbentry,$feature->dbID,$type,1);
       # dbentry, Ensembl ID, feature type, ignore external DB version
       print $matches_fh "$root_source:$root_id," if $opts->debug == 1;
 
@@ -169,17 +164,31 @@ foreach my $type (qw/Gene Transcript Translation/) {
         $type = $hit->{type};
         $type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
         my $info_type = $uri_to_enum{$type};
+        my $linked_dbentry;
+        if ($info_type eq 'SEQUENCE_MATCH') {
+          my $target_identity = $reasoner->get_target_identity($match->{uri},$hit->{uri});
 
-        # Insert as a Dependent Xref
-        my $linked_dbentry = Bio::EnsEMBL::DBEntry->new(
-          adaptor => $db_entry_adaptor,
-          primary_id => $hit->{id},
-          dbname => $external_db_name,
-          display_id => $hit->{display_label},
-          description => $hit->{description},
-          info_type => $info_type
-        );
-        $db_entry_adaptor->store($linked_dbentry,$feature->stable_id,$type,1);
+          $linked_dbentry = Bio::EnsEMBL::IdentityXref->new(
+            -primary_id => $hit->{id},
+            -dbname => $external_db_name,
+            -display_id => $hit->{display_label},
+            -description => $hit->{description},
+            -info_type => $info_type,
+
+            -ensembl_identity => $hit->{score} * 100, # the alignment values
+            -xref_identity => $target_identity * 100
+          );
+        } else {
+          # Insert as a Dependent Xref
+          $linked_dbentry = Bio::EnsEMBL::DBEntry->new(
+            -primary_id => $hit->{id},
+            -dbname => $external_db_name,
+            -display_id => $hit->{display_label},
+            -description => $hit->{description},
+            -info_type => $info_type
+          );
+        }
+        $db_entry_adaptor->store($linked_dbentry,$feature->dbID,$type,1);
 
         # Find a naming authority and apply synonyms
         my $naming_priority = $namespace_mapper->get_priority($external_db_name);

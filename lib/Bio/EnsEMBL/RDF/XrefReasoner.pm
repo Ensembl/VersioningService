@@ -438,6 +438,27 @@ sub get_detail_of_uri {
   return \@results;
 }
 
+# Used for in-filling scores for alignments when we are not prescient enough to have fetched it in a previous query
+sub get_target_identity {
+  my $self = shift;
+  my $e_uri = shift;
+  my $o_uri = shift;
+  my $graph_url = $self->triplestore->graph_url;
+  my $sparql = sprintf qq(
+  SELECT ?score FROM <%s> WHERE {
+    <%s> term:refers-to ?xref .
+    ?xref term:score ?score .
+    ?xref rdf:type term:Alignment .
+    ?xref term:refers-to <%s> .
+  }
+  ), $graph_url, $o_uri, $e_uri;
+  my $iterator = $self->triplestore->query($self->prefixes.$sparql);
+  if (!defined $iterator) {
+    Bio::EnsEMBL::Mongoose::DBException->throw("No result returned for finding alignment score of $o_uri to $e_uri");    
+  }
+  my $hit = $iterator->next;
+  return $hit->{score}->value;
+}
 
 sub condensed_graph_name {
   my $self = shift;

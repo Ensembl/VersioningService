@@ -130,7 +130,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
         -info_type => 'DIRECT'
         );
       $db_entry_adaptor->store($dbentry,$feature->dbID,$type,1);
-      # dbentry, Ensembl ID, feature type, ignore external DB version
+      # dbentry, Ensembl internal dbID, feature type, ignore external DB version
       print $matches_fh "$root_source:$root_id," if $opts->debug == 1;
 
       # Consider local ID for naming
@@ -161,9 +161,9 @@ foreach my $type (qw/Gene Transcript Translation/) {
         }
 
         # Inspect link to determine xref type
-        $type = $hit->{type};
-        $type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
-        my $info_type = $uri_to_enum{$type};
+        my $link_type = $hit->{type};
+        $link_type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
+        my $info_type = $uri_to_enum{$link_type};
         my $linked_dbentry;
         if ($info_type eq 'SEQUENCE_MATCH') {
           my $target_identity = $reasoner->get_target_identity($match->{uri},$hit->{uri});

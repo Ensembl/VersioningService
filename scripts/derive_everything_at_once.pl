@@ -78,12 +78,24 @@ print "Transitive xrefs supplemented with choices from coordinate matches, align
 my $matches_fh = IO::File->new($opts->output_file,'w');
 
 my %uri_to_enum = (
-  'Coordinate_overlap' => 'COORDINATE_OVERLAP',
-  'Alignment' => 'SEQUENCE_MATCH',
-  'Checksum' => 'CHECKSUM',
-  'Direct' => 'DEPENDENT'
+  Coordinate_overlap => 'COORDINATE_OVERLAP',
+  Alignment => 'SEQUENCE_MATCH',
+  Checksum => 'CHECKSUM',
+  Direct => 'DEPENDENT'
 );
 
+my %uri_to_analysis_id = (
+  Coordinate_overlap => 9238,
+  Alignment => 9238,
+  Checksum => 9240,
+  Direct => 9239
+);
+
+# Difficult to get info_text right after the fact.
+# my %uri_to_info_text = (
+#   Coordinate_overlap => 'Generated via otherfeatures',
+#   Direct => 'Generated via direct'
+# );
 
 # Cleanse existing xref table of undesirable xrefs. This means nearly everything except that which is not ours to delete.
 delete_renewable_xrefs($opts);

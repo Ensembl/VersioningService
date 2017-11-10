@@ -72,7 +72,7 @@ sub run {
   my $chunks = int ($size / 1000000) + 1;
   $self->warning(sprintf('Spawning %d alignment jobs for %s',$chunks,$target_file),'INFO');
   my $method_factory = Bio::EnsEMBL::Mongoose::Utils::AlignmentMethodFactory->new();
-  my $method = $method_factory->get_method_by_species_and_source($species,$self->param('source'));
+  my $method = $method_factory->get_method_by_species_and_source($species,$self->param('source'),$seq_type);
 
   my $broker = Bio::EnsEMBL::Versioning::Broker->new();
   my $base_path = $broker->scratch_space;

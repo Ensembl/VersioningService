@@ -65,6 +65,7 @@ sub _populate_method_matrix {
       culex_quinquefasciens => 'top5_55%',
       drosophila_melanogaster => 'best_exact',
       saccharomyces_cerevisiae => 'best_exact',
+      pep => 'top5_70%' # RefSeq peptides can be weakly aligned and still be assigned
     },
   };
 }
@@ -95,6 +96,11 @@ has preset_methods => (
       target_score => 0.9,
       n => 5
     },
+    'top5_70%' => {
+      query_score => 0.7,
+      target_score => 0.7,
+      n => 5
+    },
     top5_asymmetric => {
       query_score => 0.95,
       target_score => 0.70,
@@ -108,7 +114,7 @@ has preset_methods => (
 }});
 
 sub get_method_by_species_and_source {
-  my ($self,$species, $source) = @_;
+  my ($self,$species, $source, $seq_type) = @_;
   my $method;
   if ($self->are_you_there(lc $source) ) {
     # species-specific mode choice
@@ -116,6 +122,9 @@ sub get_method_by_species_and_source {
     if (exists $methods->{$species}) {
       return $methods->{$species};
     } else {
+      if (exists $methods->{$seq_type}) {
+        return $methods->{$seq_type};
+      }
       # default for source
       return $methods->{default};
     }

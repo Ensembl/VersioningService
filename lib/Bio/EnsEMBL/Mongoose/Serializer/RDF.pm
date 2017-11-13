@@ -131,7 +131,11 @@ sub print_slimline_record {
     next unless $xref->active == 1;
     my ($xref_source,$generic_xref_source) = $self->generate_source_uri($xref->source,$xref->id);
     my $clean_id = uri_escape($xref->id);
-    my $xref_uri = $xref_source.$clean_id;
+
+    my $xref_namespace = $self->identifier($xref->source);
+    $xref_namespace = $self->prefix('ensembl').$source.'/' unless $namespace;
+    my $xref_uri = $xref_namespace.$clean_id; # different from xref_source, which is purely for provenance
+
     my $allowed = $self->identifier_mapping->allowed_xrefs($source,$xref->source);
     if ($allowed) {
       print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
@@ -174,8 +178,8 @@ sub print_checksum_xrefs {
   # Annotate link
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Checksum'));
   print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
-  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('dcterms').'source'), $self->u($xref_source_uri));
-  print $fh $self->triple($self->u($xref_source), $self->u($self->prefix('term').'generic-source'), $self->u($xref_generic_source));
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('dcterms').'source'), $self->u($xref_source_uri));
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('term').'generic-source'), $self->u($xref_generic_source));
 
 }
 
@@ -269,10 +273,10 @@ sub print_coordinate_overlap_xrefs {
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('rdf').'type'),$self->u($self->prefix('term').'Coordinate_overlap'));
   print $fh $self->triple($self->u($xref_target),$self->u($self->prefix('dc').'identifier'), qq/"$id"/);
   print $fh $self->triple($self->u($xref_link),$self->u($self->prefix('term').'score'),qq/"$score"/);
+  # sources of xref
   print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('dcterms').'source'), $self->u($xref_source_uri));
-  if ($xref_source_uri ne $xref_generic_source) {
-    print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('dcterms').'source'), $self->u($xref_generic_source));
-  }
+  print $fh $self->triple($self->u($xref_target), $self->u($self->prefix('dcterms').'source'), $self->u($xref_generic_source));
+
 }
 
 # Creates a gene->transcript->translation relation so that we can find the related transcript to a translation and so on

@@ -127,10 +127,10 @@ foreach my $type (qw/Gene Transcript Translation/) {
       my $root_source = $match_set->[0]->{source}; # Get source of original ID after the fact. It's not in the transitive graph
       $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
       if (! defined $root_source) {
-        printf "Failed to resolve %s into external_db for id %s\n",$match_set->[0]->{source},$match_set->[0]->id;
+        printf "Failed to resolve %s into external_db for id %s\n",$match_set->[0]->{source},$match_set->[0]->{id};
         next;
       } else {
-        printf "Storing direct xref %s:%s with label %s into Ensembl core DB\n",$root_source,$root_id,$match_set->[0]->{display_label};
+        printf "Storing direct xref %s:%s with label %s into Ensembl core DB\n",$root_source,$root_id,$match_set->[0]->{id};
       }
 
       # Insert as Direct Xref

@@ -164,7 +164,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
 
       foreach my $hit (@$related_set) {
         my $external_db_name = $namespace_mapper->convert_uri_to_external_db_name($hit->{source});
-        if ($external_db_name eq $root_source) { next } # Skip any other links that are from the same source as the parent link.
+        if (!defined $external_db_name || $external_db_name eq $root_source) { next } # Skip any sourceless xrefs, or other links that are from the same source as the parent link.
         # We don't want to re-find the alignments from a source when we already have the winner.
         if ($hit->{id} eq $feature->stable_id) { next } # Skip any links to the source Ensembl ID. Not sure how these come about...
 

@@ -122,7 +122,7 @@ sub get_method_by_species_and_source {
     if (exists $methods->{$species}) {
       return $methods->{$species};
     } else {
-      if (exists $methods->{$seq_type}) {
+      if ($seq_type && exists $methods->{$seq_type}) {
         return $methods->{$seq_type};
       }
       # default for source

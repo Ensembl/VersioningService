@@ -16,4 +16,7 @@ is($method_factory->get_method_by_species_and_source('saccharomyces_cerevisiae',
 
 is($method_factory->get_method_by_species_and_source('rattus_norvegicus','RefSeq'),'top5_90%','Trouble with RefSeq source name?');
 
+is($method_factory->get_method_by_species_and_source('rattus_norvegicus','RefSeq','pep'),'top5_70%' ,'Special redirect for RefSeq protein matching works');
+is($method_factory->get_method_by_species_and_source('rattus_norvegicus','RefSeq','cdna'),'top5_90%' ,'Special redirect for RefSeq does not affect non-peptide data');
+
 done_testing();

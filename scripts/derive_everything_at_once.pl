@@ -116,9 +116,9 @@ foreach my $type (qw/Gene Transcript Translation/) {
     foreach my $match (@$matches) {
       next if (
            $match->{xref_label} eq $feature->stable_id 
-        && ( $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl/'
-          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript/'
-          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein/'
+        && ( $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl'
+          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript'
+          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein'
           )
         ); # We don't need to revisit the Ensembl ID. Sometimes Ensembl IDs are externally used so we have to check to the source too
       my $match_set = $reasoner->get_detail_of_uri($match->{uri});

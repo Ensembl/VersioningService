@@ -70,8 +70,8 @@ my $done_time = tv_interval($start_time,[gettimeofday]);
 print "Alignments, checksums, overlaps and gene model loaded\n";
 print "Loaded all data in $done_time seconds\n";
 
-$reasoner->pretty_print_stats($reasoner->calculate_stats());
-print "Stats finished, now select transitive xrefs into a new graph\n";
+# $reasoner->pretty_print_stats($reasoner->calculate_stats());
+# print "Stats finished, now select transitive xrefs into a new graph\n";
 $reasoner->nominate_transitive_xrefs();
 print "Transitive xrefs supplemented with choices from coordinate matches, alignments and such.\n";
 

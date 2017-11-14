@@ -125,7 +125,9 @@ foreach my $type (qw/Gene Transcript Translation/) {
 
       my $root_id = $match->{xref_label}; #Could also get this from $match_set
       my $root_source = $match_set->[0]->{source}; # Get source of original ID after the fact. It's not in the transitive graph
+      print "Mapped transitive root $root_source on ID $root_id to " if ($opts->debug == 1);
       $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
+      print "$root_source\n" if ($opts->debug == 1);
       if (! defined $root_source) {
         printf "Failed to resolve %s into external_db for id %s\n",$match_set->[0]->{source},$match_set->[0]->{id};
         next;
@@ -158,19 +160,22 @@ foreach my $type (qw/Gene Transcript Translation/) {
       my $related_set = $reasoner->get_related_xrefs($match->{uri});
       # $related_set = remove_duplicates_from_potential_xrefs($related_set,$transitive_sources);
       my $match_set = $reasoner->get_detail_of_uri($match->{uri});
-
       my $root_source = $match_set->[0]->{source}; # Get source of original ID after the fact. It's not in the transitive graph
       $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
 
       foreach my $hit (@$related_set) {
         my $external_db_name = $namespace_mapper->convert_uri_to_external_db_name($hit->{source});
-        if (!defined $external_db_name || $external_db_name eq $root_source) { next } # Skip any sourceless xrefs, or other links that are from the same source as the parent link.
+        printf "Mapped dependent xref %s on ID %s to %s",$hit->{source},$hit->{id},$external_db_name if ($opts->debug == 1);
+        if (!defined $external_db_name 
+          || $external_db_name eq $root_source 
+          || $external_db_name eq 'ensembl_transcript') { next } # Skip any sourceless xrefs, or other links that are from the same source as the parent link.
         # We don't want to re-find the alignments from a source when we already have the winner.
         if ($hit->{id} eq $feature->stable_id) { next } # Skip any links to the source Ensembl ID. Not sure how these come about...
 
         if ($opts->debug == 1) {
           printf $matches_fh ',%s:%s',$external_db_name,$hit->{id};
         }
+
 
         # Inspect link to determine xref type
         my $link_type = $hit->{type};

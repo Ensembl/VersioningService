@@ -394,25 +394,25 @@ sub write_to_rdf_store{
 
   # Also store refseq protein as direct xref for ensembl translation, if translation exists.
   # Absence of an otherfeatures database adaptor means we skip the translation links.
-  if(defined $other_dba){ 
-    my $ta_of = $other_dba->get_TranscriptAdaptor();
-    my $t_of = $ta_of->fetch_by_stable_id($best_id);
-    my $tl_of = $t_of->translation();
+  # if(defined $other_dba){ 
+  #   my $ta_of = $other_dba->get_TranscriptAdaptor();
+  #   my $t_of = $ta_of->fetch_by_stable_id($best_id);
+  #   my $tl_of = $t_of->translation();
     
-    my $ta = $core_dba->get_TranscriptAdaptor();
-    my $t = $ta->fetch_by_stable_id($ens_stable_id);
-    my $tl = $t->translation();
+  #   my $ta = $core_dba->get_TranscriptAdaptor();
+  #   my $t = $ta->fetch_by_stable_id($ens_stable_id);
+  #   my $tl = $t->translation();
     
-    if (defined $tl && defined $tl_of) {
-      if ($tl_of->seq eq $tl->seq) {
-        ($acc, $version) = split(/\./, $tl_of->stable_id());
+  #   if (defined $tl && defined $tl_of) {
+  #     if ($tl_of->seq eq $tl->seq) {
+  #       ($acc, $version) = split(/\./, $tl_of->stable_id());
 
-        my $xref_translation_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({id => $source eq 'refseq' ? $acc : $tl_of->stable_id() , accessions => [qq/$acc/], });
-        $rdf_writer->print_coordinate_overlap_xrefs($tl->stable_id(),$xref_translation_record,$protein_source,$best_score);
+  #       my $xref_translation_record = Bio::EnsEMBL::Mongoose::Persistence::Record->new({id => $source eq 'refseq' ? $acc : $tl_of->stable_id() , accessions => [qq/$acc/], });
+  #       $rdf_writer->print_coordinate_overlap_xrefs($tl->stable_id(),$xref_translation_record,$protein_source,$best_score);
 
-      }
-    }
-  }
+  #     }
+  #   }
+  # }
 
 }
 

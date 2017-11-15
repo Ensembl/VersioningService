@@ -165,7 +165,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
 
       foreach my $hit (@$related_set) {
         my $external_db_name = $namespace_mapper->convert_uri_to_external_db_name($hit->{source});
-        printf "Mapped dependent xref %s on ID %s to %s",$hit->{source},$hit->{id},$external_db_name if ($opts->debug == 1);
+        printf "Mapped dependent xref %s on ID %s to %s\n",$hit->{source},$hit->{id},$external_db_name if ($opts->debug == 1);
         if (!defined $external_db_name 
           || $external_db_name eq $root_source 
           || $external_db_name eq 'ensembl_transcript') { next } # Skip any sourceless xrefs, or other links that are from the same source as the parent link.

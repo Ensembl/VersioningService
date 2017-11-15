@@ -40,6 +40,12 @@ use Bio::EnsEMBL::Mongoose::DBException;
 use Bio::EnsEMBL::Mongoose::UsageException;
 use Bio::EnsEMBL::Mongoose::Persistence::TriplestoreQuery;
 use Try::Tiny;
+use HTTP::Request::Common;
+$HTTP::Request::Common::DYNAMIC_FILE_UPLOAD = 1; # Allow streamed upload
+use LWP::UserAgent;
+use URI::Escape qw/uri_escape/;
+use IO::File;
+use File::Slurper 'read_text';
 
 has port => ( isa => 'Int', is => 'rw', default => sub {{ return int(rand(1000)) +3000 }});
 has graph_name => ( isa => 'Str', is => 'rw', default => 'xref');
@@ -104,12 +110,14 @@ sub load_data {
   my @files = @$data_files;
   try {
     foreach my $file (@files) {
-      my @commands = ('s-post', sprintf('%s',$self->server_url), $optional_graph_name,$file);
-      print "Command: @commands\n";
-      my $response = system(@commands);
-      # if response is favourable?
-      if ($response != 0) {
-        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data from $file into Fuseki failed with error $?, $!");    
+      my $ua = LWP::UserAgent->new();
+      my $content = read_text($file); # Gonna be big. Sadly HTTP::Request::Common only does streamed form elements, not streamed body.
+      my $response = $ua->post(
+        $self->server_url.'?graph='.$optional_graph_name,
+        Content_Type => 'text/turtle; charset=utf-8',
+        Content => $content);
+      if (!$response->is_success) {
+        Bio::EnsEMBL::Mongoose::DBException->throw("Loading data from $file into Fuseki failed with error ".$response->status_line);    
       }
     }
   } catch {

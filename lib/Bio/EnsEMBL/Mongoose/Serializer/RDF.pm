@@ -139,6 +139,7 @@ sub print_slimline_record {
     my $allowed = $self->identifier_mapping->allowed_xrefs($source,$xref->source);
     if ($allowed) {
       print $fh $self->triple($self->u($base_entity), $self->u($self->prefix('term').'refers-to'), $self->u($xref_uri));
+      print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('dc').'identifier'), '"'.$xref->id.'"');
       print $fh $self->triple($self->u($xref_uri), $self->u($self->prefix('term').'refers-to'), $self->u($base_entity));
       print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('dcterms').'source'), $self->u( $xref_source ));
       print $fh $self->triple($self->u($xref_uri),$self->u($self->prefix('term').'generic-source'), $self->u( $generic_xref_source ));

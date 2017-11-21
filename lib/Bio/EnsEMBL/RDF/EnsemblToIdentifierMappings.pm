@@ -275,8 +275,8 @@ sub convert_uri_to_external_db_name {
   # print "Received $uri\n";
   $uri =~ s/<|>//g; # Just in case an RDF-style URI has escaped uncleaned
   if ($uri =~ m{http://rdf.ebi.ac.uk/resource/ensembl/source/(.+)}) {
-    $uri =~ s/\/$//; # Trim any trailing slashes
     my $external_db_name = $1;
+    $external_db_name =~ s/\/$//; # Trim any trailing slashes
     return uri_unescape($external_db_name);
   } else {
     # Unpack what we can from a regular identifiers.org type URL

@@ -36,7 +36,11 @@ is($converter->convert_uri_to_external_db_name('http://identifiers.org/hgnc/HGNC
 
 is($converter->convert_uri_to_external_db_name('http://purl.uniprot.org/uniprot/UPI9000'),'Uniprot/SWISSPROT','LOD-based URL maps back correctly');
 
-is($converter->convert_uri_to_external_db_name('http://rdf.ebi.ac.uk/resource/ensembl/source/Uniprot%2FSWISSPROT'),'Uniprot/SWISSPROT','Directly encoded external db name can be extracted');
+is($converter->convert_uri_to_external_db_name('http://rdf.ebi.ac.uk/resource/ensembl/source/Uniprot%2FSWISSPROT/'),'Uniprot/SWISSPROT','Directly encoded external db name can be extracted');
+
+is($converter->convert_uri_to_external_db_name('http://identifiers.org/refseq/'),'RefSeq_rna_predicted','RefSeq ID that escaped translation by generate_source_uri() ends up somewhere default');
+
+is($converter->convert_uri_to_external_db_name('http://rdf.ebi.ac.uk/resource/ensembl/source/EntrezGene/'),'EntrezGene','NCBIgene gets mapped correctly');
 
 
 

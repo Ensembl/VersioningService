@@ -104,23 +104,22 @@ foreach my $type (qw/Gene Transcript Translation/) {
   my $adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core',$type);
   my $features = $adaptor->fetch_all();
   while (my $feature = shift $features) {
-    # Get a list of all IDs that are "the same thing"
+    # Get a list of all IDs that are "the same thing" and are linked in the transitive graph
     my $matches = $reasoner->extract_transitive_xrefs_for_id($feature->stable_id);
     if ($opts->debug == 1) {
       printf $matches_fh "%s\t",$feature->stable_id;
     }
+    my %source_cache = map { $_->{xref_source} => 1} @$matches;
 
     my @labels;
-    # my $transitive_sources; # Keep track of all sources used for transitive inference
-    # $transitive_sources = [map { $namespace_mapper->convert_uri_to_external_db_name($_->{xref_source}) } @$matches];
     foreach my $match (@$matches) {
       next if (
            $match->{xref_label} eq $feature->stable_id 
-        && ( $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl'
-          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript'
-          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein'
+        && ( $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl/'
+          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript/'
+          || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein/'
           )
-        ); # We don't need to revisit the Ensembl ID. Sometimes Ensembl IDs are externally used so we have to check to the source too
+        ); # We don't need to revisit any Ensembl ID. Sometimes Ensembl IDs are externally used so we have to check to the source too
       my $match_set = $reasoner->get_detail_of_uri($match->{uri});
 
       my $root_id = $match->{xref_label}; #Could also get this from $match_set
@@ -155,29 +154,32 @@ foreach my $type (qw/Gene Transcript Translation/) {
 
     }
 
-    # Now visit all the xrefs described by the transitively linked xrefs
+    # Now visit all the "dependent" xrefs attached to each of the the transitively linked xrefs
     foreach my $match (@$matches) {
+      
       my $related_set = $reasoner->get_related_xrefs($match->{uri});
-      # $related_set = remove_duplicates_from_potential_xrefs($related_set,$transitive_sources);
-      my $match_set = $reasoner->get_detail_of_uri($match->{uri});
-      my $root_source = $match_set->[0]->{source}; # Get source of original ID after the fact. It's not in the transitive graph
-      $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
-
+      # In principle we can attach the dependent xref to its master xref, but it's difficult
+      
       foreach my $hit (@$related_set) {
+        next if (
+         $hit->{source} eq 'http://rdf.ebi.ac.uk/resource/ensembl/'
+          || $hit->{source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript/'
+          || $hit->{source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein/'
+        ); # No un-approved xrefs to Ensembl sources
+        
         my $external_db_name = $namespace_mapper->convert_uri_to_external_db_name($hit->{source});
+        if (!defined $external_db_name) { next } # Skip any sourceless xrefs
+        
+        # We don't want to re-discover the alignments from a source when we already have a winner selected
+        # Don't store additional xrefs for any source which is already in the transitive set
+        next if exists $source_cache{ $hit->{source} };
+        
         printf "Mapped dependent xref %s on ID %s to %s\n",$hit->{source},$hit->{id},$external_db_name if ($opts->debug == 1);
-        if (!defined $external_db_name 
-          || $external_db_name eq $root_source 
-          || $external_db_name eq 'ensembl_transcript') { next } # Skip any sourceless xrefs, or other links that are from the same source as the parent link.
-        # We don't want to re-find the alignments from a source when we already have the winner.
-        if ($hit->{id} eq $feature->stable_id) { next } # Skip any links to the source Ensembl ID. Not sure how these come about...
-
         if ($opts->debug == 1) {
           printf $matches_fh ',%s:%s',$external_db_name,$hit->{id};
         }
 
-
-        # Inspect link to determine xref type
+        # Inspect link to determine xref type and store it.
         my $link_type = $hit->{type};
         $link_type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
         my $info_type = $uri_to_enum{$link_type};
@@ -208,7 +210,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
         $db_entry_adaptor->store($linked_dbentry,$feature->dbID,$type,1);
 
         # Find a naming authority and apply synonyms
-        my $naming_priority = $namespace_mapper->get_priority($external_db_name);
+        my $naming_priority = $namespace_mapper->get_priority($external_db_name); # The priorities are actually available via query too, from source data
         if (defined $naming_priority && defined $hit->{label} ) {
           push @labels,[$linked_dbentry,$naming_priority];
         }
@@ -229,20 +231,6 @@ foreach my $type (qw/Gene Transcript Translation/) {
 $matches_fh->close;
 $debug_fh->close if $debug_fh;
 
-
-sub remove_duplicates_from_potential_xrefs {
-  my $potential = shift;
-  my $source_list = shift;
-
-  my @cleaned;
-  foreach my $supplicant (@$potential) {
-    my $sup_source = $namespace_mapper->convert_uri_to_external_db_name($supplicant->{source});
-    if (! grep {$_ eq $sup_source} @$source_list) {
-      push @cleaned, $supplicant
-    }
-  }
-  return \@cleaned;
-}
 
 # This function will probably have to change for InnoDB schemas. They can do foreign key deletes unlike MyISAM
 sub delete_renewable_xrefs {

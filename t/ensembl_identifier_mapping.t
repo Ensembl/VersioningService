@@ -42,6 +42,9 @@ is($converter->convert_uri_to_external_db_name('http://identifiers.org/refseq/')
 
 is($converter->convert_uri_to_external_db_name('http://rdf.ebi.ac.uk/resource/ensembl/source/EntrezGene/'),'EntrezGene','NCBIgene gets mapped correctly');
 
+is($converter->convert_uri_to_external_db_name('http://rdf.ebi.ac.uk/resource/ensembl/source/RGD/'),'RGD','RGD gets mapped correctly');
+ok(!$converter->convert_uri_to_external_db_name('http://identifiers.org/eggNOG/'),'eggNOG has no conversion, so is undef');
+
 
 
 is_deeply( [$converter->generate_source_uri('Uniprot/SWISSPROT','P10503')],

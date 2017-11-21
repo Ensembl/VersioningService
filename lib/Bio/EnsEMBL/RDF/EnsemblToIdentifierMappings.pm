@@ -69,14 +69,17 @@ sub new {
   map { $xref_mapping{ lc $_->{db_name} } = $_ } @{ $doc->{mappings} };
   my $root = 'http://identifiers.org/';
   for my $record (@{ $doc->{mappings}}) {
-    $reverse_mapping{ $root . $record->{id_namespace} .'/' } = $record->{db_name};
-    $reverse_mapping{ $record->{canonical_LOD} } = $record->{db_name} if exists $record->{canonical_LOD};
+    if (exists $record->{ensembl_db_name}) {
+      $reverse_mapping{ $root . $record->{id_namespace} .'/' } = $record->{ensembl_db_name};
+      $reverse_mapping{ $record->{canonical_LOD} } = $record->{ensembl_db_name} if exists $record->{canonical_LOD};
+    }
   }
   
   bless({ xref_mapping => \%xref_mapping, reverse_mapping => \%reverse_mapping },$class);
 }
 # For a given Ensembl ExternalDB name, gives a hash containing any of:
-# db_name - Ensembl internal name for an external DB
+# db_name - Ensembl "xref" internal name for an external DB
+# ensembl_db_name - external_db_name found in the core schema external_db table
 # example_id
 # "standard abbreviation" id_namespace, combines with "http://identifiers.org/" to give a
 # suitable URI for SPARQL queries.

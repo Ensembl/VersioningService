@@ -100,6 +100,8 @@ my %uri_to_analysis_id = (
 # Cleanse existing xref table of undesirable xrefs. This means nearly everything except that which is not ours to delete.
 delete_renewable_xrefs($opts);
 
+my %failures;
+
 foreach my $type (qw/Gene Transcript Translation/) {
   my $adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core',$type);
   my $features = $adaptor->fetch_all();
@@ -124,9 +126,10 @@ foreach my $type (qw/Gene Transcript Translation/) {
       my $root_source = $match_set->[0]->{source}; # Get source of original ID after the fact. It's not in the transitive graph
       print "Mapped transitive root $root_source on ID $root_id to " if ($opts->debug == 1);
       $root_source = $namespace_mapper->convert_uri_to_external_db_name($root_source);
-      print "$root_source\n" if ($opts->debug == 1);
+      print "$root_source\n" if ($opts->debug == 1 && defined $root_source);
       if (! defined $root_source) {
         printf "Failed to resolve %s into external_db for id %s\n",$match_set->[0]->{source},$match_set->[0]->{id};
+        $failures{$root_source}++;
         next;
       } else {
         printf "Storing direct xref %s:%s with label %s into Ensembl core DB\n",$match_set->[0]->{source},$match_set->[0]->{id},$match_set->[0]->{id};
@@ -166,7 +169,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
         ); # No un-approved xrefs to Ensembl sources
         
         my $external_db_name = $namespace_mapper->convert_uri_to_external_db_name($hit->{source});
-        if (!defined $external_db_name) { next } # Skip any sourceless xrefs
+        if (!defined $external_db_name) { $failures{$hit->{source}}++ ; next } # Skip any sourceless xrefs
         
         # We don't want to re-discover the alignments from a source when we already have a winner selected
         # Don't store additional xrefs for any source which is already in the transitive set
@@ -228,7 +231,10 @@ foreach my $type (qw/Gene Transcript Translation/) {
 
 $matches_fh->close;
 $debug_fh->close if $debug_fh;
-
+print "The following xrefs were abandoned due to no source mapping to Ensembl:\n";
+foreach my $failed_source (keys %failures) {
+  printf "%s\t%i\n",$failed_source,$failures{$failed_source};
+}
 
 # This function will probably have to change for InnoDB schemas. They can do foreign key deletes unlike MyISAM
 sub delete_renewable_xrefs {

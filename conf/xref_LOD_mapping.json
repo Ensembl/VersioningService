@@ -1221,6 +1221,12 @@
       "ensembl_db_name": "RefSeq_rna_predicted"
     },
     {
+      "db_name": "RNAcentral",
+      "example_id": "URS0000597BED_10116",
+      "feature_type": "annotation",
+      "ensembl_db_name": "RNAcentral"
+    },
+    {
       "db_name": "RFAM",
       "example_id": "RF00001",
       "id_namespace": "rfam",

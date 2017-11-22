@@ -107,7 +107,7 @@ sub run {
   throw('No Ensembl transcript checksums extracted from '.$self->param('cdna_checksum_path')) if (scalar(keys %transcript_checksum) == 0);
   throw('No Ensembl protein checksums extracted from '.$self->param('pep_checksum_path')) if (scalar(keys %peptide_checksum) == 0);
   $self->search_source_by_checksum('RefSeq',\%transcript_checksum,'ensembl_transcript',$run_id);
-  # $self->search_source_by_checksum('RNACentral',\%transcript_checksum,$run_id); 
+  $self->search_source_by_checksum('RNAcentral',\%transcript_checksum,'ensembl_transcript',$run_id);
   $self->search_source_by_checksum('Swissprot',\%peptide_checksum,'ensembl_protein',$run_id);
 }
 

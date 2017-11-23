@@ -65,7 +65,7 @@ sub _populate_method_matrix {
       culex_quinquefasciens => 'top5_55%',
       drosophila_melanogaster => 'best_exact',
       saccharomyces_cerevisiae => 'best_exact',
-      pep => 'top5_70%' # RefSeq peptides can be weakly aligned and still be assigned
+      pep => 'top5_20%' # RefSeq peptides can be weakly aligned and still be assigned
     },
   };
 }
@@ -96,9 +96,9 @@ has preset_methods => (
       target_score => 0.9,
       n => 5
     },
-    'top5_70%' => {
-      query_score => 0.7,
-      target_score => 0.7,
+    'top5_20%' => {
+      query_score => 0.2,
+      target_score => 0.2,
       n => 5
     },
     top5_asymmetric => {

@@ -214,8 +214,10 @@ sub nominate_refseq_proteins {
 
     # Candidates with transcript evidence can have any score, candidates without must have identity higher than 90%
     # Candidates wtih contrary evidence disappear. These could disposed of earlier but the debug is more obscure
-    if ( ($best_transcript_score == 0 && $best_score > 0.9) || $best_transcript_score == 1) {
-      push @winners, grep { $_->[4] == $best_score && $_->[5] == $best_transcript_score} @candidates;
+    if ($best_transcript_score == 0 && $best_score > 0.9) {
+      push @winners, grep { $_->[4] == $best_score } @candidates;
+    } elsif ( $best_transcript_score == 1) {
+      push @winners, grep { $_->[5] == $best_transcript_score} @candidates;
     }
 
   }

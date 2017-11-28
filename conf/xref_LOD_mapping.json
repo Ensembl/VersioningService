@@ -1224,6 +1224,7 @@
       "db_name": "RNAcentral",
       "example_id": "URS0000597BED_10116",
       "feature_type": "annotation",
+      "id_namespace": "rnacentral",
       "ensembl_db_name": "RNAcentral"
     },
     {

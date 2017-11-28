@@ -53,6 +53,7 @@ my $e_gene_model = File::Spec->catfile($data_root,'gene_model','ensembl.ttl');
 my $refseq_gene_model = File::Spec->catfile($data_root,'gene_model','RefSeq.ttl');
 my $checksum_source = File::Spec->catfile($data_root,'checksum','RefSeq_checksum.ttl');
 my $checksum_uniprot_source = File::Spec->catfile($data_root,'checksum','Swissprot_checksum.ttl');
+my $checksum_rnacentral_source = File::Spec->catfile($data_root,'checksum','RNAcentral_checksum.ttl');
 my $alignment_source = File::Spec->catfile($data_root,'alignment');
 
 # Get all TTL files in data_root not in a subdirectory

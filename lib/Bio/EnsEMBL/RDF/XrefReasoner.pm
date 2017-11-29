@@ -468,6 +468,48 @@ sub get_target_identity {
   return $hit->{score}->value;
 }
 
+
+# Reactome data is of type "annotation", and cannot be transitively linked. It is also inbound, and unreachable by
+# the default approach of outward search. For special cases we can include selected inbound xrefs
+# Specify the intermediary source (for Reactome this is Uniprot), the source we want xrefs from (Reactome)
+# This information is required to ensure the query resolves as early as possible
+
+# Relies on trusting direct xrefs from connecting_source to e_uri
+sub get_weakly_connected_xrefs {
+  my $self = shift;
+  my $e_id = shift; # ENSP URI
+  my $e_source = shift; # ensID source, e.g. http://rdf.ebi.ac.uk/resource/ensembl.protein/
+  my $connecting_source = shift; # e.g. http://purl.uniprot.org/uniprot/
+  my $source = shift; # The URI for the external source we want to connect to. e.g. http://identifiers.org/reactome/
+
+  my $graph_url = $self->triplestore->graph_url;
+  my $sparql = sprintf qq(
+    SELECT ?id ?display_label ?description FROM <%s> WHERE {
+      ?e dc:identifier "%s" .
+      ?e term:generic-source <%s> .
+      ?xref term:refers-to ?e .
+      ?primary_xref term:refers-to ?xref .
+      ?primary_xref term:generic-source <%s> .
+      ?xref2 term:refers-to ?primary_xref .
+      ?secondary_xref term:refers-to ?xref2 .
+      ?secondary_xref term:generic-source <%s> ;
+                      dc:identifier ?id ;
+                      term:display_label ?display_label ;
+                      term:description ?description .
+    }
+  ),$graph_url,$e_id,$e_source,$connecting_source,$source;
+
+  my $iterator = $self->triplestore->query($self->prefixes.$sparql);
+  my @results = map { 
+    {
+      id => $_->{id}->value,
+      display_label => $_->{display_label}->value,
+      description => $_->{description}->value
+    } 
+    } $iterator->get_all;
+  return \@results;
+}
+
 sub condensed_graph_name {
   my $self = shift;
   my $condensed_graph = shift;

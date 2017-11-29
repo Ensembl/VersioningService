@@ -135,7 +135,6 @@ foreach my $type (qw/Gene Transcript Translation/) {
       } else {
         printf "Storing direct xref %s:%s with label %s into Ensembl core DB\n",$match_set->[0]->{source},$match_set->[0]->{id},$match_set->[0]->{id};
       }
-
       # Insert as Direct Xref
       my $dbentry = Bio::EnsEMBL::DBEntry->new(
         -primary_id => $root_id,
@@ -181,36 +180,8 @@ foreach my $type (qw/Gene Transcript Translation/) {
           printf $matches_fh ',%s:%s',$external_db_name,$hit->{id};
         }
 
-        # Inspect link to determine xref type and store it.
-        my $link_type = $hit->{type};
-        $link_type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
-        my $info_type = $uri_to_enum{$link_type};
-        my $linked_dbentry;
-        if ($info_type eq 'SEQUENCE_MATCH') {
-          my $target_identity = $reasoner->get_target_identity($match->{uri},$hit->{uri});
-
-          $linked_dbentry = Bio::EnsEMBL::IdentityXref->new(
-            -primary_id => $hit->{id},
-            -dbname => $external_db_name,
-            -display_id => $hit->{display_label},
-            -description => $hit->{description},
-            -info_type => $info_type,
-
-            -ensembl_identity => $hit->{score} * 100, # the alignment values
-            -xref_identity => $target_identity * 100
-          );
-        } else {
-          # Insert as a Dependent Xref
-          $linked_dbentry = Bio::EnsEMBL::DBEntry->new(
-            -primary_id => $hit->{id},
-            -dbname => $external_db_name,
-            -display_id => $hit->{display_label},
-            -description => $hit->{description},
-            -info_type => $info_type
-          );
-        }
-        $db_entry_adaptor->store($linked_dbentry,$feature->dbID,$type,1);
-
+        my $linked_dbentry = instantiate_xref($reasoner,$db_entry_adaptor,$feature->dbID,$type,$match->{uri},$external_db_name,$hit);
+        
         # Find a naming authority and apply synonyms
         my $naming_priority = $namespace_mapper->get_priority($external_db_name); # The priorities are actually available via query too, from source data
         if (defined $naming_priority && defined $hit->{label} ) {
@@ -221,6 +192,22 @@ foreach my $type (qw/Gene Transcript Translation/) {
     }
     print $matches_fh "\n" if $opts->debug == 1;
 
+    # Fill in Reactome xrefs. These cannot be found via the transitive xrefs
+    if ($type eq 'Translation') {
+
+      my $xrefs = $reasoner->get_weakly_connected_xrefs(
+        $feature->stable_id,
+        'http://rdf.ebi.ac.uk/resource/ensembl.protein/',
+        'http://purl.uniprot.org/uniprot/',
+        'http://identifiers.org/reactome/'
+      );
+      foreach my $reactome_xref (@$xrefs) {
+        $reactome_xref->{type} = 'DEPENDENT';
+        instantiate_xref($reasoner,$db_entry_adaptor,$feature->dbID,$type,undef,'Reactome',$reactome_xref);
+      }
+    }
+
+    # Choose the best display_label authority and assign to Ensembl object
     @labels = sort { $b->[1] <=> $a->[1]} @labels; # order desc by priority. Highest priority is the naming authority for this feature
     if (@labels > 0 && ($type eq 'Gene' || $type eq 'Transcript')) {
       my $dbentry = $labels[0]->[0];
@@ -236,6 +223,44 @@ print "The following xrefs were abandoned due to no source mapping to Ensembl:\n
 foreach my $failed_source (keys %failures) {
   printf "%s\t%i\n",$failed_source,$failures{$failed_source};
 }
+
+# Returns the xref that was stored
+sub instantiate_xref {
+  my ($reasoner,$db_entry_adaptor,$dbID,$feature_type,$original_uri,$external_db_name,$hit) = @_;
+
+  # Inspect link to determine xref type and store it.
+  my $link_type = $hit->{type};
+  $link_type =~ s|http://rdf.ebi.ac.uk/terms/ensembl/||;
+  my $info_type = $uri_to_enum{$link_type};
+
+  my $db_entry;
+  if ($info_type eq 'SEQUENCE_MATCH') {
+    my $target_identity = $reasoner->get_target_identity($original_uri,$hit->{uri});
+
+    $db_entry = Bio::EnsEMBL::IdentityXref->new(
+      -primary_id => $hit->{id},
+      -dbname => $external_db_name,
+      -display_id => $hit->{display_label},
+      -description => $hit->{description},
+      -info_type => $info_type,
+
+      -ensembl_identity => $hit->{score} * 100, # the alignment values
+      -xref_identity => $target_identity * 100
+    );
+  } else {
+    # Insert as a Dependent Xref
+    $db_entry = Bio::EnsEMBL::DBEntry->new(
+      -primary_id => $hit->{id},
+      -dbname => $external_db_name,
+      -display_id => $hit->{display_label},
+      -description => $hit->{description},
+      -info_type => $info_type
+    );
+  }
+  $db_entry_adaptor->store($db_entry,$dbID,$feature_type,1);
+  return $db_entry;
+}
+
 
 # This function will probably have to change for InnoDB schemas. They can do foreign key deletes unlike MyISAM
 sub delete_renewable_xrefs {

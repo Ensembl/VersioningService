@@ -269,7 +269,7 @@ sub delete_renewable_xrefs {
   my @do_not_delete;
   # Extend this list of external db_names to include anything we must not lose between release
   # i.e. anything from Havana/vega or genebuild, as well as LRG data
-  for my $db_name (qw/KEGG_Enzyme MetaCyc Interpro CCDS Ens_Hs_gene Ens_Hs_transcript Ens_Hs_translation ENS_LRG_gene ENS_LRG_transcript LRG/) {
+  for my $db_name (qw/KEGG_Enzyme MEROPS MetaCyc Interpro CCDS Ens_Hs_gene Ens_Hs_transcript Ens_Hs_translation ENS_LRG_gene ENS_LRG_transcript LRG/) {
     my $id = $db_entry_adaptor->get_external_db_id($db_name,undef,1);
     push @do_not_delete,$id;
   }

@@ -224,6 +224,10 @@ foreach my $failed_source (keys %failures) {
   printf "%s\t%i\n",$failed_source,$failures{$failed_source};
 }
 
+generate_transcript_labels(); # Fill in the multitude of transcript names which are inferred by gene assignment
+
+
+
 # Returns the xref that was stored
 sub instantiate_xref {
   my ($reasoner,$db_entry_adaptor,$dbID,$feature_type,$original_uri,$external_db_name,$hit) = @_;
@@ -285,3 +289,31 @@ sub delete_renewable_xrefs {
   $sth->execute();
 }
 
+# Run to create labels on transcripts where the genes are named by a naming source
+sub generate_transcript_labels {
+  my $db_entry_adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core','DBEntry');
+  my $gene_adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core','Gene');
+  my $genes = $gene_adaptor->fetch_all;
+  foreach my $gene (@$genes) {
+    my $display_xref = $gene->display_xref;
+    my $dbname = $display_xref->dbname;
+    my $transcript_name_source_name = $dbname . '_trans_name';
+    my $tr_name_source_db_id = $db_entry_adaptor->get_external_db_id($transcript_name_source_name);
+    next unless $tr_name_source_db_id;
+    
+    my $base_id = 200;
+    my $transcripts = $gene->get_all_Transcripts;
+    foreach my $transcript (sort { $a->start <=> $b->start || $a->end <=> $b->end } @$transcripts) {
+      $base_id++;
+      my $db_entry = Bio::EnsEMBL::DBEntry->new(
+        -primary_id => $display_xref->display_id.'-'.$base_id,
+        -dbname => $transcript_name_source_name,
+        -display_id => $display_xref->display_id.'-'.$base_id,
+        -description => $display_xref->description,
+        -info_type => 'MISC'
+      );
+      printf "Assigned display xref %s to %s\n",$db_entry->display_id,$transcript->stable_id;
+      $db_entry_adaptor->store($db_entry,$transcript->dbID,'Transcript',1);
+    }
+  }
+}

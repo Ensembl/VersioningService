@@ -66,9 +66,9 @@ sub run {
 
   my $max_chunks = $self->param('max_chunks');
   my $chunk = $self->param('chunk');
-  my $source = $self->param('source_file');
-  my $target = $self->param('target_file');
-  my $target_source = $self->param('target_source');
+  my $e_file = $self->param('source_file');
+  my $other_file = $self->param('target_file');
+  my $other_source = $self->param('target_source');
   my $seq_type = $self->param('seq_type');
   my $ensembl_source;
   if ($seq_type eq 'cdna') {
@@ -84,21 +84,21 @@ sub run {
   my $aligner = Bio::EnsEMBL::Mongoose::Utils::ExonerateAligner->new(
     chunk_cardinality => $max_chunks, 
     execute_on_chunk => $chunk,
-    source => $source,
-    target => $target
+    source => $other_file,
+    target => $e_file
   );
   $aligner->set_method($self->param('align_method'));
   my $hits = $aligner->run;
 
   if (keys %$hits > 0) {
-    my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file =>$self->param('broker_conf'));
+    my $writer = Bio::EnsEMBL::Mongoose::Serializer::RDF->new(handle => $fh, config_file => $self->param('broker_conf'));
     foreach my $alignment (keys %$hits) {
       my ($source_id,$target_id) = split /:/,$alignment;
       my $source_identity = $hits->{$alignment}->{query_identity};
       my $target_identity = $hits->{$alignment}->{target_identity};
 
-      $writer->print_alignment_xrefs($source_id,$ensembl_source,$target_id,$target_source,$source_identity,'lot'.$chunk);
-      $writer->print_alignment_xrefs($target_id,$target_source,$source_id,$ensembl_source,$target_identity,'lot'.$chunk);
+      $writer->print_alignment_xrefs($source_id,$other_source,$target_id,$ensembl_source,$source_identity,'lot'.$chunk);
+      $writer->print_alignment_xrefs($target_id,$ensembl_source,$source_id,$other_source,$target_identity,'lot'.$chunk);
     }
   }
   $fh->close;

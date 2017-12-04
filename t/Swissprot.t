@@ -45,6 +45,12 @@ is ($e_xref[0]->id , 'ENSP00000288602', 'Ensembl protein has an adjusted source'
 my $iso_list = $record->isoforms;
 is_deeply($iso_list,['P66666-2'],'Isoform correctly identified and reported');
 
+# Test extraction of protein_id xrefs from EMBL xrefs
+my @protein_id_xrefs = grep {$_->source eq 'protein_id'} @xrefs;
+cmp_ok(scalar @protein_id_xrefs, '==', 15, 'protein_id xrefs extracted');
+is_deeply([map { $_->id } @protein_id_xrefs], [qw/AAA35609.2 AAD43193.1 ACD11489.1 AAD15551.1 EAL24023.1 AAI01758.1 AAI12080.1 CAA46301.1 AAA96495.1 CAQ43111.1 CAQ43112.1 CAQ43113.1 CAQ43114.1 CAQ43115.1 CAQ43116.1/], 'EMBL protein sequence IDs in long form');
+
+
 # Read second record from XML, this should be P0C8T7, with checksum AFF71E7E3DF6883D
 $xml_reader->read_record;
 $iso_list = $xml_reader->record->isoforms;

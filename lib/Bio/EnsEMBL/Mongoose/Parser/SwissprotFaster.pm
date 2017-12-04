@@ -255,6 +255,10 @@ sub xrefs {
                 if ($source eq 'Ensembl' && $reader->localName eq 'property' && $reader->getAttribute('type') eq 'protein sequence ID') {
                     $id = $reader->getAttribute('value');
                     $source = 'ensembl_protein'; # Switch source names to differentiate between Ensembl genes and proteins in xref pipeline
+                } 
+
+                if ($source eq 'EMBL' && $reader->localName eq 'property' && $reader->getAttribute('type') eq 'protein sequence ID' ) {
+                    $self->record->add_xref(Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => 'protein_id', id => $reader->getAttribute('value') ) );
                 }
             }
             my $xref = Bio::EnsEMBL::Mongoose::Persistence::RecordXref->new(source => $source, id => $id);

@@ -60,13 +60,14 @@ has prefixes => ( isa => 'Str', is => 'ro',
 
 has debug_fh => ( is => 'ro', predicate => 'debugging');
 
-
+# Take RDF and load it into the default graph
 sub load_general_data {
   my $self = shift;
   my @paths = @_;
   $self->triplestore->load_data([@paths]);
 }
 
+# Take RDF and load it into a non-default graph for separate consideration
 sub load_transitive_data {
   my $self = shift;
   my $paths = shift;
@@ -75,6 +76,7 @@ sub load_transitive_data {
   $self->triplestore->load_data($paths,$condensed_graph);
 }
 
+# Batch load lots of files from a given folder
 sub load_alignments {
   my $self = shift;
   my $alignment_path = shift; # folder containing all RefSeq alignment outputs
@@ -85,6 +87,7 @@ sub load_alignments {
 }
 
 
+# Choose which xrefs get to be treated as "the same thing", in addition to anything loaded with load_transitive_data()
 sub nominate_transitive_xrefs {
   my $self = shift;
 
@@ -119,6 +122,9 @@ sub nominate_transitive_xrefs {
   $self->bulk_insert($condensed_graph, $best_proteins);
 }
 
+
+# Choose which RefSeq proteins get to be transitive xrefs, based on their alignments AND whether their transcripts were paired up
+# Returns the list of winners to be stored back in the transitive graph
 sub nominate_refseq_proteins {
   my $self = shift;
   my $best_transcripts = shift;
@@ -213,7 +219,7 @@ sub nominate_refseq_proteins {
     my $best_transcript_score = $candidates[0]->[5];
 
     # Candidates with transcript evidence can have any score, candidates without must have identity higher than 90%
-    # Candidates wtih contrary evidence disappear. These could disposed of earlier but the debug is more obscure
+    # Candidates wtih contrary evidence disappear. These could be disposed of earlier but the debug is more obscure
     if ($best_transcript_score == 0 && $best_score > 0.9) {
       push @winners, grep { $_->[4] == $best_score } @candidates;
     } elsif ( $best_transcript_score == 1) {
@@ -225,8 +231,8 @@ sub nominate_refseq_proteins {
 }
 
 
-# Choose the best matches for each RefSeq ID
-# Only have to spot where equal candidates appear, or pick only the top one
+# Choose the best matches for each RefSeq transcript ID
+# Only have to spot where equal candidates appear, or pick just the top one
 sub pick_winners {
   my $self = shift;
   my $iterator = shift; # {ens_uri, link_type, score?, other_uri }
@@ -257,7 +263,7 @@ sub pick_winners {
       print "####################\n";
     }
     # Examine the competition for equal contenders
-    # value takes the literal and extracts the value from its xsd:datatype and any quotes
+    # value() on each result takes the literal and extracts the value from its xsd:datatype and any quotes
     my $best_score;
     my $best_type = $first->{link_type}->value;
     $best_score = $first->{score}->value if exists $first->{score};
@@ -291,7 +297,7 @@ sub pick_winners {
   return \@winners;
 }
 
-# Custom insert-builder for best alignments
+# Custom bulk insert-builder for best alignments, and loads them into $graph
 # Expects a list like [$uri,$label,$target_uri,$target_label,...]
 sub bulk_insert {
   my $self = shift;
@@ -332,6 +338,7 @@ sub bulk_insert {
   printf "Added xrefs until %d remain\n",scalar @$hit_collection;
 }
 
+# Watch out, the result buffer can be super-huge in memory
 sub calculate_stats {
   my $self = shift;
   my $graph = shift;
@@ -351,6 +358,7 @@ sub calculate_stats {
   return [$results->get_all];
 }
 
+# Print a tabular form of the results of calculate_stats()
 sub pretty_print_stats {
   my $self = shift;
   my $stats = shift;
@@ -366,6 +374,8 @@ sub pretty_print_stats {
   }
 }
 
+# Use property path functions of SPARQL to get all entities connected, irrespective of number of hops
+# SPARQL implementations Automatically deal with cyclic relations
 sub extract_transitive_xrefs_for_id {
   my $self = shift;
   my $id = shift;
@@ -390,6 +400,8 @@ sub extract_transitive_xrefs_for_id {
   return \@results;
 }
 
+
+# Given a single URL, get all the xrefs directly attached to it from the default graph.
 sub get_related_xrefs {
   my $self = shift;
   my $url = shift;
@@ -421,6 +433,7 @@ sub get_related_xrefs {
   return \@results;
 }
 
+# Get annotation information for a single URI
 sub get_detail_of_uri {
   my $self = shift;
   my $url = shift;
@@ -447,6 +460,7 @@ sub get_detail_of_uri {
 }
 
 # Used for in-filling scores for alignments when we are not prescient enough to have fetched it in a previous query
+# if a--90%->b and b--85%->a , it is convenient to be able to retrieve the b->a case when we're seeing a->b
 sub get_target_identity {
   my $self = shift;
   my $e_uri = shift;
@@ -477,7 +491,7 @@ sub get_target_identity {
 # Relies on trusting direct xrefs from connecting_source to e_uri
 sub get_weakly_connected_xrefs {
   my $self = shift;
-  my $e_id = shift; # ENSP URI
+  my $e_id = shift; # ENSP ID
   my $e_source = shift; # ensID source, e.g. http://rdf.ebi.ac.uk/resource/ensembl.protein/
   my $connecting_source = shift; # e.g. http://purl.uniprot.org/uniprot/
   my $source = shift; # The URI for the external source we want to connect to. e.g. http://identifiers.org/reactome/
@@ -510,6 +524,42 @@ sub get_weakly_connected_xrefs {
   return \@results;
 }
 
+# Find any xrefs from a given generic-type source URI to the target Ensembl ID.
+# This is for sources which have no transitive connection to the Ensembl ID
+# and cannot be found by outbound connection. Therefore get them by their inbound connection
+# This is necessary for sources like ArrayExpress
+sub get_directly_connected_xrefs {
+  my $self = shift;
+  my $e_id = shift; # ENS ID
+  my $e_source = shift; # http://rdf.ebi.ac.uk/resource/ensembl.protein/ or similar
+  my $connected_source = shift;
+
+  my $graph_url = $self->triplestore->graph_url;
+  my $sparql = sprintf qq(
+    SELECT ?id ?display_label ?description FROM <%s> WHERE {
+      ?e dc:identifier "%s";
+         term:generic-source <%s> .
+      ?xref term:refers-to ?e ;
+            rdf:type ?type .
+      ?other term:refers-to ?xref ;
+             term:generic-source <%s> ;
+             dc:identifier ?id ;
+             term:display_label ?display_label;
+             term:description ?description .
+    }
+  ),$graph_url,$e_id, $e_source, $connected_source;
+  my $iterator = $self->triplestore->query($self->prefixes.$sparql);
+  my @results = map {
+    {
+      id => $_->{id}->value,
+      display_label => $_->{display_label}->value,
+      description => $_->{description}->value 
+    }
+  } $iterator->get_all;
+  return \@results;
+}
+
+# Set or generate and return the "transitive graph name" that is required for querying it
 sub condensed_graph_name {
   my $self = shift;
   my $condensed_graph = shift;
@@ -518,6 +568,11 @@ sub condensed_graph_name {
   return $condensed_graph;
 }
 
+# Print out all the information used to assign RefSeq proteins to Ensembl translations.
+# The winner is marked x, and any transcript evidence considered is indicated with a number
+# 1 = transcript pair agrees
+# 0 = no transcript pairing is of use here
+# -1 = transcript pairings indicate another protein pair would be a better choice
 sub dump_decision_table {
   my $self = shift;
   my $result = shift;

@@ -32,9 +32,19 @@ use Bio::EnsEMBL::IdentityXref;
 my $opts = XrefScriptHelper->new_with_options();
 
 # Consult Ensembl staging DB for this release' list of valid stable IDs
-Bio::EnsEMBL::Registry->load_registry_from_db( -host => $opts->ens_host, -port => $opts->ens_port, -user => $opts->ens_user, -pass => $opts->ens_pass, -db_version => $opts->ens_db_version, -NO_CACHE => 1);
+Bio::EnsEMBL::Registry->load_registry_from_db( 
+  -host => $opts->ens_host, 
+  -port => $opts->ens_port, 
+  -user => $opts->ens_user, 
+  -pass => $opts->ens_pass, 
+  -db_version => $opts->ens_db_version, 
+  -NO_CACHE => 1
+);
+
+# Use an adaptor to insert *most* xrefs into the core DB. It's performant.
 my $db_entry_adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core','DBEntry');
 
+# This namespace_mapper does translation between Ensembl external_db space, and RDF space
 my $namespace_mapper = Bio::EnsEMBL::RDF::EnsemblToIdentifierMappings->new($opts->config_file,$opts->config_schema);
 
 my $debug_fh;
@@ -43,6 +53,7 @@ if ($opts->debug == 1) {
   $debug_fh = IO::File->new($opts->debug_file ,'w') || die "Unable to create debug output:".$opts->debug_file;
 }
 
+# A bundle object that knows how to query the triplestore and derive new Xrefs from that
 my $reasoner = Bio::EnsEMBL::RDF::XrefReasoner->new(keepalive => 0, memory => $opts->fuseki_heap, debug_fh => $debug_fh);
 
 # PHASE 1, process the coordinate overlaps into default model
@@ -63,6 +74,7 @@ my $transitive_data = File::Spec->catfile($data_root,'transitive');
 my @transitive = read_dir($transitive_data);
 @transitive = map { $transitive_data.'/'.$_} @transitive;
 
+# and load those TTL files into a memory-only triplestore. Two sub-graphs - the generic one, and one for xrefs we can trust transitively
 my $start_time = [gettimeofday];
 $reasoner->load_general_data($overlap_source,$e_gene_model,$refseq_gene_model,$checksum_source,$checksum_uniprot_source,@loadables);
 $reasoner->load_alignments($alignment_source);
@@ -71,13 +83,19 @@ my $done_time = tv_interval($start_time,[gettimeofday]);
 print "Alignments, checksums, overlaps and gene model loaded\n";
 print "Loaded all data in $done_time seconds\n";
 
+# Stats calculation is disabled at present due to silly amounts of memory needed to complete the query. 
+# There are more efficient ways to do this without relying on expensive GROUP BY operations
 # $reasoner->pretty_print_stats($reasoner->calculate_stats());
 # print "Stats finished, now select transitive xrefs into a new graph\n";
+
+
+# Phase 2, decide which alignments, coordinate overlaps and checksum matches get to be promoted to transitive status 
 $reasoner->nominate_transitive_xrefs();
 print "Transitive xrefs supplemented with choices from coordinate matches, alignments and such.\n";
 
 my $matches_fh = IO::File->new($opts->output_file,'w');
 
+# Map the RDF equivalent of info_type into info_type. This could be refactored away
 my %uri_to_enum = (
   Coordinate_overlap => 'COORDINATE_OVERLAP',
   Alignment => 'SEQUENCE_MATCH',
@@ -85,6 +103,7 @@ my %uri_to_enum = (
   Direct => 'DEPENDENT'
 );
 
+# Lookup analysis IDs to assign to different kinds of xrefs
 my %uri_to_analysis_id = (
   Coordinate_overlap => 9238,
   Alignment => 9238,
@@ -98,9 +117,12 @@ my %uri_to_analysis_id = (
 #   Direct => 'Generated via direct'
 # );
 
-# Cleanse existing xref table of undesirable xrefs. This means nearly everything except that which is not ours to delete.
+# Phase 3, Cleanse existing coreDB xref table of undesirable xrefs. This means nearly everything except that is not ours to delete.
 delete_renewable_xrefs($opts);
 
+# Phase 4, Iterate over known genes, transcripts and translations and extract the relevant xrefs for each
+# Firstly we chase down all the transitively connected xrefs, then we get all outbound xrefs from each of those.
+# This means we are collecting all xrefs in radius 1 of the transitively connected set for each Ensembl ID
 my %failures;
 
 foreach my $type (qw/Gene Transcript Translation/) {
@@ -108,10 +130,12 @@ foreach my $type (qw/Gene Transcript Translation/) {
   my $features = $adaptor->fetch_all();
   while (my $feature = shift $features) {
     # Get a list of all IDs that are "the same thing" and are linked in the transitive graph
+    # Then make xrefs for each of them referring to the Ensembl ID in this loop iteration
     my $matches = $reasoner->extract_transitive_xrefs_for_id($feature->stable_id);
     if ($opts->debug == 1) {
       printf $matches_fh "%s\t",$feature->stable_id;
     }
+    # This cache keeps track of which sources were connected transitively. Consulted later.
     my %source_cache = map { $_->{xref_source} => 1} @$matches;
 
     my @labels;
@@ -120,7 +144,10 @@ foreach my $type (qw/Gene Transcript Translation/) {
         $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl/'
           || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript/'
           || $match->{xref_source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein/'
-        ); # We don't need to revisit any Ensembl ID. Sometimes Ensembl IDs are externally used so we have to check to the source too
+        ); # We don't need to revisit any Ensembl ID. 
+      # Sometimes Ensembl IDs are externally copied so we have to check to the source too, e.g. ArrayExpress
+      
+      # Fetch info about the transitively linked xref itself
       my $match_set = $reasoner->get_detail_of_uri($match->{uri});
 
       my $root_id = $match->{xref_label}; #Could also get this from $match_set
@@ -135,7 +162,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
       } else {
         printf "Storing direct xref %s:%s with label %s into Ensembl core DB\n",$match_set->[0]->{source},$match_set->[0]->{id},$match_set->[0]->{id};
       }
-      # Insert as Direct Xref
+      # Insert as Direct Xref, or figure out the info_type somehow
       my $dbentry = Bio::EnsEMBL::DBEntry->new(
         -primary_id => $root_id,
         -dbname => $root_source,
@@ -147,7 +174,7 @@ foreach my $type (qw/Gene Transcript Translation/) {
       # dbentry, Ensembl internal dbID, feature type, ignore external DB version
       print $matches_fh "$root_source:$root_id," if $opts->debug == 1;
 
-      # Consider local ID for naming
+      # The transitively linked ID may be a naming source. See if it has a naming priority, and hang onto it if it does.
       my $naming_priority = $namespace_mapper->get_priority($root_source);
       if (defined $naming_priority && defined $match_set->[0]->{display_label} ) {
         push @labels,[$dbentry,$naming_priority];
@@ -159,31 +186,33 @@ foreach my $type (qw/Gene Transcript Translation/) {
     foreach my $match (@$matches) {
       
       my $related_set = $reasoner->get_related_xrefs($match->{uri});
-      # In principle we can attach the dependent xref to its master xref, but it's difficult
+      # In principle we can attach the dependent xref to its master xref in the core schema, but it's fiddly
       
       foreach my $hit (@$related_set) {
         next if (
          $hit->{source} eq 'http://rdf.ebi.ac.uk/resource/ensembl/'
           || $hit->{source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.transcript/'
           || $hit->{source} eq 'http://rdf.ebi.ac.uk/resource/ensembl.protein/'
-        ); # No un-approved xrefs to Ensembl sources
+        ); # No un-authoritative xrefs to Ensembl sources
         
         my $external_db_name = $namespace_mapper->convert_uri_to_external_db_name($hit->{source});
-        if (!defined $external_db_name) { $failures{$hit->{source}}++ ; next } # Skip any sourceless xrefs
+        if (!defined $external_db_name) { $failures{$hit->{source}}++ ; next } # Skip any xrefs we don't have mappings for
         
-        # We don't want to re-discover the alignments from a source when we already have a winner selected
-        # Don't store additional xrefs for any source which is already in the transitive set
+        # We don't want to re-discover any alignments or checksums from a source we have already found a winner for
+        # Don't store additional xrefs for any source which is already in the transitive set. 
+        # TODO: This may not be general enough, the query source may be a synonym of a previously mapped source
         next if exists $source_cache{ $hit->{source} };
         
         printf "Mapped dependent xref %s on ID %s to %s\n",$hit->{source},$hit->{id},$external_db_name if ($opts->debug == 1);
         if ($opts->debug == 1) {
           printf $matches_fh ',%s:%s',$external_db_name,$hit->{id};
         }
-
+        # We've filtered what we can, now store the new xref in the core DB
         my $linked_dbentry = instantiate_xref($reasoner,$db_entry_adaptor,$feature->dbID,$type,$match->{uri},$external_db_name,$hit);
         
-        # Find a naming authority and apply synonyms
-        my $naming_priority = $namespace_mapper->get_priority($external_db_name); # The priorities are actually available via query too, from source data
+        # Find a naming authority and apply synonyms.
+        my $naming_priority = $namespace_mapper->get_priority($external_db_name); 
+        # The priorities are actually available via query too, from dumped source data, but it's already in memory here.
         if (defined $naming_priority && defined $hit->{label} ) {
           push @labels,[$linked_dbentry,$naming_priority];
         }
@@ -192,8 +221,8 @@ foreach my $type (qw/Gene Transcript Translation/) {
     }
     print $matches_fh "\n" if $opts->debug == 1;
 
-    # Fill in Reactome xrefs. These cannot be found via the transitive xrefs
     if ($type eq 'Translation') {
+      # Fill in Reactome xrefs. These cannot be found via the transitive xrefs due to directionality of their xrefs.
 
       my $xrefs = $reasoner->get_weakly_connected_xrefs(
         $feature->stable_id,
@@ -202,12 +231,12 @@ foreach my $type (qw/Gene Transcript Translation/) {
         'http://identifiers.org/reactome/'
       );
       foreach my $reactome_xref (@$xrefs) {
-        $reactome_xref->{type} = 'DEPENDENT';
+        $reactome_xref->{type} = 'DEPENDENT'; # Force an info_type
         instantiate_xref($reasoner,$db_entry_adaptor,$feature->dbID,$type,undef,'Reactome',$reactome_xref);
       }
     }
 
-    # Choose the best display_label authority and assign to Ensembl object
+    # Choose the best display_label authority and assign to Ensembl object's display_xref_id field
     @labels = sort { $b->[1] <=> $a->[1]} @labels; # order desc by priority. Highest priority is the naming authority for this feature
     if (@labels > 0 && ($type eq 'Gene' || $type eq 'Transcript')) {
       my $dbentry = $labels[0]->[0];
@@ -225,10 +254,12 @@ foreach my $failed_source (keys %failures) {
 }
 
 generate_transcript_labels(); # Fill in the multitude of transcript names which are inferred by gene assignment
+# TODO 
+#Now go through all remaining genes and transcripts without names and make "clone-based-gene/transcript"
 
+# END
 
-
-# Returns the xref that was stored
+# Stores an xref and returns the DBEntry object that was stored
 sub instantiate_xref {
   my ($reasoner,$db_entry_adaptor,$dbID,$feature_type,$original_uri,$external_db_name,$hit) = @_;
 
@@ -285,11 +316,13 @@ sub delete_renewable_xrefs {
       WHERE xref.external_db_id NOT IN (%s)",join(',',@do_not_delete)
     );
   $sth->execute();
-  $sth = $db_entry_adaptor->prepare('DELETE FROM identity_xref');
+  $sth = $db_entry_adaptor->prepare('DELETE FROM identity_xref'); # This may be too general
   $sth->execute();
 }
 
 # Run to create labels on transcripts where the genes are named by a naming source
+# All transcripts must have names, of the form "GENE_NAME_$n+200"
+# e.g. RGD:1000-201 for the first transcript (by start position) of gene annotated as RGD:1000
 sub generate_transcript_labels {
   my $db_entry_adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core','DBEntry');
   my $gene_adaptor = Bio::EnsEMBL::Registry->get_adaptor($opts->species,'core','Gene');
@@ -312,7 +345,7 @@ sub generate_transcript_labels {
         -description => $display_xref->description,
         -info_type => 'MISC'
       );
-      printf "Assigned display xref %s to %s\n",$db_entry->display_id,$transcript->stable_id;
+      printf "Assigned display xref to %s to transcript %s\n",$db_entry->display_id,$transcript->stable_id;
       $db_entry_adaptor->store($db_entry,$transcript->dbID,'Transcript',1);
     }
   }

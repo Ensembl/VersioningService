@@ -117,20 +117,25 @@
       "db_name": "Clone_based_ensembl_gene",
       "example_id": "AL162430.1",
       "ignore": true,
+      "description": "Source of gene names fabricated by us to ensure all genes and transcripts have a display name, even if we haven't imported any",
       "bidirectional": true,
       "feature_type": "gene",
+      "priority": 10,
       "ensembl_db_name": "Clone_based_ensembl_gene"
     },
     {
       "db_name": "Clone_based_ensembl_transcript",
       "ignore":true,
+      "description": "Source of gene names fabricated by us to ensure all genes and transcripts have a display name, even if we haven't imported any",
       "bidirectional": true,
       "feature_type": "transcript",
+      "priority": 10,
       "ensembl_db_name": "Clone_based_ensembl_transcript"
     },
     {
       "db_name": "Clone_based_vega_gene",
       "ignore":true,
+      "description": "Retired source of gene names from Havana project. DB no longer available",
       "bidirectional": true,
       "feature_type": "gene",
       "ensembl_db_name": "Clone_based_vega_gene"
@@ -138,6 +143,7 @@
     {
       "db_name": "Clone_based_vega_transcript",
       "ignore":true,
+      "description": "Retired source of transcript names from Havana project. DB no longer available",
       "bidirectional": true,
       "feature_type": "transcript",
       "ensembl_db_name": "Clone_based_vega_transcript"
@@ -1233,6 +1239,7 @@
       "id_namespace": "rfam",
       "bidirectional": false,
       "feature_type": "annotation",
+      "priority": 20,
       "ensembl_db_name": "RFAM"
     },
     {

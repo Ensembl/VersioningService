@@ -33,4 +33,16 @@ The only persistent service is the SQL database required for the Broker to manag
 
 # Xref Pipeline
 
-Xrefs are computed in RDF space, that is the indexed records stored by the "Mongoose" component above are converted to an RDF graph, which then forms the basis for the Xref pipeline.
+Xrefs are computed in RDF space, that is the indexed records stored by the "Mongoose" component above are converted to an RDF graph, which then forms the basis for the Xref pipeline. See Bio::EnsEMBL::Versioning::Pipeline::PipeConfig::Xref_pipeline_conf
+
+As part of this conversion process, sequences are aligned, coordinates are compared, checksums are checked and so on. 
+
+The alignment process is run on FASTA of cDNA extracted from indexes, as well as from the Ensembl core DB for a specific species. Exonerate is used with an automatic filter threshold on its results to remove poor alignments. That threshold is dependent on the data involved, and can be tuned per-species and per data type if necessary.
+
+The checksum comparison is made by computing MD5 checksums for all gene, transcript and translation sequences in Ensembl. This list is then used in the context of checksums stored in specific source indexes.
+
+Coordinate comparison is done with specific reference to RefSeq, and where on the genome they place their features. Ensembl Genebuild map these coordinates into an Ensembl database, which are then used to find alternate pairings to converntional alignment. The sequence differnces between the approaches of Ensembl and RefSeq ensure that alignments alone can never be good enough, in the main because of differing approaches to UTRs. Coordinate matches are considered the most authoritative connection, with alignments and checksums used where no positional match is possible.
+
+# Reasoning/inference/correction
+
+Once all RDF is generated, we can start to make choices about which pairings are preferred, and store that choice in an Ensembl core DB. This process is not finalised, and is subject to extensive revision.

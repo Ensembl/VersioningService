@@ -24,11 +24,13 @@ Once it is running, the pipeline will interrogate each remote source and downloa
 Building the xref database
 --------------------------
 
-A particular species can be selected from the index, and each result is unpacked and translated into RDF. The resulting set of RDF files can be imported into Virtuoso as follows
+Run /scripts/derive_everything_at_once.pl with a hearty amount of ram available. It will launch an instance of Fuseki itself, load data and query it.
+
+You can also build a stand-alone database with Fuseki or Virtuoso (or others)
+The set of RDF files can be imported into Virtuoso as follows
 
 `export PATH=$PATH:/usr/local/virtuoso-opensource/bin`
 `export VIRTUOSO_HOME=/usr/local/virtuoso-opensource/var/lib/virtuoso/db`
-
 
 # Bulk import
 `isql`
@@ -38,9 +40,8 @@ A particular species can be selected from the index, and each result is unpacked
 To see what has been identified for bulk loading, use `select * from DB.DBA.load_list;` before calling `rdf_loader_run()`.
 
 
-
-Determine xref connections
---------------------------
+Diagnose xref connections
+-------------------------
 
 ## Installed components required
 1. Java 8 with environment variables JAVA_HOME and PATH updated accordingly

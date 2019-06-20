@@ -4,6 +4,9 @@ perl:
   - "5.16"
   - "5.14"
 
+services:
+  - mysql
+
 jdk:
   - oraclejdk8
   

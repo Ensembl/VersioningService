@@ -1,3 +1,5 @@
+**WARNING: This repository and its contents are now deprecated and are only kept for reference**
+
 [![Build Status](https://travis-ci.org/Ensembl/VersioningService.png?branch=master)][travis]
 [![Coverage Status](https://coveralls.io/repos/Ensembl/VersioningService/badge.png)][coveralls]
 
